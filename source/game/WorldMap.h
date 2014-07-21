@@ -1,9 +1,9 @@
-#ifndef TEST_SCENE_H
-#define TEST_SCENE_H
+#ifndef WORLD_MAP_H
+#define WORLD_MAP_H
 
 #include "cocos2d.h"
 
-class HelloWorldLayer : public cocos2d::CCLayer
+class WorldMapLayer : public cocos2d::CCLayer
 {
 public:
 	virtual bool init(void);
@@ -12,7 +12,7 @@ public:
 
 	void menuCloseCallback(cocos2d::CCObject *Sender);
 
-	CREATE_FUNC(HelloWorldLayer);
+	CREATE_FUNC(WorldMapLayer);
 };
 
 #endif

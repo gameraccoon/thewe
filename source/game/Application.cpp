@@ -1,6 +1,6 @@
 #include "Application.h"
 
-#include "TestsScene.h"
+#include "WorldMap.h"
 
 AppDelegate::AppDelegate()
 {
@@ -22,7 +22,7 @@ bool AppDelegate::applicationDidFinishLaunching()
 	director->setDisplayStats(true);
 	director->setAnimationInterval(1.0 / 60.0);
 
-	cocos2d::CCScene *scene = HelloWorldLayer::scene();
+	cocos2d::CCScene *scene = WorldMapLayer::scene();
 
 	director->runWithScene(scene);
 
