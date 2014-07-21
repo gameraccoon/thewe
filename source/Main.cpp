@@ -9,7 +9,7 @@
 #include "game\Application.h"
 
 #if (CC_TARGET_PLATFORM == CC_PLATFORM_WIN32)
-int APIENTRY _tWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPTSTR lpCmdLine, int nCmdShow)
+int APIENTRY _tWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPTSTR lpCmdLine, int nCmdShow) 
 #elif
 #error unknown target platform
 #endif
