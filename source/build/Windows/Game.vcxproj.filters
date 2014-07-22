@@ -3,10 +3,19 @@
   <ItemGroup>
     <ClCompile Include="..\..\Main.cpp" />
     <ClCompile Include="..\..\game\Application.cpp" />
-    <ClCompile Include="..\..\game\TestScene.cpp" />
+    <ClCompile Include="..\..\game\WorldMap.cpp">
+      <Filter>Layers</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\game\Application.h" />
-    <ClInclude Include="..\..\game\TestsScene.h" />
+    <ClInclude Include="..\..\game\WorldMap.h">
+      <Filter>Layers</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="Layers">
+      <UniqueIdentifier>{1bb7d8b8-17d3-4f2c-bc89-5c0a1a00cde7}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
 </Project>

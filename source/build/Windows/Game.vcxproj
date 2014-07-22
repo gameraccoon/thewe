@@ -12,12 +12,12 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\game\Application.cpp" />
-    <ClCompile Include="..\..\game\TestScene.cpp" />
+    <ClCompile Include="..\..\game\WorldMap.cpp" />
     <ClCompile Include="..\..\Main.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\game\Application.h" />
-    <ClInclude Include="..\..\game\TestsScene.h" />
+    <ClInclude Include="..\..\game\WorldMap.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{C21BA7F4-7523-4838-8B82-693FF0A21526}</ProjectGuid>

@@ -1,8 +1,8 @@
-#include "TestsScene.h"
+#include "WorldMap.h"
 
 using namespace cocos2d;
 
-bool HelloWorldLayer::init(void)
+bool WorldMapLayer::init(void)
 {
 	if (!cocos2d::CCLayer::init())
 	{
@@ -20,7 +20,7 @@ bool HelloWorldLayer::init(void)
 
 	CCLayer::addChild(_movingSprite);
 	CCLayer::setTouchEnabled(true);
-	CCLayer::schedule(schedule_selector(HelloWorldLayer::_IdleUpdate));
+	CCLayer::schedule(schedule_selector(WorldMapLayer::_IdleUpdate));
 
 	//CCLayer::ccTouchMoved
 
@@ -34,22 +34,22 @@ bool HelloWorldLayer::init(void)
 	return true;
 }
 
-cocos2d::CCScene* HelloWorldLayer::scene(void)
+cocos2d::CCScene* WorldMapLayer::scene(void)
 {
 	cocos2d::CCScene *scene = cocos2d::CCScene::create();
 
-	HelloWorldLayer *layer = HelloWorldLayer::create();
+	WorldMapLayer *layer = WorldMapLayer::create();
 
 	scene->addChild(layer);
 
 	return scene;
 }
 
-void  HelloWorldLayer::menuCloseCallback(cocos2d::CCObject *Sender)
+void  WorldMapLayer::menuCloseCallback(cocos2d::CCObject *Sender)
 {
 }
 
-void HelloWorldLayer::ccTouchesEnded(cocos2d::CCSet* touches, cocos2d::CCEvent* event)
+void WorldMapLayer::ccTouchesEnded(cocos2d::CCSet* touches, cocos2d::CCEvent* event)
 {
 	cocos2d::CCTouch *touch = (cocos2d::CCTouch *)touches->anyObject();
 	_touchPos = touch->getLocation();
@@ -59,12 +59,12 @@ void HelloWorldLayer::ccTouchesEnded(cocos2d::CCSet* touches, cocos2d::CCEvent* 
 	//_movingSprite->runAction(move);
 }
 
-void HelloWorldLayer::ccTouchMoved(cocos2d::CCTouch *touch, cocos2d::CCEvent *event)
+void WorldMapLayer::ccTouchMoved(cocos2d::CCTouch *touch, cocos2d::CCEvent *event)
 {
 	_touchPos = touch->getLocation();
 }
 
-void HelloWorldLayer::_IdleUpdate(float timeDelta)
+void WorldMapLayer::_IdleUpdate(float timeDelta)
 {
 	cocos2d::CCPoint pos = _movingSprite->getPosition();
 
