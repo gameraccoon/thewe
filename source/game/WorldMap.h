@@ -3,6 +3,8 @@
 
 #include "cocos2d.h"
 
+#include "ConvexHullTest.h"
+
 class WorldMapLayer : public cocos2d::CCLayer
 {
 public:
@@ -17,9 +19,14 @@ public:
 	void ccTouchesEnded(cocos2d::CCSet* touches, cocos2d::CCEvent* event);
 	void ccTouchMoved(cocos2d::CCTouch *touch, cocos2d::CCEvent *event);
 
+	virtual void visit(void);
+
 private:
 	cocos2d::CCSprite *_movingSprite;
 	cocos2d::CCPoint _touchPos;
+
+	ConvexHullTest _hull1;
+	bool _isPointInHull;
 
 	void _IdleUpdate(float timeDelta);
 };

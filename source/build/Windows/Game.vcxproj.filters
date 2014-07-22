@@ -6,10 +6,16 @@
     <ClCompile Include="..\..\game\WorldMap.cpp">
       <Filter>Layers</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\game\ConvexHullTest.cpp">
+      <Filter>Layers</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\game\Application.h" />
     <ClInclude Include="..\..\game\WorldMap.h">
+      <Filter>Layers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\game\ConvexHullTest.h">
       <Filter>Layers</Filter>
     </ClInclude>
   </ItemGroup>
