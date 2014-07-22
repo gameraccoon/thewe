@@ -1,5 +1,5 @@
-#ifndef WORLD_MAP_H
-#define WORLD_MAP_H
+#ifndef WORLD_MAP_LAYER_H
+#define WORLD_MAP_LAYER_H
 
 #include "cocos2d.h"
 

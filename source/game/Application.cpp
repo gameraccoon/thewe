@@ -1,6 +1,6 @@
 #include "Application.h"
 
-#include "WorldMap.h"
+#include "WorldMapLayer.h"
 
 AppDelegate::AppDelegate()
 {
