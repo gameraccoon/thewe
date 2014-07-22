@@ -25,6 +25,8 @@ public:
 
 	virtual void visit(void) override;
 
+	cocos2d::CCPoint projectOnMap(cocos2d::CCPoint screenPoint);
+	cocos2d::CCPoint projectOnScreen(cocos2d::CCPoint mapPoint);
 private:
 	ConvexHullTest _hull1;
 	bool _isPointInHull;

@@ -21,6 +21,7 @@ bool WorldMapLayer::init(void)
 
 	CCLayer::addChild(_worldMap.getSprite());
 	CCLayer::setTouchEnabled(true);
+    CCLayer::setKeypadEnabled(true);
 
 	// фикс проблемы с обязательным using
 	{
@@ -65,11 +66,17 @@ void WorldMapLayer::ccTouchesBegan(cocos2d::CCSet *pTouches, cocos2d::CCEvent *p
 	if (_hull1.Contain(touch->getLocation()))
 	{
 		_isPointInHull = !_isPointInHull;
+		_mapScale *= 1.25;
+	}
+	else
+	{
+		_mapScale *= 0.8;
 	}
 }
 
 void WorldMapLayer::ccTouchesEnded(cocos2d::CCSet* touches, cocos2d::CCEvent* event)
 {
+	_worldMap.getSprite()->setScale(_mapScale);
 }
 
 void WorldMapLayer::ccTouchesMoved(cocos2d::CCSet *pTouches, cocos2d::CCEvent *pEvent)
@@ -104,4 +111,14 @@ void WorldMapLayer::visit(void)
 void WorldMapLayer::_IdleUpdate(float timeDelta)
 {
 	//_worldMap.getSprite()->setPosition(_touchPos);
+}
+
+cocos2d::CCPoint WorldMapLayer::projectOnMap(cocos2d::CCPoint screenPoint)
+{
+	return screenPoint * _mapScale;
+}
+
+cocos2d::CCPoint WorldMapLayer::projectOnScreen(cocos2d::CCPoint mapPoint)
+{
+	return mapPoint / _mapScale;
 }
