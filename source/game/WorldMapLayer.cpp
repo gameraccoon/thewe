@@ -58,31 +58,33 @@ void  WorldMapLayer::menuCloseCallback(cocos2d::CCObject *Sender)
 {
 }
 
-void WorldMapLayer::ccTouchesBegan(cocos2d::CCSet *pTouches, cocos2d::CCEvent *pEvent)
+void WorldMapLayer::ccTouchesBegan(cocos2d::CCSet* touches, cocos2d::CCEvent* event)
 {
-	cocos2d::CCTouch *touch = static_cast<cocos2d::CCTouch*>(pTouches->anyObject());
+	cocos2d::CCTouch *touch = static_cast<cocos2d::CCTouch*>(touches->anyObject());
 	_touchFirstPoint = touch->getLocation() - _worldMap.getSprite()->getPosition();
 
 	if (_hull1.Contain(touch->getLocation()))
 	{
 		_isPointInHull = !_isPointInHull;
-		_mapScale *= 1.25;
+		_mapScale *= 1.25f;
 	}
 	else
 	{
-		_mapScale *= 0.8;
+		_mapScale *= 0.8f;
 	}
+	_worldMap.getSprite()->setScale(_mapScale);
 }
 
 void WorldMapLayer::ccTouchesEnded(cocos2d::CCSet* touches, cocos2d::CCEvent* event)
 {
-	_worldMap.getSprite()->setScale(_mapScale);
+	cocos2d::CCTouch *touch = static_cast<cocos2d::CCTouch*>(touches->anyObject());
+	cocos2d::CCPoint projected = projectOnMap(touch->getLocation());
 }
 
-void WorldMapLayer::ccTouchesMoved(cocos2d::CCSet *pTouches, cocos2d::CCEvent *pEvent)
+void WorldMapLayer::ccTouchesMoved(cocos2d::CCSet* touches, cocos2d::CCEvent* pEvent)
 {
-	cocos2d::CCTouch *touch = static_cast<cocos2d::CCTouch*>(pTouches->anyObject());
-	_worldMap.getSprite()->setPosition(touch->getLocation() - _touchFirstPoint);
+	cocos2d::CCTouch *touch = static_cast<cocos2d::CCTouch*>(touches->anyObject());
+	_mapShift = touch->getLocation() - _touchFirstPoint;
 }
 
 void WorldMapLayer::visit(void)
@@ -110,15 +112,15 @@ void WorldMapLayer::visit(void)
 
 void WorldMapLayer::_IdleUpdate(float timeDelta)
 {
-	//_worldMap.getSprite()->setPosition(_touchPos);
+	_worldMap.getSprite()->setPosition(_mapShift);
 }
 
 cocos2d::CCPoint WorldMapLayer::projectOnMap(cocos2d::CCPoint screenPoint)
 {
-	return screenPoint * _mapScale;
+	return (screenPoint - _mapShift) / _mapScale;
 }
 
 cocos2d::CCPoint WorldMapLayer::projectOnScreen(cocos2d::CCPoint mapPoint)
 {
-	return mapPoint / _mapScale;
+	return (mapPoint * _mapScale) + _mapShift;
 }

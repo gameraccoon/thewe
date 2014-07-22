@@ -19,9 +19,9 @@ public:
 
 	CREATE_FUNC(WorldMapLayer);
 	
-    virtual void ccTouchesBegan(cocos2d::CCSet *pTouches, cocos2d::CCEvent *pEvent) override;
+    virtual void ccTouchesBegan(cocos2d::CCSet* touches, cocos2d::CCEvent* event) override;
 	virtual void ccTouchesEnded(cocos2d::CCSet* touches, cocos2d::CCEvent* event) override;
-    virtual void ccTouchesMoved(cocos2d::CCSet *pTouches, cocos2d::CCEvent *pEvent) override;
+    virtual void ccTouchesMoved(cocos2d::CCSet* touches, cocos2d::CCEvent* event) override;
 
 	virtual void visit(void) override;
 
