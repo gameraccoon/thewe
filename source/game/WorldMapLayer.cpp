@@ -1,4 +1,4 @@
-#include "WorldMap.h"
+#include "WorldMapLayer.h"
 
 using namespace cocos2d;
 
