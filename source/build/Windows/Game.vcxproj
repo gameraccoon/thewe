@@ -13,12 +13,14 @@
   <ItemGroup>
     <ClCompile Include="..\..\game\Application.cpp" />
     <ClCompile Include="..\..\game\ConvexHullTest.cpp" />
+    <ClCompile Include="..\..\game\WorldMap.cpp" />
     <ClCompile Include="..\..\game\WorldMapLayer.cpp" />
     <ClCompile Include="..\..\Main.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\game\Application.h" />
     <ClInclude Include="..\..\game\ConvexHullTest.h" />
+    <ClInclude Include="..\..\game\WorldMap.h" />
     <ClInclude Include="..\..\game\WorldMapLayer.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">

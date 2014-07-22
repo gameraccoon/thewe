@@ -1,6 +1,8 @@
 #include "WorldMapLayer.h"
 
-using namespace cocos2d;
+WorldMapLayer::WorldMapLayer()
+{
+}
 
 bool WorldMapLayer::init(void)
 {
@@ -9,18 +11,22 @@ bool WorldMapLayer::init(void)
 		return false;
 	}
 
-	_movingSprite = cocos2d::CCSprite::create("../_gamedata/monster.png");
-	
-	cocos2d::CCRect rect = _movingSprite->getTextureRect();
-	cocos2d::CCPoint pos(0.0f + rect.size.width/2.0f, 0.0f + rect.size.height/2.0f);
-	_movingSprite->setPosition(pos);
-	_movingSprite->setScale(2.5f);
+	cocos2d::CCRect rect = _worldMap.getSprite()->getTextureRect();
 
-	_touchPos = pos;
+	_mapShift = cocos2d::CCPoint(0.0f + rect.size.width/2.0f, 0.0f + rect.size.height/2.0f);
+	_mapScale = 2.5f;
 
-	CCLayer::addChild(_movingSprite);
+	_worldMap.getSprite()->setPosition(_mapShift);
+	_worldMap.getSprite()->setScale(_mapScale);
+
+	CCLayer::addChild(_worldMap.getSprite());
 	CCLayer::setTouchEnabled(true);
-	CCLayer::schedule(schedule_selector(WorldMapLayer::_IdleUpdate));
+
+	// фикс проблемы с обязательным using
+	{
+		using namespace cocos2d;
+		CCLayer::schedule(schedule_selector(WorldMapLayer::_IdleUpdate));
+	}
 
 	_hull1.AddPoint(ccp(100, 100));
 	_hull1.AddPoint(ccp(500, 900));
@@ -51,24 +57,25 @@ void  WorldMapLayer::menuCloseCallback(cocos2d::CCObject *Sender)
 {
 }
 
-void WorldMapLayer::ccTouchesEnded(cocos2d::CCSet* touches, cocos2d::CCEvent* event)
+void WorldMapLayer::ccTouchesBegan(cocos2d::CCSet *pTouches, cocos2d::CCEvent *pEvent)
 {
-	cocos2d::CCTouch *touch = (cocos2d::CCTouch *)touches->anyObject();
-	_touchPos = touch->getLocation();
+	cocos2d::CCTouch *touch = static_cast<cocos2d::CCTouch*>(pTouches->anyObject());
+	_touchFirstPoint = touch->getLocation() - _worldMap.getSprite()->getPosition();
 
-	if (_hull1.Contain(_touchPos))
+	if (_hull1.Contain(touch->getLocation()))
 	{
 		_isPointInHull = !_isPointInHull;
 	}
-
-	//const float duration = 0.4f;
-	//cocos2d::CCMoveTo *move = cocos2d::CCMoveTo::create(duration, _touchPos);
-	//_movingSprite->runAction(move); 
 }
 
-void WorldMapLayer::ccTouchMoved(cocos2d::CCTouch *touch, cocos2d::CCEvent *event)
+void WorldMapLayer::ccTouchesEnded(cocos2d::CCSet* touches, cocos2d::CCEvent* event)
 {
-	_touchPos = touch->getLocation();
+}
+
+void WorldMapLayer::ccTouchesMoved(cocos2d::CCSet *pTouches, cocos2d::CCEvent *pEvent)
+{
+	cocos2d::CCTouch *touch = static_cast<cocos2d::CCTouch*>(pTouches->anyObject());
+	_worldMap.getSprite()->setPosition(touch->getLocation() - _touchFirstPoint);
 }
 
 void WorldMapLayer::visit(void)
@@ -96,19 +103,5 @@ void WorldMapLayer::visit(void)
 
 void WorldMapLayer::_IdleUpdate(float timeDelta)
 {
-	cocos2d::CCPoint pos = _movingSprite->getPosition();
-
-	cocos2d::CCPoint dir = _touchPos - pos;
-	
-	if (dir.getLength() >= 5.0f)
-	{
-		dir = dir.normalize();
-
-		float velocity = 500.0f;
-	
-		pos.x += dir.x * velocity * timeDelta;
-		pos.y += dir.y * velocity * timeDelta;
-
-		_movingSprite->setPosition(pos);
-	}
+	//_worldMap.getSprite()->setPosition(_touchPos);
 }

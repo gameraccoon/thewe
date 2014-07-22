@@ -3,25 +3,30 @@
   <ItemGroup>
     <ClCompile Include="..\..\Main.cpp" />
     <ClCompile Include="..\..\game\Application.cpp" />
-    <ClCompile Include="..\..\game\ConvexHullTest.cpp">
-      <Filter>Layers</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\game\WorldMapLayer.cpp">
       <Filter>Layers</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\game\WorldMap.cpp">
+      <Filter>GameElements</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\game\ConvexHullTest.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\game\Application.h" />
-    <ClInclude Include="..\..\game\ConvexHullTest.h">
-      <Filter>Layers</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\game\WorldMapLayer.h">
       <Filter>Layers</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\game\WorldMap.h">
+      <Filter>GameElements</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\game\ConvexHullTest.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Layers">
       <UniqueIdentifier>{1bb7d8b8-17d3-4f2c-bc89-5c0a1a00cde7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameElements">
+      <UniqueIdentifier>{1d2afc5d-5005-4bc4-acb2-6d1cc914ff21}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

@@ -5,30 +5,37 @@
 
 #include "ConvexHullTest.h"
 
+#include "WorldMap.h"
+
 class WorldMapLayer : public cocos2d::CCLayer
 {
 public:
-	virtual bool init(void);
+	WorldMapLayer();
+	virtual bool init(void) override;
 
 	static cocos2d::CCScene* scene(void);
 
 	void menuCloseCallback(cocos2d::CCObject *Sender);
 
 	CREATE_FUNC(WorldMapLayer);
+	
+    virtual void ccTouchesBegan(cocos2d::CCSet *pTouches, cocos2d::CCEvent *pEvent) override;
+	virtual void ccTouchesEnded(cocos2d::CCSet* touches, cocos2d::CCEvent* event) override;
+    virtual void ccTouchesMoved(cocos2d::CCSet *pTouches, cocos2d::CCEvent *pEvent) override;
 
-	void ccTouchesEnded(cocos2d::CCSet* touches, cocos2d::CCEvent* event);
-	void ccTouchMoved(cocos2d::CCTouch *touch, cocos2d::CCEvent *event);
-
-	virtual void visit(void);
+	virtual void visit(void) override;
 
 private:
-	cocos2d::CCSprite *_movingSprite;
-	cocos2d::CCPoint _touchPos;
-
 	ConvexHullTest _hull1;
 	bool _isPointInHull;
 
+	cocos2d::CCPoint _touchFirstPoint;
+
 	void _IdleUpdate(float timeDelta);
+
+	WorldMap _worldMap;
+	float _mapScale;
+	cocos2d::CCPoint _mapShift;
 };
 
 #endif
