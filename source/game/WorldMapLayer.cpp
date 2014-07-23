@@ -16,6 +16,11 @@ bool WorldMapLayer::init(void)
 	CCLayer::setTouchEnabled(true);
     CCLayer::setKeypadEnabled(true);
 
+	cocos2d::CCPoint origin = cocos2d::CCDirector::sharedDirector()->getVisibleOrigin();
+	cocos2d::CCSize screen = cocos2d::CCDirector::sharedDirector()->getVisibleSize();
+
+	_mapProjector.SetScreenCenter(origin + screen / 2.0f);
+
 	// фикс проблемы с обязательным using
 	{
 		using namespace cocos2d;
@@ -47,7 +52,7 @@ cocos2d::CCScene* WorldMapLayer::scene(void)
 	return scene;
 }
 
-void  WorldMapLayer::menuCloseCallback(cocos2d::CCObject *Sender)
+void WorldMapLayer::menuCloseCallback(cocos2d::CCObject *Sender)
 {
 }
 
@@ -59,6 +64,11 @@ void WorldMapLayer::ccTouchesBegan(cocos2d::CCSet* touches, cocos2d::CCEvent* ev
 	if (_hull1.Contain(touch->getLocation()))
 	{
 		_isPointInHull = !_isPointInHull;
+		_mapProjector.SetScale(_mapProjector.GetScale() * 1.25f);
+	}
+	else
+	{
+		_mapProjector.SetScale(_mapProjector.GetScale() * 0.8f);
 	}
 }
 
