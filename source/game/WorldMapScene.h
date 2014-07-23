@@ -4,6 +4,7 @@
 #include "cocos2d.h"
 
 #include "ConvexHullTest.h"
+#include "WorldMap.h"
 
 class WorldMapLayer : public cocos2d::CCLayer
 {
@@ -21,6 +22,8 @@ public:
 	void ccTouchesMoved(cocos2d::CCSet* touches, cocos2d::CCEvent* event);
 
 	virtual void visit(void);
+
+	cocos2d::CCPoint projectOnMap(cocos2d::CCPoint screenPoint);
 
 private:
 	enum E_BUTTONTS_TAGS
@@ -40,8 +43,15 @@ private:
 	cocos2d::CCMenuItemImage *_btnToggle;
 	cocos2d::CCMenu *_mainMenu;
 
+	cocos2d::CCPoint _touchFirstPoint;
+	cocos2d::CCPoint _mapShift;
+
+	WorldMap _worldMap;
+
 	ConvexHullTest _hull1;
 	bool _isPointInHull;
+
+	float _mapScale;
 
 	void _IdleUpdate(float timeDelta);
 	void _MenuInputListener(cocos2d::CCObject *sender);

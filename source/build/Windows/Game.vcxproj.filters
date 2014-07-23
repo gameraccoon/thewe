@@ -15,6 +15,9 @@
     <ClCompile Include="..\..\game\RegionDrawLayer.cpp">
       <Filter>Region</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\game\WorldMap.cpp">
+      <Filter>Misc</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\game\Application.h" />
@@ -29,6 +32,9 @@
     </ClInclude>
     <ClInclude Include="..\..\game\RegionDrawLayer.h">
       <Filter>Region</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\game\WorldMap.h">
+      <Filter>Misc</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

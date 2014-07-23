@@ -7,14 +7,7 @@ bool WorldMapLayer::init(void)
 		return false;
 	}
 
-	_movingSprite = cocos2d::CCSprite::create("../_gamedata/monster.png");
-	
-	cocos2d::CCRect rect = _movingSprite->getTextureRect();
-	cocos2d::CCPoint pos(0.0f + rect.size.width/2.0f, 0.0f + rect.size.height/2.0f);
-	_movingSprite->setPosition(pos);
-	_movingSprite->setScale(2.5f);
 
-	_touchPos = pos;
 
 	cocos2d::CCDirector *director = cocos2d::CCDirector::sharedDirector();
 	cocos2d::CCSize screen = director->getVisibleSize();
@@ -74,19 +67,18 @@ void WorldMapLayer::ccTouchesBegan(cocos2d::CCSet* touches, cocos2d::CCEvent* ev
 
 void WorldMapLayer::ccTouchesEnded(cocos2d::CCSet* touches, cocos2d::CCEvent* event)
 {
-	cocos2d::CCTouch *touch = (cocos2d::CCTouch *)touches->anyObject();
-	_touchPos = touch->getLocation();
+	cocos2d::CCTouch *touch = static_cast<cocos2d::CCTouch*>(touches->anyObject());
+	_touchFirstPoint = touch->getLocation() - _worldMap.getSprite()->getPosition();
 
-	if (_hull1.Contain(_touchPos))
+	if (_hull1.Contain(touch->getLocation()))
 	{
 		_isPointInHull = !_isPointInHull;
+		_mapScale *= 1.25f;
 	}
-	
-	//CCLayer::ccTouchesBegan
-
-	//const float duration = 0.4f;
-	//cocos2d::CCMoveTo *move = cocos2d::CCMoveTo::create(duration, _touchPos);
-	//_movingSprite->runAction(move); 
+	else
+	{
+		_mapScale *= 0.8f;
+	}
 }
 
 void WorldMapLayer::ccTouchesMoved(cocos2d::CCSet* touches, cocos2d::CCEvent* event)
@@ -124,21 +116,12 @@ void WorldMapLayer::visit(void)
 
 void WorldMapLayer::_IdleUpdate(float timeDelta)
 {
-	cocos2d::CCPoint pos = _movingSprite->getPosition();
+	_worldMap.getSprite()->setPosition(_mapShift);
+}
 
-	cocos2d::CCPoint dir = _touchPos - pos;
-	
-	if (dir.getLength() >= 5.0f)
-	{
-		dir = dir.normalize();
-
-		float velocity = 500.0f;
-	
-		pos.x += dir.x * velocity * timeDelta;
-		pos.y += dir.y * velocity * timeDelta;
-
-		_movingSprite->setPosition(pos);
-	}
+cocos2d::CCPoint WorldMapLayer::projectOnMap(cocos2d::CCPoint screenPoint)
+{
+	return (screenPoint - _mapShift) / _mapScale;
 }
 
 void WorldMapLayer::_MenuInputListener(cocos2d::CCObject *sender)
