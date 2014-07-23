@@ -10,6 +10,8 @@ public:
 	void AddPoint(const cocos2d::CCPoint &point);
 	void Draw(const cocos2d::ccColor4F &color) const;
 	void Clear(void);
+	
+	int GetPointsNum(void) const;
 
 	bool Contain(const cocos2d::CCPoint &point);
 
