@@ -5,7 +5,7 @@
 
 #include "ConvexHullTest.h"
 
-#include "WorldMap.h"
+#include "MapProjector.h"
 
 class WorldMapLayer : public cocos2d::CCLayer
 {
@@ -25,19 +25,16 @@ public:
 
 	virtual void visit(void) override;
 
-	cocos2d::CCPoint projectOnMap(cocos2d::CCPoint screenPoint);
-	cocos2d::CCPoint projectOnScreen(cocos2d::CCPoint mapPoint);
+
 private:
 	ConvexHullTest _hull1;
 	bool _isPointInHull;
 
-	cocos2d::CCPoint _touchFirstPoint;
+	cocos2d::CCPoint _touchLastPoint;
 
 	void _IdleUpdate(float timeDelta);
 
-	WorldMap _worldMap;
-	float _mapScale;
-	cocos2d::CCPoint _mapShift;
+	MapProjector _mapProjector;
 };
 
 #endif

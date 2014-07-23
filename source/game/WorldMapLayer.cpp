@@ -1,6 +1,7 @@
 #include "WorldMapLayer.h"
 
 WorldMapLayer::WorldMapLayer()
+	: _mapProjector(cocos2d::CCPoint(0.0f, 0.0f), 2.5f)
 {
 }
 
@@ -11,15 +12,7 @@ bool WorldMapLayer::init(void)
 		return false;
 	}
 
-	cocos2d::CCRect rect = _worldMap.getSprite()->getTextureRect();
-
-	_mapShift = cocos2d::CCPoint(0.0f + rect.size.width/2.0f, 0.0f + rect.size.height/2.0f);
-	_mapScale = 2.5f;
-
-	_worldMap.getSprite()->setPosition(_mapShift);
-	_worldMap.getSprite()->setScale(_mapScale);
-
-	CCLayer::addChild(_worldMap.getSprite());
+	CCLayer::addChild(_mapProjector.GetSprite());
 	CCLayer::setTouchEnabled(true);
     CCLayer::setKeypadEnabled(true);
 
@@ -61,30 +54,23 @@ void  WorldMapLayer::menuCloseCallback(cocos2d::CCObject *Sender)
 void WorldMapLayer::ccTouchesBegan(cocos2d::CCSet* touches, cocos2d::CCEvent* event)
 {
 	cocos2d::CCTouch *touch = static_cast<cocos2d::CCTouch*>(touches->anyObject());
-	_touchFirstPoint = touch->getLocation() - _worldMap.getSprite()->getPosition();
+	_touchLastPoint = touch->getLocation();
 
 	if (_hull1.Contain(touch->getLocation()))
 	{
 		_isPointInHull = !_isPointInHull;
-		_mapScale *= 1.25f;
 	}
-	else
-	{
-		_mapScale *= 0.8f;
-	}
-	_worldMap.getSprite()->setScale(_mapScale);
 }
 
 void WorldMapLayer::ccTouchesEnded(cocos2d::CCSet* touches, cocos2d::CCEvent* event)
 {
-	cocos2d::CCTouch *touch = static_cast<cocos2d::CCTouch*>(touches->anyObject());
-	cocos2d::CCPoint projected = projectOnMap(touch->getLocation());
 }
 
 void WorldMapLayer::ccTouchesMoved(cocos2d::CCSet* touches, cocos2d::CCEvent* pEvent)
 {
 	cocos2d::CCTouch *touch = static_cast<cocos2d::CCTouch*>(touches->anyObject());
-	_mapShift = touch->getLocation() - _touchFirstPoint;
+	_mapProjector.SetShift(_mapProjector.GetShift() - _touchLastPoint + touch->getLocation());
+	_touchLastPoint = touch->getLocation();
 }
 
 void WorldMapLayer::visit(void)
@@ -112,15 +98,4 @@ void WorldMapLayer::visit(void)
 
 void WorldMapLayer::_IdleUpdate(float timeDelta)
 {
-	_worldMap.getSprite()->setPosition(_mapShift);
-}
-
-cocos2d::CCPoint WorldMapLayer::projectOnMap(cocos2d::CCPoint screenPoint)
-{
-	return (screenPoint - _mapShift) / _mapScale;
-}
-
-cocos2d::CCPoint WorldMapLayer::projectOnScreen(cocos2d::CCPoint mapPoint)
-{
-	return (mapPoint * _mapScale) + _mapShift;
 }

@@ -10,6 +10,10 @@
       <Filter>GameElements</Filter>
     </ClCompile>
     <ClCompile Include="..\..\game\ConvexHullTest.cpp" />
+    <ClCompile Include="..\..\game\Region.cpp">
+      <Filter>GameElements</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\game\MapProjector.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\game\Application.h" />
@@ -20,6 +24,10 @@
       <Filter>GameElements</Filter>
     </ClInclude>
     <ClInclude Include="..\..\game\ConvexHullTest.h" />
+    <ClInclude Include="..\..\game\Region.h">
+      <Filter>GameElements</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\game\MapProjector.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Layers">
@@ -27,6 +35,9 @@
     </Filter>
     <Filter Include="GameElements">
       <UniqueIdentifier>{1d2afc5d-5005-4bc4-acb2-6d1cc914ff21}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Additional">
+      <UniqueIdentifier>{397b8b7f-e374-4b85-876a-aa6c1d1ba4ac}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

@@ -2,14 +2,15 @@
 #define WORLD_MAP_H
 
 #include <cocos2d.h>
+#include <string>
+
+#include "Region.h"
 
 class WorldMap
 {
 public:
-	WorldMap();
-	cocos2d::CCSprite* getSprite() const;
 private:
-	cocos2d::CCSprite *_mapSprite;
+	std::map<std::string, Region> regions;
 };
 
 #endif // WORLD_MAP_H
