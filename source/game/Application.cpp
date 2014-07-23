@@ -67,6 +67,8 @@ void AppDelegate::_MenuInputListener(CCObject *sender)
 	switch (tag)
 	{
 	case MENU_ITEM_RUN_WORLD_SCENE:
+		scene = new WorldMapScene();
+		director->replaceScene(scene);
 		break;
 	case MENU_ITEM_RUN_REGION_SCENE:
 		scene = new RegionTestScene();

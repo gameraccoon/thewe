@@ -6,9 +6,6 @@
     <ClCompile Include="..\..\game\ConvexHullTest.cpp">
       <Filter>Misc</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\game\WorldMapScene.cpp">
-      <Filter>WorldMap</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\game\RegionTestScene.cpp">
       <Filter>Region</Filter>
     </ClCompile>
@@ -18,14 +15,17 @@
     <ClCompile Include="..\..\game\WorldMap.cpp">
       <Filter>Misc</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\game\WorldMapLayer.cpp">
+      <Filter>WorldMap</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\game\WorldMapScene.cpp">
+      <Filter>WorldMap</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\game\Application.h" />
     <ClInclude Include="..\..\game\ConvexHullTest.h">
       <Filter>Misc</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\game\WorldMapScene.h">
-      <Filter>WorldMap</Filter>
     </ClInclude>
     <ClInclude Include="..\..\game\RegionTestScene.h">
       <Filter>Region</Filter>
@@ -35,6 +35,12 @@
     </ClInclude>
     <ClInclude Include="..\..\game\WorldMap.h">
       <Filter>Misc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\game\WorldMapLayer.h">
+      <Filter>WorldMap</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\game\WorldMapScene.h">
+      <Filter>WorldMap</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -16,6 +16,7 @@
     <ClCompile Include="..\..\game\RegionDrawLayer.cpp" />
     <ClCompile Include="..\..\game\RegionTestScene.cpp" />
     <ClCompile Include="..\..\game\WorldMap.cpp" />
+    <ClCompile Include="..\..\game\WorldMapLayer.cpp" />
     <ClCompile Include="..\..\game\WorldMapScene.cpp" />
     <ClCompile Include="..\..\Main.cpp" />
   </ItemGroup>
@@ -25,6 +26,7 @@
     <ClInclude Include="..\..\game\RegionDrawLayer.h" />
     <ClInclude Include="..\..\game\RegionTestScene.h" />
     <ClInclude Include="..\..\game\WorldMap.h" />
+    <ClInclude Include="..\..\game\WorldMapLayer.h" />
     <ClInclude Include="..\..\game\WorldMapScene.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
