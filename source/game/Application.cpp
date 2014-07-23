@@ -1,7 +1,5 @@
 #include "Application.h"
 
-#include "WorldMapLayer.h"
-
 AppDelegate::AppDelegate()
 {
 }
@@ -16,15 +14,35 @@ bool AppDelegate::applicationDidFinishLaunching()
 	cocos2d::CCEGLView *glview = cocos2d::CCEGLView::sharedOpenGLView();
 
 	director->setOpenGLView(glview);
-
-	cocos2d::CCSize framesize = glview->getFrameSize();
-
 	director->setDisplayStats(true);
 	director->setAnimationInterval(1.0 / 60.0);
 
-	cocos2d::CCScene *scene = WorldMapLayer::scene();
+	_menuScene = cocos2d::CCScene::create();
+	
+	_btnRunWorldTestScene = CCMenuItemImage::create("../_gamedata/btn-save-normal.png",
+		"../_gamedata/btn-save-selected.png", _menuScene, menu_selector(AppDelegate::_MenuInputListener)); 
+	_btnRunCountryScene = CCMenuItemImage::create("../_gamedata/btn-toggle-normal.png",
+		"../_gamedata/btn-toggle-selected.png", _menuScene, menu_selector(AppDelegate::_MenuInputListener)); 
 
-	director->runWithScene(scene);
+	CCSize client = director->getVisibleSize();
+	CCPoint origin = director->getVisibleOrigin();
+	CCPoint pos;
+	pos.x = origin.x + client.width / 2.0f;
+	pos.y = origin.y + client.height - 100.0f;
+
+	_btnRunWorldTestScene->setPosition(pos - cocos2d::CCPoint(0.0f, 100.0f));
+	_btnRunWorldTestScene->setTag(MENU_ITEM_RUN_WORLD_SCENE);
+	_btnRunWorldTestScene->setScale(5.0f);
+	_btnRunCountryScene->setPosition(pos - cocos2d::CCPoint(0.0f, 400.0f));
+	_btnRunCountryScene->setTag(MENU_ITEM_RUN_REGION_SCENE);
+	_btnRunCountryScene->setScale(5.0f);
+
+	_mainMenu = CCMenu::create(_btnRunWorldTestScene, _btnRunCountryScene, NULL);
+	_mainMenu->setPosition(0.0f, 0.0f);
+
+	_menuScene->addChild(_mainMenu);
+
+	director->runWithScene(_menuScene);
 
 	return true;
 }
@@ -35,4 +53,27 @@ void AppDelegate::applicationDidEnterBackground()
 
 void AppDelegate::applicationWillEnterForeground()
 {
+}
+
+void AppDelegate::_MenuInputListener(CCObject *sender)
+{
+	CCDirector *director = CCDirector::sharedDirector();
+	CCScene *scene = NULL;
+
+	cocos2d::CCMenuItemImage *item = (cocos2d::CCMenuItemImage *)sender;
+
+	int tag = item->getTag();
+
+	switch (tag)
+	{
+	case MENU_ITEM_RUN_WORLD_SCENE:
+		scene = new WorldMapScene();
+		director->replaceScene(scene);
+		break;
+	case MENU_ITEM_RUN_REGION_SCENE:
+		scene = new RegionTestScene();
+		director->replaceScene(scene);
+		break;
+	default: break;
+	}
 }

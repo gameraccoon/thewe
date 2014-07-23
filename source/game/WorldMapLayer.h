@@ -4,35 +4,35 @@
 #include "cocos2d.h"
 
 #include "ConvexHullTest.h"
-
 #include "MapProjector.h"
 
 class WorldMapLayer : public cocos2d::CCLayer
 {
 public:
-	WorldMapLayer();
-	virtual bool init(void) override;
+	WorldMapLayer(void);
 
-	static cocos2d::CCScene* scene(void);
+	virtual bool init(void);
 
 	void menuCloseCallback(cocos2d::CCObject *Sender);
 
 	CREATE_FUNC(WorldMapLayer);
-	
-    virtual void ccTouchesBegan(cocos2d::CCSet* touches, cocos2d::CCEvent* event) override;
-	virtual void ccTouchesEnded(cocos2d::CCSet* touches, cocos2d::CCEvent* event) override;
-    virtual void ccTouchesMoved(cocos2d::CCSet* touches, cocos2d::CCEvent* event) override;
 
-	virtual void visit(void) override;
+	void ccTouchesBegan(cocos2d::CCSet* touches, cocos2d::CCEvent* event);
+	void ccTouchesEnded(cocos2d::CCSet* touches, cocos2d::CCEvent* event);
+	void ccTouchesMoved(cocos2d::CCSet* touches, cocos2d::CCEvent* event);
 
 
 private:
-	ConvexHullTest _hull1;
-	bool _isPointInHull;
+	enum E_BUTTONTS_TAGS
+	{
+		BTN_SAVE_XML,
+		BTN_TOGGLE,
+	};
 
 	cocos2d::CCPoint _touchLastPoint;
+	cocos2d::CCPoint _mapShift;
 
-	void _IdleUpdate(float timeDelta);
+	WorldMap _worldMap;
 
 	MapProjector _mapProjector;
 };

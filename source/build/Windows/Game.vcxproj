@@ -15,8 +15,11 @@
     <ClCompile Include="..\..\game\ConvexHullTest.cpp" />
     <ClCompile Include="..\..\game\MapProjector.cpp" />
     <ClCompile Include="..\..\game\Region.cpp" />
+    <ClCompile Include="..\..\game\RegionDrawLayer.cpp" />
+    <ClCompile Include="..\..\game\RegionTestScene.cpp" />
     <ClCompile Include="..\..\game\WorldMap.cpp" />
     <ClCompile Include="..\..\game\WorldMapLayer.cpp" />
+    <ClCompile Include="..\..\game\WorldMapScene.cpp" />
     <ClCompile Include="..\..\Main.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -24,8 +27,11 @@
     <ClInclude Include="..\..\game\ConvexHullTest.h" />
     <ClInclude Include="..\..\game\MapProjector.h" />
     <ClInclude Include="..\..\game\Region.h" />
+    <ClInclude Include="..\..\game\RegionDrawLayer.h" />
+    <ClInclude Include="..\..\game\RegionTestScene.h" />
     <ClInclude Include="..\..\game\WorldMap.h" />
     <ClInclude Include="..\..\game\WorldMapLayer.h" />
+    <ClInclude Include="..\..\game\WorldMapScene.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{C21BA7F4-7523-4838-8B82-693FF0A21526}</ProjectGuid>

@@ -9,13 +9,23 @@ void ConvexHullTest::Draw(const cocos2d::ccColor4F &color) const
 {
 	//cocos2d::ccDrawSolidPoly(&(*_pointsArray.begin()), _pointsArray.size(), color);
 
+	if (_pointsArray.empty())
+	{
+		return;
+	}
+
 	cocos2d::ccDrawColor4F(color.r, color.g, color.b, color.a);
-	cocos2d::ccDrawPoly(&(*_pointsArray.begin()), _pointsArray.size(), true);
+	cocos2d::ccDrawPoly(&(*_pointsArray.begin()), _pointsArray.size(), false);
 }
 
 void ConvexHullTest::Clear(void)
 {
 	_pointsArray.clear();
+}
+
+int ConvexHullTest::GetPointsNum(void) const
+{
+	return _pointsArray.size();
 }
 
 bool ConvexHullTest::Contain(const cocos2d::CCPoint &point)
