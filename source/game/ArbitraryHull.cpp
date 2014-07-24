@@ -1,11 +1,19 @@
-#include "ConvexHullTest.h"
+#include "ArbitraryHull.h"
 
-void ConvexHullTest::AddPoint(const cocos2d::CCPoint &point)
+void ArbitraryHull::PushPoint(const cocos2d::CCPoint &point)
 {
 	_pointsArray.push_back(point);
 }
 
-void ConvexHullTest::Draw(const cocos2d::ccColor4F &color) const
+void ArbitraryHull::PopPoint(void)
+{
+	if (!_pointsArray.empty())
+	{
+		_pointsArray.erase(_pointsArray.end() - 1);
+	}
+}
+
+void ArbitraryHull::Draw(const cocos2d::ccColor4F &color) const
 {
 	//cocos2d::ccDrawSolidPoly(&(*_pointsArray.begin()), _pointsArray.size(), color);
 
@@ -15,20 +23,20 @@ void ConvexHullTest::Draw(const cocos2d::ccColor4F &color) const
 	}
 
 	cocos2d::ccDrawColor4F(color.r, color.g, color.b, color.a);
-	cocos2d::ccDrawPoly(&(*_pointsArray.begin()), _pointsArray.size(), false);
+	cocos2d::ccDrawPoly(&(*_pointsArray.begin()), _pointsArray.size(), true);
 }
 
-void ConvexHullTest::Clear(void)
+void ArbitraryHull::Clear(void)
 {
 	_pointsArray.clear();
 }
 
-int ConvexHullTest::GetPointsNum(void) const
+int ArbitraryHull::GetPointsNum(void) const
 {
 	return _pointsArray.size();
 }
 
-bool ConvexHullTest::Contain(const cocos2d::CCPoint &point)
+bool ArbitraryHull::Contain(const cocos2d::CCPoint &point)
 {
 	unsigned int i, j;
 	bool result = false;
@@ -45,4 +53,17 @@ bool ConvexHullTest::Contain(const cocos2d::CCPoint &point)
 	}
 
 	return result;
+}
+
+void ArbitraryHull::SaveToNewXml(const char *xmlFilename)
+{
+}
+
+void ArbitraryHull::SaveToExistingXml(const char *xmlFilename)
+{
+}
+
+bool ArbitraryHull::CreateFromXml(const char *xmlFilename)
+{
+	return false;
 }

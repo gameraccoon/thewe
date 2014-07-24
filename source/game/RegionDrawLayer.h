@@ -16,13 +16,28 @@ public:
 	void ccTouchesMoved(cocos2d::CCSet* touches, cocos2d::CCEvent* event);
 
 private:
+	enum E_MENU_TEMS_TAG
+	{
+		MENU_ITEM_TOGGLE,
+		MENU_ITEM_DELETE,
+		MENU_ITEM_SAVE_XML
+	};
+
+private:
 	cocos2d::CCPoint _touchPos;
 	
 	cocos2d::CCLabelTTF *_printPos;
 	cocos2d::CCLabelTTF *_printNum;
+	
+	cocos2d::CCMenuItemImage *_btnToggle;
+	cocos2d::CCMenuItemImage *_btnDelete;
+	cocos2d::CCMenuItemImage *_btnSaveXml;
 
-	ConvexHullTest _hull1;
+	ArbitraryHull _hull1;
 	bool _isPointInHull;
+	bool _isCreationAllowed;
+
+	void _MenuInputListener(cocos2d::CCObject *sender);
 };
 
 #endif

@@ -12,7 +12,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\game\Application.cpp" />
-    <ClCompile Include="..\..\game\ConvexHullTest.cpp" />
+    <ClCompile Include="..\..\game\ArbitraryHull.cpp" />
     <ClCompile Include="..\..\game\MapProjector.cpp" />
     <ClCompile Include="..\..\game\Region.cpp" />
     <ClCompile Include="..\..\game\RegionDrawLayer.cpp" />
@@ -24,7 +24,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\game\Application.h" />
-    <ClInclude Include="..\..\game\ConvexHullTest.h" />
+    <ClInclude Include="..\..\game\ArbitraryHull.h" />
     <ClInclude Include="..\..\game\MapProjector.h" />
     <ClInclude Include="..\..\game\Region.h" />
     <ClInclude Include="..\..\game\RegionDrawLayer.h" />
@@ -63,6 +63,7 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <OutDir>../../../release/Windows/</OutDir>
+    <IncludePath>$(VCInstallDir)include;$(VCInstallDir)atlmfc\include;$(WindowsSDK_IncludePath);</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <OutDir>../../../release/Windows/</OutDir>

@@ -1,13 +1,13 @@
 #ifndef REGION_H
 #define REGION_H
 
-#include "ConvexHullTest.h"
+#include "ArbitraryHull.h"
 
 class Region
 {
 public:
 private:
-	ConvexHullTest hull;
+	ArbitraryHull hull;
 };
 
 #endif // REGION_H

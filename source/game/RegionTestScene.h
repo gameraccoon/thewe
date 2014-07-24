@@ -3,7 +3,7 @@
 
 #include "cocos2d.h"
 
-#include "ConvexHullTest.h"
+#include "ArbitraryHull.h"
 
 using namespace cocos2d;
 
@@ -13,11 +13,6 @@ public:
 	RegionTestScene(void);
 
 	virtual bool init(void);
-	//virtual void visit(void);
-	
-	//void ccTouchesBegan(cocos2d::CCSet* touches, cocos2d::CCEvent* event);
-	//void ccTouchesEnded(cocos2d::CCSet* touches, cocos2d::CCEvent* event);
-	//void ccTouchesMoved(cocos2d::CCSet* touches, cocos2d::CCEvent* event);
 
 private:
 	cocos2d::CCMenuItemImage *_btnSaveXml;

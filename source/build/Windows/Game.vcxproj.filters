@@ -3,9 +3,6 @@
   <ItemGroup>
     <ClCompile Include="..\..\Main.cpp" />
     <ClCompile Include="..\..\game\Application.cpp" />
-    <ClCompile Include="..\..\game\ConvexHullTest.cpp">
-      <Filter>Misc</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\game\RegionTestScene.cpp">
       <Filter>Region</Filter>
     </ClCompile>
@@ -27,12 +24,12 @@
     <ClCompile Include="..\..\game\MapProjector.cpp">
       <Filter>Misc</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\game\ArbitraryHull.cpp">
+      <Filter>Misc</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\game\Application.h" />
-    <ClInclude Include="..\..\game\ConvexHullTest.h">
-      <Filter>Misc</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\game\RegionTestScene.h">
       <Filter>Region</Filter>
     </ClInclude>
@@ -52,6 +49,9 @@
       <Filter>Misc</Filter>
     </ClInclude>
     <ClInclude Include="..\..\game\MapProjector.h">
+      <Filter>Misc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\game\ArbitraryHull.h">
       <Filter>Misc</Filter>
     </ClInclude>
   </ItemGroup>

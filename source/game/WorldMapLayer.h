@@ -3,7 +3,7 @@
 
 #include "cocos2d.h"
 
-#include "ConvexHullTest.h"
+#include "ArbitraryHull.h"
 #include "MapProjector.h"
 
 class WorldMapLayer : public cocos2d::CCLayer
@@ -23,12 +23,6 @@ public:
 
 
 private:
-	enum E_BUTTONTS_TAGS
-	{
-		BTN_SAVE_XML,
-		BTN_TOGGLE,
-	};
-
 	cocos2d::CCPoint _touchLastPoint;
 	cocos2d::CCPoint _mapShift;
 
