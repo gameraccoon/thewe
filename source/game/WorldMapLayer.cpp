@@ -45,7 +45,7 @@ void WorldMapLayer::menuCloseCallback(cocos2d::CCObject *Sender)
 
 void WorldMapLayer::ccTouchesBegan(cocos2d::CCSet* touches, cocos2d::CCEvent* event)
 {
-	cocos2d::CCTouch *touch = static_cast<cocos2d::CCTouch*>(touches->anyObject());
+	cocos2d::CCTouch *touch = dynamic_cast<cocos2d::CCTouch*>(touches->anyObject());
 	_touchLastPoint = touch->getLocation();
 }
 
@@ -55,7 +55,7 @@ void WorldMapLayer::ccTouchesEnded(cocos2d::CCSet* touches, cocos2d::CCEvent* ev
 
 void WorldMapLayer::ccTouchesMoved(cocos2d::CCSet* touches, cocos2d::CCEvent* event)
 {
-	cocos2d::CCTouch *touch = (cocos2d::CCTouch *)touches->anyObject();
+	cocos2d::CCTouch *touch = dynamic_cast<cocos2d::CCTouch*>(touches->anyObject());
 	_mapProjector.SetShift(_mapProjector.GetShift() - _touchLastPoint + touch->getLocation());
 	_touchLastPoint = touch->getLocation();
 }
