@@ -18,6 +18,17 @@ void ConvexHullTest::Draw(const cocos2d::ccColor4F &color) const
 	cocos2d::ccDrawPoly(&(*_pointsArray.begin()), _pointsArray.size(), false);
 }
 
+void ConvexHullTest::Draw() const
+{
+	if (_pointsArray.empty())
+	{
+		return;
+	}
+
+	cocos2d::ccDrawColor4F(1.0f, 1.0f, 1.0f, 1.0f);
+	cocos2d::ccDrawPoly(&(*_pointsArray.begin()), _pointsArray.size(), false);
+}
+
 void ConvexHullTest::Clear(void)
 {
 	_pointsArray.clear();
@@ -45,4 +56,9 @@ bool ConvexHullTest::Contain(const cocos2d::CCPoint &point)
 	}
 
 	return result;
+}
+
+const std::vector<cocos2d::CCPoint>& ConvexHullTest::GetPoints() const
+{
+	return _pointsArray;
 }

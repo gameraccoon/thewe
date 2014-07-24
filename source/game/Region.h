@@ -3,11 +3,16 @@
 
 #include "ConvexHullTest.h"
 
+#include <memory>
+
 class Region
 {
 public:
+	typedef std::shared_ptr<Region> Ptr;
+	ConvexHullTest GetHull() const;
+	void SetHull(const ConvexHullTest& newHull);
 private:
-	ConvexHullTest hull;
+	ConvexHullTest _hull;
 };
 
 #endif // REGION_H
