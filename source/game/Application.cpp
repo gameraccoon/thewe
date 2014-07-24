@@ -19,10 +19,10 @@ bool AppDelegate::applicationDidFinishLaunching()
 
 	_menuScene = cocos2d::CCScene::create();
 	
-	_btnRunWorldTestScene = CCMenuItemImage::create("../_gamedata/btn-save-normal.png",
-		"../_gamedata/btn-save-selected.png", _menuScene, menu_selector(AppDelegate::_MenuInputListener)); 
-	_btnRunCountryScene = CCMenuItemImage::create("../_gamedata/btn-toggle-normal.png",
-		"../_gamedata/btn-toggle-selected.png", _menuScene, menu_selector(AppDelegate::_MenuInputListener)); 
+	_btnRunWorldTestScene = CCMenuItemImage::create("../_gamedata/btn-map-normal.png",
+		"../_gamedata/btn-map-selected.png", _menuScene, menu_selector(AppDelegate::_MenuInputListener)); 
+	_btnRunCountryScene = CCMenuItemImage::create("../_gamedata/btn-region-normal.png",
+		"../_gamedata/btn-region-selected.png", _menuScene, menu_selector(AppDelegate::_MenuInputListener)); 
 
 	CCSize client = director->getVisibleSize();
 	CCPoint origin = director->getVisibleOrigin();
