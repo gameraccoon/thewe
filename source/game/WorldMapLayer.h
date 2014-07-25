@@ -25,8 +25,6 @@ public:
 private:
 	cocos2d::CCPoint _touchLastPoint;
 
-	WorldMap _worldMap;
-
 	MapProjector _mapProjector;
 };
 

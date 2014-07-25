@@ -1,5 +1,7 @@
 #include "WorldMapScene.h"
 
+#include "WorldMap.h"
+
 WorldMapLayer::WorldMapLayer(void)
 	: _mapProjector(cocos2d::CCPoint(0.0f, 0.0f), 2.5f)
 {
@@ -17,8 +19,8 @@ bool WorldMapLayer::init(void)
 	CCLayer::setTouchEnabled(true);
     CCLayer::setKeypadEnabled(true);
 	
-	_worldMap.CreateRegion("Italy");
-	Region::Ptr region = _worldMap.GetRegion("Italy");
+	WorldMap::Instance().CreateRegion("Italy");
+	Region::Ptr region = WorldMap::Instance().GetRegion("Italy");
 	ArbitraryHull hull = region->GetHull();
 	hull.PushPoint(ccp(100, 100));
 	hull.PushPoint(ccp(500, 800));
@@ -64,7 +66,7 @@ void WorldMapLayer::visit()
 {
 	CCLayer::visit();
 
-	for (auto regionIterator : _worldMap.GetRegions())
+	for (auto regionIterator : WorldMap::Instance().GetRegions())
 	{
 		ArbitraryHull hull = regionIterator.second->GetHull();
 		ArbitraryHull projectedHull;

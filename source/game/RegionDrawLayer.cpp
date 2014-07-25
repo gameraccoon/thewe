@@ -1,5 +1,7 @@
 #include "RegionDrawLayer.h"
 
+#include "WorldMap.h"
+
 RegionDrawLayer::RegionDrawLayer(void)
 	: _isCreationAllowed(true)
 	, _mapProjector(cocos2d::CCPoint(0.0f, 0.0f), 2.5f)
@@ -76,7 +78,7 @@ void RegionDrawLayer::visit(void)
 	}
 	else
 	{
-		for (auto regionIterator : _worldMap.GetRegions())
+		for (auto regionIterator : WorldMap::Instance().GetRegions())
 		{
 			ArbitraryHull hull = regionIterator.second->GetHull();
 			ArbitraryHull projectedHull;
@@ -161,11 +163,11 @@ void RegionDrawLayer::_MenuInputListener(cocos2d::CCObject *sender)
 
 void RegionDrawLayer::FinalizeRegion(std::string regionName, ArbitraryHull hull)
 {
-	Region::Ptr region = _worldMap.GetRegion(regionName);
+	Region::Ptr region = WorldMap::Instance().GetRegion(regionName);
 	if (!region)
 	{
-		_worldMap.CreateRegion(regionName);
-		region = _worldMap.GetRegion(regionName);
+		WorldMap::Instance().CreateRegion(regionName);
+		region = WorldMap::Instance().GetRegion(regionName);
 	}
 
 	region->SetHull(_hull1);

@@ -2,7 +2,6 @@
 #define REGION_DRAW_LAYER_H
 
 #include "RegionTestScene.h"
-#include "WorldMap.h"
 #include "MapProjector.h"
 
 class RegionDrawLayer : public cocos2d::CCLayer
@@ -43,7 +42,6 @@ private:
 	void _MenuInputListener(cocos2d::CCObject *sender);
 
 	cocos2d::CCPoint _touchLastPoint;
-	WorldMap _worldMap;
 	MapProjector _mapProjector;
 };
 
