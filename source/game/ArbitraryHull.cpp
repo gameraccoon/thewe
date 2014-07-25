@@ -26,6 +26,17 @@ void ArbitraryHull::Draw(const cocos2d::ccColor4F &color) const
 	cocos2d::ccDrawPoly(&(*_pointsArray.begin()), _pointsArray.size(), true);
 }
 
+void ArbitraryHull::Draw(void) const
+{
+	cocos2d::ccColor4F white;
+	white.r = 1.0f;
+	white.g = 1.0f;
+	white.b = 1.0f;
+	white.a = 1.0f;
+
+	Draw(white);
+}
+
 void ArbitraryHull::Clear(void)
 {
 	_pointsArray.clear();
@@ -34,6 +45,11 @@ void ArbitraryHull::Clear(void)
 int ArbitraryHull::GetPointsNum(void) const
 {
 	return _pointsArray.size();
+}
+
+const std::vector<cocos2d::CCPoint>& ArbitraryHull::GetPoints(void) const
+{
+	return _pointsArray;
 }
 
 bool ArbitraryHull::Contain(const cocos2d::CCPoint &point)

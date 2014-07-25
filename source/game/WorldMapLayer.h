@@ -21,7 +21,7 @@ public:
 	void ccTouchesEnded(cocos2d::CCSet* touches, cocos2d::CCEvent* event);
 	void ccTouchesMoved(cocos2d::CCSet* touches, cocos2d::CCEvent* event);
 
-
+	virtual void visit() override;
 private:
 	cocos2d::CCPoint _touchLastPoint;
 	cocos2d::CCPoint _mapShift;

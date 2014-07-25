@@ -3,11 +3,16 @@
 
 #include "ArbitraryHull.h"
 
+#include <memory>
+
 class Region
 {
 public:
+	typedef std::shared_ptr<Region> Ptr;
+	ArbitraryHull GetHull() const;
+	void SetHull(const ArbitraryHull& newHull);
 private:
-	ArbitraryHull hull;
+	ArbitraryHull _hull;
 };
 
 #endif // REGION_H
