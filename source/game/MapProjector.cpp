@@ -14,15 +14,27 @@ MapProjector::MapProjector(cocos2d::CCPoint shift, float scale)
 
 void MapProjector::SetShift(cocos2d::CCPoint shift)
 {
+	cocos2d::CCPoint spriteSize = GetSprite()->getContentSize();
+	
 	_mapShift = shift;
-	GetSprite()->setPosition(shift);
+	if (shift.y < -spriteSize.y/2)
+	{
+		_mapShift.y = -spriteSize.y/2;
+	}
+
+	if (shift.y > _screenCenter.y*2 + spriteSize.y/2)
+	{
+		_mapShift.y = _screenCenter.y*2 + spriteSize.y/2;
+	}
+
+	GetSprite()->setPosition(_mapShift);
 }
 
 void MapProjector::SetScale(float scale)
 {
 	SetShift(_screenCenter + (_mapShift - _screenCenter) * (scale / _mapScale));
 	_mapScale = scale;
-	GetSprite()->setScale(scale);
+	GetSprite()->setScale(_mapScale);
 }
 
 cocos2d::CCPoint MapProjector::GetShift()
