@@ -24,7 +24,6 @@ public:
 	virtual void visit() override;
 private:
 	cocos2d::CCPoint _touchLastPoint;
-	cocos2d::CCPoint _mapShift;
 
 	WorldMap _worldMap;
 

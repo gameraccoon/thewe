@@ -15,3 +15,8 @@ const WorldMap::RegionsMap& WorldMap::GetRegions() const
 {
 	return _regions;
 }
+
+void WorldMap::CreateRegion(std::string regionName)
+{
+	_regions.insert(std::pair<std::string, Region::Ptr>(regionName, std::make_shared<Region>(Region())));
+}

@@ -17,7 +17,7 @@ bool WorldMapLayer::init(void)
 	CCLayer::setTouchEnabled(true);
     CCLayer::setKeypadEnabled(true);
 	
-	_worldMap.AddRegion("Italy", std::make_shared<Region>(Region()));
+	_worldMap.CreateRegion("Italy");
 	Region::Ptr region = _worldMap.GetRegion("Italy");
 	ArbitraryHull hull = region->GetHull();
 	hull.PushPoint(ccp(100, 100));

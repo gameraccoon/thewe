@@ -13,6 +13,7 @@ public:
 
 	Region::Ptr GetRegion(std::string regionName) const;
 	void AddRegion(std::string regionName, Region::Ptr region);
+	void CreateRegion(std::string regionName);
 
 	const RegionsMap& GetRegions() const;
 private:

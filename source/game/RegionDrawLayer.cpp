@@ -2,6 +2,7 @@
 
 RegionDrawLayer::RegionDrawLayer(void)
 	: _isCreationAllowed(true)
+	, _mapProjector(cocos2d::CCPoint(0.0f, 0.0f), 2.5f)
 {
 	init();
 }
@@ -49,58 +50,58 @@ bool RegionDrawLayer::init(void)
 
 	cocos2d::CCMenu *menu = cocos2d::CCMenu::create(_btnToggle, _btnDelete, _btnSaveXml, NULL);
 	menu->setPosition(0.0f, 0.0f);
-
+	
+	CCLayer::addChild(_mapProjector.GetSprite());
 	addChild(_printPos);
 	addChild(_printNum);
 	addChild(menu);
 	setTouchEnabled(true);
-	
-	/*_hull1.PushPoint(ccp(100, 100));
-	_hull1.PushPoint(ccp(500, 900));
-	_hull1.PushPoint(ccp(700, 1000));
-	_hull1.PushPoint(ccp(900, 950));
-	_hull1.PushPoint(ccp(900, 750));
-	_hull1.PushPoint(ccp(600, 750));
-	_hull1.PushPoint(ccp(600, 400));
-	_hull1.PushPoint(ccp(900, 400));*/
-
-	_isPointInHull = false;
 
 	return true;
 }
 
 void RegionDrawLayer::visit(void)
 {
-	cocos2d::ccColor4F color;
-	if (_isPointInHull)
-	{
-		color.r = 0.0f;
-		color.g = 0.6f;
-		color.b = 1.0f;
-		color.a = 0.7f;
-	}
-	else
-	{
-		color.r = 1.0f;
-		color.g = 0.6f;
-		color.b = 0.0f;
-		color.a = 0.7f;
-	}
-
-	_hull1.Draw(color);
-
 	CCLayer::visit();
-}
-	
-void RegionDrawLayer::ccTouchesBegan(cocos2d::CCSet* touches, cocos2d::CCEvent* event)
-{
-	cocos2d::CCLayer::ccTouchesBegan(touches, event);
-
-	cocos2d::CCTouch *touch = (cocos2d::CCTouch *)touches->anyObject();
 
 	if (_isCreationAllowed)
 	{
-		_hull1.PushPoint(touch->getLocation());
+		ArbitraryHull visibleHull;
+		for (auto &point : _hull1.GetPoints())
+		{
+			visibleHull.PushPoint(_mapProjector.ProjectOnScreen(point));
+		}
+
+		visibleHull.Draw();
+	}
+	else
+	{
+		for (auto regionIterator : _worldMap.GetRegions())
+		{
+			ArbitraryHull hull = regionIterator.second->GetHull();
+			ArbitraryHull projectedHull;
+			for (auto &point : hull.GetPoints())
+			{
+				projectedHull.PushPoint(_mapProjector.ProjectOnScreen(point));
+			}
+			projectedHull.Draw();
+		}
+	}
+}
+
+void RegionDrawLayer::ccTouchesBegan(cocos2d::CCSet* touches, cocos2d::CCEvent* event)
+{
+	cocos2d::CCLayer::ccTouchesBegan(touches, event);
+	
+	cocos2d::CCTouch *touch = dynamic_cast<cocos2d::CCTouch*>(touches->anyObject());
+
+	if (_isCreationAllowed)
+	{
+		_hull1.PushPoint(_mapProjector.ProjectOnMap(touch->getLocation()));
+	}
+	else
+	{
+		_touchLastPoint = touch->getLocation();
 	}
 
 	char string[64];
@@ -114,19 +115,20 @@ void RegionDrawLayer::ccTouchesEnded(cocos2d::CCSet* touches, cocos2d::CCEvent* 
 
 	cocos2d::CCTouch *touch = (cocos2d::CCTouch *)touches->anyObject();
 	_touchPos = touch->getLocation();
-
-	if (_hull1.Contain(_touchPos))
-	{
-		_isPointInHull = !_isPointInHull;
-	}
 }
 
 void RegionDrawLayer::ccTouchesMoved(cocos2d::CCSet* touches, cocos2d::CCEvent* event)
 {
 	cocos2d::CCLayer::ccTouchesMoved(touches, event);
-
-	cocos2d::CCTouch *touch = (cocos2d::CCTouch *)touches->anyObject();
+	
+	cocos2d::CCTouch *touch = dynamic_cast<cocos2d::CCTouch*>(touches->anyObject());
 	cocos2d::CCPoint point = touch->getLocation();
+
+	if (!_isCreationAllowed)
+	{
+		_mapProjector.SetShift(_mapProjector.GetShift() - _touchLastPoint + touch->getLocation());
+		_touchLastPoint = touch->getLocation();
+	}
 
 	char string[64];
 	sprintf_s(string, "X: %d, Y: %d", (int)point.x, (int)point.y);
@@ -142,6 +144,10 @@ void RegionDrawLayer::_MenuInputListener(cocos2d::CCObject *sender)
 	switch (tag)
 	{
 	case MENU_ITEM_TOGGLE:
+		if (_isCreationAllowed)
+		{
+			FinalizeRegion("Italy", _hull1);
+		}
 		_isCreationAllowed = !_isCreationAllowed;
 		break;
 	case MENU_ITEM_DELETE:
@@ -151,4 +157,16 @@ void RegionDrawLayer::_MenuInputListener(cocos2d::CCObject *sender)
 		break;
 	default: break;
 	}
+}
+
+void RegionDrawLayer::FinalizeRegion(std::string regionName, ArbitraryHull hull)
+{
+	Region::Ptr region = _worldMap.GetRegion(regionName);
+	if (!region)
+	{
+		_worldMap.CreateRegion(regionName);
+		region = _worldMap.GetRegion(regionName);
+	}
+
+	region->SetHull(_hull1);
 }
