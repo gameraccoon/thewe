@@ -23,6 +23,11 @@ bool RegionDrawLayer::init(void)
 	cocos2d::CCSize screen = director->getVisibleSize();
 	cocos2d::CCPoint origin = director->getVisibleOrigin();
 
+	// сообщаем где находится центр окна вывода
+	_mapProjector.SetScreenCenter(origin + screen / 2.0f);
+	// ставим спрайт карты ровно в центр экрана
+	_mapProjector.SetShift(origin + screen / 2.0f);
+
 	_printPos = cocos2d::CCLabelTTF::create("X: 0, Y: 0", "Arial", 32);
 	_printPos->setPosition(cocos2d::CCPoint(origin.x + 200, origin.y + screen.height - 100));
 

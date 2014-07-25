@@ -3,7 +3,7 @@
 #include "WorldMap.h"
 
 WorldMapLayer::WorldMapLayer(void)
-	: _mapProjector(cocos2d::CCPoint(0.0f, 0.0f), 2.5f)
+	: _mapProjector(cocos2d::CCPoint(0.0f, 0.0f), 3.0f)
 {
 	init();
 }
@@ -31,12 +31,14 @@ bool WorldMapLayer::init(void)
 	hull.PushPoint(ccp(600, 400));
 	hull.PushPoint(ccp(900, 400));
 	region->SetHull(hull);
-	_mapProjector.SetScale(4.0f);
 
 	cocos2d::CCPoint origin = cocos2d::CCDirector::sharedDirector()->getVisibleOrigin();
 	cocos2d::CCSize screen = cocos2d::CCDirector::sharedDirector()->getVisibleSize();
 
+	// сообщаем где находится центр окна вывода
 	_mapProjector.SetScreenCenter(origin + screen / 2.0f);
+	// ставим спрайт карты ровно в центр экрана
+	_mapProjector.SetShift(origin + screen / 2.0f);
 
 	return true;
 }

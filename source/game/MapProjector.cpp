@@ -18,14 +18,14 @@ void MapProjector::SetShift(cocos2d::CCPoint shift)
 	cocos2d::CCPoint spriteSize = GetSprite()->getContentSize();
 	
 	_mapShift = shift;
-	if (shift.y < -spriteSize.y/2)
+	if (shift.y > _mapScale * spriteSize.y / 2)
 	{
-		_mapShift.y = -spriteSize.y/2;
+		_mapShift.y = _mapScale * spriteSize.y / 2;
 	}
 
-	if (shift.y > _screenCenter.y*2 + spriteSize.y/2)
+	if (shift.y < 2 * _screenCenter.y - _mapScale * spriteSize.y / 2)
 	{
-		_mapShift.y = _screenCenter.y*2 + spriteSize.y/2;
+		_mapShift.y = (2 * _screenCenter.y - _mapScale * spriteSize.y / 2);
 	}
 
 	if (_mapSprite)
