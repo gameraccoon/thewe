@@ -21,10 +21,12 @@ private:
 	{
 		MENU_ITEM_TOGGLE,
 		MENU_ITEM_DELETE,
-		MENU_ITEM_SAVE_XML
+		MENU_ITEM_SAVE_XML,
+		MENU_ITEM_BACK
 	};
 
 private:
+	void NavigateBack();
 	void FinalizeRegion(std::string regionName, ArbitraryHull hull);
 
 	cocos2d::CCPoint _touchPos;
@@ -35,6 +37,7 @@ private:
 	cocos2d::CCMenuItemImage *_btnToggle;
 	cocos2d::CCMenuItemImage *_btnDelete;
 	cocos2d::CCMenuItemImage *_btnSaveXml;
+	cocos2d::CCMenuItemImage *_btnBack;
 
 	ArbitraryHull _hull1;
 	bool _isCreationAllowed;

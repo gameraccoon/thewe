@@ -40,6 +40,8 @@ bool RegionDrawLayer::init(void)
 		"../_gamedata/btn-delete-selected.png", this, menu_selector(RegionDrawLayer::_MenuInputListener));
 	_btnSaveXml = cocos2d::CCMenuItemImage::create("../_gamedata/btn-save-normal.png",
 		"../_gamedata/btn-save-selected.png", this, menu_selector(RegionDrawLayer::_MenuInputListener));
+	_btnBack = cocos2d::CCMenuItemImage::create("../_gamedata/btn-save-normal.png",
+		"../_gamedata/btn-save-selected.png", this, menu_selector(RegionDrawLayer::_MenuInputListener));
 
 	CCPoint pos;
 	pos.x = origin.x + screen.width / 2.0f;
@@ -54,8 +56,11 @@ bool RegionDrawLayer::init(void)
 	_btnSaveXml->setScale(4.0f);
 	_btnSaveXml->setTag(MENU_ITEM_SAVE_XML);
 	_btnSaveXml->setPosition(pos - ccp(-700.0f, 500.0f));
+	_btnBack->setScale(4.0f);
+	_btnBack->setTag(MENU_ITEM_BACK);
+	_btnBack->setPosition(pos - ccp(-700.0f, 700.0f));
 
-	cocos2d::CCMenu *menu = cocos2d::CCMenu::create(_btnToggle, _btnDelete, _btnSaveXml, NULL);
+	cocos2d::CCMenu *menu = cocos2d::CCMenu::create(_btnToggle, _btnDelete, _btnSaveXml, _btnBack, NULL);
 	menu->setPosition(0.0f, 0.0f);
 	
 	CCLayer::addChild(_mapProjector.GetSprite());
@@ -162,6 +167,9 @@ void RegionDrawLayer::_MenuInputListener(cocos2d::CCObject *sender)
 		break;
 	case MENU_ITEM_SAVE_XML:
 		break;
+	case MENU_ITEM_BACK:
+		NavigateBack();
+		break;
 	default: break;
 	}
 }
@@ -176,4 +184,10 @@ void RegionDrawLayer::FinalizeRegion(std::string regionName, ArbitraryHull hull)
 	}
 
 	region->SetHull(_hull1);
+}
+
+void RegionDrawLayer::NavigateBack()
+{
+	cocos2d::CCDirector *director = cocos2d::CCDirector::sharedDirector();
+	director->popScene();
 }

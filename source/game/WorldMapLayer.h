@@ -5,6 +5,7 @@
 
 #include "ArbitraryHull.h"
 #include "MapProjector.h"
+#include "Region.h"
 
 class WorldMapLayer : public cocos2d::CCLayer
 {
@@ -23,6 +24,10 @@ public:
 
 	virtual void visit() override;
 private:
+	Region::Ptr GetRegionUnderPoint(const cocos2d::CCPoint& point);
+
+	Region::Ptr _tappedRegion;
+
 	cocos2d::CCPoint _touchLastPoint;
 
 	MapProjector _mapProjector;

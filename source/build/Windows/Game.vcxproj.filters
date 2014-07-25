@@ -31,6 +31,12 @@
     <ClCompile Include="..\..\game\RegionTestScene.cpp">
       <Filter>Views\RegionEditor</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\game\RegionInfoLayer.cpp">
+      <Filter>Views\RegionInfo</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\game\RegionInfoScene.cpp">
+      <Filter>Views\RegionInfo</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\game\WorldMapLayer.h">
@@ -60,13 +66,16 @@
     <ClInclude Include="..\..\game\RegionDrawLayer.h">
       <Filter>Views\RegionEditor</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\game\RegionInfoLayer.h">
+      <Filter>Views\RegionInfo</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\game\RegionInfoScene.h">
+      <Filter>Views\RegionInfo</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Views">
       <UniqueIdentifier>{5ae674f3-b8d9-4da3-be59-39c075d00d80}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Views\Region">
-      <UniqueIdentifier>{1bb7d8b8-17d3-4f2c-bc89-5c0a1a00cde7}</UniqueIdentifier>
     </Filter>
     <Filter Include="Views\WorldMap">
       <UniqueIdentifier>{f2481a6a-d5ac-43e6-90d2-2eac92c8d374}</UniqueIdentifier>
@@ -82,6 +91,9 @@
     </Filter>
     <Filter Include="Views\RegionEditor">
       <UniqueIdentifier>{69e7caf7-bb5f-4b10-9cce-0e3e629f9857}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Views\RegionInfo">
+      <UniqueIdentifier>{1bb7d8b8-17d3-4f2c-bc89-5c0a1a00cde7}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

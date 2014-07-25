@@ -2,6 +2,8 @@
 
 #include "WorldMap.h"
 
+#include "RegionInfoScene.h"
+
 WorldMapLayer::WorldMapLayer(void)
 	: _mapProjector(cocos2d::CCPoint(0.0f, 0.0f), 3.0f)
 {
@@ -18,19 +20,6 @@ bool WorldMapLayer::init(void)
 	CCLayer::addChild(_mapProjector.GetSprite());
 	CCLayer::setTouchEnabled(true);
     CCLayer::setKeypadEnabled(true);
-	
-	WorldMap::Instance().CreateRegion("Italy");
-	Region::Ptr region = WorldMap::Instance().GetRegion("Italy");
-	ArbitraryHull hull = region->GetHull();
-	hull.PushPoint(ccp(100, 100));
-	hull.PushPoint(ccp(500, 800));
-	hull.PushPoint(ccp(700, 900));
-	hull.PushPoint(ccp(900, 800));
-	hull.PushPoint(ccp(900, 750));
-	hull.PushPoint(ccp(600, 750));
-	hull.PushPoint(ccp(600, 400));
-	hull.PushPoint(ccp(900, 400));
-	region->SetHull(hull);
 
 	cocos2d::CCPoint origin = cocos2d::CCDirector::sharedDirector()->getVisibleOrigin();
 	cocos2d::CCSize screen = cocos2d::CCDirector::sharedDirector()->getVisibleSize();
@@ -51,15 +40,25 @@ void WorldMapLayer::ccTouchesBegan(cocos2d::CCSet* touches, cocos2d::CCEvent* ev
 {
 	cocos2d::CCTouch *touch = dynamic_cast<cocos2d::CCTouch*>(touches->anyObject());
 	_touchLastPoint = touch->getLocation();
+	_tappedRegion = GetRegionUnderPoint(touch->getLocation());
 }
 
 void WorldMapLayer::ccTouchesEnded(cocos2d::CCSet* touches, cocos2d::CCEvent* event)
 {
+	cocos2d::CCTouch *touch = dynamic_cast<cocos2d::CCTouch*>(touches->anyObject());
+
+	if (GetRegionUnderPoint(touch->getLocation()) == _tappedRegion && _tappedRegion != nullptr)
+	{
+		cocos2d::CCDirector *director = cocos2d::CCDirector::sharedDirector();
+		cocos2d::CCScene *scene= new RegionInfoScene();
+		director->pushScene(scene);
+	}
 }
 
 void WorldMapLayer::ccTouchesMoved(cocos2d::CCSet* touches, cocos2d::CCEvent* event)
 {
 	cocos2d::CCTouch *touch = dynamic_cast<cocos2d::CCTouch*>(touches->anyObject());
+
 	_mapProjector.SetShift(_mapProjector.GetShift() - _touchLastPoint + touch->getLocation());
 	_touchLastPoint = touch->getLocation();
 }
@@ -78,4 +77,17 @@ void WorldMapLayer::visit()
 		}
 		projectedHull.Draw();
 	}
+}
+
+Region::Ptr WorldMapLayer::GetRegionUnderPoint(const cocos2d::CCPoint& point)
+{
+	for (auto regionIterator : WorldMap::Instance().GetRegions())
+	{
+		ArbitraryHull hull = regionIterator.second->GetHull();
+		if (hull.Contain(_mapProjector.ProjectOnMap(point)))
+		{
+			return regionIterator.second;
+		}
+	}
+	return Region::Ptr();
 }
