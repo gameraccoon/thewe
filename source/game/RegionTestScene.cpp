@@ -27,6 +27,6 @@ bool RegionTestScene::init(void)
 
 void RegionTestScene::_MenuInputListener(cocos2d::CCObject *sender)
 {
-	cocos2d::CCMenuItemImage *item = (cocos2d::CCMenuItemImage *)sender;
+	cocos2d::CCMenuItemImage *item = dynamic_cast<cocos2d::CCMenuItemImage*>(sender);
 	int key = item->getTag();
 }

@@ -60,7 +60,7 @@ void AppDelegate::_MenuInputListener(CCObject *sender)
 	CCDirector *director = CCDirector::sharedDirector();
 	CCScene *scene = NULL;
 
-	cocos2d::CCMenuItemImage *item = (cocos2d::CCMenuItemImage *)sender;
+	cocos2d::CCMenuItemImage *item = dynamic_cast<cocos2d::CCMenuItemImage*>(sender);
 
 	int tag = item->getTag();
 

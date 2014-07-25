@@ -15,8 +15,6 @@ void ArbitraryHull::PopPoint(void)
 
 void ArbitraryHull::Draw(const cocos2d::ccColor4F &color) const
 {
-	//cocos2d::ccDrawSolidPoly(&(*_pointsArray.begin()), _pointsArray.size(), color);
-
 	if (_pointsArray.empty())
 	{
 		return;

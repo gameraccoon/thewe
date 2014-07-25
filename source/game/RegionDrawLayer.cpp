@@ -113,7 +113,7 @@ void RegionDrawLayer::ccTouchesEnded(cocos2d::CCSet* touches, cocos2d::CCEvent* 
 {
 	cocos2d::CCLayer::ccTouchesEnded(touches, event);
 
-	cocos2d::CCTouch *touch = (cocos2d::CCTouch *)touches->anyObject();
+	cocos2d::CCTouch *touch = dynamic_cast<cocos2d::CCTouch*>(touches->anyObject());
 	_touchPos = touch->getLocation();
 }
 
@@ -137,7 +137,7 @@ void RegionDrawLayer::ccTouchesMoved(cocos2d::CCSet* touches, cocos2d::CCEvent* 
 
 void RegionDrawLayer::_MenuInputListener(cocos2d::CCObject *sender)
 {
-	cocos2d::CCMenuItemImage *item = (cocos2d::CCMenuItemImage *)sender;
+	cocos2d::CCMenuItemImage *item = dynamic_cast<cocos2d::CCMenuItemImage*>(sender);
 
 	int tag = item->getTag();
 
