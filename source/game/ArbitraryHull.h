@@ -1,8 +1,9 @@
 #ifndef ARBITRARY_HULL_H
 #define ARBITRARY_HULL_H
 
-#include "cocos2d.h"
+#include <cocos2d.h>
 #include <vector>
+#include <pugixml.hpp>
 
 class ArbitraryHull
 {
@@ -18,10 +19,8 @@ public:
 
 	bool Contain(const cocos2d::CCPoint &point);
 
-	void SaveToNewXml(const char *xmlFilename);
-	void SaveToExistingXml(const char *xmlFilename);
-
-	bool CreateFromXml(const char *xmlFilename);
+	void SaveToXml(pugi::xml_document &docXml);
+	bool SaveToXml(const char *xmlFilename);
 
 private:
 	std::vector<cocos2d::CCPoint> _pointsArray;

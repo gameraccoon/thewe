@@ -1,7 +1,8 @@
 #ifndef APPLICATION_H
 #define APPLICATION_H
 
-#include "cocos2d.h"
+#include <cocos2d.h>
+#include <pugixml.hpp>
 #include "RegionTestScene.h"
 #include "WorldMapScene.h"
 

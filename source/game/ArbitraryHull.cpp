@@ -69,15 +69,33 @@ bool ArbitraryHull::Contain(const cocos2d::CCPoint &point)
 	return result;
 }
 
-void ArbitraryHull::SaveToNewXml(const char *xmlFilename)
+void ArbitraryHull::SaveToXml(pugi::xml_document &docXml)
 {
+	pugi::xml_node root = docXml.first_child();
+
+	pugi::xml_node node;
+	node = root.append_child("Unnamed");
+	
+	for (std::vector<cocos2d::CCPoint>::iterator it = _pointsArray.begin(); it != _pointsArray.end(); ++it)
+	{
+		cocos2d::CCPoint p = (*it);
+
+		node.append_attribute("x").set_value(p.x);
+		node.append_attribute("y").set_value(p.y);
+	}
 }
 
-void ArbitraryHull::SaveToExistingXml(const char *xmlFilename)
+bool ArbitraryHull::SaveToXml(const char *xmlFilename)
 {
-}
-
-bool ArbitraryHull::CreateFromXml(const char *xmlFilename)
-{
+	pugi::xml_document doc;
+	pugi::xml_parse_result result = doc.load_file(xmlFilename);
+	
+	if (result)
+	{
+		SaveToXml(doc);
+		doc.save_file(xmlFilename);
+		return true;
+	}
+	
 	return false;
 }

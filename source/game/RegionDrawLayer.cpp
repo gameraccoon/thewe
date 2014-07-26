@@ -154,6 +154,7 @@ void RegionDrawLayer::_MenuInputListener(cocos2d::CCObject *sender)
 		_hull1.PopPoint();
 		break;
 	case MENU_ITEM_SAVE_XML:
+		_hull1.SaveToXml("../gamedata/regions.xml");
 		break;
 	default: break;
 	}

@@ -27,6 +27,9 @@
     <ClCompile Include="..\..\game\ArbitraryHull.cpp">
       <Filter>Misc</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\externals\pugixml-1.4\pugixml.cpp">
+      <Filter>Misc\pugixml</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\game\Application.h" />
@@ -54,6 +57,12 @@
     <ClInclude Include="..\..\game\ArbitraryHull.h">
       <Filter>Misc</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\externals\pugixml-1.4\pugiconfig.hpp">
+      <Filter>Misc\pugixml</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\externals\pugixml-1.4\pugixml.hpp">
+      <Filter>Misc\pugixml</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Misc">
@@ -64,6 +73,9 @@
     </Filter>
     <Filter Include="WorldMap">
       <UniqueIdentifier>{f2481a6a-d5ac-43e6-90d2-2eac92c8d374}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Misc\pugixml">
+      <UniqueIdentifier>{8aa52b26-e851-4b21-babe-d7a4ea9d1e71}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>
