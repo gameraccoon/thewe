@@ -1,7 +1,7 @@
 #ifndef MAP_PROJECTOR_H
 #define MAP_PROJECTOR_H
 
-#include "WorldMap.h"
+#include <cocos2d.h>
 
 class MapProjector
 {
@@ -21,7 +21,6 @@ public:
 
 	void SetScreenCenter(cocos2d::CCPoint centerPos);
 private:
-	WorldMap _worldMap;
 	float _mapScale;
 	cocos2d::CCPoint _mapShift;
 	cocos2d::CCSprite *_mapSprite;

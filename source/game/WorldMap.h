@@ -9,6 +9,11 @@
 class WorldMap
 {
 public:
+	/**
+	 * Возвращает экземпляр карты
+	 */
+	static WorldMap& Instance();
+
 	typedef std::map<std::string, Region::Ptr> RegionsMap;
 
 	Region::Ptr GetRegion(std::string regionName) const;
@@ -18,6 +23,16 @@ public:
 	const RegionsMap& GetRegions() const;
 private:
 	std::map<std::string, Region::Ptr> _regions;
+
+	static WorldMap* _singleInstance;
+
+	/*
+	 * Отключаем ненужные операции
+	 */
+	WorldMap();
+	~WorldMap();
+	WorldMap(const WorldMap&);
+	void operator=(const WorldMap&);
 };
 
 #endif // WORLD_MAP_H

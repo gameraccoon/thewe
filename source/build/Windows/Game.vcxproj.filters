@@ -1,81 +1,111 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <ClCompile Include="..\..\Main.cpp" />
-    <ClCompile Include="..\..\game\Application.cpp" />
-    <ClCompile Include="..\..\game\RegionTestScene.cpp">
-      <Filter>Region</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\game\RegionDrawLayer.cpp">
-      <Filter>Region</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\game\WorldMap.cpp">
-      <Filter>Misc</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\game\WorldMapLayer.cpp">
-      <Filter>WorldMap</Filter>
+      <Filter>Views\WorldMap</Filter>
     </ClCompile>
     <ClCompile Include="..\..\game\WorldMapScene.cpp">
-      <Filter>WorldMap</Filter>
+      <Filter>Views\WorldMap</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\game\WorldMap.cpp">
+      <Filter>GameElements</Filter>
     </ClCompile>
     <ClCompile Include="..\..\game\Region.cpp">
-      <Filter>Misc</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\game\MapProjector.cpp">
-      <Filter>Misc</Filter>
+      <Filter>GameElements</Filter>
     </ClCompile>
     <ClCompile Include="..\..\game\ArbitraryHull.cpp">
-      <Filter>Misc</Filter>
+      <Filter>Helpers</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\game\MapProjector.cpp">
+      <Filter>Helpers</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\game\Application.cpp">
+      <Filter>Main</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Main.cpp">
+      <Filter>Main</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\game\RegionDrawLayer.cpp">
+      <Filter>Views\RegionEditor</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\game\RegionTestScene.cpp">
+      <Filter>Views\RegionEditor</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\game\RegionInfoLayer.cpp">
+      <Filter>Views\RegionInfo</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\game\RegionInfoScene.cpp">
+      <Filter>Views\RegionInfo</Filter>
     </ClCompile>
     <ClCompile Include="..\..\externals\pugixml-1.4\pugixml.cpp">
-      <Filter>Misc\pugixml</Filter>
+      <Filter>Helpers\pugixml</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\game\Application.h" />
-    <ClInclude Include="..\..\game\RegionTestScene.h">
-      <Filter>Region</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\game\RegionDrawLayer.h">
-      <Filter>Region</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\game\WorldMap.h">
-      <Filter>Misc</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\game\WorldMapLayer.h">
-      <Filter>WorldMap</Filter>
+      <Filter>Views\WorldMap</Filter>
     </ClInclude>
     <ClInclude Include="..\..\game\WorldMapScene.h">
-      <Filter>WorldMap</Filter>
+      <Filter>Views\WorldMap</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\game\WorldMap.h">
+      <Filter>GameElements</Filter>
     </ClInclude>
     <ClInclude Include="..\..\game\Region.h">
-      <Filter>Misc</Filter>
+      <Filter>GameElements</Filter>
     </ClInclude>
     <ClInclude Include="..\..\game\MapProjector.h">
-      <Filter>Misc</Filter>
+      <Filter>Helpers</Filter>
     </ClInclude>
     <ClInclude Include="..\..\game\ArbitraryHull.h">
-      <Filter>Misc</Filter>
+      <Filter>Helpers</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\externals\pugixml-1.4\pugiconfig.hpp">
-      <Filter>Misc\pugixml</Filter>
+    <ClInclude Include="..\..\game\Application.h">
+      <Filter>Main</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\game\RegionTestScene.h">
+      <Filter>Views\RegionEditor</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\game\RegionDrawLayer.h">
+      <Filter>Views\RegionEditor</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\game\RegionInfoLayer.h">
+      <Filter>Views\RegionInfo</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\game\RegionInfoScene.h">
+      <Filter>Views\RegionInfo</Filter>
     </ClInclude>
     <ClInclude Include="..\..\externals\pugixml-1.4\pugixml.hpp">
-      <Filter>Misc\pugixml</Filter>
+      <Filter>Helpers\pugixml</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\externals\pugixml-1.4\pugiconfig.hpp">
+      <Filter>Helpers\pugixml</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <Filter Include="Misc">
-      <UniqueIdentifier>{d9880e60-39d1-4f6d-9bce-5d1b627c7627}</UniqueIdentifier>
+    <Filter Include="Views">
+      <UniqueIdentifier>{5ae674f3-b8d9-4da3-be59-39c075d00d80}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Region">
-      <UniqueIdentifier>{1bb7d8b8-17d3-4f2c-bc89-5c0a1a00cde7}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="WorldMap">
+    <Filter Include="Views\WorldMap">
       <UniqueIdentifier>{f2481a6a-d5ac-43e6-90d2-2eac92c8d374}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Misc\pugixml">
-      <UniqueIdentifier>{8aa52b26-e851-4b21-babe-d7a4ea9d1e71}</UniqueIdentifier>
+    <Filter Include="GameElements">
+      <UniqueIdentifier>{0ff6fc90-8601-4ee7-b165-ffc96ac63649}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Helpers">
+      <UniqueIdentifier>{d154070b-6a0f-4a6a-ad9c-99fd053e2335}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Main">
+      <UniqueIdentifier>{db327942-ac9b-4560-af80-e2b6fb90703e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Views\RegionEditor">
+      <UniqueIdentifier>{69e7caf7-bb5f-4b10-9cce-0e3e629f9857}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Views\RegionInfo">
+      <UniqueIdentifier>{1bb7d8b8-17d3-4f2c-bc89-5c0a1a00cde7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Helpers\pugixml">
+      <UniqueIdentifier>{87c53b0b-5b15-46f5-be0f-f5f31e70dff9}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

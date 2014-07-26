@@ -17,6 +17,8 @@
     <ClCompile Include="..\..\game\MapProjector.cpp" />
     <ClCompile Include="..\..\game\Region.cpp" />
     <ClCompile Include="..\..\game\RegionDrawLayer.cpp" />
+    <ClCompile Include="..\..\game\RegionInfoLayer.cpp" />
+    <ClCompile Include="..\..\game\RegionInfoScene.cpp" />
     <ClCompile Include="..\..\game\RegionTestScene.cpp" />
     <ClCompile Include="..\..\game\WorldMap.cpp" />
     <ClCompile Include="..\..\game\WorldMapLayer.cpp" />
@@ -31,6 +33,8 @@
     <ClInclude Include="..\..\game\MapProjector.h" />
     <ClInclude Include="..\..\game\Region.h" />
     <ClInclude Include="..\..\game\RegionDrawLayer.h" />
+    <ClInclude Include="..\..\game\RegionInfoLayer.h" />
+    <ClInclude Include="..\..\game\RegionInfoScene.h" />
     <ClInclude Include="..\..\game\RegionTestScene.h" />
     <ClInclude Include="..\..\game\WorldMap.h" />
     <ClInclude Include="..\..\game\WorldMapLayer.h" />

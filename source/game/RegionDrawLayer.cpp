@@ -1,5 +1,7 @@
 #include "RegionDrawLayer.h"
 
+#include "WorldMap.h"
+
 RegionDrawLayer::RegionDrawLayer(void)
 	: _isCreationAllowed(true)
 	, _mapProjector(cocos2d::CCPoint(0.0f, 0.0f), 2.5f)
@@ -21,6 +23,11 @@ bool RegionDrawLayer::init(void)
 	cocos2d::CCSize screen = director->getVisibleSize();
 	cocos2d::CCPoint origin = director->getVisibleOrigin();
 
+	// сообщаем где находится центр окна вывода
+	_mapProjector.SetScreenCenter(origin + screen / 2.0f);
+	// ставим спрайт карты ровно в центр экрана
+	_mapProjector.SetShift(origin + screen / 2.0f);
+
 	_printPos = cocos2d::CCLabelTTF::create("X: 0, Y: 0", "Arial", 32);
 	_printPos->setPosition(cocos2d::CCPoint(origin.x + 200, origin.y + screen.height - 100));
 
@@ -32,6 +39,8 @@ bool RegionDrawLayer::init(void)
 	_btnDelete = cocos2d::CCMenuItemImage::create("../_gamedata/btn-delete-normal.png",
 		"../_gamedata/btn-delete-selected.png", this, menu_selector(RegionDrawLayer::_MenuInputListener));
 	_btnSaveXml = cocos2d::CCMenuItemImage::create("../_gamedata/btn-save-normal.png",
+		"../_gamedata/btn-save-selected.png", this, menu_selector(RegionDrawLayer::_MenuInputListener));
+	_btnBack = cocos2d::CCMenuItemImage::create("../_gamedata/btn-save-normal.png",
 		"../_gamedata/btn-save-selected.png", this, menu_selector(RegionDrawLayer::_MenuInputListener));
 
 	CCPoint pos;
@@ -47,8 +56,11 @@ bool RegionDrawLayer::init(void)
 	_btnSaveXml->setScale(4.0f);
 	_btnSaveXml->setTag(MENU_ITEM_SAVE_XML);
 	_btnSaveXml->setPosition(pos - ccp(-700.0f, 500.0f));
+	_btnBack->setScale(4.0f);
+	_btnBack->setTag(MENU_ITEM_BACK);
+	_btnBack->setPosition(pos - ccp(-700.0f, 700.0f));
 
-	cocos2d::CCMenu *menu = cocos2d::CCMenu::create(_btnToggle, _btnDelete, _btnSaveXml, NULL);
+	cocos2d::CCMenu *menu = cocos2d::CCMenu::create(_btnToggle, _btnDelete, _btnSaveXml, _btnBack, NULL);
 	menu->setPosition(0.0f, 0.0f);
 	
 	CCLayer::addChild(_mapProjector.GetSprite());
@@ -76,7 +88,7 @@ void RegionDrawLayer::visit(void)
 	}
 	else
 	{
-		for (auto regionIterator : _worldMap.GetRegions())
+		for (auto regionIterator : WorldMap::Instance().GetRegions())
 		{
 			ArbitraryHull hull = regionIterator.second->GetHull();
 			ArbitraryHull projectedHull;
@@ -156,18 +168,27 @@ void RegionDrawLayer::_MenuInputListener(cocos2d::CCObject *sender)
 	case MENU_ITEM_SAVE_XML:
 		_hull1.SaveToXml("../gamedata/regions.xml");
 		break;
+	case MENU_ITEM_BACK:
+		NavigateBack();
+		break;
 	default: break;
 	}
 }
 
 void RegionDrawLayer::FinalizeRegion(std::string regionName, ArbitraryHull hull)
 {
-	Region::Ptr region = _worldMap.GetRegion(regionName);
+	Region::Ptr region = WorldMap::Instance().GetRegion(regionName);
 	if (!region)
 	{
-		_worldMap.CreateRegion(regionName);
-		region = _worldMap.GetRegion(regionName);
+		WorldMap::Instance().CreateRegion(regionName);
+		region = WorldMap::Instance().GetRegion(regionName);
 	}
 
 	region->SetHull(_hull1);
+}
+
+void RegionDrawLayer::NavigateBack()
+{
+	cocos2d::CCDirector *director = cocos2d::CCDirector::sharedDirector();
+	director->popScene();
 }

@@ -1,5 +1,24 @@
 #include "WorldMap.h"
 
+WorldMap* WorldMap::_singleInstance = nullptr;
+
+WorldMap::WorldMap()
+{
+}
+WorldMap::~WorldMap()
+{
+}
+
+WorldMap& WorldMap::Instance()
+{
+	if (WorldMap::_singleInstance == nullptr)
+	{
+		WorldMap::_singleInstance = new WorldMap();
+	}
+
+	return *WorldMap::_singleInstance;
+}
+
 Region::Ptr WorldMap::GetRegion(std::string regionName) const
 {
 	auto regionIterator = _regions.find(regionName);

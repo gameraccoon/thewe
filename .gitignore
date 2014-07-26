@@ -9,3 +9,5 @@
 *.sdf
 *.opensdf
 *.ilk
+/source/build/Windows/Debug
+/source/build/Windows/Release

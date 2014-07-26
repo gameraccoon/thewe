@@ -5,6 +5,7 @@ static const cocos2d::CCPoint MAP_INITIAL_SIZE = cocos2d::CCPoint(1390.0f, 1003.
 
 MapProjector::MapProjector(cocos2d::CCPoint shift, float scale)
 {
+	_mapSprite = nullptr;
 	// ToDo: вынести инициализацию спрайтов в отдельный класс
 	_mapSprite = cocos2d::CCSprite::create("../_gamedata/WorldMap.png");
 
@@ -17,24 +18,31 @@ void MapProjector::SetShift(cocos2d::CCPoint shift)
 	cocos2d::CCPoint spriteSize = GetSprite()->getContentSize();
 	
 	_mapShift = shift;
-	if (shift.y < -spriteSize.y/2)
+	if (shift.y > _mapScale * spriteSize.y / 2)
 	{
-		_mapShift.y = -spriteSize.y/2;
+		_mapShift.y = _mapScale * spriteSize.y / 2;
 	}
 
-	if (shift.y > _screenCenter.y*2 + spriteSize.y/2)
+	if (shift.y < 2 * _screenCenter.y - _mapScale * spriteSize.y / 2)
 	{
-		_mapShift.y = _screenCenter.y*2 + spriteSize.y/2;
+		_mapShift.y = (2 * _screenCenter.y - _mapScale * spriteSize.y / 2);
 	}
 
-	GetSprite()->setPosition(_mapShift);
+	if (_mapSprite)
+	{
+		_mapSprite->setPosition(_mapShift);
+	}
 }
 
 void MapProjector::SetScale(float scale)
 {
 	SetShift(_screenCenter + (_mapShift - _screenCenter) * (scale / _mapScale));
 	_mapScale = scale;
-	GetSprite()->setScale(_mapScale);
+
+	if (_mapSprite)
+	{
+		_mapSprite->setScale(_mapScale);
+	}
 }
 
 cocos2d::CCPoint MapProjector::GetShift()
