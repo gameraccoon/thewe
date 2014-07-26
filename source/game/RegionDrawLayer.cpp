@@ -1,10 +1,11 @@
 #include "RegionDrawLayer.h"
 
 #include "WorldMap.h"
+#include "GameScene.h"
 
-RegionDrawLayer::RegionDrawLayer(void)
+RegionDrawLayer::RegionDrawLayer(MapProjector* projector)
 	: _isCreationAllowed(true)
-	, _mapProjector(cocos2d::CCPoint(0.0f, 0.0f), 2.5f)
+	, _mapProjector(projector)
 {
 	init();
 }
@@ -24,9 +25,9 @@ bool RegionDrawLayer::init(void)
 	cocos2d::CCPoint origin = director->getVisibleOrigin();
 
 	// сообщаем где находится центр окна вывода
-	_mapProjector.SetScreenCenter(origin + screen / 2.0f);
+	_mapProjector->SetScreenCenter(origin + screen / 2.0f);
 	// ставим спрайт карты ровно в центр экрана
-	_mapProjector.SetShift(origin + screen / 2.0f);
+	_mapProjector->SetShift(origin + screen / 2.0f);
 
 	_printPos = cocos2d::CCLabelTTF::create("X: 0, Y: 0", "Arial", 32);
 	_printPos->setPosition(cocos2d::CCPoint(origin.x + 200, origin.y + screen.height - 100));
@@ -66,7 +67,6 @@ bool RegionDrawLayer::init(void)
 	cocos2d::CCMenu *menu = cocos2d::CCMenu::create(_btnToggle, _btnDelete, _btnSaveXml, _btnBack, NULL);
 	menu->setPosition(0.0f, 0.0f);
 	
-	addChild(_mapProjector.GetSprite());
 	addChild(_printPos);
 	addChild(_printNum);
 	addChild(menu);
@@ -84,7 +84,7 @@ void RegionDrawLayer::visit(void)
 		ArbitraryHull visibleHull;
 		for (auto &point : _hull1.GetPoints())
 		{
-			visibleHull.PushPoint(_mapProjector.ProjectOnScreen(point));
+			visibleHull.PushPoint(_mapProjector->ProjectOnScreen(point));
 		}
 
 		visibleHull.Draw();
@@ -97,7 +97,7 @@ void RegionDrawLayer::visit(void)
 			ArbitraryHull projectedHull;
 			for (auto &point : hull.GetPoints())
 			{
-				projectedHull.PushPoint(_mapProjector.ProjectOnScreen(point));
+				projectedHull.PushPoint(_mapProjector->ProjectOnScreen(point));
 			}
 			projectedHull.Draw();
 		}
@@ -106,17 +106,13 @@ void RegionDrawLayer::visit(void)
 
 void RegionDrawLayer::ccTouchesBegan(cocos2d::CCSet* touches, cocos2d::CCEvent* event)
 {
-	cocos2d::CCLayer::ccTouchesBegan(touches, event);
+	CCLayer::ccTouchesBegan(touches, event);
 	
 	cocos2d::CCTouch *touch = dynamic_cast<cocos2d::CCTouch*>(touches->anyObject());
 
 	if (_isCreationAllowed)
 	{
-		_hull1.PushPoint(_mapProjector.ProjectOnMap(touch->getLocation()));
-	}
-	else
-	{
-		_touchLastPoint = touch->getLocation();
+		_hull1.PushPoint(_mapProjector->ProjectOnMap(touch->getLocation()));
 	}
 
 	char string[64];
@@ -126,7 +122,7 @@ void RegionDrawLayer::ccTouchesBegan(cocos2d::CCSet* touches, cocos2d::CCEvent* 
 
 void RegionDrawLayer::ccTouchesEnded(cocos2d::CCSet* touches, cocos2d::CCEvent* event)
 {
-	ccTouchesEnded(touches, event);
+	CCLayer::ccTouchesEnded(touches, event);
 
 	cocos2d::CCTouch *touch = dynamic_cast<cocos2d::CCTouch*>(touches->anyObject());
 	_touchPos = touch->getLocation();
@@ -134,16 +130,10 @@ void RegionDrawLayer::ccTouchesEnded(cocos2d::CCSet* touches, cocos2d::CCEvent* 
 
 void RegionDrawLayer::ccTouchesMoved(cocos2d::CCSet* touches, cocos2d::CCEvent* event)
 {
-	ccTouchesMoved(touches, event);
+	CCLayer::ccTouchesMoved(touches, event);
 	
 	cocos2d::CCTouch *touch = dynamic_cast<cocos2d::CCTouch*>(touches->anyObject());
 	cocos2d::CCPoint point = touch->getLocation();
-
-	if (!_isCreationAllowed)
-	{
-		_mapProjector.SetShift(_mapProjector.GetShift() - _touchLastPoint + touch->getLocation());
-		_touchLastPoint = touch->getLocation();
-	}
 
 	char string[64];
 	sprintf_s(string, "X: %d, Y: %d", (int)point.x, (int)point.y);
@@ -172,7 +162,7 @@ void RegionDrawLayer::_MenuInputListener(cocos2d::CCObject *sender)
 		_hull1.SaveToXml("../gamedata/regions.xml");
 		break;
 	case MENU_ITEM_BACK:
-		NavigateBack();
+		dynamic_cast<GameScene*>(getParent())->ShowMap();
 		break;
 	default: break;
 	}
@@ -188,10 +178,4 @@ void RegionDrawLayer::FinalizeRegion(std::string regionName, ArbitraryHull hull)
 	}
 
 	region->SetHull(_hull1);
-}
-
-void RegionDrawLayer::NavigateBack()
-{
-	cocos2d::CCDirector *director = cocos2d::CCDirector::sharedDirector();
-	director->popScene();
 }

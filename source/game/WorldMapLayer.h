@@ -10,17 +10,17 @@
 class WorldMapLayer : public cocos2d::CCLayer
 {
 public:
-	WorldMapLayer(void);
+	WorldMapLayer(MapProjector* projector);
 
 	virtual bool init(void) override;
 
 	void menuCloseCallback(cocos2d::CCObject *Sender);
 
-	CREATE_FUNC(WorldMapLayer);
-
 	void ccTouchesBegan(cocos2d::CCSet* touches, cocos2d::CCEvent* event);
 	void ccTouchesEnded(cocos2d::CCSet* touches, cocos2d::CCEvent* event);
 	void ccTouchesMoved(cocos2d::CCSet* touches, cocos2d::CCEvent* event);
+
+	void ModifyZoom(float multiplier);
 
 	virtual void visit() override;
 private:
@@ -30,7 +30,9 @@ private:
 
 	cocos2d::CCPoint _touchLastPoint;
 
-	MapProjector _mapProjector;
+	MapProjector *_mapProjector;
+
+	cocos2d::CCLayer *_mapGui;
 };
 
 #endif

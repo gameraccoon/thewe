@@ -7,7 +7,7 @@
 class RegionDrawLayer : public cocos2d::CCLayer
 {
 public:
-	RegionDrawLayer(void);
+	RegionDrawLayer(MapProjector* projector);
 
 	virtual bool init(void);
 	virtual void visit(void);
@@ -26,7 +26,6 @@ private:
 	};
 
 private:
-	void NavigateBack();
 	void FinalizeRegion(std::string regionName, ArbitraryHull hull);
 
 	cocos2d::CCPoint _touchPos;
@@ -44,8 +43,7 @@ private:
 
 	void _MenuInputListener(cocos2d::CCObject *sender);
 
-	cocos2d::CCPoint _touchLastPoint;
-	MapProjector _mapProjector;
+	MapProjector *_mapProjector;
 };
 
 #endif

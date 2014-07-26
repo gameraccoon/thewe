@@ -14,6 +14,7 @@
     <ClCompile Include="..\..\externals\pugixml-1.4\pugixml.cpp" />
     <ClCompile Include="..\..\game\Application.cpp" />
     <ClCompile Include="..\..\game\ArbitraryHull.cpp" />
+    <ClCompile Include="..\..\game\MapGuiLayer.cpp" />
     <ClCompile Include="..\..\game\MapProjector.cpp" />
     <ClCompile Include="..\..\game\Region.cpp" />
     <ClCompile Include="..\..\game\RegionDrawLayer.cpp" />
@@ -28,6 +29,7 @@
     <ClInclude Include="..\..\externals\pugixml-1.4\pugixml.hpp" />
     <ClInclude Include="..\..\game\Application.h" />
     <ClInclude Include="..\..\game\ArbitraryHull.h" />
+    <ClInclude Include="..\..\game\MapGuiLayer.h" />
     <ClInclude Include="..\..\game\MapProjector.h" />
     <ClInclude Include="..\..\game\Region.h" />
     <ClInclude Include="..\..\game\RegionDrawLayer.h" />

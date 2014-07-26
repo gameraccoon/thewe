@@ -5,6 +5,8 @@
 
 #include <cocos2d.h>
 
+#include "MapProjector.h"
+
 class GameScene : public cocos2d::CCScene
 {
 public:
@@ -16,6 +18,8 @@ public:
 
 	void ShowEditor();
 	void ShowRegionInfo(const std::string& regionName);
+
+	MapProjector _mapProjector;
 private:
 	cocos2d::CCLayer *_worldMap;
 	cocos2d::CCLayer *_regionInfo;

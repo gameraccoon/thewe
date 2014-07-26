@@ -5,7 +5,8 @@
 #include "RegionDrawLayer.h"
 
 GameScene::GameScene(void)
-	: _editor(nullptr)
+	: _mapProjector(cocos2d::CCPoint(0.0f, 0.0f), 3.0f)
+	, _editor(nullptr)
 	, _regionInfo(nullptr)
 	, _worldMap(nullptr)
 {
@@ -19,7 +20,7 @@ bool GameScene::init(void)
 		return false;
 	}
 
-	_worldMap = new WorldMapLayer();
+	_worldMap = new WorldMapLayer(&_mapProjector);
 	addChild(_worldMap);
 	_worldMap->autorelease();
 
@@ -44,7 +45,7 @@ void GameScene::ShowMap()
 void GameScene::ShowEditor()
 {
 	ShowMap();
-	_editor = new RegionDrawLayer();
+	_editor = new RegionDrawLayer(&_mapProjector);
 	addChild(_editor);
 	_editor->autorelease();
 }

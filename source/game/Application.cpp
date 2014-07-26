@@ -33,10 +33,10 @@ bool AppDelegate::applicationDidFinishLaunching()
 	pos.y = origin.y + client.height - 100.0f;
 
 	_btnRunWorldTestScene->setPosition(pos - cocos2d::CCPoint(0.0f, 100.0f));
-	_btnRunWorldTestScene->setTag(MENU_ITEM_RUN_WORLD_SCENE);
+	_btnRunWorldTestScene->setTag(MENU_ITEM_RUN_GAME);
 	_btnRunWorldTestScene->setScale(5.0f);
 	_btnRunCountryScene->setPosition(pos - cocos2d::CCPoint(0.0f, 400.0f));
-	_btnRunCountryScene->setTag(MENU_ITEM_RUN_REGION_SCENE);
+	_btnRunCountryScene->setTag(MENU_ITEM_TEST_SCENE_1);
 	_btnRunCountryScene->setScale(5.0f);
 
 	_mainMenu = CCMenu::create(_btnRunWorldTestScene, _btnRunCountryScene, NULL);
@@ -68,12 +68,12 @@ void AppDelegate::_MenuInputListener(CCObject *sender)
 
 	switch (tag)
 	{
-	case MENU_ITEM_RUN_WORLD_SCENE:
+	case MENU_ITEM_RUN_GAME:
 		scene = new GameScene();
 		director->pushScene(scene);
 		scene->autorelease();
 		break;
-	case MENU_ITEM_RUN_REGION_SCENE:
+	case MENU_ITEM_TEST_SCENE_1:
 		break;
 	default: break;
 	}
