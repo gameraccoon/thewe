@@ -34,16 +34,19 @@ bool RegionDrawLayer::init(void)
 	_printNum = cocos2d::CCLabelTTF::create("Num Points: 0", "Arial", 32);
 	_printNum->setPosition(cocos2d::CCPoint(origin.x + 200, origin.y + screen.height - 150));
 
-	_btnToggle = cocos2d::CCMenuItemImage::create("../_gamedata/btn-toggle-normal.png",
-		"../_gamedata/btn-toggle-selected.png", this, menu_selector(RegionDrawLayer::_MenuInputListener));
-	_btnDelete = cocos2d::CCMenuItemImage::create("../_gamedata/btn-delete-normal.png",
-		"../_gamedata/btn-delete-selected.png", this, menu_selector(RegionDrawLayer::_MenuInputListener));
-	_btnSaveXml = cocos2d::CCMenuItemImage::create("../_gamedata/btn-save-normal.png",
-		"../_gamedata/btn-save-selected.png", this, menu_selector(RegionDrawLayer::_MenuInputListener));
-	_btnBack = cocos2d::CCMenuItemImage::create("../_gamedata/btn-save-normal.png",
-		"../_gamedata/btn-save-selected.png", this, menu_selector(RegionDrawLayer::_MenuInputListener));
+	{
+		using namespace cocos2d;
+		_btnToggle = cocos2d::CCMenuItemImage::create("../_gamedata/btn-toggle-normal.png",
+			"../_gamedata/btn-toggle-selected.png", this, menu_selector(RegionDrawLayer::_MenuInputListener));
+		_btnDelete = cocos2d::CCMenuItemImage::create("../_gamedata/btn-delete-normal.png",
+			"../_gamedata/btn-delete-selected.png", this, menu_selector(RegionDrawLayer::_MenuInputListener));
+		_btnSaveXml = cocos2d::CCMenuItemImage::create("../_gamedata/btn-save-normal.png",
+			"../_gamedata/btn-save-selected.png", this, menu_selector(RegionDrawLayer::_MenuInputListener));
+		_btnBack = cocos2d::CCMenuItemImage::create("../_gamedata/btn-save-normal.png",
+			"../_gamedata/btn-save-selected.png", this, menu_selector(RegionDrawLayer::_MenuInputListener));
+	}
 
-	CCPoint pos;
+	cocos2d::CCPoint pos;
 	pos.x = origin.x + screen.width / 2.0f;
 	pos.y = origin.y + screen.height - 100.0f;
 
@@ -63,7 +66,7 @@ bool RegionDrawLayer::init(void)
 	cocos2d::CCMenu *menu = cocos2d::CCMenu::create(_btnToggle, _btnDelete, _btnSaveXml, _btnBack, NULL);
 	menu->setPosition(0.0f, 0.0f);
 	
-	CCLayer::addChild(_mapProjector.GetSprite());
+	addChild(_mapProjector.GetSprite());
 	addChild(_printPos);
 	addChild(_printNum);
 	addChild(menu);
@@ -123,7 +126,7 @@ void RegionDrawLayer::ccTouchesBegan(cocos2d::CCSet* touches, cocos2d::CCEvent* 
 
 void RegionDrawLayer::ccTouchesEnded(cocos2d::CCSet* touches, cocos2d::CCEvent* event)
 {
-	cocos2d::CCLayer::ccTouchesEnded(touches, event);
+	ccTouchesEnded(touches, event);
 
 	cocos2d::CCTouch *touch = dynamic_cast<cocos2d::CCTouch*>(touches->anyObject());
 	_touchPos = touch->getLocation();
@@ -131,7 +134,7 @@ void RegionDrawLayer::ccTouchesEnded(cocos2d::CCSet* touches, cocos2d::CCEvent* 
 
 void RegionDrawLayer::ccTouchesMoved(cocos2d::CCSet* touches, cocos2d::CCEvent* event)
 {
-	cocos2d::CCLayer::ccTouchesMoved(touches, event);
+	ccTouchesMoved(touches, event);
 	
 	cocos2d::CCTouch *touch = dynamic_cast<cocos2d::CCTouch*>(touches->anyObject());
 	cocos2d::CCPoint point = touch->getLocation();

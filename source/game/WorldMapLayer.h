@@ -12,7 +12,7 @@ class WorldMapLayer : public cocos2d::CCLayer
 public:
 	WorldMapLayer(void);
 
-	virtual bool init(void);
+	virtual bool init(void) override;
 
 	void menuCloseCallback(cocos2d::CCObject *Sender);
 

@@ -1,5 +1,7 @@
 #include "Application.h"
 
+#include "GameScene.h"
+
 AppDelegate::AppDelegate()
 {
 }
@@ -67,12 +69,11 @@ void AppDelegate::_MenuInputListener(CCObject *sender)
 	switch (tag)
 	{
 	case MENU_ITEM_RUN_WORLD_SCENE:
-		scene = new WorldMapScene();
+		scene = new GameScene();
 		director->pushScene(scene);
+		scene->autorelease();
 		break;
 	case MENU_ITEM_RUN_REGION_SCENE:
-		scene = new RegionTestScene();
-		director->pushScene(scene);
 		break;
 	default: break;
 	}

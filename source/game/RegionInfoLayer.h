@@ -1,7 +1,6 @@
 #ifndef REGION_INFO_LAYER_H
 #define REGION_INFO_LAYER_H
 
-#include "RegionTestScene.h"
 #include "MapProjector.h"
 
 class RegionInfoLayer : public cocos2d::CCLayer

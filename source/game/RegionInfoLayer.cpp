@@ -2,6 +2,8 @@
 
 #include "WorldMap.h"
 
+#include "GameScene.h"
+
 RegionInfoLayer::RegionInfoLayer(void)
 {
 	init();
@@ -18,10 +20,13 @@ bool RegionInfoLayer::init(void)
 	cocos2d::CCSize screen = director->getVisibleSize();
 	cocos2d::CCPoint origin = director->getVisibleOrigin();
 
+	{
+		using namespace cocos2d;
 	_btnBack = cocos2d::CCMenuItemImage::create("../_gamedata/btn-save-normal.png",
 		"../_gamedata/btn-save-selected.png", this, menu_selector(RegionInfoLayer::_MenuInputListener));
+	}
 
-	CCPoint pos;
+	cocos2d::CCPoint pos;
 	pos.x = origin.x + screen.width / 2.0f;
 	pos.y = origin.y + screen.height - 100.0f;
 
@@ -61,14 +66,8 @@ void RegionInfoLayer::_MenuInputListener(cocos2d::CCObject *sender)
 	switch (tag)
 	{
 	case MENU_ITEM_BACK:
-		NavigateBack();
+		dynamic_cast<GameScene*>(getParent())->ShowMap();
 		break;
 	default: break;
 	}
-}
-
-void RegionInfoLayer::NavigateBack()
-{
-	cocos2d::CCDirector *director = cocos2d::CCDirector::sharedDirector();
-	director->popScene();
 }

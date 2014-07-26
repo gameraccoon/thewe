@@ -3,8 +3,6 @@
 
 #include <cocos2d.h>
 #include <pugixml.hpp>
-#include "RegionTestScene.h"
-#include "WorldMapScene.h"
 
 using namespace cocos2d;
 

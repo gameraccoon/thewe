@@ -18,11 +18,9 @@
     <ClCompile Include="..\..\game\Region.cpp" />
     <ClCompile Include="..\..\game\RegionDrawLayer.cpp" />
     <ClCompile Include="..\..\game\RegionInfoLayer.cpp" />
-    <ClCompile Include="..\..\game\RegionInfoScene.cpp" />
-    <ClCompile Include="..\..\game\RegionTestScene.cpp" />
     <ClCompile Include="..\..\game\WorldMap.cpp" />
     <ClCompile Include="..\..\game\WorldMapLayer.cpp" />
-    <ClCompile Include="..\..\game\WorldMapScene.cpp" />
+    <ClCompile Include="..\..\game\GameScene.cpp" />
     <ClCompile Include="..\..\Main.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -34,11 +32,9 @@
     <ClInclude Include="..\..\game\Region.h" />
     <ClInclude Include="..\..\game\RegionDrawLayer.h" />
     <ClInclude Include="..\..\game\RegionInfoLayer.h" />
-    <ClInclude Include="..\..\game\RegionInfoScene.h" />
-    <ClInclude Include="..\..\game\RegionTestScene.h" />
     <ClInclude Include="..\..\game\WorldMap.h" />
     <ClInclude Include="..\..\game\WorldMapLayer.h" />
-    <ClInclude Include="..\..\game\WorldMapScene.h" />
+    <ClInclude Include="..\..\game\GameScene.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{C21BA7F4-7523-4838-8B82-693FF0A21526}</ProjectGuid>

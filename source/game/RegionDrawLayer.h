@@ -1,8 +1,8 @@
 #ifndef REGION_DRAW_LAYER_H
 #define REGION_DRAW_LAYER_H
 
-#include "RegionTestScene.h"
 #include "MapProjector.h"
+#include "ArbitraryHull.h"
 
 class RegionDrawLayer : public cocos2d::CCLayer
 {

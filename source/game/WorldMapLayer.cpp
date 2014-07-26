@@ -1,8 +1,8 @@
-#include "WorldMapScene.h"
+#include "WorldMapLayer.h"
 
 #include "WorldMap.h"
 
-#include "RegionInfoScene.h"
+#include "GameScene.h"
 
 WorldMapLayer::WorldMapLayer(void)
 	: _mapProjector(cocos2d::CCPoint(0.0f, 0.0f), 3.0f)
@@ -17,9 +17,9 @@ bool WorldMapLayer::init(void)
 		return false;
 	}
 
-	CCLayer::addChild(_mapProjector.GetSprite());
-	CCLayer::setTouchEnabled(true);
-    CCLayer::setKeypadEnabled(true);
+	addChild(_mapProjector.GetSprite());
+	setTouchEnabled(true);
+    setKeypadEnabled(true);
 
 	cocos2d::CCPoint origin = cocos2d::CCDirector::sharedDirector()->getVisibleOrigin();
 	cocos2d::CCSize screen = cocos2d::CCDirector::sharedDirector()->getVisibleSize();
@@ -45,13 +45,11 @@ void WorldMapLayer::ccTouchesBegan(cocos2d::CCSet* touches, cocos2d::CCEvent* ev
 
 void WorldMapLayer::ccTouchesEnded(cocos2d::CCSet* touches, cocos2d::CCEvent* event)
 {
-	cocos2d::CCTouch *touch = dynamic_cast<cocos2d::CCTouch*>(touches->anyObject());
+	//cocos2d::CCTouch *touch = dynamic_cast<cocos2d::CCTouch*>(touches->anyObject());
 
-	if (GetRegionUnderPoint(touch->getLocation()) == _tappedRegion && _tappedRegion != nullptr)
+	//if (GetRegionUnderPoint(touch->getLocation()) == _tappedRegion && _tappedRegion != nullptr)
 	{
-		cocos2d::CCDirector *director = cocos2d::CCDirector::sharedDirector();
-		cocos2d::CCScene *scene= new RegionInfoScene();
-		director->pushScene(scene);
+		dynamic_cast<GameScene*>(this->getParent())->ShowRegionInfo("Italy");
 	}
 }
 
