@@ -21,14 +21,16 @@ private:
 	enum E_MENU_ITEMS_TAGS
 	{
 		MENU_ITEM_RUN_GAME,
-		MENU_ITEM_TEST_SCENE_1
+		MENU_ITEM_TEST_SCENE_1,
+		MENU_ITEM_EXIT
 	};
 
 private:
 	cocos2d::CCScene *_menuScene;
 
-	cocos2d::CCMenuItemImage *_btnRunWorldTestScene;
-	cocos2d::CCMenuItemImage *_btnRunCountryScene;
+	cocos2d::CCMenuItemImage *_btnRunGame;
+	cocos2d::CCMenuItemImage *_btnTestScene1;
+	cocos2d::CCMenuItemImage *_btnExitGame;
 	cocos2d::CCMenu *_mainMenu;
 };
 
