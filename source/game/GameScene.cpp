@@ -42,12 +42,19 @@ void GameScene::ShowMap()
 	}
 }
 
-void GameScene::ShowEditor()
+void GameScene::ToggleEditor()
 {
-	ShowMap();
-	_editor = new EditorLayer(&_mapProjector);
-	addChild(_editor);
-	_editor->autorelease();
+	if (!_editor)
+	{
+		ShowMap(); // изменяет стостояние _editor
+		_editor = new EditorLayer(&_mapProjector);
+		addChild(_editor);
+		_editor->autorelease();
+	}
+	else
+	{
+		ShowMap();
+	}
 }
 
 void GameScene::ShowRegionInfo(const std::string& regionName)
