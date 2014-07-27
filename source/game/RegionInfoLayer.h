@@ -23,7 +23,10 @@ private:
 private:	
 	cocos2d::CCMenuItemImage *_btnBack;
 
+	cocos2d::CCDrawNode *_bkgDraw;
+
 	void _MenuInputListener(cocos2d::CCObject *sender);
+	void _InitBackground(cocos2d::CCDrawNode *background) const;
 };
 
 #endif
