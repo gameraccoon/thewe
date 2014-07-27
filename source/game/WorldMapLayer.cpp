@@ -7,6 +7,7 @@
 WorldMapLayer::WorldMapLayer(MapProjector* projector)
 	: _mapProjector(projector)
 	, _isInputEnabled(true)
+	, _mapGui(nullptr)
 {
 	init();
 }
@@ -25,9 +26,7 @@ bool WorldMapLayer::init(void)
 	cocos2d::CCPoint origin = cocos2d::CCDirector::sharedDirector()->getVisibleOrigin();
 	cocos2d::CCSize screen = cocos2d::CCDirector::sharedDirector()->getVisibleSize();
 
-	_mapGui = new MapGuiLayer();
-	addChild(_mapGui);
-	_mapGui->autorelease();
+	SetGuiEnabled(true);
 
 	// сообщаем где находится центр окна вывода
 	_mapProjector->SetScreenCenter(origin + screen / 2.0f);
@@ -37,9 +36,24 @@ bool WorldMapLayer::init(void)
 	return true;
 }
 
-void WorldMapLayer::SetInputEnabled(bool isEnabled)
+void WorldMapLayer::SetMapInputEnabled(bool isEnabled)
 {
 	_isInputEnabled = isEnabled;
+}
+
+void WorldMapLayer::SetGuiEnabled(bool isEnabled)
+{
+	if (_mapGui && !isEnabled)
+	{
+		removeChild(_mapGui);
+		_mapGui = nullptr;
+	}
+	else if (!_mapGui && isEnabled)
+	{
+		_mapGui = new MapGuiLayer();
+		addChild(_mapGui);
+		_mapGui->autorelease();
+	}
 }
 
 void WorldMapLayer::menuCloseCallback(cocos2d::CCObject *Sender)

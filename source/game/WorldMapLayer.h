@@ -22,7 +22,8 @@ public:
 
 	void ModifyZoom(float multiplier);
 
-	void SetInputEnabled(bool isEnabled);
+	void SetMapInputEnabled(bool isEnabled);
+	void SetGuiEnabled(bool isEnabled);
 
 	virtual void visit() override;
 

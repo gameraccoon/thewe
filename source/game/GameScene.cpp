@@ -44,7 +44,8 @@ void GameScene::ShowMap()
 		_regionInfo = nullptr;
 	}
 
-	_worldMap->SetInputEnabled(true);
+	_worldMap->SetMapInputEnabled(true);
+	_worldMap->SetGuiEnabled(true);
 }
 
 void GameScene::ToggleEditor()
@@ -55,7 +56,7 @@ void GameScene::ToggleEditor()
 		_editor = new EditorLayer(&_mapProjector);
 		addChild(_editor);
 		_editor->autorelease();
-		_worldMap->SetInputEnabled(false);
+		_worldMap->SetMapInputEnabled(false);
 	}
 	else
 	{
@@ -69,5 +70,6 @@ void GameScene::ShowRegionInfo(const std::string& regionName)
 	_regionInfo = new RegionInfoLayer();
 	addChild(_regionInfo);
 	_regionInfo->autorelease();
-	_worldMap->SetInputEnabled(false);
+	_worldMap->SetMapInputEnabled(false);
+	_worldMap->SetGuiEnabled(false);
 }
