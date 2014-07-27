@@ -23,9 +23,9 @@ bool AppDelegate::applicationDidFinishLaunching()
 
 	_menuScene = cocos2d::CCScene::create();
 	
-	_btnRunGame = CCMenuItemImage::create("btn-map-normal.png", "btn-map-selected.png",
+	_btnRunGame = CCMenuItemImage::create("btn-start-game-normal.png", "btn-start-game-selected.png",
 		_menuScene, menu_selector(AppDelegate::_MenuInputListener));
-	_btnTestScene1 = CCMenuItemImage::create("btn-region-normal.png", "btn-region-selected.png",
+	_btnTestScene1 = CCMenuItemImage::create("btn-test1-normal.png", "btn-test1-selected.png",
 		_menuScene, menu_selector(AppDelegate::_MenuInputListener));
 	_btnExitGame = CCMenuItemImage::create("btn-exit-normal.png", "btn-exit-selected.png",
 		_menuScene, menu_selector(AppDelegate::_MenuInputListener));
