@@ -16,13 +16,14 @@ public:
 
 	void menuCloseCallback(cocos2d::CCObject *Sender);
 
-	void ccTouchesBegan(cocos2d::CCSet* touches, cocos2d::CCEvent* event);
-	void ccTouchesEnded(cocos2d::CCSet* touches, cocos2d::CCEvent* event);
-	void ccTouchesMoved(cocos2d::CCSet* touches, cocos2d::CCEvent* event);
+	void ccTouchesBegan(cocos2d::CCSet* touches, cocos2d::CCEvent* event) override;
+	void ccTouchesEnded(cocos2d::CCSet* touches, cocos2d::CCEvent* event) override;
+	void ccTouchesMoved(cocos2d::CCSet* touches, cocos2d::CCEvent* event) override;
 
 	void ModifyZoom(float multiplier);
 
 	virtual void visit() override;
+
 private:
 	Region::Ptr GetRegionUnderPoint(const cocos2d::CCPoint& point);
 

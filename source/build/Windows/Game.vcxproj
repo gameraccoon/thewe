@@ -19,6 +19,7 @@
     <ClCompile Include="..\..\game\Region.cpp" />
     <ClCompile Include="..\..\game\RegionDrawLayer.cpp" />
     <ClCompile Include="..\..\game\RegionInfoLayer.cpp" />
+    <ClCompile Include="..\..\game\WorldLoader.cpp" />
     <ClCompile Include="..\..\game\WorldMap.cpp" />
     <ClCompile Include="..\..\game\WorldMapLayer.cpp" />
     <ClCompile Include="..\..\game\GameScene.cpp" />
@@ -34,6 +35,7 @@
     <ClInclude Include="..\..\game\Region.h" />
     <ClInclude Include="..\..\game\RegionDrawLayer.h" />
     <ClInclude Include="..\..\game\RegionInfoLayer.h" />
+    <ClInclude Include="..\..\game\WorldLoader.h" />
     <ClInclude Include="..\..\game\WorldMap.h" />
     <ClInclude Include="..\..\game\WorldMapLayer.h" />
     <ClInclude Include="..\..\game\GameScene.h" />

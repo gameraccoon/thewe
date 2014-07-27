@@ -3,6 +3,7 @@
 
 #include "MapProjector.h"
 #include "ArbitraryHull.h"
+#include "WorldLoader.h"
 
 class RegionDrawLayer : public cocos2d::CCLayer
 {
@@ -26,8 +27,6 @@ private:
 	};
 
 private:
-	void FinalizeRegion(std::string regionName, ArbitraryHull hull);
-
 	cocos2d::CCPoint _touchPos;
 	
 	cocos2d::CCLabelTTF *_printPos;
@@ -44,6 +43,8 @@ private:
 	void _MenuInputListener(cocos2d::CCObject *sender);
 
 	MapProjector *_mapProjector;
+
+	WorldLoader _worldLoader;
 };
 
 #endif

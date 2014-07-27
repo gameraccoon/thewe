@@ -19,6 +19,8 @@ bool AppDelegate::applicationDidFinishLaunching()
 	director->setDisplayStats(true);
 	director->setAnimationInterval(1.0 / 60.0);
 
+	cocos2d::CCFileUtils::sharedFileUtils()->addSearchPath("../_gamedata");
+
 	_menuScene = cocos2d::CCScene::create();
 	
 	_btnRunGame = CCMenuItemImage::create("../_gamedata/btn-map-normal.png",

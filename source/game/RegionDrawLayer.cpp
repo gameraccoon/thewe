@@ -72,6 +72,9 @@ bool RegionDrawLayer::init(void)
 	addChild(menu);
 	setTouchEnabled(true);
 
+	// долгая операция.
+	_worldLoader.LoadWorld();
+
 	return true;
 }
 
@@ -93,13 +96,18 @@ void RegionDrawLayer::visit(void)
 	{
 		for (auto regionIterator : WorldMap::Instance().GetRegions())
 		{
-			ArbitraryHull hull = regionIterator.second->GetHull();
-			ArbitraryHull projectedHull;
-			for (auto &point : hull.GetPoints())
+			const Region::HullsArray &array = regionIterator.second->GetHullsArray();
+
+			for (const ArbitraryHull &hull : array)
 			{
-				projectedHull.PushPoint(_mapProjector->ProjectOnScreen(point));
+				ArbitraryHull projectedHull;
+				for (auto &point : hull.GetPoints())
+				{
+					projectedHull.PushPoint(_mapProjector->ProjectOnScreen(point));
+				}
+			
+				projectedHull.Draw();
 			}
-			projectedHull.Draw();
 		}
 	}
 }
@@ -149,33 +157,17 @@ void RegionDrawLayer::_MenuInputListener(cocos2d::CCObject *sender)
 	switch (tag)
 	{
 	case MENU_ITEM_TOGGLE:
-		if (_isCreationAllowed)
-		{
-			FinalizeRegion("Italy", _hull1);
-		}
 		_isCreationAllowed = !_isCreationAllowed;
 		break;
 	case MENU_ITEM_DELETE:
 		_hull1.PopPoint();
 		break;
 	case MENU_ITEM_SAVE_XML:
-		_hull1.SaveToXml("../gamedata/regions.xml");
+		_hull1.SaveToXml("../_gamedata/hulls.xml");
 		break;
 	case MENU_ITEM_BACK:
 		dynamic_cast<GameScene*>(getParent())->ShowMap();
 		break;
 	default: break;
 	}
-}
-
-void RegionDrawLayer::FinalizeRegion(std::string regionName, ArbitraryHull hull)
-{
-	Region::Ptr region = WorldMap::Instance().GetRegion(regionName);
-	if (!region)
-	{
-		WorldMap::Instance().CreateRegion(regionName);
-		region = WorldMap::Instance().GetRegion(regionName);
-	}
-
-	region->SetHull(_hull1);
 }

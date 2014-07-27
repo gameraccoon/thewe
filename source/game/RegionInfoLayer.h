@@ -20,9 +20,7 @@ private:
 		MENU_ITEM_BACK
 	};
 
-private:
-	void NavigateBack();
-	
+private:	
 	cocos2d::CCMenuItemImage *_btnBack;
 
 	void _MenuInputListener(cocos2d::CCObject *sender);

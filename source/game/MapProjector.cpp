@@ -1,13 +1,12 @@
 #include "MapProjector.h"
 
-
 static const cocos2d::CCPoint MAP_INITIAL_SIZE = cocos2d::CCPoint(1390.0f, 1003.0f);
 
 MapProjector::MapProjector(cocos2d::CCPoint shift, float scale)
 {
 	_mapSprite = nullptr;
 	// ToDo: вынести инициализацию спрайтов в отдельный класс
-	_mapSprite = cocos2d::CCSprite::create("../_gamedata/WorldMap.png");
+	_mapSprite = cocos2d::CCSprite::create("WorldMap.png");
 
 	SetShift(shift);
 	SetScale(scale);
