@@ -66,7 +66,7 @@ void WorldMapLayer::ccTouchesBegan(cocos2d::CCSet* touches, cocos2d::CCEvent* ev
 	{
 		cocos2d::CCTouch *touch = dynamic_cast<cocos2d::CCTouch*>(touches->anyObject());
 		_touchLastPoint = touch->getLocation();
-		_tappedRegion = GetRegionUnderPoint(touch->getLocation());
+		_isTapTouch = true;
 	}
 }
 
@@ -74,9 +74,7 @@ void WorldMapLayer::ccTouchesEnded(cocos2d::CCSet* touches, cocos2d::CCEvent* ev
 {
 	if (_isInputEnabled)
 	{
-		cocos2d::CCTouch *touch = dynamic_cast<cocos2d::CCTouch*>(touches->anyObject());
-
-		if (GetRegionUnderPoint(touch->getLocation()) == _tappedRegion && _tappedRegion != nullptr)
+		if (_isTapTouch)
 		{
 			dynamic_cast<GameScene*>(this->getParent())->ShowRegionInfo("Italy");
 		}
@@ -91,6 +89,8 @@ void WorldMapLayer::ccTouchesMoved(cocos2d::CCSet* touches, cocos2d::CCEvent* ev
 
 		_mapProjector->SetShift(_mapProjector->GetShift() - _touchLastPoint + touch->getLocation());
 		_touchLastPoint = touch->getLocation();
+
+		_isTapTouch = false;
 	}
 }
 
