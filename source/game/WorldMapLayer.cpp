@@ -6,6 +6,7 @@
 
 WorldMapLayer::WorldMapLayer(MapProjector* projector)
 	: _mapProjector(projector)
+	, _isInputEnabled(true)
 {
 	init();
 }
@@ -36,33 +37,47 @@ bool WorldMapLayer::init(void)
 	return true;
 }
 
+void WorldMapLayer::SetInputEnabled(bool isEnabled)
+{
+	_isInputEnabled = isEnabled;
+}
+
 void WorldMapLayer::menuCloseCallback(cocos2d::CCObject *Sender)
 {
 }
 
 void WorldMapLayer::ccTouchesBegan(cocos2d::CCSet* touches, cocos2d::CCEvent* event)
 {
-	cocos2d::CCTouch *touch = dynamic_cast<cocos2d::CCTouch*>(touches->anyObject());
-	_touchLastPoint = touch->getLocation();
-	_tappedRegion = GetRegionUnderPoint(touch->getLocation());
+	if (_isInputEnabled)
+	{
+		cocos2d::CCTouch *touch = dynamic_cast<cocos2d::CCTouch*>(touches->anyObject());
+		_touchLastPoint = touch->getLocation();
+		_tappedRegion = GetRegionUnderPoint(touch->getLocation());
+	}
 }
 
 void WorldMapLayer::ccTouchesEnded(cocos2d::CCSet* touches, cocos2d::CCEvent* event)
 {
-	cocos2d::CCTouch *touch = dynamic_cast<cocos2d::CCTouch*>(touches->anyObject());
-
-	if (GetRegionUnderPoint(touch->getLocation()) == _tappedRegion && _tappedRegion != nullptr)
+	if (_isInputEnabled)
 	{
-		dynamic_cast<GameScene*>(this->getParent())->ShowRegionInfo("Italy");
+		cocos2d::CCTouch *touch = dynamic_cast<cocos2d::CCTouch*>(touches->anyObject());
+
+		if (GetRegionUnderPoint(touch->getLocation()) == _tappedRegion && _tappedRegion != nullptr)
+		{
+			dynamic_cast<GameScene*>(this->getParent())->ShowRegionInfo("Italy");
+		}
 	}
 }
 
 void WorldMapLayer::ccTouchesMoved(cocos2d::CCSet* touches, cocos2d::CCEvent* event)
 {
-	cocos2d::CCTouch *touch = dynamic_cast<cocos2d::CCTouch*>(touches->anyObject());
+	if (_isInputEnabled)
+	{
+		cocos2d::CCTouch *touch = dynamic_cast<cocos2d::CCTouch*>(touches->anyObject());
 
-	_mapProjector->SetShift(_mapProjector->GetShift() - _touchLastPoint + touch->getLocation());
-	_touchLastPoint = touch->getLocation();
+		_mapProjector->SetShift(_mapProjector->GetShift() - _touchLastPoint + touch->getLocation());
+		_touchLastPoint = touch->getLocation();
+	}
 }
 
 void WorldMapLayer::visit()

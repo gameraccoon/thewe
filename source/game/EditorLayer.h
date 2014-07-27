@@ -43,6 +43,8 @@ private:
 	void _MenuInputListener(cocos2d::CCObject *sender);
 
 	MapProjector *_mapProjector;
+
+	cocos2d::CCPoint _touchLastPoint;
 };
 
 #endif

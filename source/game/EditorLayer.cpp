@@ -4,7 +4,7 @@
 #include "GameScene.h"
 
 EditorLayer::EditorLayer(MapProjector* projector)
-	: _isCreationAllowed(true)
+	: _isCreationAllowed(false)
 	, _mapProjector(projector)
 {
 	init();
@@ -74,16 +74,13 @@ void EditorLayer::visit(void)
 {
 	CCLayer::visit();
 
-	if (_isCreationAllowed)
+	ArbitraryHull visibleHull;
+	for (auto &point : _hull1.GetPoints())
 	{
-		ArbitraryHull visibleHull;
-		for (auto &point : _hull1.GetPoints())
-		{
-			visibleHull.PushPoint(_mapProjector->ProjectOnScreen(point));
-		}
-
-		visibleHull.Draw();
+		visibleHull.PushPoint(_mapProjector->ProjectOnScreen(point));
 	}
+
+	visibleHull.Draw();
 }
 
 void EditorLayer::ccTouchesBegan(cocos2d::CCSet* touches, cocos2d::CCEvent* event)
@@ -95,6 +92,11 @@ void EditorLayer::ccTouchesBegan(cocos2d::CCSet* touches, cocos2d::CCEvent* even
 	if (_isCreationAllowed)
 	{
 		_hull1.PushPoint(_mapProjector->ProjectOnMap(touch->getLocation()));
+	}
+	else
+	{
+		cocos2d::CCTouch *touch = dynamic_cast<cocos2d::CCTouch*>(touches->anyObject());
+		_touchLastPoint = touch->getLocation();
 	}
 
 	char string[64];
@@ -116,6 +118,12 @@ void EditorLayer::ccTouchesMoved(cocos2d::CCSet* touches, cocos2d::CCEvent* even
 	
 	cocos2d::CCTouch *touch = dynamic_cast<cocos2d::CCTouch*>(touches->anyObject());
 	cocos2d::CCPoint point = touch->getLocation();
+
+	if (!_isCreationAllowed)
+	{
+		_mapProjector->SetShift(_mapProjector->GetShift() - _touchLastPoint + touch->getLocation());
+		_touchLastPoint = touch->getLocation();
+	}
 
 	char string[64];
 	sprintf_s(string, "X: %d, Y: %d", (int)point.x, (int)point.y);

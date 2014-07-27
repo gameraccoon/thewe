@@ -22,6 +22,8 @@ public:
 
 	void ModifyZoom(float multiplier);
 
+	void SetInputEnabled(bool isEnabled);
+
 	virtual void visit() override;
 
 private:
@@ -34,6 +36,8 @@ private:
 	MapProjector *_mapProjector;
 
 	cocos2d::CCLayer *_mapGui;
+
+	bool _isInputEnabled;
 };
 
 #endif

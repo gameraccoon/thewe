@@ -24,7 +24,7 @@ bool GameScene::init(void)
 	addChild(_worldMap);
 	_worldMap->autorelease();
 
-	// долгая операция.
+	// долгая операция
 	WorldLoader::LoadWorld();
 
 	return true;
@@ -43,6 +43,8 @@ void GameScene::ShowMap()
 		removeChild(_regionInfo);
 		_regionInfo = nullptr;
 	}
+
+	_worldMap->SetInputEnabled(true);
 }
 
 void GameScene::ToggleEditor()
@@ -53,6 +55,7 @@ void GameScene::ToggleEditor()
 		_editor = new EditorLayer(&_mapProjector);
 		addChild(_editor);
 		_editor->autorelease();
+		_worldMap->SetInputEnabled(false);
 	}
 	else
 	{
@@ -66,4 +69,5 @@ void GameScene::ShowRegionInfo(const std::string& regionName)
 	_regionInfo = new RegionInfoLayer();
 	addChild(_regionInfo);
 	_regionInfo->autorelease();
+	_worldMap->SetInputEnabled(false);
 }
