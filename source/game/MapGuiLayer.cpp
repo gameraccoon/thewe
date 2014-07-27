@@ -71,7 +71,7 @@ void MapGuiLayer::_MenuInputListener(cocos2d::CCObject *sender)
 		dynamic_cast<WorldMapLayer*>(getParent())->ModifyZoom(0.8f);
 		break;
 	case MENU_ITEM_EDITOR:
-		dynamic_cast<GameScene*>(getParent()->getParent())->ShowEditor();
+		dynamic_cast<GameScene*>(getParent()->getParent())->ToggleEditor();
 		break;
 	default: break;
 	}

@@ -23,7 +23,7 @@ private:
 		MENU_ITEM_TOGGLE,
 		MENU_ITEM_DELETE,
 		MENU_ITEM_SAVE_XML,
-		MENU_ITEM_BACK
+		MENU_ITEM_RELOAD_WORLD
 	};
 
 private:
@@ -35,7 +35,7 @@ private:
 	cocos2d::CCMenuItemImage *_btnToggle;
 	cocos2d::CCMenuItemImage *_btnDelete;
 	cocos2d::CCMenuItemImage *_btnSaveXml;
-	cocos2d::CCMenuItemImage *_btnBack;
+	cocos2d::CCMenuItemImage *_btnReloadWorld;
 
 	ArbitraryHull _hull1;
 	bool _isCreationAllowed;
@@ -43,6 +43,8 @@ private:
 	void _MenuInputListener(cocos2d::CCObject *sender);
 
 	MapProjector *_mapProjector;
+
+	cocos2d::CCPoint _touchLastPoint;
 };
 
 #endif

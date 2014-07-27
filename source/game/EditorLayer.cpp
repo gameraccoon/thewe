@@ -4,7 +4,7 @@
 #include "GameScene.h"
 
 EditorLayer::EditorLayer(MapProjector* projector)
-	: _isCreationAllowed(true)
+	: _isCreationAllowed(false)
 	, _mapProjector(projector)
 {
 	init();
@@ -38,7 +38,7 @@ bool EditorLayer::init(void)
 			this, menu_selector(EditorLayer::_MenuInputListener));
 		_btnSaveXml = cocos2d::CCMenuItemImage::create("btn-save-normal.png", "btn-save-selected.png",
 			this, menu_selector(EditorLayer::_MenuInputListener));
-		_btnBack = cocos2d::CCMenuItemImage::create("btn-back-normal.png", "btn-back-selected.png",
+		_btnReloadWorld = cocos2d::CCMenuItemImage::create("btn-reload-world-normal.png", "btn-reload-world-selected.png",
 			this, menu_selector(EditorLayer::_MenuInputListener));
 	}
 
@@ -55,20 +55,17 @@ bool EditorLayer::init(void)
 	_btnSaveXml->setScale(4.0f);
 	_btnSaveXml->setTag(MENU_ITEM_SAVE_XML);
 	_btnSaveXml->setPosition(pos - ccp(-700.0f, 500.0f));
-	_btnBack->setScale(4.0f);
-	_btnBack->setTag(MENU_ITEM_BACK);
-	_btnBack->setPosition(pos - ccp(-700.0f, 700.0f));
+	_btnReloadWorld->setScale(4.0f);
+	_btnReloadWorld->setTag(MENU_ITEM_RELOAD_WORLD);
+	_btnReloadWorld->setPosition(pos - ccp(-700.0f, 700.0f));
 
-	cocos2d::CCMenu *menu = cocos2d::CCMenu::create(_btnToggle, _btnDelete, _btnSaveXml, _btnBack, NULL);
+	cocos2d::CCMenu *menu = cocos2d::CCMenu::create(_btnToggle, _btnDelete, _btnSaveXml, _btnReloadWorld, NULL);
 	menu->setPosition(0.0f, 0.0f);
 	
 	addChild(_printPos);
 	addChild(_printNum);
 	addChild(menu);
 	setTouchEnabled(true);
-
-	// долгая операция.
-	WorldLoader::LoadWorld();
 
 	return true;
 }
@@ -77,34 +74,13 @@ void EditorLayer::visit(void)
 {
 	CCLayer::visit();
 
-	if (_isCreationAllowed)
+	ArbitraryHull visibleHull;
+	for (auto &point : _hull1.GetPoints())
 	{
-		ArbitraryHull visibleHull;
-		for (auto &point : _hull1.GetPoints())
-		{
-			visibleHull.PushPoint(_mapProjector->ProjectOnScreen(point));
-		}
-
-		visibleHull.Draw();
+		visibleHull.PushPoint(_mapProjector->ProjectOnScreen(point));
 	}
-	else
-	{
-		for (auto regionIterator : WorldMap::Instance().GetRegions())
-		{
-			const Region::HullsArray &array = regionIterator.second->GetHullsArray();
 
-			for (const ArbitraryHull &hull : array)
-			{
-				ArbitraryHull projectedHull;
-				for (auto &point : hull.GetPoints())
-				{
-					projectedHull.PushPoint(_mapProjector->ProjectOnScreen(point));
-				}
-			
-				projectedHull.Draw();
-			}
-		}
-	}
+	visibleHull.Draw();
 }
 
 void EditorLayer::ccTouchesBegan(cocos2d::CCSet* touches, cocos2d::CCEvent* event)
@@ -116,6 +92,11 @@ void EditorLayer::ccTouchesBegan(cocos2d::CCSet* touches, cocos2d::CCEvent* even
 	if (_isCreationAllowed)
 	{
 		_hull1.PushPoint(_mapProjector->ProjectOnMap(touch->getLocation()));
+	}
+	else
+	{
+		cocos2d::CCTouch *touch = dynamic_cast<cocos2d::CCTouch*>(touches->anyObject());
+		_touchLastPoint = touch->getLocation();
 	}
 
 	char string[64];
@@ -137,6 +118,12 @@ void EditorLayer::ccTouchesMoved(cocos2d::CCSet* touches, cocos2d::CCEvent* even
 	
 	cocos2d::CCTouch *touch = dynamic_cast<cocos2d::CCTouch*>(touches->anyObject());
 	cocos2d::CCPoint point = touch->getLocation();
+
+	if (!_isCreationAllowed)
+	{
+		_mapProjector->SetShift(_mapProjector->GetShift() - _touchLastPoint + touch->getLocation());
+		_touchLastPoint = touch->getLocation();
+	}
 
 	char string[64];
 	sprintf_s(string, "X: %d, Y: %d", (int)point.x, (int)point.y);
@@ -160,8 +147,8 @@ void EditorLayer::_MenuInputListener(cocos2d::CCObject *sender)
 	case MENU_ITEM_SAVE_XML:
 		_hull1.SaveToXml("../_gamedata/hulls.xml");
 		break;
-	case MENU_ITEM_BACK:
-		dynamic_cast<GameScene*>(getParent())->ShowMap();
+	case MENU_ITEM_RELOAD_WORLD:
+		WorldLoader::LoadWorld();
 		break;
 	default: break;
 	}

@@ -22,18 +22,23 @@ public:
 
 	void ModifyZoom(float multiplier);
 
+	void SetMapInputEnabled(bool isEnabled);
+	void SetGuiEnabled(bool isEnabled);
+
 	virtual void visit() override;
 
 private:
 	Region::Ptr GetRegionUnderPoint(const cocos2d::CCPoint& point);
 
-	Region::Ptr _tappedRegion;
+	bool _isTapTouch;
 
 	cocos2d::CCPoint _touchLastPoint;
 
 	MapProjector *_mapProjector;
 
 	cocos2d::CCLayer *_mapGui;
+
+	bool _isInputEnabled;
 };
 
 #endif

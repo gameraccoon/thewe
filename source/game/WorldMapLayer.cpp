@@ -6,6 +6,8 @@
 
 WorldMapLayer::WorldMapLayer(MapProjector* projector)
 	: _mapProjector(projector)
+	, _isInputEnabled(true)
+	, _mapGui(nullptr)
 {
 	init();
 }
@@ -24,9 +26,7 @@ bool WorldMapLayer::init(void)
 	cocos2d::CCPoint origin = cocos2d::CCDirector::sharedDirector()->getVisibleOrigin();
 	cocos2d::CCSize screen = cocos2d::CCDirector::sharedDirector()->getVisibleSize();
 
-	_mapGui = new MapGuiLayer();
-	addChild(_mapGui);
-	_mapGui->autorelease();
+	SetGuiEnabled(true);
 
 	// сообщаем где находится центр окна вывода
 	_mapProjector->SetScreenCenter(origin + screen / 2.0f);
@@ -36,33 +36,62 @@ bool WorldMapLayer::init(void)
 	return true;
 }
 
+void WorldMapLayer::SetMapInputEnabled(bool isEnabled)
+{
+	_isInputEnabled = isEnabled;
+}
+
+void WorldMapLayer::SetGuiEnabled(bool isEnabled)
+{
+	if (_mapGui && !isEnabled)
+	{
+		removeChild(_mapGui);
+		_mapGui = nullptr;
+	}
+	else if (!_mapGui && isEnabled)
+	{
+		_mapGui = new MapGuiLayer();
+		addChild(_mapGui);
+		_mapGui->autorelease();
+	}
+}
+
 void WorldMapLayer::menuCloseCallback(cocos2d::CCObject *Sender)
 {
 }
 
 void WorldMapLayer::ccTouchesBegan(cocos2d::CCSet* touches, cocos2d::CCEvent* event)
 {
-	cocos2d::CCTouch *touch = dynamic_cast<cocos2d::CCTouch*>(touches->anyObject());
-	_touchLastPoint = touch->getLocation();
-	_tappedRegion = GetRegionUnderPoint(touch->getLocation());
+	if (_isInputEnabled)
+	{
+		cocos2d::CCTouch *touch = dynamic_cast<cocos2d::CCTouch*>(touches->anyObject());
+		_touchLastPoint = touch->getLocation();
+		_isTapTouch = true;
+	}
 }
 
 void WorldMapLayer::ccTouchesEnded(cocos2d::CCSet* touches, cocos2d::CCEvent* event)
 {
-	cocos2d::CCTouch *touch = dynamic_cast<cocos2d::CCTouch*>(touches->anyObject());
-
-	if (GetRegionUnderPoint(touch->getLocation()) == _tappedRegion && _tappedRegion != nullptr)
+	if (_isInputEnabled)
 	{
-		dynamic_cast<GameScene*>(this->getParent())->ShowRegionInfo("Italy");
+		if (_isTapTouch)
+		{
+			dynamic_cast<GameScene*>(this->getParent())->ShowRegionInfo("Italy");
+		}
 	}
 }
 
 void WorldMapLayer::ccTouchesMoved(cocos2d::CCSet* touches, cocos2d::CCEvent* event)
 {
-	cocos2d::CCTouch *touch = dynamic_cast<cocos2d::CCTouch*>(touches->anyObject());
+	if (_isInputEnabled)
+	{
+		cocos2d::CCTouch *touch = dynamic_cast<cocos2d::CCTouch*>(touches->anyObject());
 
-	_mapProjector->SetShift(_mapProjector->GetShift() - _touchLastPoint + touch->getLocation());
-	_touchLastPoint = touch->getLocation();
+		_mapProjector->SetShift(_mapProjector->GetShift() - _touchLastPoint + touch->getLocation());
+		_touchLastPoint = touch->getLocation();
+
+		_isTapTouch = false;
+	}
 }
 
 void WorldMapLayer::visit()
