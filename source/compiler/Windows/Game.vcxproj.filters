@@ -22,9 +22,6 @@
     <ClCompile Include="..\..\game\RegionInfoLayer.cpp">
       <Filter>Views\GameScene\RegionInfo</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\externals\pugixml-1.4\pugixml.cpp">
-      <Filter>Helpers\pugixml</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\game\GameScene.cpp">
       <Filter>Views\GameScene</Filter>
     </ClCompile>
@@ -60,12 +57,6 @@
     <ClInclude Include="..\..\game\RegionInfoLayer.h">
       <Filter>Views\GameScene\RegionInfo</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\externals\pugixml-1.4\pugixml.hpp">
-      <Filter>Helpers\pugixml</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\externals\pugixml-1.4\pugiconfig.hpp">
-      <Filter>Helpers\pugixml</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\game\GameScene.h">
       <Filter>Views\GameScene</Filter>
     </ClInclude>
@@ -94,9 +85,6 @@
     </Filter>
     <Filter Include="Main">
       <UniqueIdentifier>{db327942-ac9b-4560-af80-e2b6fb90703e}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Helpers\pugixml">
-      <UniqueIdentifier>{87c53b0b-5b15-46f5-be0f-f5f31e70dff9}</UniqueIdentifier>
     </Filter>
     <Filter Include="Views\GameScene">
       <UniqueIdentifier>{f2481a6a-d5ac-43e6-90d2-2eac92c8d374}</UniqueIdentifier>
