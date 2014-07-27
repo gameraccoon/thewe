@@ -20,6 +20,7 @@ public:
 	float GetScale();
 
 	void SetScreenCenter(cocos2d::CCPoint centerPos);
+
 private:
 	float _mapScale;
 	cocos2d::CCPoint _mapShift;

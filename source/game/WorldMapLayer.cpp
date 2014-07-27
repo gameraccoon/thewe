@@ -69,13 +69,18 @@ void WorldMapLayer::visit()
 
 	for (auto regionIterator : WorldMap::Instance().GetRegions())
 	{
-		ArbitraryHull hull = regionIterator.second->GetHull();
-		ArbitraryHull projectedHull;
-		for (auto &point : hull.GetPoints())
+		const Region::HullsArray &array = regionIterator.second->GetHullsArray();
+
+		for (const ArbitraryHull &hull : array)
 		{
-			projectedHull.PushPoint(_mapProjector.ProjectOnScreen(point));
+			ArbitraryHull projectedHull;
+			for (auto &point : hull.GetPoints())
+			{
+				projectedHull.PushPoint(_mapProjector.ProjectOnScreen(point));
+			}
+			
+			projectedHull.Draw();
 		}
-		projectedHull.Draw();
 	}
 }
 
@@ -83,11 +88,16 @@ Region::Ptr WorldMapLayer::GetRegionUnderPoint(const cocos2d::CCPoint& point)
 {
 	for (auto regionIterator : WorldMap::Instance().GetRegions())
 	{
-		ArbitraryHull hull = regionIterator.second->GetHull();
-		if (hull.Contain(_mapProjector.ProjectOnMap(point)))
+		const Region::HullsArray &array = regionIterator.second->GetHullsArray();
+
+		for (const ArbitraryHull &hull : array)
 		{
-			return regionIterator.second;
+			if (hull.Contain(_mapProjector.ProjectOnMap(point)))
+			{
+				return regionIterator.second;
+			}
 		}
 	}
+
 	return Region::Ptr();
 }

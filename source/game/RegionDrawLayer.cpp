@@ -40,8 +40,8 @@ bool RegionDrawLayer::init(void)
 		"../_gamedata/btn-delete-selected.png", this, menu_selector(RegionDrawLayer::_MenuInputListener));
 	_btnSaveXml = cocos2d::CCMenuItemImage::create("../_gamedata/btn-save-normal.png",
 		"../_gamedata/btn-save-selected.png", this, menu_selector(RegionDrawLayer::_MenuInputListener));
-	_btnBack = cocos2d::CCMenuItemImage::create("../_gamedata/btn-save-normal.png",
-		"../_gamedata/btn-save-selected.png", this, menu_selector(RegionDrawLayer::_MenuInputListener));
+	_btnBack = cocos2d::CCMenuItemImage::create("../_gamedata/btn-back-normal.png",
+		"../_gamedata/btn-back-selected.png", this, menu_selector(RegionDrawLayer::_MenuInputListener));
 
 	CCPoint pos;
 	pos.x = origin.x + screen.width / 2.0f;
@@ -69,6 +69,9 @@ bool RegionDrawLayer::init(void)
 	addChild(menu);
 	setTouchEnabled(true);
 
+	// долгая операция.
+	_worldLoader.LoadWorld();
+
 	return true;
 }
 
@@ -90,13 +93,18 @@ void RegionDrawLayer::visit(void)
 	{
 		for (auto regionIterator : WorldMap::Instance().GetRegions())
 		{
-			ArbitraryHull hull = regionIterator.second->GetHull();
-			ArbitraryHull projectedHull;
-			for (auto &point : hull.GetPoints())
+			const Region::HullsArray &array = regionIterator.second->GetHullsArray();
+
+			for (const ArbitraryHull &hull : array)
 			{
-				projectedHull.PushPoint(_mapProjector.ProjectOnScreen(point));
+				ArbitraryHull projectedHull;
+				for (auto &point : hull.GetPoints())
+				{
+					projectedHull.PushPoint(_mapProjector.ProjectOnScreen(point));
+				}
+			
+				projectedHull.Draw();
 			}
-			projectedHull.Draw();
 		}
 	}
 }
@@ -156,39 +164,17 @@ void RegionDrawLayer::_MenuInputListener(cocos2d::CCObject *sender)
 	switch (tag)
 	{
 	case MENU_ITEM_TOGGLE:
-		if (_isCreationAllowed)
-		{
-			FinalizeRegion("Italy", _hull1);
-		}
 		_isCreationAllowed = !_isCreationAllowed;
 		break;
 	case MENU_ITEM_DELETE:
 		_hull1.PopPoint();
 		break;
 	case MENU_ITEM_SAVE_XML:
-		_hull1.SaveToXml("../gamedata/regions.xml");
+		_hull1.SaveToXml("../_gamedata/hulls.xml");
 		break;
 	case MENU_ITEM_BACK:
-		NavigateBack();
+		cocos2d::CCDirector::sharedDirector()->popScene();
 		break;
 	default: break;
 	}
-}
-
-void RegionDrawLayer::FinalizeRegion(std::string regionName, ArbitraryHull hull)
-{
-	Region::Ptr region = WorldMap::Instance().GetRegion(regionName);
-	if (!region)
-	{
-		WorldMap::Instance().CreateRegion(regionName);
-		region = WorldMap::Instance().GetRegion(regionName);
-	}
-
-	region->SetHull(_hull1);
-}
-
-void RegionDrawLayer::NavigateBack()
-{
-	cocos2d::CCDirector *director = cocos2d::CCDirector::sharedDirector();
-	director->popScene();
 }

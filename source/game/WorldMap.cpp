@@ -25,6 +25,11 @@ Region::Ptr WorldMap::GetRegion(std::string regionName) const
 	return (regionIterator != _regions.end()) ? regionIterator->second : Region::Ptr();
 }
 
+void WorldMap::CleanupRegions(void)
+{
+	_regions.clear();
+}
+
 void WorldMap::AddRegion(std::string regionName, Region::Ptr region)
 {
 	_regions.insert(std::pair<std::string, Region::Ptr>(regionName, region));

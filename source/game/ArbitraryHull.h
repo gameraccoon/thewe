@@ -17,7 +17,7 @@ public:
 	int GetPointsNum(void) const;
 	const std::vector<cocos2d::CCPoint>& GetPoints(void) const;
 
-	bool Contain(const cocos2d::CCPoint &point);
+	bool Contain(const cocos2d::CCPoint &point) const;
 
 	void SaveToXml(pugi::xml_document &docXml);
 	bool SaveToXml(const char *xmlFilename);

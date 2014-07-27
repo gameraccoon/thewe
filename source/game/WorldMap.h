@@ -17,10 +17,13 @@ public:
 	typedef std::map<std::string, Region::Ptr> RegionsMap;
 
 	Region::Ptr GetRegion(std::string regionName) const;
+	// удаляет все регионы
+	void CleanupRegions(void);
 	void AddRegion(std::string regionName, Region::Ptr region);
 	void CreateRegion(std::string regionName);
 
 	const RegionsMap& GetRegions() const;
+
 private:
 	std::map<std::string, Region::Ptr> _regions;
 

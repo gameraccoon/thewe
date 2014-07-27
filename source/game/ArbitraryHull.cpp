@@ -50,7 +50,7 @@ const std::vector<cocos2d::CCPoint>& ArbitraryHull::GetPoints(void) const
 	return _pointsArray;
 }
 
-bool ArbitraryHull::Contain(const cocos2d::CCPoint &point)
+bool ArbitraryHull::Contain(const cocos2d::CCPoint &point) const
 {
 	unsigned int i, j;
 	bool result = false;
@@ -74,14 +74,16 @@ void ArbitraryHull::SaveToXml(pugi::xml_document &docXml)
 	pugi::xml_node root = docXml.first_child();
 
 	pugi::xml_node node;
-	node = root.append_child("Unnamed");
+	node = root.append_child("Region");
+	node.append_attribute("Name").set_value("Unnamed");
 	
 	for (std::vector<cocos2d::CCPoint>::iterator it = _pointsArray.begin(); it != _pointsArray.end(); ++it)
 	{
 		cocos2d::CCPoint p = (*it);
 
-		node.append_attribute("x").set_value(p.x);
-		node.append_attribute("y").set_value(p.y);
+		pugi::xml_node point = node.append_child("Point");
+		point.append_attribute("x").set_value(p.x);
+		point.append_attribute("y").set_value(p.y);
 	}
 }
 

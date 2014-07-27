@@ -40,6 +40,9 @@
     <ClCompile Include="..\..\externals\pugixml-1.4\pugixml.cpp">
       <Filter>Helpers\pugixml</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\game\WorldLoader.cpp">
+      <Filter>Helpers</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\game\WorldMapLayer.h">
@@ -80,6 +83,9 @@
     </ClInclude>
     <ClInclude Include="..\..\externals\pugixml-1.4\pugiconfig.hpp">
       <Filter>Helpers\pugixml</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\game\WorldLoader.h">
+      <Filter>Helpers</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

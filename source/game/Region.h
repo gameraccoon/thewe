@@ -9,10 +9,16 @@ class Region
 {
 public:
 	typedef std::shared_ptr<Region> Ptr;
-	ArbitraryHull GetHull() const;
-	void SetHull(const ArbitraryHull& newHull);
+	typedef std::vector<ArbitraryHull> HullsArray;
+
+	const ArbitraryHull& GetHullByIndex(int index) const;
+	const HullsArray& GetHullsArray(void) const;
+	
+	void AddHull(ArbitraryHull &hull);
+	void EditHull(int index, const ArbitraryHull &hull);
+
 private:
-	ArbitraryHull _hull;
+	HullsArray _hulls;
 };
 
 #endif // REGION_H

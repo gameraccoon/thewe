@@ -3,6 +3,7 @@
 
 #include "RegionTestScene.h"
 #include "MapProjector.h"
+#include "WorldLoader.h"
 
 class RegionDrawLayer : public cocos2d::CCLayer
 {
@@ -26,9 +27,6 @@ private:
 	};
 
 private:
-	void NavigateBack();
-	void FinalizeRegion(std::string regionName, ArbitraryHull hull);
-
 	cocos2d::CCPoint _touchPos;
 	
 	cocos2d::CCLabelTTF *_printPos;
@@ -46,6 +44,8 @@ private:
 
 	cocos2d::CCPoint _touchLastPoint;
 	MapProjector _mapProjector;
+
+	WorldLoader _worldLoader;
 };
 
 #endif

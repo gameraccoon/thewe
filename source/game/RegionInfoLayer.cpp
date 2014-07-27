@@ -61,14 +61,8 @@ void RegionInfoLayer::_MenuInputListener(cocos2d::CCObject *sender)
 	switch (tag)
 	{
 	case MENU_ITEM_BACK:
-		NavigateBack();
+		cocos2d::CCDirector::sharedDirector()->popScene();
 		break;
 	default: break;
 	}
-}
-
-void RegionInfoLayer::NavigateBack()
-{
-	cocos2d::CCDirector *director = cocos2d::CCDirector::sharedDirector();
-	director->popScene();
 }
