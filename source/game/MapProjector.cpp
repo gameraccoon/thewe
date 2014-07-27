@@ -6,7 +6,7 @@ MapProjector::MapProjector(cocos2d::CCPoint shift, float scale)
 {
 	_mapSprite = nullptr;
 	// ToDo: вынести инициализацию спрайтов в отдельный класс
-	_mapSprite = cocos2d::CCSprite::create("../_gamedata/WorldMap.png");
+	_mapSprite = cocos2d::CCSprite::create("WorldMap.png");
 
 	SetShift(shift);
 	SetScale(scale);

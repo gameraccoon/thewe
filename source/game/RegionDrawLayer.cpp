@@ -34,14 +34,14 @@ bool RegionDrawLayer::init(void)
 	_printNum = cocos2d::CCLabelTTF::create("Num Points: 0", "Arial", 32);
 	_printNum->setPosition(cocos2d::CCPoint(origin.x + 200, origin.y + screen.height - 150));
 
-	_btnToggle = cocos2d::CCMenuItemImage::create("../_gamedata/btn-toggle-normal.png",
-		"../_gamedata/btn-toggle-selected.png", this, menu_selector(RegionDrawLayer::_MenuInputListener));
-	_btnDelete = cocos2d::CCMenuItemImage::create("../_gamedata/btn-delete-normal.png",
-		"../_gamedata/btn-delete-selected.png", this, menu_selector(RegionDrawLayer::_MenuInputListener));
-	_btnSaveXml = cocos2d::CCMenuItemImage::create("../_gamedata/btn-save-normal.png",
-		"../_gamedata/btn-save-selected.png", this, menu_selector(RegionDrawLayer::_MenuInputListener));
-	_btnBack = cocos2d::CCMenuItemImage::create("../_gamedata/btn-back-normal.png",
-		"../_gamedata/btn-back-selected.png", this, menu_selector(RegionDrawLayer::_MenuInputListener));
+	_btnToggle = cocos2d::CCMenuItemImage::create("btn-toggle-normal.png",
+		"btn-toggle-selected.png", this, menu_selector(RegionDrawLayer::_MenuInputListener));
+	_btnDelete = cocos2d::CCMenuItemImage::create("btn-delete-normal.png",
+		"btn-delete-selected.png", this, menu_selector(RegionDrawLayer::_MenuInputListener));
+	_btnSaveXml = cocos2d::CCMenuItemImage::create("btn-save-normal.png",
+		"btn-save-selected.png", this, menu_selector(RegionDrawLayer::_MenuInputListener));
+	_btnBack = cocos2d::CCMenuItemImage::create("btn-back-normal.png",
+		"btn-back-selected.png", this, menu_selector(RegionDrawLayer::_MenuInputListener));
 
 	CCPoint pos;
 	pos.x = origin.x + screen.width / 2.0f;

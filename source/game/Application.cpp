@@ -17,12 +17,14 @@ bool AppDelegate::applicationDidFinishLaunching()
 	director->setDisplayStats(true);
 	director->setAnimationInterval(1.0 / 60.0);
 
+	cocos2d::CCFileUtils::sharedFileUtils()->addSearchPath("../_gamedata");
+
 	_menuScene = cocos2d::CCScene::create();
 	
-	_btnRunWorldTestScene = CCMenuItemImage::create("../_gamedata/btn-map-normal.png",
-		"../_gamedata/btn-map-selected.png", _menuScene, menu_selector(AppDelegate::_MenuInputListener)); 
-	_btnRunCountryScene = CCMenuItemImage::create("../_gamedata/btn-region-normal.png",
-		"../_gamedata/btn-region-selected.png", _menuScene, menu_selector(AppDelegate::_MenuInputListener)); 
+	_btnRunWorldTestScene = CCMenuItemImage::create("btn-map-normal.png",
+		"btn-map-selected.png", _menuScene, menu_selector(AppDelegate::_MenuInputListener)); 
+	_btnRunCountryScene = CCMenuItemImage::create("btn-region-normal.png",
+		"btn-region-selected.png", _menuScene, menu_selector(AppDelegate::_MenuInputListener)); 
 
 	CCSize client = director->getVisibleSize();
 	CCPoint origin = director->getVisibleOrigin();
