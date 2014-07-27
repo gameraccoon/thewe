@@ -69,7 +69,7 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <OutDir>../../../release/Windows/</OutDir>
+    <OutDir>../../../build/Windows/</OutDir>
     <IncludePath>../../externals/pugixml-1.4;../../engine/cocos2dx/platform/third_party/win32/OGLES;../../engine/cocos2dx/platform/win32;../../engine/cocos2dx/kazmath/include;../../engine/cocos2dx/include;../../engine/cocos2dx;$(VCInstallDir)include;$(VCInstallDir)atlmfc\include;$(WindowsSDK_IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
