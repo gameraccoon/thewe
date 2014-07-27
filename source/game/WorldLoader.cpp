@@ -2,8 +2,25 @@
 
 #include "WorldMap.h"
 
-WorldLoader::WorldLoader(void)
+static void InitHullFromXml(const char *name, const pugi::xml_node &root,  ArbitraryHull &hull)
 {
+	pugi::xml_node hull_node = root.find_child_by_attribute("Name", name);
+
+	if (hull_node)
+	{
+		pugi::xml_node point_node = hull_node.first_child();
+
+		while (point_node)
+		{
+			cocos2d::CCPoint point;
+			point.x = point_node.attribute("x").as_float();
+			point.y = point_node.attribute("y").as_float();
+
+			hull.PushPoint(point);
+
+			point_node = point_node.next_sibling();
+		}
+	}
 }
 
 bool WorldLoader::LoadWorld(void)
@@ -34,7 +51,7 @@ bool WorldLoader::LoadWorld(void)
 			const char *hull_name = hull_node.attribute("Name").as_string();
 			ArbitraryHull hull;
 			
-			_InitHullFromXml(hull_name, hulls_xml_doc.first_child(), hull);
+			InitHullFromXml(hull_name, hulls_xml_doc.first_child(), hull);
 
 			region->AddHull(hull);
 
@@ -55,25 +72,4 @@ void WorldLoader::SaveCurrentWorldState(SaveSlotID slotID)
 
 void WorldLoader::RestoreLastWorldState(SaveSlotID slotID)
 {
-}
-
-void WorldLoader::_InitHullFromXml(const char *name, const pugi::xml_node &root,  ArbitraryHull &hull) const
-{
-	pugi::xml_node hull_node = root.find_child_by_attribute("Name", name);
-
-	if (hull_node)
-	{
-		pugi::xml_node point_node = hull_node.first_child();
-
-		while (point_node)
-		{
-			cocos2d::CCPoint point;
-			point.x = point_node.attribute("x").as_float();
-			point.y = point_node.attribute("y").as_float();
-
-			hull.PushPoint(point);
-
-			point_node = point_node.next_sibling();
-		}
-	}
 }

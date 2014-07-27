@@ -6,9 +6,8 @@
 
 #include "Region.h"
 
-class WorldLoader
+namespace WorldLoader
 {
-public:
 	enum class SaveSlotID
 	{
 		SAVE_SLOT_1,
@@ -18,23 +17,10 @@ public:
 		SAVES_SLOT_NUM
 	};
 
-public:
-	WorldLoader(void);
-
 	bool LoadWorld(void);
-
-	/*
-	void UploadWorldRegionsHull(const char *xmlFilename);
-	void UploadWorldRegionsInfo(const char *xmlFilename);
-	*/
-
+	
 	void SaveCurrentWorldState(SaveSlotID slotID);
 	void RestoreLastWorldState(SaveSlotID slotID);
-
-private:
-	void _InitHullFromXml(const char *name, const pugi::xml_node &root, ArbitraryHull &hull) const;
-
-	std::string _slotPaths[SaveSlotID::SAVES_SLOT_NUM];
 };
 
 #endif

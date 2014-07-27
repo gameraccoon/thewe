@@ -2,7 +2,7 @@
 
 #include "WorldMapLayer.h"
 #include "RegionInfoLayer.h"
-#include "RegionDrawLayer.h"
+#include "EditorLayer.h"
 
 GameScene::GameScene(void)
 	: _mapProjector(cocos2d::CCPoint(0.0f, 0.0f), 3.0f)
@@ -45,7 +45,7 @@ void GameScene::ShowMap()
 void GameScene::ShowEditor()
 {
 	ShowMap();
-	_editor = new RegionDrawLayer(&_mapProjector);
+	_editor = new EditorLayer(&_mapProjector);
 	addChild(_editor);
 	_editor->autorelease();
 }

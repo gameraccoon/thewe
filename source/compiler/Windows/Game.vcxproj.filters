@@ -19,9 +19,6 @@
     <ClCompile Include="..\..\Main.cpp">
       <Filter>Main</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\game\RegionDrawLayer.cpp">
-      <Filter>Views\GameScene\RegionEditor</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\game\RegionInfoLayer.cpp">
       <Filter>Views\GameScene\RegionInfo</Filter>
     </ClCompile>
@@ -40,6 +37,9 @@
     <ClCompile Include="..\..\game\WorldLoader.cpp">
       <Filter>Helpers</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\game\EditorLayer.cpp">
+      <Filter>Views\GameScene\RegionEditor</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\game\WorldMap.h">
@@ -56,9 +56,6 @@
     </ClInclude>
     <ClInclude Include="..\..\game\Application.h">
       <Filter>Main</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\game\RegionDrawLayer.h">
-      <Filter>Views\GameScene\RegionEditor</Filter>
     </ClInclude>
     <ClInclude Include="..\..\game\RegionInfoLayer.h">
       <Filter>Views\GameScene\RegionInfo</Filter>
@@ -80,6 +77,9 @@
     </ClInclude>
     <ClInclude Include="..\..\game\WorldLoader.h">
       <Filter>Helpers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\game\EditorLayer.h">
+      <Filter>Views\GameScene\RegionEditor</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

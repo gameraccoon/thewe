@@ -22,8 +22,8 @@ bool RegionInfoLayer::init(void)
 
 	{
 		using namespace cocos2d;
-	_btnBack = cocos2d::CCMenuItemImage::create("../_gamedata/btn-save-normal.png",
-		"../_gamedata/btn-save-selected.png", this, menu_selector(RegionInfoLayer::_MenuInputListener));
+		_btnBack = cocos2d::CCMenuItemImage::create("btn-save-normal.png", "btn-save-selected.png",
+			this, menu_selector(RegionInfoLayer::_MenuInputListener));
 	}
 
 	cocos2d::CCPoint pos;

@@ -21,12 +21,12 @@ bool MapGuiLayer::init(void)
 
 	{
 		using namespace cocos2d;
-		_btnZoomIn = cocos2d::CCMenuItemImage::create("../_gamedata/btn-zoom-in-normal.png",
-			"../_gamedata/btn-zoom-in-selected.png", this, menu_selector(MapGuiLayer::_MenuInputListener));
-		_btnZoomOut = cocos2d::CCMenuItemImage::create("../_gamedata/btn-zoom-out-normal.png",
-			"../_gamedata/btn-zoom-out-selected.png", this, menu_selector(MapGuiLayer::_MenuInputListener));
-		_btnEditor = cocos2d::CCMenuItemImage::create("../_gamedata/btn-editor-normal.png",
-			"../_gamedata/btn-editor-selected.png", this, menu_selector(MapGuiLayer::_MenuInputListener));
+		_btnZoomIn = cocos2d::CCMenuItemImage::create("btn-zoom-in-normal.png", "btn-zoom-in-selected.png",
+			this, menu_selector(MapGuiLayer::_MenuInputListener));
+		_btnZoomOut = cocos2d::CCMenuItemImage::create("btn-zoom-out-normal.png", "btn-zoom-out-selected.png",
+			this, menu_selector(MapGuiLayer::_MenuInputListener));
+		_btnEditor = cocos2d::CCMenuItemImage::create("btn-editor-normal.png", "btn-editor-selected.png",
+			this, menu_selector(MapGuiLayer::_MenuInputListener));
 	}
 
 	
