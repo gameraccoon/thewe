@@ -24,6 +24,9 @@ bool GameScene::init(void)
 	addChild(_worldMap);
 	_worldMap->autorelease();
 
+	// долгая операция.
+	WorldLoader::LoadWorld();
+
 	return true;
 }
 

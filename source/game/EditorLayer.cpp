@@ -67,9 +67,6 @@ bool EditorLayer::init(void)
 	addChild(menu);
 	setTouchEnabled(true);
 
-	// долгая операция.
-	WorldLoader::LoadWorld();
-
 	return true;
 }
 
@@ -143,6 +140,7 @@ void EditorLayer::_MenuInputListener(cocos2d::CCObject *sender)
 		_hull1.SaveToXml("../_gamedata/hulls.xml");
 		break;
 	case MENU_ITEM_RELOAD_WORLD:
+		WorldLoader::LoadWorld();
 		break;
 	default: break;
 	}

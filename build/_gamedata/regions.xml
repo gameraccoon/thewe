@@ -3,5 +3,6 @@
 	<Region Name="Russia" Population="20.0">
 		<Hull Name="Russia_1" />
 		<Hull Name="Russia_2" />
+		<Hull Name="Test" />
 	</Region>
 </RegionsMap>
