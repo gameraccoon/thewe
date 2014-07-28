@@ -19,6 +19,10 @@ public:
 
 private:
 	HullsArray _hulls;
+
+	float _population;
+
+	std::string shortDescription;
 };
 
 #endif // REGION_H

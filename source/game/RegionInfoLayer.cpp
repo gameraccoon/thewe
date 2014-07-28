@@ -22,7 +22,7 @@ bool RegionInfoLayer::init(void)
 
 	{
 		using namespace cocos2d;
-		_btnBack = cocos2d::CCMenuItemImage::create("btn-save-normal.png", "btn-save-selected.png",
+		_btnBack = cocos2d::CCMenuItemImage::create("btn-back-arrow-normal.png", "btn-back-arrow-selected.png",
 			this, menu_selector(RegionInfoLayer::_MenuInputListener));
 	}
 
@@ -31,7 +31,8 @@ bool RegionInfoLayer::init(void)
 	pos.y = origin.y + screen.height - 100.0f;
 
 	_btnBack->setTag(MENU_ITEM_BACK);
-	_btnBack->setPosition(pos - ccp(-700.0f, 500.0f));
+	_btnBack->setScale(5.0f);
+	_btnBack->setPosition(pos - ccp(-820.0f, 100.0f));
 
 	cocos2d::CCMenu *menu = cocos2d::CCMenu::create(_btnBack, NULL);
 	menu->setPosition(0.0f, 0.0f);

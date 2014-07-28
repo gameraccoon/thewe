@@ -1,8 +1,11 @@
 <?xml version="1.0"?>
 <RegionsMap>
-	<Region Name="Russia" Population="20.0">
+	<Region Name="Russia" Population="150.0">
 		<Hull Name="Russia_1" />
 		<Hull Name="Russia_2" />
-		<Hull Name="Test" />
+	</Region>
+	<Region Name="USA" Population="100.0">
+		<Hull Name="USA_1" />
+		<Hull Name="USA_2" />
 	</Region>
 </RegionsMap>
