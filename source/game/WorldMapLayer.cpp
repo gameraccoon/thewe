@@ -106,9 +106,9 @@ void WorldMapLayer::visit()
 {
 	CCLayer::visit();
 
-	for (auto regionIterator : WorldMap::Instance().GetRegions())
+	for (Region::Ptr region : WorldMap::Instance().GetRegions())
 	{
-		const Region::HullsArray &array = regionIterator.second->GetHullsArray();
+		const Region::HullsArray &array = region->GetHullsArray();
 
 		for (const ArbitraryHull &hull : array)
 		{
@@ -125,15 +125,15 @@ void WorldMapLayer::visit()
 
 Region::Ptr WorldMapLayer::GetRegionUnderPoint(const cocos2d::CCPoint& point) const
 {
-	for (auto regionIterator : WorldMap::Instance().GetRegions())
+	for (Region::Ptr region : WorldMap::Instance().GetRegions())
 	{
-		const Region::HullsArray &array = regionIterator.second->GetHullsArray();
+		const Region::HullsArray &array = region->GetHullsArray();
 
 		for (const ArbitraryHull &hull : array)
 		{
 			if (hull.Contain(_mapProjector->ProjectOnMap(point)))
 			{
-				return regionIterator.second;
+				return region;
 			}
 		}
 	}
