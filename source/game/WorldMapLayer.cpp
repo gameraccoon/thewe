@@ -114,13 +114,8 @@ void WorldMapLayer::visit()
 
 		for (const ArbitraryHull &hull : array)
 		{
-			ArbitraryHull projectedHull;
-			for (auto &point : hull.GetPoints())
-			{
-				projectedHull.PushPoint(_mapProjector->ProjectOnScreen(point));
-			}
-			
-			projectedHull.Draw();
+			// медленная операция
+			_mapProjector->ProjectOnScreen(hull).Draw();
 		}
 	}
 }

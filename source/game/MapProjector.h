@@ -3,6 +3,7 @@
 
 #include <cocos2d.h>
 #include "Point.h"
+#include "ArbitraryHull.h"
 
 class MapProjector
 {
@@ -11,6 +12,9 @@ public:
 
 	Point ProjectOnMap(Point screenPoint) const;
 	Point ProjectOnScreen(Point mapPoint) const;
+
+	ArbitraryHull ProjectOnMap(const ArbitraryHull& screenHull) const;
+	ArbitraryHull ProjectOnScreen(const ArbitraryHull& screenHull) const;
 
 	cocos2d::CCSprite* GetSprite() const;
 

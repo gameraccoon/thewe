@@ -17,7 +17,6 @@ public:
 	void Clear(void);
 	
 	int GetPointsNum(void) const;
-	const std::vector<Point>& GetPoints(void) const;
 
 	bool Contain(const Point &point) const;
 
@@ -25,7 +24,9 @@ public:
 	bool SaveToXml(const char *xmlFilename);
 
 private:
-	std::vector<Point> _pointsArray;
+	std::vector<cocos2d::CCPoint> _pointsArray;
+
+	friend class MapProjector;
 };
 
 #endif

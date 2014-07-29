@@ -77,6 +77,26 @@ Point MapProjector::ProjectOnScreen(Point mapPoint) const
 	return (mapPoint * _mapScale) + _mapShift;
 }
 
+ArbitraryHull MapProjector::ProjectOnMap(const ArbitraryHull& screenHull) const
+{
+	ArbitraryHull projectedHull;
+	for (auto &point : screenHull._pointsArray)
+	{
+		projectedHull.PushPoint(ProjectOnMap(point));
+	}
+	return projectedHull;
+}
+
+ArbitraryHull MapProjector::ProjectOnScreen(const ArbitraryHull& screenHull) const
+{
+	ArbitraryHull projectedHull;
+	for (auto &point : screenHull._pointsArray)
+	{
+		projectedHull.PushPoint(ProjectOnScreen(point));
+	}
+	return projectedHull;
+}
+
 cocos2d::CCSprite* MapProjector::GetSprite() const
 {
 	return _mapSprite;
