@@ -25,7 +25,7 @@ void WorldMap::CleanupRegions(void)
 	_regions.clear();
 }
 
-void WorldMap::AddRegion(std::string regionName, Region::Ptr region)
+void WorldMap::AddRegion(Region::Ptr region)
 {
 	_regions.push_back(region);
 }

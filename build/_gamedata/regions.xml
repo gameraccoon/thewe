@@ -1,8 +1,23 @@
 <?xml version="1.0"?>
 <RegionsMap>
-	<Region Name="Russia" Population="20.0">
+	<Region Name="Russia" Population="150.0" Desc="The United States of America (USA or U.S.A.), \n
+		commonly referred to as the United States (US or U.S.), America, and sometimes the States, \n
+		is a federal republic[16][17] consisting of 50 states and a federal district.  \n
+		The 48 contiguous states and Washington, D.C., are in central North America between Canada and Mexico. \n
+		The state of Alaska is the northwestern part of North America and the state of Hawaii  \n
+		is an archipelago in the mid-Pacific. The country also has five populated and nine unpopulated \n
+		territories in the Pacific and the Caribbean">
 		<Hull Name="Russia_1" />
 		<Hull Name="Russia_2" />
-		<Hull Name="Test" />
+	</Region>
+	<Region Name="USA" Population="100.0" Desc="The United States of America (USA or U.S.A.),  \n
+		commonly referred to as the United States (US or U.S.), America, and sometimes the States, \n
+		is a federal republic[16][17] consisting of 50 states and a federal district.  \n
+		The 48 contiguous states and Washington, D.C., are in central North America between Canada and Mexico. \n
+		The state of Alaska is the northwestern part of North America and the state of Hawaii  \n
+		is an archipelago in the mid-Pacific. The country also has five populated and nine unpopulated \n
+		territories in the Pacific and the Caribbean">
+		<Hull Name="USA_1" />
+		<Hull Name="USA_2" />
 	</Region>
 </RegionsMap>

@@ -18,7 +18,7 @@
    
 	cocos2d::CCEGLView* eglView = cocos2d::CCEGLView::sharedOpenGLView();
 	eglView->setViewName("Codename: The We");
-    eglView->setFrameSize(2048, 1536);
+    eglView->setFrameSize(2048, 1536); // 1280x720
     eglView->setFrameZoomFactor(0.4f);
     
 	return cocos2d::CCApplication::sharedApplication()->run();

@@ -28,7 +28,7 @@ public:
 	virtual void visit() override;
 
 private:
-	Region::Ptr GetRegionUnderPoint(const cocos2d::CCPoint& point);
+	Region::Ptr GetRegionUnderPoint(const cocos2d::CCPoint& point) const;
 
 	bool _isTapTouch;
 

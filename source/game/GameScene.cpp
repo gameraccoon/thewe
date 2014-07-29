@@ -64,10 +64,10 @@ void GameScene::ToggleEditor()
 	}
 }
 
-void GameScene::ShowRegionInfo(const std::string& regionName)
+void GameScene::ShowRegionInfo(const std::string& regionName, Region::Ptr region)
 {
 	ShowMap();
-	_regionInfo = new RegionInfoLayer();
+	_regionInfo = new RegionInfoLayer(region->GetInfo());
 	addChild(_regionInfo);
 	_regionInfo->autorelease();
 	_worldMap->SetMapInputEnabled(false);

@@ -76,7 +76,15 @@ void WorldMapLayer::ccTouchesEnded(cocos2d::CCSet* touches, cocos2d::CCEvent* ev
 	{
 		if (_isTapTouch)
 		{
-			dynamic_cast<GameScene*>(this->getParent())->ShowRegionInfo("Italy");
+			cocos2d::CCTouch *touch = dynamic_cast<cocos2d::CCTouch *>(touches->anyObject());
+			cocos2d::CCPoint point = touch->getLocation();
+
+			Region::Ptr region = GetRegionUnderPoint(point);
+
+			if (region)
+			{
+				dynamic_cast<GameScene*>(this->getParent())->ShowRegionInfo("Italy", region);
+			}
 		}
 	}
 }
@@ -115,7 +123,7 @@ void WorldMapLayer::visit()
 	}
 }
 
-Region::Ptr WorldMapLayer::GetRegionUnderPoint(const cocos2d::CCPoint& point)
+Region::Ptr WorldMapLayer::GetRegionUnderPoint(const cocos2d::CCPoint& point) const
 {
 	for (Region::Ptr region : WorldMap::Instance().GetRegions())
 	{

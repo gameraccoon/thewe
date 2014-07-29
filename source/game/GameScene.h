@@ -18,7 +18,7 @@ public:
 	void ShowMap();
 
 	void ToggleEditor();
-	void ShowRegionInfo(const std::string& regionName);
+	void ShowRegionInfo(const std::string& regionName, Region::Ptr region);
 
 	MapProjector _mapProjector;
 private:

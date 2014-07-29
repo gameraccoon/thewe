@@ -2,11 +2,12 @@
 #define REGION_INFO_LAYER_H
 
 #include "MapProjector.h"
+#include "Region.h"
 
 class RegionInfoLayer : public cocos2d::CCLayer
 {
 public:
-	RegionInfoLayer();
+	RegionInfoLayer(const Region::Info &info);
 
 	virtual bool init();
 	
@@ -22,8 +23,16 @@ private:
 
 private:	
 	cocos2d::CCMenuItemImage *_btnBack;
+	cocos2d::CCLabelTTF *_populationText;
+	cocos2d::CCLabelTTF *_regionNameText;
+	cocos2d::CCLabelTTF *_shortDescText;
+
+	cocos2d::CCDrawNode *_bkgDraw;
+
+	Region::Info _regionInfo;
 
 	void _MenuInputListener(cocos2d::CCObject *sender);
+	void _InitBackground(cocos2d::CCDrawNode *background) const;
 };
 
 #endif
