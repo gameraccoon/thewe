@@ -66,7 +66,7 @@ void WorldMapLayer::ccTouchesBegan(cocos2d::CCSet* touches, cocos2d::CCEvent* ev
 	{
 		cocos2d::CCTouch *touch = dynamic_cast<cocos2d::CCTouch*>(touches->anyObject());
 		_touchLastPoint = touch->getLocation();
-		_isTapTouch = true;
+		_touchFirstPos = touch->getLocation();
 	}
 }
 
@@ -74,11 +74,15 @@ void WorldMapLayer::ccTouchesEnded(cocos2d::CCSet* touches, cocos2d::CCEvent* ev
 {
 	if (_isInputEnabled)
 	{
-		if (_isTapTouch)
-		{
-			cocos2d::CCTouch *touch = dynamic_cast<cocos2d::CCTouch *>(touches->anyObject());
-			Point point = touch->getLocation();
+		cocos2d::CCTouch *touch = dynamic_cast<cocos2d::CCTouch *>(touches->anyObject());
+		Point point = touch->getLocation();
+		Point v = _touchFirstPos - point;
+		
+		const float size = v.Size();
+		const float tolerance = 5.0f;
 
+		if (size <= tolerance)
+		{
 			Region::Ptr region = GetRegionUnderPoint(point);
 
 			if (region)
@@ -97,8 +101,6 @@ void WorldMapLayer::ccTouchesMoved(cocos2d::CCSet* touches, cocos2d::CCEvent* ev
 
 		_mapProjector->SetShift(_mapProjector->GetShift() - _touchLastPoint + touch->getLocation());
 		_touchLastPoint = touch->getLocation();
-
-		_isTapTouch = false;
 	}
 }
 

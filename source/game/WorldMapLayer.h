@@ -30,9 +30,8 @@ public:
 private:
 	Region::Ptr GetRegionUnderPoint(const Point& point) const;
 
-	bool _isTapTouch;
-
 	Point _touchLastPoint;
+	Point _touchFirstPos;
 
 	MapProjector *_mapProjector;
 

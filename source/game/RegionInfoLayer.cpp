@@ -41,7 +41,6 @@ bool RegionInfoLayer::init(void)
 	sprintf_s(name, "Name %s", _regionInfo.name.c_str());
 
 	_populationText = cocos2d::CCLabelTTF::create(popul, "Arial", 64);
-	//_populationText = cocos2d::CCLabelTTF::initWithString(
 	_regionNameText = cocos2d::CCLabelTTF::create(name, "Arial", 64);
 	_shortDescText = cocos2d::CCLabelTTF::create(_regionInfo.desc.c_str(), "Arial", 64);
 
