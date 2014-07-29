@@ -37,20 +37,19 @@ bool RegionInfoLayer::init(void)
 
 	char popul[64];
 	char name[128];
-	sprintf_s(popul, "Pupulation %.1f \n millions", _regionInfo.population);
+	sprintf_s(popul, "Pupulation %.1f millions", _regionInfo.population);
 	sprintf_s(name, "Name %s", _regionInfo.name.c_str());
 
 	_populationText = cocos2d::CCLabelTTF::create(popul, "Arial", 64);
+	//_populationText = cocos2d::CCLabelTTF::initWithString(
 	_regionNameText = cocos2d::CCLabelTTF::create(name, "Arial", 64);
 	_shortDescText = cocos2d::CCLabelTTF::create(_regionInfo.desc.c_str(), "Arial", 64);
 
 	_populationText->setPosition(cocos2d::CCPoint(450.0f, screen.height - 100.0f));
 	_regionNameText->setPosition(cocos2d::CCPoint(450.0f, screen.height - 200.0f));
-	_shortDescText->setPosition(cocos2d::CCPoint(450.0f, screen.height - 300.0f));
-	_shortDescText->setHorizontalAlignment(cocos2d::CCTextAlignment::kCCTextAlignmentCenter);
-	_shortDescText->setVerticalAlignment(cocos2d::CCVerticalTextAlignment::kCCVerticalTextAlignmentCenter);
-
-	//cocos2d::CCTextAlignment
+	_shortDescText->setPosition(cocos2d::CCPoint(850.0f, screen.height - 800.0f));
+	_shortDescText->setDimensions(cocos2d::CCSize(1500.0f, 1000.0f));
+	_shortDescText->setHorizontalAlignment(cocos2d::CCTextAlignment::kCCTextAlignmentLeft);
 
 	cocos2d::CCMenu *menu = cocos2d::CCMenu::create(_btnBack, NULL);
 	menu->setPosition(0.0f, 0.0f);

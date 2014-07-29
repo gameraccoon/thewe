@@ -1,21 +1,21 @@
 <?xml version="1.0"?>
 <RegionsMap>
-	<Region Name="Russia" Population="150.0" Desc="The United States of America (USA or U.S.A.), \n
-		commonly referred to as the United States (US or U.S.), America, and sometimes the States, \n
-		is a federal republic[16][17] consisting of 50 states and a federal district.  \n
-		The 48 contiguous states and Washington, D.C., are in central North America between Canada and Mexico. \n
-		The state of Alaska is the northwestern part of North America and the state of Hawaii  \n
-		is an archipelago in the mid-Pacific. The country also has five populated and nine unpopulated \n
-		territories in the Pacific and the Caribbean">
+	<Region Name="Russia" Population="150.0" Desc="Russia Listeni/ˈrʌʃə/ or /ˈrʊʃə/ (Russian: Россия, tr. Rossiya;
+		IPA: [rɐˈsʲijə] ( listen)), also officially known as the Russian Federation[9] (Russian: Российская Федерация, tr.
+		Rossiyskaya Federatsiya; IPA: [rɐˈsʲijskəjə fʲɪdʲɪˈrat͡sɨjə] ( listen)), is a country in northern Eurasia.[10]
+		It is a federal semi-presidential republic. From northwest to southeast, Russia shares land borders with Norway, 
+		Finland, Estonia, Latvia, Lithuania and Poland (both with Kaliningrad Oblast), Belarus, Ukraine, Georgia, Azerbaijan,
+		Kazakhstan, China, Mongolia, and North Korea. It shares maritime borders with Japan by the Sea of Okhotsk, the US
+		state of Alaska across the Bering Strait and Canada's Arctic islands. At 17,075,400 square kilometres (6,592,800 sq mi)">
 		<Hull Name="Russia_1" />
 		<Hull Name="Russia_2" />
 	</Region>
-	<Region Name="USA" Population="100.0" Desc="The United States of America (USA or U.S.A.),  \n
-		commonly referred to as the United States (US or U.S.), America, and sometimes the States, \n
-		is a federal republic[16][17] consisting of 50 states and a federal district.  \n
-		The 48 contiguous states and Washington, D.C., are in central North America between Canada and Mexico. \n
-		The state of Alaska is the northwestern part of North America and the state of Hawaii  \n
-		is an archipelago in the mid-Pacific. The country also has five populated and nine unpopulated \n
+	<Region Name="USA" Population="100.0" Desc="The United States of America (USA or U.S.A.), 
+		commonly referred to as the United States (US or U.S.), America, and sometimes the States,
+		is a federal republic[16][17] consisting of 50 states and a federal district. 
+		The 48 contiguous states and Washington, D.C., are in central North America between Canada and Mexico.
+		The state of Alaska is the northwestern part of North America and the state of Hawaii 
+		is an archipelago in the mid-Pacific. The country also has five populated and nine unpopulated
 		territories in the Pacific and the Caribbean">
 		<Hull Name="USA_1" />
 		<Hull Name="USA_2" />
