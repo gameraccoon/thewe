@@ -35,13 +35,26 @@ void MapProjector::SetShift(cocos2d::CCPoint shift)
 
 void MapProjector::SetScale(float scale)
 {
+	cocos2d::CCPoint oldShift = _mapShift;
+	// предотвращаем сдвиг камеры относительно центра карты
 	SetShift(_screenCenter + (_mapShift - _screenCenter) * (scale / _mapScale));
 	_mapScale = scale;
+	
+	cocos2d::CCPoint spriteSize = GetSprite()->getContentSize();
+	if (_mapShift.y > _mapScale * _mapShift.y / 2 && _mapShift.y < 2 * _screenCenter.y - _mapScale * spriteSize.y / 2)
+	{
+		_mapScale = (_screenCenter.y * 2) / spriteSize.y;
+		// хак -- предотвращение сдвига в сторону центра карты при максимальном отдалении
+		SetShift(oldShift);
+	}
 
 	if (_mapSprite)
 	{
 		_mapSprite->setScale(_mapScale);
 	}
+
+	// хак -- предотвращение выхода за границу карты при отдалении
+	SetShift(_mapShift);
 }
 
 cocos2d::CCPoint MapProjector::GetShift()
