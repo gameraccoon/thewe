@@ -2,6 +2,8 @@
 
 #include "WorldMap.h"
 
+#include "Point.h"
+
 static void InitHullFromXml(const char *name, const pugi::xml_node &root,  ArbitraryHull &hull)
 {
 	pugi::xml_node hull_node = root.find_child_by_attribute("Name", name);
@@ -12,7 +14,7 @@ static void InitHullFromXml(const char *name, const pugi::xml_node &root,  Arbit
 
 		while (point_node)
 		{
-			cocos2d::CCPoint point;
+			Point point;
 			point.x = point_node.attribute("x").as_float();
 			point.y = point_node.attribute("y").as_float();
 

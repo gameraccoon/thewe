@@ -2,6 +2,8 @@
 
 #include "GameScene.h"
 
+#include "Point.h"
+
 AppDelegate::AppDelegate()
 {
 }
@@ -31,18 +33,18 @@ bool AppDelegate::applicationDidFinishLaunching()
 		_menuScene, menu_selector(AppDelegate::_MenuInputListener));
 
 	CCSize client = director->getVisibleSize();
-	CCPoint origin = director->getVisibleOrigin();
-	CCPoint pos;
+	Point origin = director->getVisibleOrigin();
+	Point pos;
 	pos.x = origin.x + client.width / 2.0f;
 	pos.y = origin.y + client.height - 100.0f;
 
-	_btnRunGame->setPosition(pos - cocos2d::CCPoint(0.0f, 100.0f));
+	_btnRunGame->setPosition(pos - Point(0.0f, 100.0f));
 	_btnRunGame->setTag(MENU_ITEM_RUN_GAME);
 	_btnRunGame->setScale(5.0f);
-	_btnTestScene1->setPosition(pos - cocos2d::CCPoint(0.0f, 400.0f));
+	_btnTestScene1->setPosition(pos - Point(0.0f, 400.0f));
 	_btnTestScene1->setTag(MENU_ITEM_TEST_SCENE_1);
 	_btnTestScene1->setScale(5.0f);
-	_btnExitGame->setPosition(pos - cocos2d::CCPoint(0.0f, 700.0f));
+	_btnExitGame->setPosition(pos - Point(0.0f, 700.0f));
 	_btnExitGame->setTag(MENU_ITEM_EXIT);
 	_btnExitGame->setScale(5.0f);
 

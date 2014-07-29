@@ -5,7 +5,7 @@
 #include "EditorLayer.h"
 
 GameScene::GameScene(void)
-	: _mapProjector(cocos2d::CCPoint(0.0f, 0.0f), 3.0f)
+	: _mapProjector(Point(0.0f, 0.0f), 3.0f)
 	, _editor(nullptr)
 	, _regionInfo(nullptr)
 	, _worldMap(nullptr)

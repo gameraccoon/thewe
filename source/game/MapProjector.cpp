@@ -1,8 +1,8 @@
 #include "MapProjector.h"
 
-static const cocos2d::CCPoint MAP_INITIAL_SIZE = cocos2d::CCPoint(1390.0f, 1003.0f);
+static const Point MAP_INITIAL_SIZE = Point(1390.0f, 1003.0f);
 
-MapProjector::MapProjector(cocos2d::CCPoint shift, float scale)
+MapProjector::MapProjector(Point shift, float scale)
 {
 	_mapSprite = nullptr;
 	// ToDo: вынести инициализацию спрайтов в отдельный класс
@@ -12,9 +12,9 @@ MapProjector::MapProjector(cocos2d::CCPoint shift, float scale)
 	SetScale(scale);
 }
 
-void MapProjector::SetShift(cocos2d::CCPoint shift)
+void MapProjector::SetShift(Point shift)
 {
-	cocos2d::CCPoint spriteSize = GetSprite()->getContentSize();
+	Point spriteSize = GetSprite()->getContentSize();
 	
 	_mapShift = shift;
 	if (shift.y > _mapScale * spriteSize.y / 2)
@@ -35,12 +35,12 @@ void MapProjector::SetShift(cocos2d::CCPoint shift)
 
 void MapProjector::SetScale(float scale)
 {
-	cocos2d::CCPoint oldShift = _mapShift;
+	Point oldShift = _mapShift;
 	// предотвращаем сдвиг камеры относительно центра карты
 	SetShift(_screenCenter + (_mapShift - _screenCenter) * (scale / _mapScale));
 	_mapScale = scale;
 	
-	cocos2d::CCPoint spriteSize = GetSprite()->getContentSize();
+	Point spriteSize = GetSprite()->getContentSize();
 	if (_mapShift.y > _mapScale * _mapShift.y / 2 && _mapShift.y < 2 * _screenCenter.y - _mapScale * spriteSize.y / 2)
 	{
 		_mapScale = (_screenCenter.y * 2) / spriteSize.y;
@@ -57,7 +57,7 @@ void MapProjector::SetScale(float scale)
 	SetShift(_mapShift);
 }
 
-cocos2d::CCPoint MapProjector::GetShift()
+Point MapProjector::GetShift()
 {
 	return _mapShift;
 }
@@ -67,12 +67,12 @@ float MapProjector::GetScale()
 	return _mapScale;
 }
 
-cocos2d::CCPoint MapProjector::ProjectOnMap(cocos2d::CCPoint screenPoint) const
+Point MapProjector::ProjectOnMap(Point screenPoint) const
 {
 	return (screenPoint - _mapShift) / _mapScale;
 }
 
-cocos2d::CCPoint MapProjector::ProjectOnScreen(cocos2d::CCPoint mapPoint) const
+Point MapProjector::ProjectOnScreen(Point mapPoint) const
 {
 	return (mapPoint * _mapScale) + _mapShift;
 }
@@ -82,7 +82,7 @@ cocos2d::CCSprite* MapProjector::GetSprite() const
 	return _mapSprite;
 }
 
-void MapProjector::SetScreenCenter(cocos2d::CCPoint centerPos)
+void MapProjector::SetScreenCenter(Point centerPos)
 {
 	_screenCenter = centerPos;	
 }

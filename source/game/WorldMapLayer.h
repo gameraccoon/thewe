@@ -28,11 +28,11 @@ public:
 	virtual void visit() override;
 
 private:
-	Region::Ptr GetRegionUnderPoint(const cocos2d::CCPoint& point) const;
+	Region::Ptr GetRegionUnderPoint(const Point& point) const;
 
 	bool _isTapTouch;
 
-	cocos2d::CCPoint _touchLastPoint;
+	Point _touchLastPoint;
 
 	MapProjector *_mapProjector;
 

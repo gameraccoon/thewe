@@ -37,6 +37,9 @@
     <ClCompile Include="..\..\game\EditorLayer.cpp">
       <Filter>Views\GameScene\RegionEditor</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\game\Point.cpp">
+      <Filter>EngineInterface</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\game\WorldMap.h">
@@ -72,6 +75,9 @@
     <ClInclude Include="..\..\game\EditorLayer.h">
       <Filter>Views\GameScene\RegionEditor</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\game\Point.h">
+      <Filter>EngineInterface</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Views">
@@ -100,6 +106,9 @@
     </Filter>
     <Filter Include="Views\GameScene\RegionEditor">
       <UniqueIdentifier>{69e7caf7-bb5f-4b10-9cce-0e3e629f9857}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="EngineInterface">
+      <UniqueIdentifier>{bbfc5f72-2b67-46c5-9bcf-0a4f1608b351}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

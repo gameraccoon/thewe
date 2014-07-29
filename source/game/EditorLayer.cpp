@@ -21,14 +21,14 @@ bool EditorLayer::init(void)
 	_touchPos.y = 0.0f;
 
 	cocos2d::CCDirector *director = cocos2d::CCDirector::sharedDirector();
-	cocos2d::CCSize screen = director->getVisibleSize();
-	cocos2d::CCPoint origin = director->getVisibleOrigin();
+	Point screen = director->getVisibleSize();
+	Point origin = director->getVisibleOrigin();
 
 	_printPos = cocos2d::CCLabelTTF::create("X: 0, Y: 0", "Arial", 32);
-	_printPos->setPosition(cocos2d::CCPoint(origin.x + 200, origin.y + screen.height - 100));
+	_printPos->setPosition(Point(origin.x + 200, origin.y + screen.y - 100));
 
 	_printNum = cocos2d::CCLabelTTF::create("Num Points: 0", "Arial", 32);
-	_printNum->setPosition(cocos2d::CCPoint(origin.x + 200, origin.y + screen.height - 150));
+	_printNum->setPosition(Point(origin.x + 200, origin.y + screen.y - 150));
 
 	{
 		using namespace cocos2d;
@@ -42,9 +42,9 @@ bool EditorLayer::init(void)
 			this, menu_selector(EditorLayer::_MenuInputListener));
 	}
 
-	cocos2d::CCPoint pos;
-	pos.x = origin.x + screen.width / 2.0f;
-	pos.y = origin.y + screen.height - 100.0f;
+	Point pos;
+	pos.x = origin.x + screen.x / 2.0f;
+	pos.y = origin.y + screen.y - 100.0f;
 
 	_btnToggle->setScale(4.0f);
 	_btnToggle->setTag(MENU_ITEM_TOGGLE);
@@ -117,7 +117,7 @@ void EditorLayer::ccTouchesMoved(cocos2d::CCSet* touches, cocos2d::CCEvent* even
 	CCLayer::ccTouchesMoved(touches, event);
 	
 	cocos2d::CCTouch *touch = dynamic_cast<cocos2d::CCTouch*>(touches->anyObject());
-	cocos2d::CCPoint point = touch->getLocation();
+	Point point = touch->getLocation();
 
 	if (!_isCreationAllowed)
 	{

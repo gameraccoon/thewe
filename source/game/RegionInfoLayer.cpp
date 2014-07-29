@@ -18,8 +18,8 @@ bool RegionInfoLayer::init(void)
 	}
 
 	cocos2d::CCDirector *director = cocos2d::CCDirector::sharedDirector();
-	cocos2d::CCSize screen = director->getVisibleSize();
-	cocos2d::CCPoint origin = director->getVisibleOrigin();
+	Point screen = director->getVisibleSize();
+	Point origin = director->getVisibleOrigin();
 
 	{
 		using namespace cocos2d;
@@ -27,9 +27,9 @@ bool RegionInfoLayer::init(void)
 			this, menu_selector(RegionInfoLayer::_MenuInputListener));
 	}
 
-	cocos2d::CCPoint pos;
-	pos.x = origin.x + screen.width / 2.0f;
-	pos.y = origin.y + screen.height - 100.0f;
+	Point pos;
+	pos.x = origin.x + screen.x / 2.0f;
+	pos.y = origin.y + screen.y - 100.0f;
 
 	_btnBack->setTag(MENU_ITEM_BACK);
 	_btnBack->setScale(5.0f);
@@ -45,11 +45,11 @@ bool RegionInfoLayer::init(void)
 	_regionNameText = cocos2d::CCLabelTTF::create(name, "Arial", 64);
 	_shortDescText = cocos2d::CCLabelTTF::create(_regionInfo.desc.c_str(), "Arial", 64);
 
-	_populationText->setPosition(cocos2d::CCPoint(450.0f, screen.height - 100.0f));
-	_regionNameText->setPosition(cocos2d::CCPoint(450.0f, screen.height - 200.0f));
-	_shortDescText->setPosition(cocos2d::CCPoint(850.0f, screen.height - 800.0f));
-	_shortDescText->setDimensions(cocos2d::CCSize(1500.0f, 1000.0f));
-	_shortDescText->setHorizontalAlignment(cocos2d::CCTextAlignment::kCCTextAlignmentLeft);
+	_populationText->setPosition(Point(450.0f, screen.y - 100.0f));
+	_regionNameText->setPosition(Point(450.0f, screen.y - 200.0f));
+	_shortDescText->setPosition(Point(450.0f, screen.y - 300.0f));
+	_shortDescText->setDimensions(Point(1500.0f, 1000.0f));
+	_shortDescText->setVerticalAlignment(cocos2d::CCVerticalTextAlignment::kCCVerticalTextAlignmentCenter);
 
 	cocos2d::CCMenu *menu = cocos2d::CCMenu::create(_btnBack, NULL);
 	menu->setPosition(0.0f, 0.0f);
@@ -104,14 +104,14 @@ void RegionInfoLayer::_InitBackground(cocos2d::CCDrawNode *background) const
 		return;
 	}
 
-	cocos2d::CCSize screen = cocos2d::CCDirector::sharedDirector()->getVisibleSize();
+	cocos2d::CCPoint screen = cocos2d::CCDirector::sharedDirector()->getVisibleSize();
 	cocos2d::CCPoint origin = cocos2d::CCDirector::sharedDirector()->getVisibleOrigin();
 
 	cocos2d::CCPoint vertices[4];
 	vertices[0] = origin;
-	vertices[1] = origin + cocos2d::CCPoint(screen.width, 0.0f);
-	vertices[2] = origin + cocos2d::CCPoint(screen.width, screen.height);
-	vertices[3] = origin + cocos2d::CCPoint(0.0f, screen.height);
+	vertices[1] = origin + cocos2d::CCPoint(screen.x, 0.0f);
+	vertices[2] = origin + cocos2d::CCPoint(screen.x, screen.y);
+	vertices[3] = origin + cocos2d::CCPoint(0.0f, screen.y);
 
 	cocos2d::ccColor4F fill, border;
 	

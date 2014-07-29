@@ -27,7 +27,7 @@ private:
 	};
 
 private:
-	cocos2d::CCPoint _touchPos;
+	Point _touchPos;
 	
 	cocos2d::CCLabelTTF *_printPos;
 	cocos2d::CCLabelTTF *_printNum;
@@ -44,7 +44,7 @@ private:
 
 	MapProjector *_mapProjector;
 
-	cocos2d::CCPoint _touchLastPoint;
+	Point _touchLastPoint;
 };
 
 #endif

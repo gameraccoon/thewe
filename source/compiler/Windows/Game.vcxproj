@@ -15,6 +15,7 @@
     <ClCompile Include="..\..\game\ArbitraryHull.cpp" />
     <ClCompile Include="..\..\game\MapGuiLayer.cpp" />
     <ClCompile Include="..\..\game\MapProjector.cpp" />
+    <ClCompile Include="..\..\game\Point.cpp" />
     <ClCompile Include="..\..\game\Region.cpp" />
     <ClCompile Include="..\..\game\EditorLayer.cpp" />
     <ClCompile Include="..\..\game\RegionInfoLayer.cpp" />
@@ -29,6 +30,7 @@
     <ClInclude Include="..\..\game\ArbitraryHull.h" />
     <ClInclude Include="..\..\game\MapGuiLayer.h" />
     <ClInclude Include="..\..\game\MapProjector.h" />
+    <ClInclude Include="..\..\game\Point.h" />
     <ClInclude Include="..\..\game\Region.h" />
     <ClInclude Include="..\..\game\EditorLayer.h" />
     <ClInclude Include="..\..\game\RegionInfoLayer.h" />

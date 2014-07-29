@@ -31,12 +31,12 @@ bool MapGuiLayer::init(void)
 
 	
 	cocos2d::CCDirector *director = cocos2d::CCDirector::sharedDirector();
-	cocos2d::CCSize screen = director->getVisibleSize();
-	cocos2d::CCPoint origin = director->getVisibleOrigin();
+	Point screen = director->getVisibleSize();
+	Point origin = director->getVisibleOrigin();
 
-	cocos2d::CCPoint pos;
+	Point pos;
 	pos.x = origin.x + 100.0f;
-	pos.y = origin.y + screen.height - 100.0f;
+	pos.y = origin.y + screen.y - 100.0f;
 	
 	_btnZoomIn->setScale(2.0f);
 	_btnZoomIn->setTag(MENU_ITEM_ZOOM_IN);

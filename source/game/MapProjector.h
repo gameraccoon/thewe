@@ -2,31 +2,32 @@
 #define MAP_PROJECTOR_H
 
 #include <cocos2d.h>
+#include "Point.h"
 
 class MapProjector
 {
 public:
-	MapProjector(cocos2d::CCPoint shift, float scale);
+	MapProjector(Point shift, float scale);
 
-	cocos2d::CCPoint ProjectOnMap(cocos2d::CCPoint screenPoint) const;
-	cocos2d::CCPoint ProjectOnScreen(cocos2d::CCPoint mapPoint) const;
+	Point ProjectOnMap(Point screenPoint) const;
+	Point ProjectOnScreen(Point mapPoint) const;
 
 	cocos2d::CCSprite* GetSprite() const;
 
-	void SetShift(cocos2d::CCPoint shift);
+	void SetShift(Point shift);
 	void SetScale(float scale);
 
-	cocos2d::CCPoint GetShift();
+	Point GetShift();
 	float GetScale();
 
-	void SetScreenCenter(cocos2d::CCPoint centerPos);
+	void SetScreenCenter(Point centerPos);
 
 private:
 	float _mapScale;
-	cocos2d::CCPoint _mapShift;
+	Point _mapShift;
 	cocos2d::CCSprite *_mapSprite;
 
-	cocos2d::CCPoint _screenCenter;
+	Point _screenCenter;
 };
 
 #endif // MAP_PROJECTOR_H

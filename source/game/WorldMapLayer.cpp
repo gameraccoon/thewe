@@ -23,8 +23,8 @@ bool WorldMapLayer::init(void)
 	setTouchEnabled(true);
     setKeypadEnabled(true);
 
-	cocos2d::CCPoint origin = cocos2d::CCDirector::sharedDirector()->getVisibleOrigin();
-	cocos2d::CCSize screen = cocos2d::CCDirector::sharedDirector()->getVisibleSize();
+	Point origin = cocos2d::CCDirector::sharedDirector()->getVisibleOrigin();
+	Point screen = cocos2d::CCDirector::sharedDirector()->getVisibleSize();
 
 	SetGuiEnabled(true);
 
@@ -77,7 +77,7 @@ void WorldMapLayer::ccTouchesEnded(cocos2d::CCSet* touches, cocos2d::CCEvent* ev
 		if (_isTapTouch)
 		{
 			cocos2d::CCTouch *touch = dynamic_cast<cocos2d::CCTouch *>(touches->anyObject());
-			cocos2d::CCPoint point = touch->getLocation();
+			Point point = touch->getLocation();
 
 			Region::Ptr region = GetRegionUnderPoint(point);
 
@@ -123,7 +123,7 @@ void WorldMapLayer::visit()
 	}
 }
 
-Region::Ptr WorldMapLayer::GetRegionUnderPoint(const cocos2d::CCPoint& point) const
+Region::Ptr WorldMapLayer::GetRegionUnderPoint(const Point& point) const
 {
 	for (Region::Ptr region : WorldMap::Instance().GetRegions())
 	{

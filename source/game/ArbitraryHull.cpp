@@ -1,6 +1,6 @@
 #include "ArbitraryHull.h"
 
-void ArbitraryHull::PushPoint(const cocos2d::CCPoint &point)
+void ArbitraryHull::PushPoint(const Point &point)
 {
 	_pointsArray.push_back(point);
 }
@@ -20,8 +20,14 @@ void ArbitraryHull::Draw(const cocos2d::ccColor4F &color) const
 		return;
 	}
 
+	std::vector<cocos2d::CCPoint> points;
+	for (const Point& point : _pointsArray)
+	{
+		points.push_back(point);
+	}
+
 	cocos2d::ccDrawColor4F(color.r, color.g, color.b, color.a);
-	cocos2d::ccDrawPoly(&(*_pointsArray.begin()), _pointsArray.size(), true);
+	cocos2d::ccDrawPoly(&(*points.begin()), points.size(), true);
 }
 
 void ArbitraryHull::Draw(void) const
@@ -45,12 +51,12 @@ int ArbitraryHull::GetPointsNum(void) const
 	return _pointsArray.size();
 }
 
-const std::vector<cocos2d::CCPoint>& ArbitraryHull::GetPoints(void) const
+const std::vector<Point>& ArbitraryHull::GetPoints(void) const
 {
 	return _pointsArray;
 }
 
-bool ArbitraryHull::Contain(const cocos2d::CCPoint &point) const
+bool ArbitraryHull::Contain(const Point &point) const
 {
 	unsigned int i, j;
 	bool result = false;
@@ -77,9 +83,9 @@ void ArbitraryHull::SaveToXml(pugi::xml_document &docXml)
 	node = root.append_child("Region");
 	node.append_attribute("Name").set_value("Unnamed");
 	
-	for (std::vector<cocos2d::CCPoint>::iterator it = _pointsArray.begin(); it != _pointsArray.end(); ++it)
+	for (std::vector<Point>::iterator it = _pointsArray.begin(); it != _pointsArray.end(); ++it)
 	{
-		cocos2d::CCPoint p = (*it);
+		Point p = (*it);
 
 		pugi::xml_node point = node.append_child("Point");
 		point.append_attribute("x").set_value(p.x);
