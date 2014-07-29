@@ -1,14 +1,14 @@
-#include "RegionInfoLayer.h"
+#include "CellScreenLayer.h"
 
 #include "GameScene.h"
 
-RegionInfoLayer::RegionInfoLayer(const Region::Info &info)
-	:_regionInfo(info)			
+CellScreenLayer::CellScreenLayer(Cell::Ptr cell)
 {
+	_cell = cell;
 	init();
 }
 
-bool RegionInfoLayer::init(void)
+bool CellScreenLayer::init()
 {
 	if (!CCLayer::init())
 	{
@@ -22,7 +22,7 @@ bool RegionInfoLayer::init(void)
 	{
 		using namespace cocos2d;
 		_btnBack = cocos2d::CCMenuItemImage::create("btn-back-arrow-normal.png", "btn-back-arrow-selected.png",
-			this, menu_selector(RegionInfoLayer::_MenuInputListener));
+			this, menu_selector(CellScreenLayer::_MenuInputListener));
 	}
 
 	Point pos;
@@ -33,20 +33,24 @@ bool RegionInfoLayer::init(void)
 	_btnBack->setScale(5.0f);
 	_btnBack->setPosition(pos - ccp(-820.0f, 100.0f));
 
-	char popul[64];
-	char name[128];
-	sprintf_s(popul, "Pupulation %.1f millions", _regionInfo.population);
-	sprintf_s(name, "Name %s", _regionInfo.name.c_str());
+	char membersInfo[64];
+	sprintf_s(membersInfo, "%.1f members in the cell ", _cell->GetMembersCount());
+	char cashInfo[64];
+	sprintf_s(cashInfo, "Cash %.1f$", _cell->GetCash());
+	char moralInfo[64];
+	sprintf_s(moralInfo, "Moral: %.1f percent", _cell->GetMoralValue() * 100);
+	char contentmentInfo[64];
+	sprintf_s(contentmentInfo, "Contentment: %.1f percent", _cell->GetContentment() * 100);
 
-	_populationText = cocos2d::CCLabelTTF::create(popul, "Arial", 64);
-	_regionNameText = cocos2d::CCLabelTTF::create(name, "Arial", 64);
-	_shortDescText = cocos2d::CCLabelTTF::create(_regionInfo.desc.c_str(), "Arial", 64);
+	_membersText = cocos2d::CCLabelTTF::create(membersInfo, "Arial", 64);
+	_cashText = cocos2d::CCLabelTTF::create(cashInfo, "Arial", 64);
+	_moralText = cocos2d::CCLabelTTF::create(moralInfo, "Arial", 64);
+	_contentmentText = cocos2d::CCLabelTTF::create(contentmentInfo, "Arial", 64);
 
-	_populationText->setPosition(Point(450.0f, screen.y - 100.0f));
-	_regionNameText->setPosition(Point(450.0f, screen.y - 200.0f));
-	_shortDescText->setPosition(Point(450.0f, screen.y - 300.0f));
-	_shortDescText->setDimensions(Point(1500.0f, 1000.0f));
-	_shortDescText->setVerticalAlignment(cocos2d::CCVerticalTextAlignment::kCCVerticalTextAlignmentCenter);
+	_membersText->setPosition(Point(450.0f, screen.y - 100.0f));
+	_cashText->setPosition(Point(450.0f, screen.y - 200.0f));
+	_moralText->setPosition(Point(450.0f, screen.y - 300.0f));
+	_contentmentText->setPosition(Point(450.0f, screen.y - 400.0f));
 
 	cocos2d::CCMenu *menu = cocos2d::CCMenu::create(_btnBack, NULL);
 	menu->setPosition(0.0f, 0.0f);
@@ -56,30 +60,31 @@ bool RegionInfoLayer::init(void)
 	
 	addChild(_bkgDraw, 0);
 	addChild(menu, 1);
-	addChild(_populationText, 1);
-	addChild(_regionNameText, 1);
-	addChild(_shortDescText, 1);
+	addChild(_membersText, 1);
+	addChild(_cashText, 1);
+	addChild(_moralText, 1);
+	addChild(_contentmentText, 1);
 	setTouchEnabled(true);
 
 	return true;
 }
 
-void RegionInfoLayer::ccTouchesBegan(cocos2d::CCSet* touches, cocos2d::CCEvent* event)
+void CellScreenLayer::ccTouchesBegan(cocos2d::CCSet* touches, cocos2d::CCEvent* event)
 {
 	cocos2d::CCLayer::ccTouchesBegan(touches, event);
 }
 
-void RegionInfoLayer::ccTouchesEnded(cocos2d::CCSet* touches, cocos2d::CCEvent* event)
+void CellScreenLayer::ccTouchesEnded(cocos2d::CCSet* touches, cocos2d::CCEvent* event)
 {
 	cocos2d::CCLayer::ccTouchesEnded(touches, event);
 }
 
-void RegionInfoLayer::ccTouchesMoved(cocos2d::CCSet* touches, cocos2d::CCEvent* event)
+void CellScreenLayer::ccTouchesMoved(cocos2d::CCSet* touches, cocos2d::CCEvent* event)
 {
 	cocos2d::CCLayer::ccTouchesMoved(touches, event);
 }
 
-void RegionInfoLayer::_MenuInputListener(cocos2d::CCObject *sender)
+void CellScreenLayer::_MenuInputListener(cocos2d::CCObject *sender)
 {
 	cocos2d::CCMenuItemImage *item = dynamic_cast<cocos2d::CCMenuItemImage*>(sender);
 
@@ -94,7 +99,7 @@ void RegionInfoLayer::_MenuInputListener(cocos2d::CCObject *sender)
 	}
 }
 
-void RegionInfoLayer::_InitBackground(cocos2d::CCDrawNode *background) const
+void CellScreenLayer::_InitBackground(cocos2d::CCDrawNode *background) const
 {
 	if (!background)
 	{

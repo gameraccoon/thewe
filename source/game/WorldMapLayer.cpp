@@ -87,7 +87,7 @@ void WorldMapLayer::ccTouchesEnded(cocos2d::CCSet* touches, cocos2d::CCEvent* ev
 
 			if (region)
 			{
-				dynamic_cast<GameScene*>(this->getParent())->ShowRegionInfo("Italy", region);
+				dynamic_cast<GameScene*>(this->getParent())->ShowRegionInfo(region);
 			}
 		}
 	}

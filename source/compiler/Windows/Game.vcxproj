@@ -13,6 +13,8 @@
   <ItemGroup>
     <ClCompile Include="..\..\game\Application.cpp" />
     <ClCompile Include="..\..\game\ArbitraryHull.cpp" />
+    <ClCompile Include="..\..\game\Cell.cpp" />
+    <ClCompile Include="..\..\game\CellScreenLayer.cpp" />
     <ClCompile Include="..\..\game\MapGuiLayer.cpp" />
     <ClCompile Include="..\..\game\MapProjector.cpp" />
     <ClCompile Include="..\..\game\Point.cpp" />
@@ -28,6 +30,8 @@
   <ItemGroup>
     <ClInclude Include="..\..\game\Application.h" />
     <ClInclude Include="..\..\game\ArbitraryHull.h" />
+    <ClInclude Include="..\..\game\Cell.h" />
+    <ClInclude Include="..\..\game\CellScreenLayer.h" />
     <ClInclude Include="..\..\game\MapGuiLayer.h" />
     <ClInclude Include="..\..\game\MapProjector.h" />
     <ClInclude Include="..\..\game\Point.h" />
