@@ -4,7 +4,8 @@
 
 #include "GameScene.h"
 
-RegionInfoLayer::RegionInfoLayer(void)
+RegionInfoLayer::RegionInfoLayer(const Region::Info &info)
+	:_regionInfo(info)			
 {
 	init();
 }
@@ -34,6 +35,23 @@ bool RegionInfoLayer::init(void)
 	_btnBack->setScale(5.0f);
 	_btnBack->setPosition(pos - ccp(-820.0f, 100.0f));
 
+	char popul[64];
+	char name[128];
+	sprintf_s(popul, "Pupulation %.1f \n millions", _regionInfo.population);
+	sprintf_s(name, "Name %s", _regionInfo.name.c_str());
+
+	_populationText = cocos2d::CCLabelTTF::create(popul, "Arial", 64);
+	_regionNameText = cocos2d::CCLabelTTF::create(name, "Arial", 64);
+	_shortDescText = cocos2d::CCLabelTTF::create(_regionInfo.desc.c_str(), "Arial", 64);
+
+	_populationText->setPosition(cocos2d::CCPoint(450.0f, screen.height - 100.0f));
+	_regionNameText->setPosition(cocos2d::CCPoint(450.0f, screen.height - 200.0f));
+	_shortDescText->setPosition(cocos2d::CCPoint(450.0f, screen.height - 300.0f));
+	_shortDescText->setHorizontalAlignment(cocos2d::CCTextAlignment::kCCTextAlignmentCenter);
+	_shortDescText->setVerticalAlignment(cocos2d::CCVerticalTextAlignment::kCCVerticalTextAlignmentCenter);
+
+	//cocos2d::CCTextAlignment
+
 	cocos2d::CCMenu *menu = cocos2d::CCMenu::create(_btnBack, NULL);
 	menu->setPosition(0.0f, 0.0f);
 
@@ -42,6 +60,9 @@ bool RegionInfoLayer::init(void)
 	
 	addChild(_bkgDraw, 0);
 	addChild(menu, 1);
+	addChild(_populationText, 1);
+	addChild(_regionNameText, 1);
+	addChild(_shortDescText, 1);
 	setTouchEnabled(true);
 
 	return true;

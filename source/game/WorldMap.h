@@ -18,7 +18,7 @@ public:
 
 	// удаляет все регионы
 	void CleanupRegions(void);
-	void AddRegion(std::string regionName, Region::Ptr region);
+	void AddRegion(Region::Ptr region);
 	void CreateRegion(std::string regionName);
 
 	const Regions& GetRegions() const;

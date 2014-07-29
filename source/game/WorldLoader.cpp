@@ -41,9 +41,14 @@ bool WorldLoader::LoadWorld(void)
 
 	while (region_node)
 	{
-		const char *name = region_node.attribute("Name").as_string();
-
+		Region::Info info;
 		Region::Ptr region = Region::Ptr(new Region());
+
+		info.name = region_node.attribute("Name").as_string();
+		info.population = region_node.attribute("Population").as_float();
+		info.desc = region_node.attribute("Desc").as_string();
+
+		region->Init(info);
 
 		pugi::xml_node hull_node = region_node.first_child();
 		while (hull_node)
@@ -58,7 +63,7 @@ bool WorldLoader::LoadWorld(void)
 			hull_node = hull_node.next_sibling();
 		}
 
-		map.AddRegion(name, region);
+		map.AddRegion(region);
 
 		region_node = region_node.next_sibling();
 	}
