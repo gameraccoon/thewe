@@ -125,5 +125,8 @@
     <Filter Include="Views\GameScene\CellScreen">
       <UniqueIdentifier>{214bda17-e23d-424e-928c-79c613ed266e}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Views\GameScene\WorldMap\GraphicElements">
+      <UniqueIdentifier>{1db34c28-aeae-4722-800d-ad66811a0732}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
 </Project>

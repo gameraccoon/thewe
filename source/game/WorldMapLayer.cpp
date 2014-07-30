@@ -19,7 +19,10 @@ bool WorldMapLayer::init(void)
 		return false;
 	}
 
-	addChild(_mapProjector->GetSprite());
+	cocos2d::CCSprite *worldSprite = cocos2d::CCSprite::create("WorldMap.png");
+	_mapProjector->AddSprite(Point(0.0f, 0.0f), Point(0.0f, 0.0f), worldSprite);
+
+	addChild(worldSprite);
 	setTouchEnabled(true);
     setKeypadEnabled(true);
 
@@ -32,6 +35,15 @@ bool WorldMapLayer::init(void)
 	_mapProjector->SetScreenCenter(origin + screen / 2.0f);
 	// ставим спрайт карты ровно в центр экрана
 	_mapProjector->SetShift(origin + screen / 2.0f);
+
+	WorldMap::Instance().AddCell(std::make_shared<Cell>(Cell(Point(100.0f, 100.0f))));
+
+	for (const Cell::Ptr cell : WorldMap::Instance().GetCells())
+	{
+		cocos2d::CCSprite* cellSprite = cocos2d::CCSprite::create("pin.png");
+		_mapProjector->AddSprite(cell->GetLocation(), Point(10.0f, 10.0f), cellSprite);
+		addChild(cellSprite);
+	}
 
 	return true;
 }

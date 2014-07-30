@@ -8,7 +8,7 @@
 class MapProjector
 {
 public:
-	MapProjector(Point shift, float scale);
+	MapProjector(Point spriteSize);
 
 	Point ProjectOnMap(Point screenPoint) const;
 	Point ProjectOnScreen(Point mapPoint) const;
@@ -16,22 +16,38 @@ public:
 	ArbitraryHull ProjectOnMap(const ArbitraryHull& screenHull) const;
 	ArbitraryHull ProjectOnScreen(const ArbitraryHull& screenHull) const;
 
-	cocos2d::CCSprite* GetSprite() const;
+	//cocos2d::CCSprite* GetSprite() const;
 
 	void SetShift(Point shift);
 	void SetScale(float scale);
 
-	Point GetShift();
-	float GetScale();
+	Point GetShift() const;
+	float GetScale() const;
 
 	void SetScreenCenter(Point centerPos);
 
+	void AddSprite(Point location, Point shift, cocos2d::CCSprite *sprite);
+
 private:
+	struct LocatedSprite
+	{
+		/** Положение спрайта в мире */
+		Point location;
+		/** Сдвиг центра спрайта */
+		Point shift;
+		/** Спрайт */
+		cocos2d::CCSprite *sprite;
+	};
+
 	float _mapScale;
 	Point _mapShift;
-	cocos2d::CCSprite *_mapSprite;
+	//cocos2d::CCSprite *_mapSprite;
 
 	Point _screenCenter;
+
+	Point _mapSpriteSize;
+
+	std::vector<LocatedSprite> _spritesToProject;
 };
 
 #endif // MAP_PROJECTOR_H

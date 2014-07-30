@@ -27,8 +27,6 @@ bool MapGuiLayer::init(void)
 			this, menu_selector(MapGuiLayer::_MenuInputListener));
 		_btnEditor = cocos2d::CCMenuItemImage::create("btn-editor-normal.png", "btn-editor-selected.png",
 			this, menu_selector(MapGuiLayer::_MenuInputListener));
-		_btnCell = cocos2d::CCMenuItemImage::create("btn-editor-normal.png", "btn-editor-selected.png",
-			this, menu_selector(MapGuiLayer::_MenuInputListener));
 	}
 
 	
@@ -49,11 +47,8 @@ bool MapGuiLayer::init(void)
 	_btnEditor->setScale(2.0f);
 	_btnEditor->setTag(MENU_ITEM_EDITOR);
 	_btnEditor->setPosition(pos - ccp(0.0f, 300.0f));
-	_btnCell->setScale(2.0f);
-	_btnCell->setTag(MENU_ITEM_TEST);
-	_btnCell->setPosition(pos - ccp(0.0f, 400.0f));
 
-	cocos2d::CCMenu *menu = cocos2d::CCMenu::create(_btnZoomIn, _btnZoomOut, _btnEditor, _btnCell, NULL);
+	cocos2d::CCMenu *menu = cocos2d::CCMenu::create(_btnZoomIn, _btnZoomOut, _btnEditor, NULL);
 	menu->setPosition(0.0f, 0.0f);
 
 	addChild(menu);
@@ -77,9 +72,6 @@ void MapGuiLayer::_MenuInputListener(cocos2d::CCObject *sender)
 		break;
 	case MENU_ITEM_EDITOR:
 		dynamic_cast<GameScene*>(getParent()->getParent())->ToggleEditor();
-		break;
-	case MENU_ITEM_TEST:
-		dynamic_cast<GameScene*>(getParent()->getParent())->ShowCellScreen(std::make_shared<Cell>(Cell()));
 		break;
 	default: break;
 	}

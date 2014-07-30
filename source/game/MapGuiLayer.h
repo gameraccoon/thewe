@@ -15,10 +15,9 @@ public:
 private:
 	enum E_MENU_TEMS_TAG
 	{
-		MENU_ITEM_ZOOM_IN,
-		MENU_ITEM_ZOOM_OUT,
-		MENU_ITEM_EDITOR,
-		MENU_ITEM_TEST
+		MENU_ITEM_ZOOM_IN
+		,MENU_ITEM_ZOOM_OUT
+		,MENU_ITEM_EDITOR
 	};
 
 private:
@@ -27,7 +26,6 @@ private:
 	cocos2d::CCMenuItemImage *_btnZoomIn;
 	cocos2d::CCMenuItemImage *_btnZoomOut;
 	cocos2d::CCMenuItemImage *_btnEditor;
-	cocos2d::CCMenuItemImage *_btnCell;
 };
 
 #endif

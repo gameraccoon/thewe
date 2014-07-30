@@ -6,7 +6,7 @@
 #include "CellScreenLayer.h"
 
 GameScene::GameScene(void)
-	: _mapProjector(Point(0.0f, 0.0f), 3.0f)
+	: _mapProjector(Point(1390.0f, 1003.0f))
 	, _RegionEditor(nullptr)
 	, _regionInfo(nullptr)
 	, _worldMap(nullptr)
