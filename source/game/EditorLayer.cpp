@@ -115,7 +115,7 @@ void EditorLayer::ccTouchesMoved(cocos2d::CCSet* touches, cocos2d::CCEvent* even
 
 	if (!_isCreationAllowed)
 	{
-		_mapProjector->SetShift(_mapProjector->GetShift() - _touchLastPoint + touch->getLocation());
+		_mapProjector->ShiftView(-_touchLastPoint + touch->getLocation());
 		_touchLastPoint = touch->getLocation();
 	}
 

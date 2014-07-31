@@ -2,59 +2,58 @@
 
 static const Point MAP_INITIAL_SIZE = Point(1390.0f, 1003.0f);
 
-MapProjector::MapProjector(Point spriteSize)
-	: _mapSpriteSize(spriteSize)
+MapProjector::MapProjector(Point mapSpriteSize)
+	: _mapSpriteSize(mapSpriteSize)
 	, _mapScale(1.0f)
-	, _mapShift(0.0f, 0.0f)
+	, _mapLocation(0.0f, 0.0f)
 {
 }
 
-void MapProjector::SetShift(Point shift)
+void MapProjector::SetLocation(Point worldLocation)
 {
-	_mapShift = shift;
-	if (shift.y > _mapScale * _mapSpriteSize.y / 2)
-	{
-		_mapShift.y = _mapScale * _mapSpriteSize.y / 2;
-	}
+	_mapLocation = worldLocation;
 
-	if (shift.y < 2 * _screenCenter.y - _mapScale * _mapSpriteSize.y / 2)
-	{
-		_mapShift.y = (2 * _screenCenter.y - _mapScale * _mapSpriteSize.y / 2);
-	}
-	
-	for (const LocatedSprite& sprite : _spritesToProject)
-	{
-		sprite.sprite->setPosition(_mapShift);
-	}
+	CheckBoundings();
+
+	UpdateNodes();
 }
 
 void MapProjector::SetScale(float scale)
 {
-	Point oldShift = _mapShift;
-	// предотвращаем сдвиг камеры относительно центра карты
-	SetShift(_screenCenter + (_mapShift - _screenCenter) * (scale / _mapScale));
-	_mapScale = scale;
-	
-	if (_mapShift.y > _mapScale * _mapShift.y / 2 && _mapShift.y < 2 * _screenCenter.y - _mapScale * _mapSpriteSize.y / 2)
+	if (scale < (_screenCenter.y * 2) / _mapSpriteSize.y)
 	{
 		_mapScale = (_screenCenter.y * 2) / _mapSpriteSize.y;
-		// хак -- предотвращение сдвига в сторону центра карты при максимальном отдалении
-		SetShift(oldShift);
 	}
-
-	
-	for (const LocatedSprite& sprite : _spritesToProject)
+	else
 	{
-		sprite.sprite->setScale(_mapScale);
+		_mapScale = scale;
+	}
+	
+	CheckBoundings();
+	UpdateNodes();
+}
+
+void MapProjector::ShiftView(Point delta)
+{
+	SetLocation(_mapLocation + delta / _mapScale);
+}
+
+void MapProjector::CheckBoundings()
+{
+	if (_mapLocation.y < _screenCenter.y / _mapScale - _mapSpriteSize.y/2)
+	{
+		_mapLocation.y = _screenCenter.y / _mapScale - _mapSpriteSize.y/2;
 	}
 
-	// хак -- предотвращение выхода за границу карты при отдалении
-	SetShift(_mapShift);
+	if (_mapLocation.y > -_screenCenter.y / _mapScale + _mapSpriteSize.y/2)
+	{
+		_mapLocation.y = -_screenCenter.y / _mapScale + _mapSpriteSize.y/2;
+	}
 }
 
 Point MapProjector::GetShift() const
 {
-	return _mapShift;
+	return _mapLocation;
 }
 
 float MapProjector::GetScale() const
@@ -64,12 +63,12 @@ float MapProjector::GetScale() const
 
 Point MapProjector::ProjectOnMap(Point screenPoint) const
 {
-	return (screenPoint - _mapShift) / _mapScale;
+	return (screenPoint - _screenCenter) / _mapScale - _mapLocation;
 }
 
 Point MapProjector::ProjectOnScreen(Point mapPoint) const
 {
-	return (mapPoint * _mapScale) + _mapShift;
+	return _screenCenter + (mapPoint + _mapLocation) * _mapScale;
 }
 
 ArbitraryHull MapProjector::ProjectOnMap(const ArbitraryHull& screenHull) const
@@ -97,11 +96,24 @@ void MapProjector::SetScreenCenter(Point centerPos)
 	_screenCenter = centerPos;	
 }
 
-void MapProjector::AddSprite(Point location, Point shift, cocos2d::CCSprite *sprite)
+void MapProjector::AddNode(Point location, Point shift, cocos2d::CCNode *node)
 {
-	LocatedSprite locSprite;
+	MapPart locSprite;
 	locSprite.location = location;
 	locSprite.shift = shift;
-	locSprite.sprite = sprite;
-	_spritesToProject.push_back(locSprite);
+	locSprite.node = node;
+	_nodesToProject.push_back(locSprite);
+}
+
+void MapProjector::UpdateNodes()
+{
+	for (const MapPart& node : _nodesToProject)
+	{
+		node.node->setPosition(_screenCenter + ((node.location + node.shift) + _mapLocation) * _mapScale);
+	}
+
+	for (const MapPart& node : _nodesToProject)
+	{
+		node.node->setScale(_mapScale);
+	}
 }

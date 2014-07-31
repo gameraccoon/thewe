@@ -16,38 +16,41 @@ public:
 	ArbitraryHull ProjectOnMap(const ArbitraryHull& screenHull) const;
 	ArbitraryHull ProjectOnScreen(const ArbitraryHull& screenHull) const;
 
-	//cocos2d::CCSprite* GetSprite() const;
-
-	void SetShift(Point shift);
+	void SetLocation(Point mapLocation);
 	void SetScale(float scale);
+
+	void ShiftView(Point delta);
 
 	Point GetShift() const;
 	float GetScale() const;
 
 	void SetScreenCenter(Point centerPos);
 
-	void AddSprite(Point location, Point shift, cocos2d::CCSprite *sprite);
+	void AddNode(Point location, Point shift, cocos2d::CCNode *node);
 
 private:
-	struct LocatedSprite
+	struct MapPart
 	{
 		/** Положение спрайта в мире */
 		Point location;
 		/** Сдвиг центра спрайта */
 		Point shift;
 		/** Спрайт */
-		cocos2d::CCSprite *sprite;
+		cocos2d::CCNode *node;
 	};
 
+	void CheckBoundings();
+
+	void UpdateNodes();
+
 	float _mapScale;
-	Point _mapShift;
-	//cocos2d::CCSprite *_mapSprite;
+	Point _mapLocation;
 
 	Point _screenCenter;
 
 	Point _mapSpriteSize;
 
-	std::vector<LocatedSprite> _spritesToProject;
+	std::vector<MapPart> _nodesToProject;
 };
 
 #endif // MAP_PROJECTOR_H

@@ -20,7 +20,7 @@ bool WorldMapLayer::init(void)
 	}
 
 	cocos2d::CCSprite *worldSprite = cocos2d::CCSprite::create("WorldMap.png");
-	_mapProjector->AddSprite(Point(0.0f, 0.0f), Point(0.0f, 0.0f), worldSprite);
+	_mapProjector->AddNode(Point(0.0f, 0.0f), Point(0.0f, 0.0f), worldSprite);
 
 	addChild(worldSprite);
 	setTouchEnabled(true);
@@ -31,19 +31,21 @@ bool WorldMapLayer::init(void)
 
 	SetGuiEnabled(true);
 
-	// сообщаем где находится центр окна вывода
-	_mapProjector->SetScreenCenter(origin + screen / 2.0f);
-	// ставим спрайт карты ровно в центр экрана
-	_mapProjector->SetShift(origin + screen / 2.0f);
-
 	WorldMap::Instance().AddCell(std::make_shared<Cell>(Cell(Point(100.0f, 100.0f))));
 
 	for (const Cell::Ptr cell : WorldMap::Instance().GetCells())
 	{
 		cocos2d::CCSprite* cellSprite = cocos2d::CCSprite::create("pin.png");
-		_mapProjector->AddSprite(cell->GetLocation(), Point(10.0f, 10.0f), cellSprite);
+		_mapProjector->AddNode(cell->GetLocation(), Point(100.0f, -300.0f), cellSprite);
 		addChild(cellSprite);
 	}
+	
+	// сообщаем где находится центр окна вывода
+	_mapProjector->SetScreenCenter(origin + screen / 2.0f);
+	// ставим спрайт карты ровно в центр экрана
+	_mapProjector->SetLocation(Point(0.0f, 0.0f));
+	// ставим скейл, чтобы экран правильно отмасштабировался
+	_mapProjector->SetScale(1.0f);
 
 	return true;
 }
@@ -111,7 +113,7 @@ void WorldMapLayer::ccTouchesMoved(cocos2d::CCSet* touches, cocos2d::CCEvent* ev
 	{
 		cocos2d::CCTouch *touch = dynamic_cast<cocos2d::CCTouch*>(touches->anyObject());
 
-		_mapProjector->SetShift(_mapProjector->GetShift() - _touchLastPoint + touch->getLocation());
+		_mapProjector->ShiftView(-_touchLastPoint + touch->getLocation());
 		_touchLastPoint = touch->getLocation();
 	}
 }

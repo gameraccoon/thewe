@@ -28,7 +28,6 @@ bool MapGuiLayer::init(void)
 		_btnEditor = cocos2d::CCMenuItemImage::create("btn-editor-normal.png", "btn-editor-selected.png",
 			this, menu_selector(MapGuiLayer::_MenuInputListener));
 	}
-
 	
 	cocos2d::CCDirector *director = cocos2d::CCDirector::sharedDirector();
 	Point screen = director->getVisibleSize();
