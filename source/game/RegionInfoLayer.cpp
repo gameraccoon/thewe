@@ -46,9 +46,9 @@ bool RegionInfoLayer::init(void)
 
 	_populationText->setPosition(Point(450.0f, screen.y - 100.0f));
 	_regionNameText->setPosition(Point(450.0f, screen.y - 200.0f));
-	_shortDescText->setPosition(Point(450.0f, screen.y - 300.0f));
+	_shortDescText->setPosition(Point(850.0f, screen.y - 800.0f));
 	_shortDescText->setDimensions(Point(1500.0f, 1000.0f));
-	_shortDescText->setVerticalAlignment(cocos2d::CCVerticalTextAlignment::kCCVerticalTextAlignmentCenter);
+	_shortDescText->setHorizontalAlignment(cocos2d::CCTextAlignment::kCCTextAlignmentLeft);
 
 	cocos2d::CCMenu *menu = cocos2d::CCMenu::create(_btnBack, NULL);
 	menu->setPosition(0.0f, 0.0f);
