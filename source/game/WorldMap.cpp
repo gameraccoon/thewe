@@ -30,12 +30,22 @@ void WorldMap::AddRegion(Region::Ptr region)
 	_regions.push_back(region);
 }
 
+void WorldMap::CreateRegion(std::string regionName)
+{
+	_regions.push_back(std::make_shared<Region>(Region()));
+}
+
+void WorldMap::AddCell(Cell::Ptr cell)
+{
+	_cells.push_back(cell);
+}
+
 const WorldMap::Regions& WorldMap::GetRegions() const
 {
 	return _regions;
 }
 
-void WorldMap::CreateRegion(std::string regionName)
+const WorldMap::Cells& WorldMap::GetCells() const
 {
-	_regions.push_back(std::make_shared<Region>(Region()));
+	return _cells;
 }

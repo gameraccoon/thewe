@@ -19,7 +19,10 @@ bool WorldMapLayer::init(void)
 		return false;
 	}
 
-	addChild(_mapProjector->GetSprite());
+	cocos2d::CCSprite *worldSprite = cocos2d::CCSprite::create("WorldMap.png");
+	_mapProjector->AddNode(Point(0.0f, 0.0f), Point(0.0f, 0.0f), worldSprite);
+
+	addChild(worldSprite);
 	setTouchEnabled(true);
     setKeypadEnabled(true);
 
@@ -28,10 +31,21 @@ bool WorldMapLayer::init(void)
 
 	SetGuiEnabled(true);
 
+	WorldMap::Instance().AddCell(std::make_shared<Cell>(Cell(Point(100.0f, 100.0f))));
+
+	for (const Cell::Ptr cell : WorldMap::Instance().GetCells())
+	{
+		cocos2d::CCSprite* cellSprite = cocos2d::CCSprite::create("pin.png");
+		_mapProjector->AddNode(cell->GetLocation(), Point(100.0f, -300.0f), cellSprite);
+		addChild(cellSprite);
+	}
+	
 	// сообщаем где находится центр окна вывода
 	_mapProjector->SetScreenCenter(origin + screen / 2.0f);
 	// ставим спрайт карты ровно в центр экрана
-	_mapProjector->SetShift(origin + screen / 2.0f);
+	_mapProjector->SetLocation(Point(0.0f, 0.0f));
+	// ставим скейл, чтобы экран правильно отмасштабировался
+	_mapProjector->SetScale(1.0f);
 
 	return true;
 }
@@ -87,7 +101,7 @@ void WorldMapLayer::ccTouchesEnded(cocos2d::CCSet* touches, cocos2d::CCEvent* ev
 
 			if (region)
 			{
-				dynamic_cast<GameScene*>(this->getParent())->ShowRegionInfo("Italy", region);
+				dynamic_cast<GameScene*>(this->getParent())->ShowRegionInfo(region);
 			}
 		}
 	}
@@ -99,7 +113,7 @@ void WorldMapLayer::ccTouchesMoved(cocos2d::CCSet* touches, cocos2d::CCEvent* ev
 	{
 		cocos2d::CCTouch *touch = dynamic_cast<cocos2d::CCTouch*>(touches->anyObject());
 
-		_mapProjector->SetShift(_mapProjector->GetShift() - _touchLastPoint + touch->getLocation());
+		_mapProjector->ShiftView(-_touchLastPoint + touch->getLocation());
 		_touchLastPoint = touch->getLocation();
 	}
 }
@@ -114,13 +128,8 @@ void WorldMapLayer::visit()
 
 		for (const ArbitraryHull &hull : array)
 		{
-			ArbitraryHull projectedHull;
-			for (auto &point : hull.GetPoints())
-			{
-				projectedHull.PushPoint(_mapProjector->ProjectOnScreen(point));
-			}
-			
-			projectedHull.Draw();
+			// медленная операция
+			_mapProjector->ProjectOnScreen(hull).Draw();
 		}
 	}
 }

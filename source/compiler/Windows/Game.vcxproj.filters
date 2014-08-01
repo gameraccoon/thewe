@@ -40,6 +40,12 @@
     <ClCompile Include="..\..\game\Point.cpp">
       <Filter>EngineInterface</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\game\Cell.cpp">
+      <Filter>GameElements</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\game\CellScreenLayer.cpp">
+      <Filter>Views\GameScene\CellScreen</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\game\WorldMap.h">
@@ -78,6 +84,12 @@
     <ClInclude Include="..\..\game\Point.h">
       <Filter>EngineInterface</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\game\Cell.h">
+      <Filter>GameElements</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\game\CellScreenLayer.h">
+      <Filter>Views\GameScene\CellScreen</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Views">
@@ -109,6 +121,12 @@
     </Filter>
     <Filter Include="EngineInterface">
       <UniqueIdentifier>{bbfc5f72-2b67-46c5-9bcf-0a4f1608b351}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Views\GameScene\CellScreen">
+      <UniqueIdentifier>{214bda17-e23d-424e-928c-79c613ed266e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Views\GameScene\WorldMap\GraphicElements">
+      <UniqueIdentifier>{1db34c28-aeae-4722-800d-ad66811a0732}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

@@ -73,14 +73,8 @@ bool EditorLayer::init(void)
 void EditorLayer::visit(void)
 {
 	CCLayer::visit();
-
-	ArbitraryHull visibleHull;
-	for (auto &point : _hull1.GetPoints())
-	{
-		visibleHull.PushPoint(_mapProjector->ProjectOnScreen(point));
-	}
-
-	visibleHull.Draw();
+	// медленная операция
+	_mapProjector->ProjectOnScreen(_hull1).Draw();
 }
 
 void EditorLayer::ccTouchesBegan(cocos2d::CCSet* touches, cocos2d::CCEvent* event)
@@ -121,7 +115,7 @@ void EditorLayer::ccTouchesMoved(cocos2d::CCSet* touches, cocos2d::CCEvent* even
 
 	if (!_isCreationAllowed)
 	{
-		_mapProjector->SetShift(_mapProjector->GetShift() - _touchLastPoint + touch->getLocation());
+		_mapProjector->ShiftView(-_touchLastPoint + touch->getLocation());
 		_touchLastPoint = touch->getLocation();
 	}
 

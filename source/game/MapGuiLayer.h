@@ -15,9 +15,9 @@ public:
 private:
 	enum E_MENU_TEMS_TAG
 	{
-		MENU_ITEM_ZOOM_IN,
-		MENU_ITEM_ZOOM_OUT,
-		MENU_ITEM_EDITOR
+		MENU_ITEM_ZOOM_IN
+		,MENU_ITEM_ZOOM_OUT
+		,MENU_ITEM_EDITOR
 	};
 
 private:

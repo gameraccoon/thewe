@@ -2,87 +2,118 @@
 
 static const Point MAP_INITIAL_SIZE = Point(1390.0f, 1003.0f);
 
-MapProjector::MapProjector(Point shift, float scale)
+MapProjector::MapProjector(Point mapSpriteSize)
+	: _mapSpriteSize(mapSpriteSize)
+	, _mapScale(1.0f)
+	, _mapLocation(0.0f, 0.0f)
 {
-	_mapSprite = nullptr;
-	// ToDo: вынести инициализацию спрайтов в отдельный класс
-	_mapSprite = cocos2d::CCSprite::create("WorldMap.png");
-
-	SetShift(shift);
-	SetScale(scale);
 }
 
-void MapProjector::SetShift(Point shift)
+void MapProjector::SetLocation(Point worldLocation)
 {
-	Point spriteSize = GetSprite()->getContentSize();
-	
-	_mapShift = shift;
-	if (shift.y > _mapScale * spriteSize.y / 2)
-	{
-		_mapShift.y = _mapScale * spriteSize.y / 2;
-	}
+	_mapLocation = worldLocation;
 
-	if (shift.y < 2 * _screenCenter.y - _mapScale * spriteSize.y / 2)
-	{
-		_mapShift.y = (2 * _screenCenter.y - _mapScale * spriteSize.y / 2);
-	}
+	CheckBoundings();
 
-	if (_mapSprite)
-	{
-		_mapSprite->setPosition(_mapShift);
-	}
+	UpdateNodes();
 }
 
 void MapProjector::SetScale(float scale)
 {
-	Point oldShift = _mapShift;
-	// предотвращаем сдвиг камеры относительно центра карты
-	SetShift(_screenCenter + (_mapShift - _screenCenter) * (scale / _mapScale));
-	_mapScale = scale;
+	if (scale < (_screenCenter.y * 2) / _mapSpriteSize.y)
+	{
+		_mapScale = (_screenCenter.y * 2) / _mapSpriteSize.y;
+	}
+	else
+	{
+		_mapScale = scale;
+	}
 	
-	Point spriteSize = GetSprite()->getContentSize();
-	if (_mapShift.y > _mapScale * _mapShift.y / 2 && _mapShift.y < 2 * _screenCenter.y - _mapScale * spriteSize.y / 2)
-	{
-		_mapScale = (_screenCenter.y * 2) / spriteSize.y;
-		// хак -- предотвращение сдвига в сторону центра карты при максимальном отдалении
-		SetShift(oldShift);
-	}
-
-	if (_mapSprite)
-	{
-		_mapSprite->setScale(_mapScale);
-	}
-
-	// хак -- предотвращение выхода за границу карты при отдалении
-	SetShift(_mapShift);
+	CheckBoundings();
+	UpdateNodes();
 }
 
-Point MapProjector::GetShift()
+void MapProjector::ShiftView(Point delta)
 {
-	return _mapShift;
+	SetLocation(_mapLocation + delta / _mapScale);
 }
 
-float MapProjector::GetScale()
+void MapProjector::CheckBoundings()
+{
+	if (_mapLocation.y < _screenCenter.y / _mapScale - _mapSpriteSize.y/2)
+	{
+		_mapLocation.y = _screenCenter.y / _mapScale - _mapSpriteSize.y/2;
+	}
+
+	if (_mapLocation.y > -_screenCenter.y / _mapScale + _mapSpriteSize.y/2)
+	{
+		_mapLocation.y = -_screenCenter.y / _mapScale + _mapSpriteSize.y/2;
+	}
+}
+
+Point MapProjector::GetShift() const
+{
+	return _mapLocation;
+}
+
+float MapProjector::GetScale() const
 {
 	return _mapScale;
 }
 
 Point MapProjector::ProjectOnMap(Point screenPoint) const
 {
-	return (screenPoint - _mapShift) / _mapScale;
+	return (screenPoint - _screenCenter) / _mapScale - _mapLocation;
 }
 
 Point MapProjector::ProjectOnScreen(Point mapPoint) const
 {
-	return (mapPoint * _mapScale) + _mapShift;
+	return _screenCenter + (mapPoint + _mapLocation) * _mapScale;
 }
 
-cocos2d::CCSprite* MapProjector::GetSprite() const
+ArbitraryHull MapProjector::ProjectOnMap(const ArbitraryHull& screenHull) const
 {
-	return _mapSprite;
+	ArbitraryHull projectedHull;
+	for (auto &point : screenHull._pointsArray)
+	{
+		projectedHull.PushPoint(ProjectOnMap(point));
+	}
+	return projectedHull;
+}
+
+ArbitraryHull MapProjector::ProjectOnScreen(const ArbitraryHull& screenHull) const
+{
+	ArbitraryHull projectedHull;
+	for (auto &point : screenHull._pointsArray)
+	{
+		projectedHull.PushPoint(ProjectOnScreen(point));
+	}
+	return projectedHull;
 }
 
 void MapProjector::SetScreenCenter(Point centerPos)
 {
 	_screenCenter = centerPos;	
+}
+
+void MapProjector::AddNode(Point location, Point shift, cocos2d::CCNode *node)
+{
+	MapPart locSprite;
+	locSprite.location = location;
+	locSprite.shift = shift;
+	locSprite.node = node;
+	_nodesToProject.push_back(locSprite);
+}
+
+void MapProjector::UpdateNodes()
+{
+	for (const MapPart& node : _nodesToProject)
+	{
+		node.node->setPosition(_screenCenter + ((node.location + node.shift) + _mapLocation) * _mapScale);
+	}
+
+	for (const MapPart& node : _nodesToProject)
+	{
+		node.node->setScale(_mapScale);
+	}
 }

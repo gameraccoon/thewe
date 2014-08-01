@@ -3,12 +3,14 @@
 #include "WorldMapLayer.h"
 #include "RegionInfoLayer.h"
 #include "EditorLayer.h"
+#include "CellScreenLayer.h"
 
 GameScene::GameScene(void)
-	: _mapProjector(Point(0.0f, 0.0f), 3.0f)
-	, _editor(nullptr)
+	: _mapProjector(Point(1390.0f, 1003.0f))
+	, _RegionEditor(nullptr)
 	, _regionInfo(nullptr)
 	, _worldMap(nullptr)
+	, _cellScreen(nullptr)
 {
 	init();
 }
@@ -32,10 +34,10 @@ bool GameScene::init(void)
 
 void GameScene::ShowMap()
 {
-	if (_editor)
+	if (_RegionEditor)
 	{
-		removeChild(_editor);
-		_editor = nullptr;
+		removeChild(_RegionEditor);
+		_RegionEditor = nullptr;
 	}
 
 	if (_regionInfo)
@@ -44,18 +46,24 @@ void GameScene::ShowMap()
 		_regionInfo = nullptr;
 	}
 
+	if (_cellScreen)
+	{
+		removeChild(_cellScreen);
+		_cellScreen = nullptr;
+	}
+
 	_worldMap->SetMapInputEnabled(true);
 	_worldMap->SetGuiEnabled(true);
 }
 
 void GameScene::ToggleEditor()
 {
-	if (!_editor)
+	if (!_RegionEditor)
 	{
 		ShowMap(); // изменяет стостояние _editor
-		_editor = new EditorLayer(&_mapProjector);
-		addChild(_editor);
-		_editor->autorelease();
+		_RegionEditor = new EditorLayer(&_mapProjector);
+		addChild(_RegionEditor);
+		_RegionEditor->autorelease();
 		_worldMap->SetMapInputEnabled(false);
 	}
 	else
@@ -64,12 +72,22 @@ void GameScene::ToggleEditor()
 	}
 }
 
-void GameScene::ShowRegionInfo(const std::string& regionName, Region::Ptr region)
+void GameScene::ShowRegionInfo(Region::Ptr region)
 {
 	ShowMap();
 	_regionInfo = new RegionInfoLayer(region->GetInfo());
 	addChild(_regionInfo);
 	_regionInfo->autorelease();
+	_worldMap->SetMapInputEnabled(false);
+	_worldMap->SetGuiEnabled(false);
+}
+
+void GameScene::ShowCellScreen(Cell::Ptr cell)
+{
+	ShowMap();
+	_cellScreen = new CellScreenLayer(cell);
+	addChild(_cellScreen);
+	_cellScreen->autorelease();
 	_worldMap->SetMapInputEnabled(false);
 	_worldMap->SetGuiEnabled(false);
 }
