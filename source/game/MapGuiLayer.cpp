@@ -4,7 +4,8 @@
 #include "GameScene.h"
 #include "WorldMapLayer.h"
 
-MapGuiLayer::MapGuiLayer(void)
+MapGuiLayer::MapGuiLayer(MapProjector *mapProjector)
+	: _mapProjector(mapProjector)
 {
 	init();
 }
@@ -52,6 +53,24 @@ bool MapGuiLayer::init(void)
 
 	addChild(menu);
 
+	for (const Cell::Ptr cell : WorldMap::Instance().GetCells())
+	{
+		using namespace cocos2d;
+		cocos2d::CCMenuItemSprite *pin = new cocos2d::CCMenuItemSprite();
+		pin->initWithNormalSprite(
+			cocos2d::CCSprite::create("pin.png"),
+			cocos2d::CCSprite::create("pin.png"),
+			cocos2d::CCSprite::create("pin.png"),
+			this,
+			menu_selector(MapGuiLayer::_MenuInputListener));
+		pin->setTag(MENU_ITEM_PIN);
+		//pin->setUserData();
+		_mapProjector->AddMapPart(cell->GetLocation(), Point(100.0f, -300.0f), pin);
+		addChild(pin);
+		removeChild(pin);
+		_mapProjector->RemoveMapPart(pin);
+	}
+
 	return true;
 }
 
@@ -71,6 +90,9 @@ void MapGuiLayer::_MenuInputListener(cocos2d::CCObject *sender)
 		break;
 	case MENU_ITEM_EDITOR:
 		dynamic_cast<GameScene*>(getParent()->getParent())->ToggleEditor();
+		break;
+	case MENU_ITEM_PIN:
+		dynamic_cast<WorldMapLayer*>(getParent())->ModifyZoom(1.25f);
 		break;
 	default: break;
 	}

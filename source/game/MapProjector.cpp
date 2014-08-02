@@ -2,8 +2,8 @@
 
 static const Point MAP_INITIAL_SIZE = Point(1390.0f, 1003.0f);
 
-MapProjector::MapProjector(Point mapSpriteSize)
-	: _mapSpriteSize(mapSpriteSize)
+MapProjector::MapProjector(Point mapSize)
+	: _mapSize(mapSize)
 	, _mapScale(1.0f)
 	, _mapLocation(0.0f, 0.0f)
 {
@@ -20,9 +20,9 @@ void MapProjector::SetLocation(Point worldLocation)
 
 void MapProjector::SetScale(float scale)
 {
-	if (scale < (_screenCenter.y * 2) / _mapSpriteSize.y)
+	if (scale < (_screenCenter.y * 2) / _mapSize.y)
 	{
-		_mapScale = (_screenCenter.y * 2) / _mapSpriteSize.y;
+		_mapScale = (_screenCenter.y * 2) / _mapSize.y;
 	}
 	else
 	{
@@ -40,18 +40,18 @@ void MapProjector::ShiftView(Point delta)
 
 void MapProjector::CheckBoundings()
 {
-	if (_mapLocation.y < _screenCenter.y / _mapScale - _mapSpriteSize.y/2)
+	if (_mapLocation.y < _screenCenter.y / _mapScale - _mapSize.y/2)
 	{
-		_mapLocation.y = _screenCenter.y / _mapScale - _mapSpriteSize.y/2;
+		_mapLocation.y = _screenCenter.y / _mapScale - _mapSize.y/2;
 	}
 
-	if (_mapLocation.y > -_screenCenter.y / _mapScale + _mapSpriteSize.y/2)
+	if (_mapLocation.y > -_screenCenter.y / _mapScale + _mapSize.y/2)
 	{
-		_mapLocation.y = -_screenCenter.y / _mapScale + _mapSpriteSize.y/2;
+		_mapLocation.y = -_screenCenter.y / _mapScale + _mapSize.y/2;
 	}
 }
 
-Point MapProjector::GetShift() const
+Point MapProjector::GetLocation() const
 {
 	return _mapLocation;
 }
@@ -81,10 +81,10 @@ ArbitraryHull MapProjector::ProjectOnMap(const ArbitraryHull& screenHull) const
 	return projectedHull;
 }
 
-ArbitraryHull MapProjector::ProjectOnScreen(const ArbitraryHull& screenHull) const
+ArbitraryHull MapProjector::ProjectOnScreen(const ArbitraryHull& mapHull) const
 {
 	ArbitraryHull projectedHull;
-	for (auto &point : screenHull._pointsArray)
+	for (auto &point : mapHull._pointsArray)
 	{
 		projectedHull.PushPoint(ProjectOnScreen(point));
 	}
@@ -96,24 +96,57 @@ void MapProjector::SetScreenCenter(Point centerPos)
 	_screenCenter = centerPos;	
 }
 
-void MapProjector::AddNode(Point location, Point shift, cocos2d::CCNode *node)
+void MapProjector::AddMapPart(Point location, Point shift, cocos2d::CCNode *node)
 {
+	// умный указатель вместо delete будет вызывать release
+	std::function<void(cocos2d::CCNode* node)> del = [](cocos2d::CCNode* nodeToDelete)
+	{
+		nodeToDelete->release();
+	};
+
+	MapPart::NodePtr nodePtr(node, del);
+	
 	MapPart locSprite;
 	locSprite.location = location;
 	locSprite.shift = shift;
-	locSprite.node = node;
-	_nodesToProject.push_back(locSprite);
+	locSprite.node.swap(nodePtr);
+	_mapParts.push_back(locSprite);
 }
 
 void MapProjector::UpdateNodes()
 {
-	for (const MapPart& node : _nodesToProject)
+	for (const MapPart& node : _mapParts)
 	{
 		node.node->setPosition(_screenCenter + ((node.location + node.shift) + _mapLocation) * _mapScale);
 	}
 
-	for (const MapPart& node : _nodesToProject)
+	for (const MapPart& node : _mapParts)
 	{
 		node.node->setScale(_mapScale);
+	}
+}
+
+cocos2d::CCSprite* MapProjector::AddSprite(Point location, Point shift, std::string spriteName)
+{
+	cocos2d::CCSprite *sprite = new cocos2d::CCSprite();
+	sprite->initWithFile(spriteName.c_str());
+	AddMapPart(Point(0.0f, 0.0f), Point(0.0f, 0.0f), sprite);
+	return sprite;
+}
+
+void MapProjector::RemoveMapPart(const cocos2d::CCNode *node)
+{
+	auto iterator = _mapParts.begin(), iEnd = _mapParts.end();
+	while (iterator != iEnd)
+	{
+		const MapPart currentPart = (*iterator);	
+
+		if (currentPart.node.get() == node)
+		{
+			_mapParts.erase(iterator);
+			return;
+		}
+
+		iterator++;
 	}
 }

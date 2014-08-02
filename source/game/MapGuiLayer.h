@@ -2,11 +2,12 @@
 #define MAP_GUI_H
 
 #include "cocos2d.h"
+#include "MapProjector.h"
 
 class MapGuiLayer : public cocos2d::CCLayer
 {
 public:
-	MapGuiLayer(void);
+	MapGuiLayer(MapProjector *mapProjector);
 
 	virtual bool init(void) override;
 
@@ -18,6 +19,7 @@ private:
 		MENU_ITEM_ZOOM_IN
 		,MENU_ITEM_ZOOM_OUT
 		,MENU_ITEM_EDITOR
+		,MENU_ITEM_PIN
 	};
 
 private:
@@ -26,6 +28,8 @@ private:
 	cocos2d::CCMenuItemImage *_btnZoomIn;
 	cocos2d::CCMenuItemImage *_btnZoomOut;
 	cocos2d::CCMenuItemImage *_btnEditor;
+
+	 MapProjector *_mapProjector;
 };
 
 #endif

@@ -19,10 +19,10 @@ bool WorldMapLayer::init(void)
 		return false;
 	}
 
-	cocos2d::CCSprite *worldSprite = cocos2d::CCSprite::create("WorldMap.png");
-	_mapProjector->AddNode(Point(0.0f, 0.0f), Point(0.0f, 0.0f), worldSprite);
+	WorldMap::Instance().AddCell(std::make_shared<Cell>(Cell(Point(100.0f, 100.0f))));
 
-	addChild(worldSprite);
+
+	addChild(_mapProjector->AddSprite(Point(0.0f, 0.0f), Point(0.0f, 0.0f), "WorldMap.png"));
 	setTouchEnabled(true);
     setKeypadEnabled(true);
 
@@ -30,15 +30,6 @@ bool WorldMapLayer::init(void)
 	Point screen = cocos2d::CCDirector::sharedDirector()->getVisibleSize();
 
 	SetGuiEnabled(true);
-
-	WorldMap::Instance().AddCell(std::make_shared<Cell>(Cell(Point(100.0f, 100.0f))));
-
-	for (const Cell::Ptr cell : WorldMap::Instance().GetCells())
-	{
-		cocos2d::CCSprite* cellSprite = cocos2d::CCSprite::create("pin.png");
-		_mapProjector->AddNode(cell->GetLocation(), Point(100.0f, -300.0f), cellSprite);
-		addChild(cellSprite);
-	}
 	
 	// сообщаем где находится центр окна вывода
 	_mapProjector->SetScreenCenter(origin + screen / 2.0f);
@@ -64,7 +55,7 @@ void WorldMapLayer::SetGuiEnabled(bool isEnabled)
 	}
 	else if (!_mapGui && isEnabled)
 	{
-		_mapGui = new MapGuiLayer();
+		_mapGui = new MapGuiLayer(_mapProjector);
 		addChild(_mapGui);
 		_mapGui->autorelease();
 	}

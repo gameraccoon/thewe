@@ -1,6 +1,7 @@
 #ifndef MAP_PROJECTOR_H
 #define MAP_PROJECTOR_H
 
+#include <memory>
 #include <cocos2d.h>
 #include "Point.h"
 #include "ArbitraryHull.h"
@@ -8,36 +9,43 @@
 class MapProjector
 {
 public:
-	MapProjector(Point spriteSize);
+	MapProjector(Point mapSize);
 
 	Point ProjectOnMap(Point screenPoint) const;
 	Point ProjectOnScreen(Point mapPoint) const;
 
 	ArbitraryHull ProjectOnMap(const ArbitraryHull& screenHull) const;
-	ArbitraryHull ProjectOnScreen(const ArbitraryHull& screenHull) const;
+	ArbitraryHull ProjectOnScreen(const ArbitraryHull& mapHull) const;
 
 	void SetLocation(Point mapLocation);
 	void SetScale(float scale);
 
-	void ShiftView(Point delta);
+	void ShiftView(Point screenDelta);
 
-	Point GetShift() const;
+	Point GetLocation() const;
 	float GetScale() const;
 
 	void SetScreenCenter(Point centerPos);
 
-	void AddNode(Point location, Point shift, cocos2d::CCNode *node);
+	void AddMapPart(Point location, Point shift, cocos2d::CCNode *node);
+	cocos2d::CCSprite* AddSprite(Point location, Point shift, std::string spriteName);
+
+	void RemoveMapPart(const cocos2d::CCNode *node);
 
 private:
 	struct MapPart
 	{
-		/** Положение спрайта в мире */
+		/** Умный указатель с возможностью устонавливать свои правила удаления объектов */
+		typedef std::shared_ptr<cocos2d::CCNode> NodePtr;
+		/** Положение объекта в мире */
 		Point location;
-		/** Сдвиг центра спрайта */
+		/** Сдвиг центра объекта */
 		Point shift;
-		/** Спрайт */
-		cocos2d::CCNode *node;
+		/** Указатель на объект */
+		NodePtr node;
 	};
+
+	typedef std::vector<MapPart> MapParts;
 
 	void CheckBoundings();
 
@@ -48,9 +56,9 @@ private:
 
 	Point _screenCenter;
 
-	Point _mapSpriteSize;
+	Point _mapSize;
 
-	std::vector<MapPart> _nodesToProject;
+	MapParts _mapParts;
 };
 
 #endif // MAP_PROJECTOR_H
