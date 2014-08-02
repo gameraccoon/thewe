@@ -19,7 +19,12 @@ bool WorldMapLayer::init(void)
 		return false;
 	}
 
-	WorldMap::Instance().AddCell(std::make_shared<Cell>(Cell(Point(100.0f, 100.0f))));
+	Cell::Ptr cell1(std::make_shared<Cell>(Cell(Point(200.0f, 200.0f))));
+	Cell::Ptr cell2(std::make_shared<Cell>(Cell(Point(100.0f, 100.0f))));
+	cell1->AddChild(cell2);
+
+	WorldMap::Instance().AddCell(cell1);
+	WorldMap::Instance().AddCell(cell2);
 
 	addChild(_mapProjector->AddSprite(Point(0.0f, 0.0f), Point(0.0f, 0.0f), "WorldMap.png"));
 	setTouchEnabled(true);

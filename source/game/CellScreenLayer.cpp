@@ -41,16 +41,24 @@ bool CellScreenLayer::init()
 	sprintf_s(moralInfo, "Moral: %.1f percent", _cell->GetMoralValue() * 100);
 	char contentmentInfo[64];
 	sprintf_s(contentmentInfo, "Contentment: %.1f percent", _cell->GetContentment() * 100);
+	char childCountInfo[64];
+	sprintf_s(childCountInfo, "Childs: %d", _cell->GetChildren().size());
+	char hasParentInfo[64];
+	sprintf_s(hasParentInfo, _cell->GetParent() != nullptr ? "Has parent" : "Hasn't parent");
 
 	_membersText = cocos2d::CCLabelTTF::create(membersInfo, "Arial", 64);
 	_cashText = cocos2d::CCLabelTTF::create(cashInfo, "Arial", 64);
 	_moralText = cocos2d::CCLabelTTF::create(moralInfo, "Arial", 64);
 	_contentmentText = cocos2d::CCLabelTTF::create(contentmentInfo, "Arial", 64);
+	_childCountText = cocos2d::CCLabelTTF::create(childCountInfo, "Arial", 64);
+	_hasParentText = cocos2d::CCLabelTTF::create(hasParentInfo, "Arial", 64);
 
 	_membersText->setPosition(Point(450.0f, screen.y - 100.0f));
 	_cashText->setPosition(Point(450.0f, screen.y - 200.0f));
 	_moralText->setPosition(Point(450.0f, screen.y - 300.0f));
 	_contentmentText->setPosition(Point(450.0f, screen.y - 400.0f));
+	_childCountText->setPosition(Point(450.0f, screen.y - 500.0f));
+	_hasParentText->setPosition(Point(450.0f, screen.y - 600.0f));
 
 	cocos2d::CCMenu *menu = cocos2d::CCMenu::create(_btnBack, NULL);
 	menu->setPosition(0.0f, 0.0f);
@@ -64,6 +72,8 @@ bool CellScreenLayer::init()
 	addChild(_cashText, 1);
 	addChild(_moralText, 1);
 	addChild(_contentmentText, 1);
+	addChild(_childCountText, 1);
+	addChild(_hasParentText, 1);
 	setTouchEnabled(true);
 
 	return true;
