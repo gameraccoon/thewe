@@ -13,22 +13,28 @@ void MapProjector::SetLocation(Point worldLocation)
 {
 	_viewLocation = worldLocation;
 
+	// исправляем если нужно выходы за границы
 	_CheckBoundings();
+	// обновляем положения спрайтов
 	_UpdateNodes();
 }
 
 void MapProjector::SetScale(float scale)
 {
-	if (scale < (_screenCenter.y * 2) / _mapSize.y)
+	// если выд выходит за границы карты
+	if (scale < (_screenCenter.y * 2) / _mapSize.y || scale < (_screenCenter.x * 2) / _mapSize.x)
 	{
-		_viewScale = (_screenCenter.y * 2) / _mapSize.y;
+		// равняем его по самой узкой границе
+		_viewScale = 2 * std::max(_screenCenter.y / _mapSize.y, _screenCenter.x / _mapSize.x);
 	}
 	else
 	{
 		_viewScale = scale;
 	}
 	
+	// исправляем если нужно выходы за границы
 	_CheckBoundings();
+	// обновляем положения спрайтов
 	_UpdateNodes();
 }
 
@@ -39,14 +45,28 @@ void MapProjector::ShiftView(Point delta)
 
 void MapProjector::_CheckBoundings()
 {
+	// выход за верхнюю границу
 	if (_viewLocation.y < _screenCenter.y / _viewScale - _mapSize.y/2)
 	{
 		_viewLocation.y = _screenCenter.y / _viewScale - _mapSize.y/2;
 	}
 
+	// выход за нижнюю границу
 	if (_viewLocation.y > -_screenCenter.y / _viewScale + _mapSize.y/2)
 	{
 		_viewLocation.y = -_screenCenter.y / _viewScale + _mapSize.y/2;
+	}
+
+	// выход за правую границу
+	if (_viewLocation.x < _screenCenter.x / _viewScale - _mapSize.x/2)
+	{
+		_viewLocation.x = _screenCenter.x / _viewScale - _mapSize.x/2;
+	}
+
+	// выход за лувую границу
+	if (_viewLocation.x > -_screenCenter.x / _viewScale + _mapSize.x/2)
+	{
+		_viewLocation.x = -_screenCenter.x / _viewScale + _mapSize.x/2;
 	}
 }
 
