@@ -34,7 +34,7 @@ bool CellScreenLayer::init()
 	_btnBack->setPosition(pos - ccp(-820.0f, 100.0f));
 
 	char membersInfo[64];
-	sprintf_s(membersInfo, "%.1f members in the cell ", _cell->GetMembersCount());
+	sprintf_s(membersInfo, "%d members in the cell ", _cell->GetMembersCount());
 	char cashInfo[64];
 	sprintf_s(cashInfo, "Cash %.1f$", _cell->GetCash());
 	char moralInfo[64];

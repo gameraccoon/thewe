@@ -61,10 +61,10 @@ private:
 	typedef std::vector<MapPart> MapParts;
 
 	/** Проверить выход границ вида за границы карты и исправить положение вида при необходимости */
-	void CheckBoundings();
+	void _CheckBoundings();
 
 	/** Обновить положение и масштаб всех проецируемых элементов */
-	void UpdateNodes();
+	void _UpdateNodes();
 
 	float _viewScale;
 	Point _viewLocation;

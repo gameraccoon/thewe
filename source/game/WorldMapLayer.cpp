@@ -21,15 +21,24 @@ bool WorldMapLayer::init(void)
 
 	WorldMap::Instance().AddCell(std::make_shared<Cell>(Cell(Point(100.0f, 100.0f))));
 
-
 	addChild(_mapProjector->AddSprite(Point(0.0f, 0.0f), Point(0.0f, 0.0f), "WorldMap.png"));
 	setTouchEnabled(true);
     setKeypadEnabled(true);
+
+	_cellHull.PushPoint(Point(7.0f, -5.0f));
+	_cellHull.PushPoint(Point(70.0f, -5.0f));
+	_cellHull.PushPoint(Point(70.0f, 60.0f));
+	_cellHull.PushPoint(Point(7.0f, 60.0f));
 
 	Point origin = cocos2d::CCDirector::sharedDirector()->getVisibleOrigin();
 	Point screen = cocos2d::CCDirector::sharedDirector()->getVisibleSize();
 
 	SetGuiEnabled(true);
+
+	for (const Cell::Ptr cell : WorldMap::Instance().GetCells())
+	{
+		addChild(_mapProjector->AddSprite(cell->GetLocation(), Point(10.0f, 10.0f), "pin.png"));
+	}
 	
 	// сообщаем где находится центр окна вывода
 	_mapProjector->SetScreenCenter(origin + screen / 2.0f);
@@ -89,11 +98,20 @@ void WorldMapLayer::ccTouchesEnded(cocos2d::CCSet* touches, cocos2d::CCEvent* ev
 
 		if (size <= tolerance)
 		{
-			Region::Ptr region = GetRegionUnderPoint(point);
-
-			if (region)
+			Cell::Ptr cell = GetCellUnderPoint(point);
+			
+			if (cell)
 			{
-				dynamic_cast<GameScene*>(this->getParent())->ShowRegionInfo(region);
+				dynamic_cast<GameScene*>(this->getParent())->ShowCellScreen(cell);
+			}
+			else
+			{
+				Region::Ptr region = GetRegionUnderPoint(point);
+
+				if (region)
+				{
+					dynamic_cast<GameScene*>(this->getParent())->ShowRegionInfo(region);
+				}
 			}
 		}
 	}
@@ -128,13 +146,14 @@ void WorldMapLayer::visit()
 
 Region::Ptr WorldMapLayer::GetRegionUnderPoint(const Point& point) const
 {
+	Point projectedClickPoint = _mapProjector->ProjectOnMap(point);
 	for (Region::Ptr region : WorldMap::Instance().GetRegions())
 	{
 		const Region::HullsArray &array = region->GetHullsArray();
 
 		for (const ArbitraryHull &hull : array)
 		{
-			if (hull.Contain(_mapProjector->ProjectOnMap(point)))
+			if (hull.Contain(projectedClickPoint))
 			{
 				return region;
 			}
@@ -144,6 +163,20 @@ Region::Ptr WorldMapLayer::GetRegionUnderPoint(const Point& point) const
 	return Region::Ptr();
 }
 
+Cell::Ptr WorldMapLayer::GetCellUnderPoint(const Point& point) const
+{
+	Point projectedClickPoint = _mapProjector->ProjectOnMap(point);
+	for (Cell::Ptr cell : WorldMap::Instance().GetCells())
+	{
+		Point projectedPoint = projectedClickPoint - cell->GetLocation();
+		if (_cellHull.Contain(projectedPoint))
+		{
+			return cell;
+		}
+	}
+
+	return Cell::Ptr();
+}
 
 void WorldMapLayer::ModifyZoom(float multiplier)
 {

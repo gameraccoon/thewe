@@ -13,9 +13,8 @@ void MapProjector::SetLocation(Point worldLocation)
 {
 	_viewLocation = worldLocation;
 
-	CheckBoundings();
-
-	UpdateNodes();
+	_CheckBoundings();
+	_UpdateNodes();
 }
 
 void MapProjector::SetScale(float scale)
@@ -29,8 +28,8 @@ void MapProjector::SetScale(float scale)
 		_viewScale = scale;
 	}
 	
-	CheckBoundings();
-	UpdateNodes();
+	_CheckBoundings();
+	_UpdateNodes();
 }
 
 void MapProjector::ShiftView(Point delta)
@@ -38,7 +37,7 @@ void MapProjector::ShiftView(Point delta)
 	SetLocation(_viewLocation + delta / _viewScale);
 }
 
-void MapProjector::CheckBoundings()
+void MapProjector::_CheckBoundings()
 {
 	if (_viewLocation.y < _screenCenter.y / _viewScale - _mapSize.y/2)
 	{
@@ -99,7 +98,7 @@ void MapProjector::SetScreenCenter(Point centerPos)
 void MapProjector::AddMapPart(Point location, Point shift, cocos2d::CCNode *node)
 {
 	// умный указатель вместо delete будет вызывать release
-	std::function<void(cocos2d::CCNode* node)> del = [](cocos2d::CCNode* nodeToDelete)
+	std::function<void(cocos2d::CCNode*)> del = [](cocos2d::CCNode* nodeToDelete)
 	{
 		nodeToDelete->release();
 	};
@@ -113,7 +112,7 @@ void MapProjector::AddMapPart(Point location, Point shift, cocos2d::CCNode *node
 	_mapParts.push_back(locSprite);
 }
 
-void MapProjector::UpdateNodes()
+void MapProjector::_UpdateNodes()
 {
 	for (const MapPart& node : _mapParts)
 	{
@@ -126,7 +125,7 @@ cocos2d::CCSprite* MapProjector::AddSprite(Point location, Point shift, std::str
 {
 	cocos2d::CCSprite *sprite = new cocos2d::CCSprite();
 	sprite->initWithFile(spriteName.c_str());
-	AddMapPart(Point(0.0f, 0.0f), Point(0.0f, 0.0f), sprite);
+	AddMapPart(location, shift, sprite);
 	return sprite;
 }
 

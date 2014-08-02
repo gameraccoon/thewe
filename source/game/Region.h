@@ -19,10 +19,7 @@ public:
 	typedef std::vector<ArbitraryHull> HullsArray;
 
 public:
-	Region(void);
 	Region(const Info &info);
-
-	void Init(const Info &info);
 
 	const ArbitraryHull& GetHullByIndex(int index) const;
 	const HullsArray& GetHullsArray(void) const;
@@ -33,6 +30,7 @@ public:
 	Info GetInfo(void) const;
 
 private:
+	void _Init(const Info &info);
 	HullsArray _hulls;
 
 	float _population;

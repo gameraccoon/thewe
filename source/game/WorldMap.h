@@ -21,11 +21,9 @@ public:
 	// удаляет все регионы
 	void CleanupRegions(void);
 	void AddRegion(Region::Ptr region);
-	void CreateRegion(std::string regionName);
 
 	const Regions& GetRegions() const;
 
-	
 	void AddCell(Cell::Ptr cell);
 
 	const Cells& GetCells() const;
@@ -34,8 +32,6 @@ private:
 	Regions _regions;
 
 	Cells _cells;
-
-	static WorldMap* _singleInstance;
 
 	/*
 	 * Отключаем ненужные операции
