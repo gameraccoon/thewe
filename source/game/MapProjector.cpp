@@ -4,14 +4,14 @@ static const Point MAP_INITIAL_SIZE = Point(1390.0f, 1003.0f);
 
 MapProjector::MapProjector(Point mapSize)
 	: _mapSize(mapSize)
-	, _mapScale(1.0f)
-	, _mapLocation(0.0f, 0.0f)
+	, _viewScale(1.0f)
+	, _viewLocation(0.0f, 0.0f)
 {
 }
 
 void MapProjector::SetLocation(Point worldLocation)
 {
-	_mapLocation = worldLocation;
+	_viewLocation = worldLocation;
 
 	CheckBoundings();
 
@@ -22,11 +22,11 @@ void MapProjector::SetScale(float scale)
 {
 	if (scale < (_screenCenter.y * 2) / _mapSize.y)
 	{
-		_mapScale = (_screenCenter.y * 2) / _mapSize.y;
+		_viewScale = (_screenCenter.y * 2) / _mapSize.y;
 	}
 	else
 	{
-		_mapScale = scale;
+		_viewScale = scale;
 	}
 	
 	CheckBoundings();
@@ -35,40 +35,40 @@ void MapProjector::SetScale(float scale)
 
 void MapProjector::ShiftView(Point delta)
 {
-	SetLocation(_mapLocation + delta / _mapScale);
+	SetLocation(_viewLocation + delta / _viewScale);
 }
 
 void MapProjector::CheckBoundings()
 {
-	if (_mapLocation.y < _screenCenter.y / _mapScale - _mapSize.y/2)
+	if (_viewLocation.y < _screenCenter.y / _viewScale - _mapSize.y/2)
 	{
-		_mapLocation.y = _screenCenter.y / _mapScale - _mapSize.y/2;
+		_viewLocation.y = _screenCenter.y / _viewScale - _mapSize.y/2;
 	}
 
-	if (_mapLocation.y > -_screenCenter.y / _mapScale + _mapSize.y/2)
+	if (_viewLocation.y > -_screenCenter.y / _viewScale + _mapSize.y/2)
 	{
-		_mapLocation.y = -_screenCenter.y / _mapScale + _mapSize.y/2;
+		_viewLocation.y = -_screenCenter.y / _viewScale + _mapSize.y/2;
 	}
 }
 
 Point MapProjector::GetLocation() const
 {
-	return _mapLocation;
+	return _viewLocation;
 }
 
 float MapProjector::GetScale() const
 {
-	return _mapScale;
+	return _viewScale;
 }
 
 Point MapProjector::ProjectOnMap(Point screenPoint) const
 {
-	return (screenPoint - _screenCenter) / _mapScale - _mapLocation;
+	return (screenPoint - _screenCenter) / _viewScale - _viewLocation;
 }
 
 Point MapProjector::ProjectOnScreen(Point mapPoint) const
 {
-	return _screenCenter + (mapPoint + _mapLocation) * _mapScale;
+	return _screenCenter + (mapPoint + _viewLocation) * _viewScale;
 }
 
 ArbitraryHull MapProjector::ProjectOnMap(const ArbitraryHull& screenHull) const
@@ -117,12 +117,8 @@ void MapProjector::UpdateNodes()
 {
 	for (const MapPart& node : _mapParts)
 	{
-		node.node->setPosition(_screenCenter + ((node.location + node.shift) + _mapLocation) * _mapScale);
-	}
-
-	for (const MapPart& node : _mapParts)
-	{
-		node.node->setScale(_mapScale);
+		node.node->setPosition(_screenCenter + ((node.location + node.shift) + _viewLocation) * _viewScale);
+		node.node->setScale(_viewScale);
 	}
 }
 

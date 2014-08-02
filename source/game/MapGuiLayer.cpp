@@ -67,8 +67,6 @@ bool MapGuiLayer::init(void)
 		//pin->setUserData();
 		_mapProjector->AddMapPart(cell->GetLocation(), Point(100.0f, -300.0f), pin);
 		addChild(pin);
-		removeChild(pin);
-		_mapProjector->RemoveMapPart(pin);
 	}
 
 	return true;

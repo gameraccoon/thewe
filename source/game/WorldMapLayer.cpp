@@ -58,6 +58,7 @@ void WorldMapLayer::SetGuiEnabled(bool isEnabled)
 		_mapGui = new MapGuiLayer(_mapProjector);
 		addChild(_mapGui);
 		_mapGui->autorelease();
+		_mapProjector->SetScale(_mapProjector->GetScale());
 	}
 }
 
