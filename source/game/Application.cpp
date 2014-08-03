@@ -1,8 +1,8 @@
 #include "Application.h"
 
 #include "GameScene.h"
-
 #include "Point.h"
+#include "PlayersProfiles.h"
 
 AppDelegate::AppDelegate()
 {
@@ -21,7 +21,9 @@ bool AppDelegate::applicationDidFinishLaunching()
 	director->setDisplayStats(true);
 	director->setAnimationInterval(1.0 / 60.0);
 
-	cocos2d::CCFileUtils::sharedFileUtils()->addSearchPath("../_gamedata");
+	cocos2d::CCFileUtils::sharedFileUtils()->addSearchPath("../_gamedata/textures");
+
+	ProfilesManager::Instance().LoadProfiles();
 
 	_menuScene = cocos2d::CCScene::create();
 	

@@ -139,7 +139,7 @@ void EditorLayer::_MenuInputListener(cocos2d::CCObject *sender)
 		_hull1.PopPoint();
 		break;
 	case MENU_ITEM_SAVE_XML:
-		_hull1.SaveToXml("../_gamedata/hulls.xml");
+		_hull1.SaveToXml("../_gamedata/map/hulls.xml");
 		break;
 	case MENU_ITEM_RELOAD_WORLD:
 		WorldLoader::LoadWorld();

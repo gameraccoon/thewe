@@ -30,7 +30,7 @@ bool WorldLoader::LoadWorld(void)
 	pugi::xml_document hulls_xml_doc;
 	pugi::xml_document regions_xml_doc;
 	
-	if (!hulls_xml_doc.load_file("../_gamedata/hulls.xml") || !regions_xml_doc.load_file("../_gamedata/regions.xml"))
+	if (!hulls_xml_doc.load_file("../_gamedata/map/hulls.xml") || !regions_xml_doc.load_file("../_gamedata/map/regions.xml"))
 	{
 		return false;
 	}
@@ -73,10 +73,33 @@ bool WorldLoader::LoadWorld(void)
 	return true;
 }
 
-void WorldLoader::SaveCurrentWorldState(SaveSlotID slotID)
+bool WorldLoader::LoadGameState(void)
 {
+	PlayerProfile *profile = ProfilesManager::Instance().GetCurrentProfile();
+
+	if (profile)
+	{
+		return true;
+	}
+
+	return false;
 }
 
-void WorldLoader::RestoreLastWorldState(SaveSlotID slotID)
+bool WorldLoader::SaveGameState(void)
+{
+	PlayerProfile *profile = ProfilesManager::Instance().GetCurrentProfile();
+
+	if (profile)
+	{
+		// TODO
+		// 1. узнать как по счету профиль
+		// 2. создать и сохранить xml файл с именем save-@имя профиля@-@какой по счету + 1@
+		// 3. если удалось сохранить удаляем предидущий.
+	}
+
+	return false;
+}
+
+void  WorldLoader::FlushGameState(void)
 {
 }

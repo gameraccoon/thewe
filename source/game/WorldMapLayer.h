@@ -13,6 +13,7 @@ public:
 	WorldMapLayer(MapProjector* projector);
 
 	virtual bool init(void) override;
+	virtual void visit() override;
 
 	void menuCloseCallback(cocos2d::CCObject *Sender);
 
@@ -24,8 +25,6 @@ public:
 
 	void SetMapInputEnabled(bool isEnabled);
 	void SetGuiEnabled(bool isEnabled);
-
-	virtual void visit() override;
 
 private:
 	Region::Ptr GetRegionUnderPoint(const Point& point) const;

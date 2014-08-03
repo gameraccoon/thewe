@@ -18,21 +18,19 @@ public:
 	typedef std::vector<Region::Ptr> Regions;
 	typedef std::vector<Cell::Ptr> Cells;
 
+public:
 	// удаляет все регионы
 	void CleanupRegions(void);
-	void AddRegion(Region::Ptr region);
 	void CreateRegion(std::string regionName);
 
 	const Regions& GetRegions() const;
-
-	
-	void AddCell(Cell::Ptr cell);
-
 	const Cells& GetCells() const;
+
+	void AddRegion(Region::Ptr region);
+	void AddCell(Cell::Ptr cell);
 
 private:
 	Regions _regions;
-
 	Cells _cells;
 
 	static WorldMap* _singleInstance;

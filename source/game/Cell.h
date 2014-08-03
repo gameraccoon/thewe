@@ -19,6 +19,7 @@ public:
 	float GetContentment() const;
 
 	Point GetLocation();
+
 private:
 	/** Количество членов ячейки */
 	int _membersCount;

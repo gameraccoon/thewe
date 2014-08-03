@@ -17,6 +17,7 @@
     <ClCompile Include="..\..\game\CellScreenLayer.cpp" />
     <ClCompile Include="..\..\game\MapGuiLayer.cpp" />
     <ClCompile Include="..\..\game\MapProjector.cpp" />
+    <ClCompile Include="..\..\game\PlayersProfiles.cpp" />
     <ClCompile Include="..\..\game\Point.cpp" />
     <ClCompile Include="..\..\game\Region.cpp" />
     <ClCompile Include="..\..\game\EditorLayer.cpp" />
@@ -34,6 +35,7 @@
     <ClInclude Include="..\..\game\CellScreenLayer.h" />
     <ClInclude Include="..\..\game\MapGuiLayer.h" />
     <ClInclude Include="..\..\game\MapProjector.h" />
+    <ClInclude Include="..\..\game\PlayersProfiles.h" />
     <ClInclude Include="..\..\game\Point.h" />
     <ClInclude Include="..\..\game\Region.h" />
     <ClInclude Include="..\..\game\EditorLayer.h" />

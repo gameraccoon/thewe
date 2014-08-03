@@ -8,10 +8,10 @@
       <Filter>GameElements</Filter>
     </ClCompile>
     <ClCompile Include="..\..\game\ArbitraryHull.cpp">
-      <Filter>Helpers</Filter>
+      <Filter>Utils</Filter>
     </ClCompile>
     <ClCompile Include="..\..\game\MapProjector.cpp">
-      <Filter>Helpers</Filter>
+      <Filter>Utils</Filter>
     </ClCompile>
     <ClCompile Include="..\..\game\Application.cpp">
       <Filter>Main</Filter>
@@ -32,7 +32,7 @@
       <Filter>Views\GameScene\WorldMap\MapGui</Filter>
     </ClCompile>
     <ClCompile Include="..\..\game\WorldLoader.cpp">
-      <Filter>Helpers</Filter>
+      <Filter>Utils</Filter>
     </ClCompile>
     <ClCompile Include="..\..\game\EditorLayer.cpp">
       <Filter>Views\GameScene\RegionEditor</Filter>
@@ -46,6 +46,9 @@
     <ClCompile Include="..\..\game\CellScreenLayer.cpp">
       <Filter>Views\GameScene\CellScreen</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\game\PlayersProfiles.cpp">
+      <Filter>Utils</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\game\WorldMap.h">
@@ -55,10 +58,10 @@
       <Filter>GameElements</Filter>
     </ClInclude>
     <ClInclude Include="..\..\game\MapProjector.h">
-      <Filter>Helpers</Filter>
+      <Filter>Utils</Filter>
     </ClInclude>
     <ClInclude Include="..\..\game\ArbitraryHull.h">
-      <Filter>Helpers</Filter>
+      <Filter>Utils</Filter>
     </ClInclude>
     <ClInclude Include="..\..\game\Application.h">
       <Filter>Main</Filter>
@@ -76,7 +79,7 @@
       <Filter>Views\GameScene\WorldMap\MapGui</Filter>
     </ClInclude>
     <ClInclude Include="..\..\game\WorldLoader.h">
-      <Filter>Helpers</Filter>
+      <Filter>Utils</Filter>
     </ClInclude>
     <ClInclude Include="..\..\game\EditorLayer.h">
       <Filter>Views\GameScene\RegionEditor</Filter>
@@ -90,6 +93,9 @@
     <ClInclude Include="..\..\game\CellScreenLayer.h">
       <Filter>Views\GameScene\CellScreen</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\game\PlayersProfiles.h">
+      <Filter>Utils</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Views">
@@ -97,9 +103,6 @@
     </Filter>
     <Filter Include="GameElements">
       <UniqueIdentifier>{0ff6fc90-8601-4ee7-b165-ffc96ac63649}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Helpers">
-      <UniqueIdentifier>{d154070b-6a0f-4a6a-ad9c-99fd053e2335}</UniqueIdentifier>
     </Filter>
     <Filter Include="Main">
       <UniqueIdentifier>{db327942-ac9b-4560-af80-e2b6fb90703e}</UniqueIdentifier>
@@ -127,6 +130,9 @@
     </Filter>
     <Filter Include="Views\GameScene\WorldMap\GraphicElements">
       <UniqueIdentifier>{1db34c28-aeae-4722-800d-ad66811a0732}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Utils">
+      <UniqueIdentifier>{d154070b-6a0f-4a6a-ad9c-99fd053e2335}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

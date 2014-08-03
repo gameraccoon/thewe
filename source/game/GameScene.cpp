@@ -28,6 +28,7 @@ bool GameScene::init(void)
 
 	// долгая операция
 	WorldLoader::LoadWorld();
+	WorldLoader::LoadGameState();
 
 	return true;
 }
