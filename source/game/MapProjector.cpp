@@ -1,5 +1,7 @@
 #include "MapProjector.h"
 
+#include <cocos2d.h>
+
 static const Point MAP_INITIAL_SIZE = Point(1390.0f, 1003.0f);
 
 MapProjector::MapProjector(Point mapSize)
@@ -115,20 +117,12 @@ void MapProjector::SetScreenCenter(Point centerPos)
 	_screenCenter = centerPos;	
 }
 
-void MapProjector::AddMapPart(Point location, Point shift, cocos2d::CCNode *node)
-{
-	// умный указатель вместо delete будет вызывать release
-	std::function<void(cocos2d::CCNode*)> del = [](cocos2d::CCNode* nodeToDelete)
-	{
-		nodeToDelete->release();
-	};
-
-	MapPart::NodePtr nodePtr(node, del);
-	
+void MapProjector::AddMapPart(Point location, Point shift, Drawable::Ptr node)
+{	
 	MapPart locSprite;
 	locSprite.location = location;
 	locSprite.shift = shift;
-	locSprite.node.swap(nodePtr);
+	locSprite.node = node;
 	_mapParts.push_back(locSprite);
 }
 
@@ -136,27 +130,19 @@ void MapProjector::_UpdateNodes()
 {
 	for (const MapPart& node : _mapParts)
 	{
-		node.node->setPosition(_screenCenter + ((node.location + node.shift) + _viewLocation) * _viewScale);
-		node.node->setScale(_viewScale);
+		node.node->SetPosition(_screenCenter + ((node.location + node.shift) + _viewLocation) * _viewScale);
+		node.node->SetScale(_viewScale);
 	}
 }
 
-cocos2d::CCSprite* MapProjector::AddSprite(Point location, Point shift, std::string spriteName)
-{
-	cocos2d::CCSprite *sprite = new cocos2d::CCSprite();
-	sprite->initWithFile(spriteName.c_str());
-	AddMapPart(location, shift, sprite);
-	return sprite;
-}
-
-void MapProjector::RemoveMapPart(const cocos2d::CCNode *node)
+void MapProjector::RemoveMapPart(const Drawable::Ptr node)
 {
 	auto iterator = _mapParts.begin(), iEnd = _mapParts.end();
 	while (iterator != iEnd)
 	{
 		const MapPart currentPart = (*iterator);	
 
-		if (currentPart.node.get() == node)
+		if (currentPart.node == node)
 		{
 			_mapParts.erase(iterator);
 			return;
