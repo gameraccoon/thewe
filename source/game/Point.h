@@ -33,7 +33,7 @@ struct Point
 	/** Получить проекцию вектора на вектор base */
 	Point Project(Point base) const;
 	
-	/** Неявное преобразование в cocos2d::CCPoint */
+	/* Неявные преобразования в другие классы */
 	operator cocos2d::CCPoint() const { return cocos2d::CCPoint(x, y); }
 	operator cocos2d::CCSize() const { return cocos2d::CCSize(x, y); }
 

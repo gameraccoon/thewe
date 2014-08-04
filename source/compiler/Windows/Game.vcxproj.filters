@@ -46,6 +46,9 @@
     <ClCompile Include="..\..\game\CellScreenLayer.cpp">
       <Filter>Views\GameScene\CellScreen</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\game\Color.cpp">
+      <Filter>EngineInterface</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\game\WorldMap.h">
@@ -89,6 +92,9 @@
     </ClInclude>
     <ClInclude Include="..\..\game\CellScreenLayer.h">
       <Filter>Views\GameScene\CellScreen</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\game\Color.h">
+      <Filter>EngineInterface</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
