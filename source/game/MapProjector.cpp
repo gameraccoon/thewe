@@ -1,7 +1,5 @@
 #include "MapProjector.h"
 
-#include <cocos2d.h>
-
 static const Point MAP_INITIAL_SIZE = Point(1390.0f, 1003.0f);
 
 MapProjector::MapProjector(Point mapSize)
@@ -117,12 +115,14 @@ void MapProjector::SetScreenCenter(Point centerPos)
 	_screenCenter = centerPos;	
 }
 
-void MapProjector::AddMapPart(Point location, Point shift, Drawable::Ptr node)
-{	
+void MapProjector::AddMapPart(Drawable::Ptr node, Point location, Point shift, float scale, bool dontScale)
+{
 	MapPart locSprite;
 	locSprite.location = location;
+	locSprite.initialScale = scale;
 	locSprite.shift = shift;
 	locSprite.node = node;
+	locSprite.isScalable = !dontScale;
 	_mapParts.push_back(locSprite);
 }
 
@@ -130,8 +130,19 @@ void MapProjector::_UpdateNodes()
 {
 	for (const MapPart& node : _mapParts)
 	{
-		node.node->SetPosition(_screenCenter + ((node.location + node.shift) + _viewLocation) * _viewScale);
-		node.node->SetScale(_viewScale);
+		float screenScale;
+
+		if (node.isScalable)
+		{
+			screenScale = _viewScale * node.initialScale;
+		}
+		else
+		{
+			screenScale = node.initialScale;
+		}
+
+		node.node->SetPosition(_screenCenter + (node.location + _viewLocation) * _viewScale + node.shift * screenScale);
+		node.node->SetScale(screenScale);
 	}
 }
 
