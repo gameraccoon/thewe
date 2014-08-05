@@ -63,7 +63,6 @@ typedef enum LanguageType
     kLanguageItalian,
     kLanguageGerman,
     kLanguageSpanish,
-    kLanguageDutch,
     kLanguageRussian,
     kLanguageKorean,
     kLanguageJapanese,

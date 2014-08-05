@@ -2,7 +2,8 @@
 #define MAP_PROJECTOR_H
 
 #include <memory>
-#include <cocos2d.h>
+#include <string>
+//#include <cocos2d.h>
 #include "Point.h"
 #include "ArbitraryHull.h"
 

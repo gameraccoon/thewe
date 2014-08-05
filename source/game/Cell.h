@@ -9,9 +9,24 @@
 class Cell
 {
 public:
+	struct Info
+	{
+		Cell *parent;
+		Region::Ptr region;
+		Point location;
+
+		float cach;
+		float morale;
+		float contentment;
+
+		int membersNum;
+	};
+
 	typedef std::shared_ptr<Cell> Ptr;
+
 public:
 	Cell(Point location);
+	Cell(const Info &info);
 
 	int GetMembersCount() const;
 	float GetCash() const;
@@ -36,6 +51,12 @@ public:
 
 	/** ¬озвращает все дочерние €чейки */
 	const std::vector<Cell::Ptr>& GetChildren();
+
+	/**
+	* ¬озвращает информацию о €чейке
+	*/
+	Info GetInfo(void) const;
+
 private:
 	/** ”становить €чейке родител€ */
 	void _SetParent(Cell* cell);

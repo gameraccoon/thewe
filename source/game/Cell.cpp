@@ -6,6 +6,17 @@ Cell::Cell(Point location)
 	_worldLocation = location;
 }
 
+Cell::Cell(const Info &info)
+	: _parentCell(info.parent)
+	, _region(info.region)
+	, _worldLocation(info.location)
+	, _cash(info.cach)
+	, _moralValue(info.morale)
+	, _contentment(info.contentment)
+	, _membersCount(info.membersNum)
+{
+}
+
 int Cell::GetMembersCount() const
 {
 	return _membersCount;
@@ -68,4 +79,19 @@ void Cell::RemoveChild(Cell::Ptr cell)
 const std::vector<Cell::Ptr>& Cell::GetChildren()
 {
 	return _childCells;
+}
+
+Cell::Info Cell::GetInfo(void) const
+{
+	Info info;
+
+	info.parent = _parentCell;
+	info.region = _region;
+	info.location = _worldLocation;
+	info.cach = _cash;
+	info.morale = _moralValue;
+	info.contentment = _contentment;
+	info.membersNum = _membersCount;
+
+	return info;
 }

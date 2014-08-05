@@ -22,10 +22,8 @@
  THE SOFTWARE.
  ****************************************************************************/
 #import <Foundation/Foundation.h>
-#import <OpenGLES/EAGL.h>
 #import "CCDirectorCaller.h"
 #import "CCDirector.h"
-#import "EAGLView.h"
 
 static id s_sharedDirectorCaller;
 
@@ -93,7 +91,6 @@ static id s_sharedDirectorCaller;
                       
 -(void) doCaller: (id) sender
 {
-    [EAGLContext setCurrentContext: [[EAGLView sharedEGLView] context]];
     cocos2d::CCDirector::sharedDirector()->mainLoop();
 }
 

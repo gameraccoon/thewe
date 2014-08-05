@@ -109,8 +109,6 @@ private:
 
     void initWords(const char* text);
 
-    void reset();
-
     FT_Vector getPenForAlignment(FTLineInfo* pInfo, CCImage::ETextAlign eAlignMask, int lineNumber, int totalLines);
 
     FT_Error addWord(const std::string& word);
