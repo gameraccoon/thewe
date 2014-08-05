@@ -34,11 +34,9 @@ bool AppDelegate::applicationDidFinishLaunching()
 	_btnExitGame = CCMenuItemImage::create("btn-exit-normal.png", "btn-exit-selected.png",
 		_menuScene, menu_selector(AppDelegate::_MenuInputListener));
 
-	CCSize client = director->getVisibleSize();
+	Point client = director->getVisibleSize();
 	Point origin = director->getVisibleOrigin();
-	Point pos;
-	pos.x = origin.x + client.width / 2.0f;
-	pos.y = origin.y + client.height - 100.0f;
+	Point pos(origin.x + client.x / 2.0f, origin.y + client.y - 100.0f);
 
 	_btnRunGame->setPosition(pos - Point(0.0f, 100.0f));
 	_btnRunGame->setTag(MENU_ITEM_RUN_GAME);

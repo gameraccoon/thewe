@@ -13,7 +13,7 @@ void ArbitraryHull::PopPoint(void)
 	}
 }
 
-void ArbitraryHull::Draw(const cocos2d::ccColor4F &color) const
+void ArbitraryHull::Draw(const Color &color) const
 {
 	if (_pointsArray.empty())
 	{
@@ -26,12 +26,7 @@ void ArbitraryHull::Draw(const cocos2d::ccColor4F &color) const
 
 void ArbitraryHull::Draw(void) const
 {
-	cocos2d::ccColor4F white;
-	white.r = 1.0f;
-	white.g = 1.0f;
-	white.b = 1.0f;
-	white.a = 1.0f;
-
+	Color white(0xFFFFFFFF);
 	Draw(white);
 }
 

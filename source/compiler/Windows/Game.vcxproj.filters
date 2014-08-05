@@ -49,6 +49,12 @@
     <ClCompile Include="..\..\game\PlayersProfiles.cpp">
       <Filter>Utils</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\game\Color.cpp">
+      <Filter>EngineInterface</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\game\Drawable.cpp">
+      <Filter>EngineInterface</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\game\WorldMap.h">
@@ -95,6 +101,12 @@
     </ClInclude>
     <ClInclude Include="..\..\game\PlayersProfiles.h">
       <Filter>Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\game\Color.h">
+      <Filter>EngineInterface</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\game\Drawable.h">
+      <Filter>EngineInterface</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

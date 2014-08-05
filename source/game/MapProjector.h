@@ -3,9 +3,9 @@
 
 #include <memory>
 #include <string>
-//#include <cocos2d.h>
 #include "Point.h"
 #include "ArbitraryHull.h"
+#include "Drawable.h"
 
 class MapProjector
 {
@@ -37,30 +37,28 @@ public:
 
 	/** Сказать в какой точке экрана находится центер области вывода */
 	void SetScreenCenter(Point centerPos);
+	
 	/** Добавить новый элемент, который будет проецироваться на карту */
-	void AddMapPart(Point location, Point shift, cocos2d::CCNode *node);
-	/** Добавить спрайт по имени файла */
-	cocos2d::CCSprite* AddSprite(Point location, Point shift, std::string spriteName);
+	void AddMapPart(Point location, Point shift, Drawable::Ptr node);
 	
 	/** Удалить и разрушить элемент для проецирования */
-	void RemoveMapPart(const cocos2d::CCNode *node);
+	void RemoveMapPart(const Drawable::Ptr node);
 
 private:
 	struct MapPart
 	{
-		/** Умный указатель с возможностью устонавливать свои правила удаления объектов */
-		typedef std::shared_ptr<cocos2d::CCNode> NodePtr;
 		/** Положение объекта в мире */
 		Point location;
 		/** Сдвиг центра объекта */
 		Point shift;
-		/** Указатель на объект */
-		NodePtr node;
+		/** Указатель на графический объект */
+		Drawable::Ptr node;
 	};
 
 	/** Проецируемые элементы */
 	typedef std::vector<MapPart> MapParts;
 
+private:
 	/** Проверить выход границ вида за границы карты и исправить положение вида при необходимости */
 	void _CheckBoundings();
 

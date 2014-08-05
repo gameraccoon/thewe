@@ -12,6 +12,14 @@ WorldMapLayer::WorldMapLayer(MapProjector* projector)
 	init();
 }
 
+cocos2d::CCSprite* AddSpriteToProjector(MapProjector *projector, Point location, Point shift, std::string spriteName)
+{
+	cocos2d::CCSprite *sprite = new cocos2d::CCSprite();
+	sprite->initWithFile(spriteName.c_str());
+	projector->AddMapPart(location, shift, Drawable::CastFromCocos(sprite));
+	return sprite;
+}
+
 bool WorldMapLayer::init(void)
 {
 	if (!cocos2d::CCLayer::init())
@@ -26,7 +34,8 @@ bool WorldMapLayer::init(void)
 	WorldMap::Instance().AddCell(cell1);
 	WorldMap::Instance().AddCell(cell2);
 
-	addChild(_mapProjector->AddSprite(Point(0.0f, 0.0f), Point(0.0f, 0.0f), "WorldMap.png"));
+	cocos2d::CCSprite * spr = AddSpriteToProjector(_mapProjector, Point(0.0f, 0.0f), Point(0.0f, 0.0f), "WorldMap.png");
+	addChild(spr);
 	setTouchEnabled(true);
     setKeypadEnabled(true);
 
@@ -42,7 +51,7 @@ bool WorldMapLayer::init(void)
 
 	for (const Cell::Ptr cell : WorldMap::Instance().GetCells())
 	{
-		addChild(_mapProjector->AddSprite(cell->GetLocation(), Point(10.0f, 10.0f), "pin.png"));
+		addChild(AddSpriteToProjector(_mapProjector, cell->GetLocation(), Point(10.0f, 10.0f), "pin.png"));
 	}
 	
 	// сообщаем где находится центр окна вывода

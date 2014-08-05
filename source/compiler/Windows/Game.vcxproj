@@ -15,6 +15,8 @@
     <ClCompile Include="..\..\game\ArbitraryHull.cpp" />
     <ClCompile Include="..\..\game\Cell.cpp" />
     <ClCompile Include="..\..\game\CellScreenLayer.cpp" />
+    <ClCompile Include="..\..\game\Color.cpp" />
+    <ClCompile Include="..\..\game\Drawable.cpp" />
     <ClCompile Include="..\..\game\MapGuiLayer.cpp" />
     <ClCompile Include="..\..\game\MapProjector.cpp" />
     <ClCompile Include="..\..\game\PlayersProfiles.cpp" />
@@ -33,6 +35,8 @@
     <ClInclude Include="..\..\game\ArbitraryHull.h" />
     <ClInclude Include="..\..\game\Cell.h" />
     <ClInclude Include="..\..\game\CellScreenLayer.h" />
+    <ClInclude Include="..\..\game\Color.h" />
+    <ClInclude Include="..\..\game\Drawable.h" />
     <ClInclude Include="..\..\game\MapGuiLayer.h" />
     <ClInclude Include="..\..\game\MapProjector.h" />
     <ClInclude Include="..\..\game\PlayersProfiles.h" />

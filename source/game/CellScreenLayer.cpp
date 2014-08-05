@@ -2,6 +2,8 @@
 
 #include "GameScene.h"
 
+#include "Color.h"
+
 CellScreenLayer::CellScreenLayer(Cell::Ptr cell)
 {
 	_cell = cell;
@@ -125,17 +127,8 @@ void CellScreenLayer::_InitBackground(cocos2d::CCDrawNode *background) const
 	vertices[2] = origin + cocos2d::CCPoint(screen.x, screen.y);
 	vertices[3] = origin + cocos2d::CCPoint(0.0f, screen.y);
 
-	cocos2d::ccColor4F fill, border;
+	Color fill(0.3f, 0.3f, 0.3f, 0.7f);
+	Color border(0.6f, 0.6f, 0.6f, 0.7f);
 	
-	fill.r = 0.3f;
-	fill.g = 0.3f;
-	fill.b = 0.3f;
-	fill.a = 0.7f;
-	
-	border.r = 0.6f;
-	border.g = 0.6f;
-	border.b = 0.6f;
-	border.a = 0.7f;
-
 	background->drawPolygon(vertices, 4, fill, 50.0f, border);
 }
