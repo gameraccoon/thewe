@@ -4,71 +4,90 @@ static const Point MAP_INITIAL_SIZE = Point(1390.0f, 1003.0f);
 
 MapProjector::MapProjector(Point mapSize)
 	: _mapSize(mapSize)
-	, _mapScale(1.0f)
-	, _mapLocation(0.0f, 0.0f)
+	, _viewScale(1.0f)
+	, _viewLocation(0.0f, 0.0f)
 {
 }
 
 void MapProjector::SetLocation(Point worldLocation)
 {
-	_mapLocation = worldLocation;
+	_viewLocation = worldLocation;
 
-	CheckBoundings();
-
-	UpdateNodes();
+	// исправляем если нужно выходы за границы
+	_CheckBoundings();
+	// обновляем положения спрайтов
+	_UpdateNodes();
 }
 
 void MapProjector::SetScale(float scale)
 {
-	if (scale < (_screenCenter.y * 2) / _mapSize.y)
+	// если выд выходит за границы карты
+	if (scale < (_screenCenter.y * 2) / _mapSize.y || scale < (_screenCenter.x * 2) / _mapSize.x)
 	{
-		_mapScale = (_screenCenter.y * 2) / _mapSize.y;
+		// равняем его по самой узкой границе
+		_viewScale = 2 * std::max(_screenCenter.y / _mapSize.y, _screenCenter.x / _mapSize.x);
 	}
 	else
 	{
-		_mapScale = scale;
+		_viewScale = scale;
 	}
 	
-	CheckBoundings();
-	UpdateNodes();
+	// исправляем если нужно выходы за границы
+	_CheckBoundings();
+	// обновляем положения спрайтов
+	_UpdateNodes();
 }
 
 void MapProjector::ShiftView(Point delta)
 {
-	SetLocation(_mapLocation + delta / _mapScale);
+	SetLocation(_viewLocation + delta / _viewScale);
 }
 
-void MapProjector::CheckBoundings()
+void MapProjector::_CheckBoundings()
 {
-	if (_mapLocation.y < _screenCenter.y / _mapScale - _mapSize.y/2)
+	// выход за верхнюю границу
+	if (_viewLocation.y < _screenCenter.y / _viewScale - _mapSize.y/2)
 	{
-		_mapLocation.y = _screenCenter.y / _mapScale - _mapSize.y/2;
+		_viewLocation.y = _screenCenter.y / _viewScale - _mapSize.y/2;
 	}
 
-	if (_mapLocation.y > -_screenCenter.y / _mapScale + _mapSize.y/2)
+	// выход за нижнюю границу
+	if (_viewLocation.y > -_screenCenter.y / _viewScale + _mapSize.y/2)
 	{
-		_mapLocation.y = -_screenCenter.y / _mapScale + _mapSize.y/2;
+		_viewLocation.y = -_screenCenter.y / _viewScale + _mapSize.y/2;
+	}
+
+	// выход за правую границу
+	if (_viewLocation.x < _screenCenter.x / _viewScale - _mapSize.x/2)
+	{
+		_viewLocation.x = _screenCenter.x / _viewScale - _mapSize.x/2;
+	}
+
+	// выход за лувую границу
+	if (_viewLocation.x > -_screenCenter.x / _viewScale + _mapSize.x/2)
+	{
+		_viewLocation.x = -_screenCenter.x / _viewScale + _mapSize.x/2;
 	}
 }
 
 Point MapProjector::GetLocation() const
 {
-	return _mapLocation;
+	return _viewLocation;
 }
 
 float MapProjector::GetScale() const
 {
-	return _mapScale;
+	return _viewScale;
 }
 
 Point MapProjector::ProjectOnMap(Point screenPoint) const
 {
-	return (screenPoint - _screenCenter) / _mapScale - _mapLocation;
+	return (screenPoint - _screenCenter) / _viewScale - _viewLocation;
 }
 
 Point MapProjector::ProjectOnScreen(Point mapPoint) const
 {
-	return _screenCenter + (mapPoint + _mapLocation) * _mapScale;
+	return _screenCenter + (mapPoint + _viewLocation) * _viewScale;
 }
 
 ArbitraryHull MapProjector::ProjectOnMap(const ArbitraryHull& screenHull) const
@@ -99,7 +118,7 @@ void MapProjector::SetScreenCenter(Point centerPos)
 void MapProjector::AddMapPart(Point location, Point shift, cocos2d::CCNode *node)
 {
 	// умный указатель вместо delete будет вызывать release
-	std::function<void(cocos2d::CCNode* node)> del = [](cocos2d::CCNode* nodeToDelete)
+	std::function<void(cocos2d::CCNode*)> del = [](cocos2d::CCNode* nodeToDelete)
 	{
 		nodeToDelete->release();
 	};
@@ -113,16 +132,12 @@ void MapProjector::AddMapPart(Point location, Point shift, cocos2d::CCNode *node
 	_mapParts.push_back(locSprite);
 }
 
-void MapProjector::UpdateNodes()
+void MapProjector::_UpdateNodes()
 {
 	for (const MapPart& node : _mapParts)
 	{
-		node.node->setPosition(_screenCenter + ((node.location + node.shift) + _mapLocation) * _mapScale);
-	}
-
-	for (const MapPart& node : _mapParts)
-	{
-		node.node->setScale(_mapScale);
+		node.node->setPosition(_screenCenter + ((node.location + node.shift) + _viewLocation) * _viewScale);
+		node.node->setScale(_viewScale);
 	}
 }
 
@@ -130,7 +145,7 @@ cocos2d::CCSprite* MapProjector::AddSprite(Point location, Point shift, std::str
 {
 	cocos2d::CCSprite *sprite = new cocos2d::CCSprite();
 	sprite->initWithFile(spriteName.c_str());
-	AddMapPart(Point(0.0f, 0.0f), Point(0.0f, 0.0f), sprite);
+	AddMapPart(location, shift, sprite);
 	return sprite;
 }
 

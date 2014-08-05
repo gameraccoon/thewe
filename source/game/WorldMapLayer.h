@@ -6,6 +6,7 @@
 #include "ArbitraryHull.h"
 #include "MapProjector.h"
 #include "Region.h"
+#include "Cell.h"
 
 class WorldMapLayer : public cocos2d::CCLayer
 {
@@ -28,6 +29,7 @@ public:
 
 private:
 	Region::Ptr GetRegionUnderPoint(const Point& point) const;
+	Cell::Ptr GetCellUnderPoint(const Point& point) const;
 
 	Point _touchLastPoint;
 	Point _touchFirstPos;
@@ -37,6 +39,8 @@ private:
 	cocos2d::CCLayer *_mapGui;
 
 	bool _isInputEnabled;
+
+	ArbitraryHull _cellHull;
 };
 
 #endif

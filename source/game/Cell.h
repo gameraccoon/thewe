@@ -19,8 +19,26 @@ public:
 	float GetContentment() const;
 
 	Point GetLocation();
+	
+	Cell* GetParent() const;
+	
+	/**
+	 * ƒобавл€ет €чейке новую дочернюю €чейку
+	 * ячейка сразу прописываетс€ как родительска€ к дочерней €чейке
+	 */
+	void AddChild(Cell::Ptr cell);
 
+	/**
+	 * ”дал€ет дочернюю €чейку
+	 * —тавит в nullptr значение родительской €чейки у дочерней
+	 */
+	void RemoveChild(Cell::Ptr cell);
+
+	/** ¬озвращает все дочерние €чейки */
+	const std::vector<Cell::Ptr>& GetChildren();
 private:
+	/** ”становить €чейке родител€ */
+	void _SetParent(Cell* cell);
 	/**  оличество членов €чейки */
 	int _membersCount;
 	/** ƒенежные средства */
@@ -33,7 +51,13 @@ private:
 	/** –егион, в котором находитс€ €чейка */
 	Region::Ptr _region;
 
-	/** географическое расположение €чейки на карте */
+	/** –одительска€ €чейка (может отсутствовать значение) */
+	Cell *_parentCell;
+
+	/** ƒочерние €чейки */
+	std::vector<Cell::Ptr> _childCells;
+
+	/** √еографическое расположение €чейки на карте */
 	Point _worldLocation;
 };
 

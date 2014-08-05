@@ -27,6 +27,8 @@ private:
 	cocos2d::CCLabelTTF *_cashText;
 	cocos2d::CCLabelTTF *_moralText;
 	cocos2d::CCLabelTTF *_contentmentText;
+	cocos2d::CCLabelTTF *_childCountText;
+	cocos2d::CCLabelTTF *_hasParentText;
 
 	cocos2d::CCDrawNode *_bkgDraw;
 

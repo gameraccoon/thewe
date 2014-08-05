@@ -44,13 +44,12 @@ bool WorldLoader::LoadWorld(void)
 	while (region_node)
 	{
 		Region::Info info;
-		Region::Ptr region = Region::Ptr(new Region());
 
 		info.name = region_node.attribute("Name").as_string();
 		info.population = region_node.attribute("Population").as_float();
 		info.desc = region_node.attribute("Desc").as_string();
 
-		region->Init(info);
+		Region::Ptr region = Region::Ptr(new Region(info));
 
 		pugi::xml_node hull_node = region_node.first_child();
 		while (hull_node)

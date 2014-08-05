@@ -21,7 +21,6 @@ public:
 public:
 	// удаляет все регионы
 	void CleanupRegions(void);
-	void CreateRegion(std::string regionName);
 
 	const Regions& GetRegions() const;
 	const Cells& GetCells() const;
@@ -32,8 +31,6 @@ public:
 private:
 	Regions _regions;
 	Cells _cells;
-
-	static WorldMap* _singleInstance;
 
 	/*
 	 * Отключаем ненужные операции

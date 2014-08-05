@@ -1,18 +1,11 @@
 #include "Region.h"
 
-Region::Region(void)
-	: _population(0.0f)
-	, _name("Unnamed")
-	, _shortDescription("None")
-{
-}
-
 Region::Region(const Info &info)
 {
-	Init(info);
+	_Init(info);
 }
 
-void Region::Init(const Info &info)
+void Region::_Init(const Info &info)
 {
 	_population = info.population;
 	_name = info.name;

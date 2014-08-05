@@ -34,9 +34,7 @@ bool MapGuiLayer::init(void)
 	Point screen = director->getVisibleSize();
 	Point origin = director->getVisibleOrigin();
 
-	Point pos;
-	pos.x = origin.x + 100.0f;
-	pos.y = origin.y + screen.y - 100.0f;
+	Point pos(origin.x + 100.0f, origin.y + screen.y - 100.0f);
 	
 	_btnZoomIn->setScale(2.0f);
 	_btnZoomIn->setTag(MENU_ITEM_ZOOM_IN);
@@ -52,24 +50,6 @@ bool MapGuiLayer::init(void)
 	menu->setPosition(0.0f, 0.0f);
 
 	addChild(menu);
-
-	for (const Cell::Ptr cell : WorldMap::Instance().GetCells())
-	{
-		using namespace cocos2d;
-		cocos2d::CCMenuItemSprite *pin = new cocos2d::CCMenuItemSprite();
-		pin->initWithNormalSprite(
-			cocos2d::CCSprite::create("pin.png"),
-			cocos2d::CCSprite::create("pin.png"),
-			cocos2d::CCSprite::create("pin.png"),
-			this,
-			menu_selector(MapGuiLayer::_MenuInputListener));
-		pin->setTag(MENU_ITEM_PIN);
-		//pin->setUserData();
-		_mapProjector->AddMapPart(cell->GetLocation(), Point(100.0f, -300.0f), pin);
-		addChild(pin);
-		removeChild(pin);
-		_mapProjector->RemoveMapPart(pin);
-	}
 
 	return true;
 }
