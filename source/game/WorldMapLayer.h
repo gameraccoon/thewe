@@ -28,8 +28,9 @@ public:
 	void SetGuiEnabled(bool isEnabled);
 
 private:
-	Region::Ptr GetRegionUnderPoint(const Point& point) const;
-	Cell::Ptr GetCellUnderPoint(const Point& point) const;
+	Region::Ptr _GetRegionUnderPoint(const Point& point) const;
+	Cell::Ptr _GetCellUnderPoint(const Point& point) const;
+	void _AddCellToRender(Cell::Ptr cell);
 
 	Point _touchLastPoint;
 	Point _touchFirstPos;
@@ -39,6 +40,8 @@ private:
 	cocos2d::CCLayer *_mapGui;
 
 	bool _isInputEnabled;
+
+	bool _isPlacingCell;
 
 	ArbitraryHull _cellHull;
 };

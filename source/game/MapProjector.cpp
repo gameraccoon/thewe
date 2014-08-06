@@ -162,3 +162,8 @@ void MapProjector::RemoveMapPart(const Drawable::Ptr node)
 		iterator++;
 	}
 }
+
+void MapProjector::Update()
+{
+	SetScale(_viewScale);
+}

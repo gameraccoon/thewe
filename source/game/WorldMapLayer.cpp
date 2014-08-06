@@ -8,6 +8,7 @@ WorldMapLayer::WorldMapLayer(MapProjector* projector)
 	: _mapProjector(projector)
 	, _isInputEnabled(true)
 	, _mapGui(nullptr)
+	, _isPlacingCell(true)
 {
 	init();
 }
@@ -44,15 +45,15 @@ bool WorldMapLayer::init(void)
 
 	for (const Cell::Ptr cell : WorldMap::Instance().GetCells())
 	{
-		addChild(AddSpriteToProjector(_mapProjector, cell->GetLocation(), Point(-15.0f, -10.0f), "pin.png", true));
+		_AddCellToRender(cell);
 	}
 	
 	// сообщаем где находится центр окна вывода
 	_mapProjector->SetScreenCenter(origin + screen / 2.0f);
 	// ставим спрайт карты ровно в центр экрана
 	_mapProjector->SetLocation(Point(0.0f, 0.0f));
-	// ставим скейл, чтобы экран правильно отмасштабировался
-	_mapProjector->SetScale(1.0f);
+	// обновляем положение всех элементов на экране
+	_mapProjector->Update();
 
 	return true;
 }
@@ -61,6 +62,8 @@ void WorldMapLayer::SetMapInputEnabled(bool isEnabled)
 {
 	_isInputEnabled = isEnabled;
 }
+
+
 
 void WorldMapLayer::SetGuiEnabled(bool isEnabled)
 {
@@ -105,20 +108,32 @@ void WorldMapLayer::ccTouchesEnded(cocos2d::CCSet* touches, cocos2d::CCEvent* ev
 
 		if (size <= tolerance)
 		{
-			Cell::Ptr cell = GetCellUnderPoint(point);
+			Cell::Ptr cell = _GetCellUnderPoint(point);
 			
 			if (cell)
 			{
 				dynamic_cast<GameScene*>(this->getParent())->ShowCellScreen(cell);
+				return;
 			}
-			else
-			{
-				Region::Ptr region = GetRegionUnderPoint(point);
+			Region::Ptr region = _GetRegionUnderPoint(point);
 
-				if (region)
+			if (region)
+			{
+				if (!_isPlacingCell)
 				{
 					dynamic_cast<GameScene*>(this->getParent())->ShowRegionInfo(region);
 				}
+				else
+				{
+					Cell::Info cellInfo;
+					cellInfo.location = _mapProjector->ProjectOnMap(point);
+					cellInfo.region = _GetRegionUnderPoint(point);
+					Cell::Ptr cell = std::make_shared<Cell>(Cell(cellInfo));
+					_AddCellToRender(cell);
+					WorldMap::Instance().AddCell(cell);
+					_mapProjector->Update();
+				}
+				return;
 			}
 		}
 	}
@@ -151,7 +166,7 @@ void WorldMapLayer::visit()
 	}
 }
 
-Region::Ptr WorldMapLayer::GetRegionUnderPoint(const Point& point) const
+Region::Ptr WorldMapLayer::_GetRegionUnderPoint(const Point& point) const
 {
 	Point projectedClickPoint = _mapProjector->ProjectOnMap(point);
 	for (Region::Ptr region : WorldMap::Instance().GetRegions())
@@ -170,7 +185,7 @@ Region::Ptr WorldMapLayer::GetRegionUnderPoint(const Point& point) const
 	return Region::Ptr();
 }
 
-Cell::Ptr WorldMapLayer::GetCellUnderPoint(const Point& point) const
+Cell::Ptr WorldMapLayer::_GetCellUnderPoint(const Point& point) const
 {
 	for (Cell::Ptr cell : WorldMap::Instance().GetCells())
 	{
@@ -182,6 +197,11 @@ Cell::Ptr WorldMapLayer::GetCellUnderPoint(const Point& point) const
 	}
 
 	return Cell::Ptr();
+}
+
+void WorldMapLayer::_AddCellToRender(Cell::Ptr cell)
+{
+	addChild(AddSpriteToProjector(_mapProjector, cell->GetLocation(), Point(-15.0f, -10.0f), "pin.png", true));
 }
 
 void WorldMapLayer::ModifyZoom(float multiplier)

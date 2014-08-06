@@ -44,6 +44,9 @@ public:
 	/** Удалить и разрушить элемент для проецирования */
 	void RemoveMapPart(const Drawable::Ptr node);
 
+	/** Обновить положение всех элементов (например после добавления) */
+	void Update();
+
 private:
 	struct MapPart
 	{
