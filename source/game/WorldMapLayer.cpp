@@ -12,11 +12,11 @@ WorldMapLayer::WorldMapLayer(MapProjector* projector)
 	init();
 }
 
-cocos2d::CCSprite* AddSpriteToProjector(MapProjector *projector, Point location, Point shift, std::string spriteName)
+cocos2d::CCSprite* AddSpriteToProjector(MapProjector *projector, Point location, Point shift, std::string spriteName, bool dontScale = false)
 {
 	cocos2d::CCSprite *sprite = new cocos2d::CCSprite();
 	sprite->initWithFile(spriteName.c_str());
-	projector->AddMapPart(location, shift, Drawable::CastFromCocos(sprite));
+	projector->AddMapPart(Drawable::CastFromCocos(sprite), location, shift, 1.0f, dontScale);
 	return sprite;
 }
 
@@ -32,10 +32,10 @@ bool WorldMapLayer::init(void)
 	setTouchEnabled(true);
     setKeypadEnabled(true);
 
-	_cellHull.PushPoint(Point(7.0f, -5.0f));
-	_cellHull.PushPoint(Point(70.0f, -5.0f));
-	_cellHull.PushPoint(Point(70.0f, 60.0f));
-	_cellHull.PushPoint(Point(7.0f, 60.0f));
+	_cellHull.PushPoint(Point(-20.0f, -20.0f));
+	_cellHull.PushPoint(Point(50.0f, -20.0f));
+	_cellHull.PushPoint(Point(50.0f, 50.0f));
+	_cellHull.PushPoint(Point(-20.0f, 50.0f));
 
 	Point origin = cocos2d::CCDirector::sharedDirector()->getVisibleOrigin();
 	Point screen = cocos2d::CCDirector::sharedDirector()->getVisibleSize();
@@ -44,7 +44,7 @@ bool WorldMapLayer::init(void)
 
 	for (const Cell::Ptr cell : WorldMap::Instance().GetCells())
 	{
-		addChild(AddSpriteToProjector(_mapProjector, cell->GetLocation(), Point(10.0f, 10.0f), "pin.png"));
+		addChild(AddSpriteToProjector(_mapProjector, cell->GetLocation(), Point(-15.0f, -10.0f), "pin.png", true));
 	}
 	
 	// сообщаем где находится центр окна вывода
@@ -172,10 +172,9 @@ Region::Ptr WorldMapLayer::GetRegionUnderPoint(const Point& point) const
 
 Cell::Ptr WorldMapLayer::GetCellUnderPoint(const Point& point) const
 {
-	Point projectedClickPoint = _mapProjector->ProjectOnMap(point);
 	for (Cell::Ptr cell : WorldMap::Instance().GetCells())
 	{
-		Point projectedPoint = projectedClickPoint - cell->GetLocation();
+		Point projectedPoint = point - _mapProjector->ProjectOnScreen(cell->GetLocation());
 		if (_cellHull.Contain(projectedPoint))
 		{
 			return cell;

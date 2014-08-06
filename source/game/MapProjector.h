@@ -39,7 +39,7 @@ public:
 	void SetScreenCenter(Point centerPos);
 	
 	/** Добавить новый элемент, который будет проецироваться на карту */
-	void AddMapPart(Point location, Point shift, Drawable::Ptr node);
+	void AddMapPart(Drawable::Ptr node, Point location, Point shift, float scale, bool dontScale = false);
 	
 	/** Удалить и разрушить элемент для проецирования */
 	void RemoveMapPart(const Drawable::Ptr node);
@@ -51,6 +51,10 @@ private:
 		Point location;
 		/** Сдвиг центра объекта */
 		Point shift;
+		/** Масштаб объекта по умолчанию */
+		float initialScale;
+		/** Нужно ли масштабировать объект вместе с картой */
+		bool isScalable;
 		/** Указатель на графический объект */
 		Drawable::Ptr node;
 	};
