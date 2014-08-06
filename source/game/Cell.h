@@ -25,7 +25,6 @@ public:
 	typedef std::shared_ptr<Cell> Ptr;
 
 public:
-	Cell(Point location);
 	Cell(const Info &info);
 
 	int GetMembersCount() const;
@@ -50,7 +49,7 @@ public:
 	void RemoveChild(Cell::Ptr cell);
 
 	/** Возвращает все дочерние ячейки */
-	const std::vector<Cell::Ptr>& GetChildren();
+	const std::vector<Cell::Ptr>& GetChildren() const;
 
 	/**
 	* Возвращает информацию о ячейке

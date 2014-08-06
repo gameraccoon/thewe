@@ -22,13 +22,13 @@ bool GameScene::init(void)
 		return false;
 	}
 
-	_worldMap = new WorldMapLayer(&_mapProjector);
-	addChild(_worldMap);
-	_worldMap->autorelease();
-
 	// долгая операция
 	WorldLoader::LoadWorld();
 	WorldLoader::LoadGameState();
+
+	_worldMap = new WorldMapLayer(&_mapProjector);
+	addChild(_worldMap);
+	_worldMap->autorelease();
 
 	return true;
 }

@@ -28,6 +28,8 @@ public:
 	void AddRegion(Region::Ptr region);
 	void AddCell(Cell::Ptr cell);
 
+	const Region::Ptr GetRegionByName(const std::string name) const;
+
 private:
 	Regions _regions;
 	Cells _cells;

@@ -29,6 +29,19 @@ void WorldMap::AddCell(Cell::Ptr cell)
 	_cells.push_back(cell);
 }
 
+const Region::Ptr WorldMap::GetRegionByName(const std::string name) const
+{
+	for (Region::Ptr region : _regions)
+	{
+		if (region->GetInfo().name == name)
+		{
+			return region;
+		}
+	}
+
+	return nullptr;
+}
+
 const WorldMap::Regions& WorldMap::GetRegions() const
 {
 	return _regions;

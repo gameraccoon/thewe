@@ -1,11 +1,5 @@
 #include "Cell.h"
 
-Cell::Cell(Point location)
-	: _parentCell(nullptr)
-{
-	_worldLocation = location;
-}
-
 Cell::Cell(const Info &info)
 	: _parentCell(info.parent)
 	, _region(info.region)
@@ -76,7 +70,7 @@ void Cell::RemoveChild(Cell::Ptr cell)
 	}
 }
 
-const std::vector<Cell::Ptr>& Cell::GetChildren()
+const std::vector<Cell::Ptr>& Cell::GetChildren() const
 {
 	return _childCells;
 }
