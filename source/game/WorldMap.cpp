@@ -64,6 +64,11 @@ void WorldMap::Update(float deltatime)
 	if (!isGamePaused)
 	{
 		_worldTime += deltatime;
+
+		for (Cell::Ptr cell : _cells)
+		{
+			cell->Update(deltatime);
+		}
 	}
 }
 

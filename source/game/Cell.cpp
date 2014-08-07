@@ -1,49 +1,10 @@
 #include "Cell.h"
 
+#include "WorldMap.h"
+
 Cell::Cell(const Info &info)
-	: _parentCell(info.parent)
-	, _region(info.region)
-	, _worldLocation(info.location)
-	, _cash(info.cach)
-	, _moralValue(info.morale)
-	, _contentment(info.contentment)
-	, _membersCount(info.membersNum)
+	: _info(info)
 {
-}
-
-int Cell::GetMembersCount() const
-{
-	return _membersCount;
-}
-
-float Cell::GetCash() const
-{
-	return _cash;
-}
-
-float Cell::GetMoralValue() const
-{
-	return _moralValue;
-}
-
-float Cell::GetContentment() const
-{
-	return _contentment;
-}
-
-Point Cell::GetLocation()
-{
-	return _worldLocation;
-}
-
-Cell* Cell::GetParent() const
-{
-	return _parentCell;
-}
-
-void Cell::_SetParent(Cell* cell)
-{
-	_parentCell = cell;
 }
 
 void Cell::AddChild(Cell::Ptr cell)
@@ -70,22 +31,42 @@ void Cell::RemoveChild(Cell::Ptr cell)
 	}
 }
 
+void Cell::_SetParent(Cell* cell)
+{
+	_info.parent = cell;
+}
+
 const std::vector<Cell::Ptr>& Cell::GetChildren() const
 {
 	return _childCells;
 }
 
-Cell::Info Cell::GetInfo(void) const
+const Cell::Info& Cell::GetInfo(void) const
 {
-	Info info;
+	return _info;
+}
 
-	info.parent = _parentCell;
-	info.region = _region;
-	info.location = _worldLocation;
-	info.cach = _cash;
-	info.morale = _moralValue;
-	info.contentment = _contentment;
-	info.membersNum = _membersCount;
+void Cell::Update(float deltatime)
+{
+	// пересчитать наличные
+	_UpdateCash(deltatime);
+	_UpdateMorale(deltatime);
+	_UpdateContentment(deltatime);
+}
 
-	return info;
+void Cell::_UpdateCash(float deltalime)
+{
+	float cashDelta = deltalime * _info.membersNum;
+	_info.cash = _info.cash > cashDelta ? _info.cash - cashDelta : 0.0f;
+}
+
+void Cell::_UpdateMorale(float deltatime)
+{
+	//_info.morale = 
+}
+
+void Cell::_UpdateContentment(float deltatime)
+{
+	const float halfDelta = 0.3f;
+	_info.contentment = std::min(halfDelta + (_info.cash / _info.membersNum) * 30.0f, 1 - halfDelta) + sinf(WorldMap::Instance().GetWorldTime()) * halfDelta;
 }

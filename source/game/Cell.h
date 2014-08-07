@@ -15,26 +15,19 @@ public:
 		Region::Ptr region;
 		Point location;
 
-		float cach;
+		float cash;
 		float morale;
 		float contentment;
 
 		int membersNum;
+	private:
+
 	};
 
 	typedef std::shared_ptr<Cell> Ptr;
 
 public:
 	Cell(const Info &info);
-
-	int GetMembersCount() const;
-	float GetCash() const;
-	float GetMoralValue() const;
-	float GetContentment() const;
-
-	Point GetLocation();
-	
-	Cell* GetParent() const;
 	
 	/**
 	 * Добавляет ячейке новую дочернюю ячейку
@@ -54,25 +47,23 @@ public:
 	/**
 	* Возвращает информацию о ячейке
 	*/
-	Info GetInfo(void) const;
+	const Info& GetInfo(void) const;
+	
+	void Update(float deltatime);
 
 private:
 	/** Установить ячейке родителя */
 	void _SetParent(Cell* cell);
-	/** Количество членов ячейки */
-	int _membersCount;
-	/** Денежные средства */
-	float _cash;
-	/** Уровень морали */
-	float _moralValue;
-	/** Удовлетворённость */
-	float _contentment;
 
-	/** Регион, в котором находится ячейка */
-	Region::Ptr _region;
+	/** Пересчитать наличные со временем */
+	void _UpdateCash(float deltatime);
+	/** Пересчитать удовлетворённость со временем */
+	void _UpdateMorale(float deltatime);
+	/** Пересчитать удовлетворённость со временем */
+	void _UpdateContentment(float deltatime);
 
-	/** Родительская ячейка (может отсутствовать значение) */
-	Cell *_parentCell;
+	/** Вся важная информация о ячейке */
+	Info _info;
 
 	/** Дочерние ячейки */
 	std::vector<Cell::Ptr> _childCells;

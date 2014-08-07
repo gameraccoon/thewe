@@ -10,6 +10,7 @@ public:
 	CellScreenLayer(Cell::Ptr cell);
 
 	virtual bool init() override;
+	virtual void update(float delta) override;
 	
 	virtual void ccTouchesBegan(cocos2d::CCSet* touches, cocos2d::CCEvent* event) override;
 	virtual void ccTouchesEnded(cocos2d::CCSet* touches, cocos2d::CCEvent* event) override;

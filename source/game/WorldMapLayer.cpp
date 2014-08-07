@@ -189,7 +189,7 @@ Cell::Ptr WorldMapLayer::_GetCellUnderPoint(const Point& point) const
 {
 	for (Cell::Ptr cell : WorldMap::Instance().GetCells())
 	{
-		Point projectedPoint = point - _mapProjector->ProjectOnScreen(cell->GetLocation());
+		Point projectedPoint = point - _mapProjector->ProjectOnScreen(cell->GetInfo().location);
 		if (_cellHull.Contain(projectedPoint))
 		{
 			return cell;
@@ -201,7 +201,7 @@ Cell::Ptr WorldMapLayer::_GetCellUnderPoint(const Point& point) const
 
 void WorldMapLayer::_AddCellToRender(Cell::Ptr cell)
 {
-	addChild(AddSpriteToProjector(_mapProjector, cell->GetLocation(), Point(-15.0f, -10.0f), "pin.png", true));
+	addChild(AddSpriteToProjector(_mapProjector, cell->GetInfo().location, Point(-15.0f, -10.0f), "pin.png", true));
 }
 
 void WorldMapLayer::ModifyZoom(float multiplier)
