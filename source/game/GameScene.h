@@ -14,7 +14,8 @@ class GameScene : public cocos2d::CCScene
 public:
 	GameScene();
 
-	bool init();
+	virtual bool init() override;
+	virtual void update(float delta) override;
 	
 	void ShowMap();
 

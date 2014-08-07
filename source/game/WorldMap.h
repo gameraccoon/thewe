@@ -25,14 +25,19 @@ public:
 	const Regions& GetRegions() const;
 	const Cells& GetCells() const;
 
+	float GetWorldTime() const;
+
 	void AddRegion(Region::Ptr region);
 	void AddCell(Cell::Ptr cell);
 
 	const Region::Ptr GetRegionByName(const std::string name) const;
 
+	void Update(float deltatime);
 private:
 	Regions _regions;
 	Cells _cells;
+
+	float _worldTime;
 
 	/*
 	 * Отключаем ненужные операции

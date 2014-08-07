@@ -1,5 +1,7 @@
 #include "MapGuiLayer.h"
 
+#include <math.h>
+
 #include "WorldMap.h"
 #include "WorldLoader.h"
 #include "GameScene.h"
@@ -38,7 +40,11 @@ bool MapGuiLayer::init(void)
 	Point origin = director->getVisibleOrigin();
 
 	Point pos(origin.x + 100.0f, origin.y + screen.y - 100.0f);
-	
+
+	_printTime = cocos2d::CCLabelTTF::create("Time: 0", "Arial", 32);
+	_printTime->setPosition(Point(origin.x + 100, origin.y + screen.y - 50));
+	addChild(_printTime);
+
 	_btnZoomIn->setScale(2.0f);
 	_btnZoomIn->setTag(MENU_ITEM_ZOOM_IN);
 	_btnZoomIn->setPosition(pos - ccp(0.0f, 100.0f));
@@ -56,8 +62,17 @@ bool MapGuiLayer::init(void)
 	menu->setPosition(0.0f, 0.0f);
 
 	addChild(menu);
+	
+	scheduleUpdate();
 
 	return true;
+}
+
+void MapGuiLayer::update(float delta)
+{
+	char string[64];
+	sprintf_s(string, "Time: %d", (int)floor(WorldMap::Instance().GetWorldTime()));
+	_printTime->setString(string);
 }
 
 void MapGuiLayer::_MenuInputListener(cocos2d::CCObject *sender)

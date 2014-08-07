@@ -10,6 +10,7 @@ public:
 	MapGuiLayer(MapProjector *mapProjector);
 
 	virtual bool init(void) override;
+	virtual void update(float delta) override;
 
 	void menuCloseCallback(cocos2d::CCObject *Sender);
 
@@ -30,6 +31,8 @@ private:
 	cocos2d::CCMenuItemImage *_btnZoomOut;
 	cocos2d::CCMenuItemImage *_btnEditor;
 	cocos2d::CCMenuItemImage *_btnSave;
+
+	cocos2d::CCLabelTTF *_printTime;
 
 	 MapProjector *_mapProjector;
 };

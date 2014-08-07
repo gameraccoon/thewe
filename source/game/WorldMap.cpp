@@ -1,6 +1,7 @@
 #include "WorldMap.h"
 
 WorldMap::WorldMap()
+	: _worldTime(0.0f)
 {
 }
 
@@ -50,4 +51,14 @@ const WorldMap::Regions& WorldMap::GetRegions() const
 const WorldMap::Cells& WorldMap::GetCells() const
 {
 	return _cells;
+}
+
+float WorldMap::GetWorldTime() const
+{
+	return _worldTime;
+}
+
+void WorldMap::Update(float deltatime)
+{
+	_worldTime += deltatime;
 }

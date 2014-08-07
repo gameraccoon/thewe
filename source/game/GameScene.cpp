@@ -30,7 +30,14 @@ bool GameScene::init(void)
 	addChild(_worldMap);
 	_worldMap->autorelease();
 
+	scheduleUpdate();
+
 	return true;
+}
+
+void GameScene::update(float delta)
+{
+	WorldMap::Instance().Update(delta);
 }
 
 void GameScene::ShowMap()
