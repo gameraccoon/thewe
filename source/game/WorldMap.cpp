@@ -2,6 +2,7 @@
 
 WorldMap::WorldMap()
 	: _worldTime(0.0f)
+	, isGamePaused(false)
 {
 }
 
@@ -60,5 +61,13 @@ float WorldMap::GetWorldTime() const
 
 void WorldMap::Update(float deltatime)
 {
-	_worldTime += deltatime;
+	if (!isGamePaused)
+	{
+		_worldTime += deltatime;
+	}
+}
+
+void WorldMap::SetPause(bool pause)
+{
+	isGamePaused = pause;
 }

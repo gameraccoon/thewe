@@ -33,11 +33,14 @@ public:
 	const Region::Ptr GetRegionByName(const std::string name) const;
 
 	void Update(float deltatime);
+
+	void SetPause(bool pause);
 private:
 	Regions _regions;
 	Cells _cells;
 
 	float _worldTime;
+	bool isGamePaused;
 
 	/*
 	 * Отключаем ненужные операции
