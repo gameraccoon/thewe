@@ -4,6 +4,7 @@
 #include "RegionInfoLayer.h"
 #include "EditorLayer.h"
 #include "CellScreenLayer.h"
+#include "World.h"
 
 GameScene::GameScene(void)
 	: _mapProjector(Point(1390.0f, 1003.0f))
@@ -37,7 +38,7 @@ bool GameScene::init(void)
 
 void GameScene::update(float delta)
 {
-	WorldMap::Instance().Update(delta);
+	World::Instance().Update(delta);
 }
 
 void GameScene::ShowMap()

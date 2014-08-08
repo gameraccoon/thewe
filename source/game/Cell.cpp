@@ -1,6 +1,6 @@
 #include "Cell.h"
 
-#include "WorldMap.h"
+#include "World.h"
 
 Cell::Cell(const Info &info)
 	: _info(info)
@@ -68,5 +68,5 @@ void Cell::_UpdateMorale(float deltatime)
 void Cell::_UpdateContentment(float deltatime)
 {
 	const float halfDelta = 0.3f;
-	_info.contentment = std::min(halfDelta + (_info.cash / _info.membersNum) * 30.0f, 1 - halfDelta) + sinf(WorldMap::Instance().GetWorldTime()) * halfDelta;
+	_info.contentment = std::min(halfDelta + (_info.cash / _info.membersNum) * 30.0f, 1 - halfDelta) + sinf(World::Instance().GetWorldTime()) * halfDelta;
 }

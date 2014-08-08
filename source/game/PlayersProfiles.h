@@ -1,7 +1,7 @@
 #ifndef PLAYER_PROFILER_H
 #define PLAYER_PROFILER_H
 
-#include "WorldMap.h"
+#include <map>
 
 struct PlayerProfile
 {

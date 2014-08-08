@@ -1,19 +1,18 @@
-#ifndef WORLD_MAP_H
-#define WORLD_MAP_H
+#ifndef WORLD_H
+#define WORLD_H
 
-#include <cocos2d.h>
 #include <string>
 
 #include "Region.h"
 #include "Cell.h"
 
-class WorldMap
+class World
 {
 public:
 	/**
 	 * Возвращает экземпляр карты
 	 */
-	static WorldMap& Instance();
+	static World& Instance();
 	
 	typedef std::vector<Region::Ptr> Regions;
 	typedef std::vector<Cell::Ptr> Cells;
@@ -45,10 +44,10 @@ private:
 	/*
 	 * Отключаем ненужные операции
 	 */
-	WorldMap();
-	~WorldMap();
-	WorldMap(const WorldMap&);
-	void operator=(const WorldMap&);
+	World();
+	~World();
+	World(const World&);
+	void operator=(const World&);
 };
 
 #endif // WORLD_MAP_H

@@ -1,6 +1,5 @@
 #include "EditorLayer.h"
 
-#include "WorldMap.h"
 #include "GameScene.h"
 
 EditorLayer::EditorLayer(MapProjector* projector)

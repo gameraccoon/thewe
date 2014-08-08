@@ -1,5 +1,8 @@
 #include "PlayersProfiles.h"
 
+#include <string>
+#include "World.h"
+
 static const std::string profilesSettingsPath = "../_gamedata/saves/profiles.xml"; 
 
 ProfilesManager::ProfilesManager()

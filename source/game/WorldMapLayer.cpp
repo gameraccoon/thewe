@@ -1,6 +1,6 @@
 #include "WorldMapLayer.h"
 
-#include "WorldMap.h"
+#include "World.h"
 #include "GameScene.h"
 #include "MapGuiLayer.h"
 
@@ -43,7 +43,7 @@ bool WorldMapLayer::init(void)
 
 	SetGuiEnabled(true);
 
-	for (const Cell::Ptr cell : WorldMap::Instance().GetCells())
+	for (const Cell::Ptr cell : World::Instance().GetCells())
 	{
 		_AddCellToRender(cell);
 	}
@@ -130,7 +130,7 @@ void WorldMapLayer::ccTouchesEnded(cocos2d::CCSet* touches, cocos2d::CCEvent* ev
 					cellInfo.region = _GetRegionUnderPoint(point);
 					Cell::Ptr cell = std::make_shared<Cell>(Cell(cellInfo));
 					_AddCellToRender(cell);
-					WorldMap::Instance().AddCell(cell);
+					World::Instance().AddCell(cell);
 					_mapProjector->Update();
 				}
 				return;
@@ -154,7 +154,7 @@ void WorldMapLayer::visit()
 {
 	CCLayer::visit();
 
-	for (Region::Ptr region : WorldMap::Instance().GetRegions())
+	for (Region::Ptr region : World::Instance().GetRegions())
 	{
 		const Region::HullsArray &array = region->GetHullsArray();
 
@@ -169,7 +169,7 @@ void WorldMapLayer::visit()
 Region::Ptr WorldMapLayer::_GetRegionUnderPoint(const Point& point) const
 {
 	Point projectedClickPoint = _mapProjector->ProjectOnMap(point);
-	for (Region::Ptr region : WorldMap::Instance().GetRegions())
+	for (Region::Ptr region : World::Instance().GetRegions())
 	{
 		const Region::HullsArray &array = region->GetHullsArray();
 
@@ -187,7 +187,7 @@ Region::Ptr WorldMapLayer::_GetRegionUnderPoint(const Point& point) const
 
 Cell::Ptr WorldMapLayer::_GetCellUnderPoint(const Point& point) const
 {
-	for (Cell::Ptr cell : WorldMap::Instance().GetCells())
+	for (Cell::Ptr cell : World::Instance().GetCells())
 	{
 		Point projectedPoint = point - _mapProjector->ProjectOnScreen(cell->GetInfo().location);
 		if (_cellHull.Contain(projectedPoint))

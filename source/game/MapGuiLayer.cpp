@@ -2,7 +2,7 @@
 
 #include <math.h>
 
-#include "WorldMap.h"
+#include "World.h"
 #include "WorldLoader.h"
 #include "GameScene.h"
 #include "WorldMapLayer.h"
@@ -71,7 +71,7 @@ bool MapGuiLayer::init(void)
 void MapGuiLayer::update(float delta)
 {
 	char string[64];
-	sprintf_s(string, "Time: %d", (int)floor(WorldMap::Instance().GetWorldTime()));
+	sprintf_s(string, "Time: %d", (int)floor(World::Instance().GetWorldTime()));
 	_printTime->setString(string);
 }
 
