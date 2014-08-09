@@ -2,6 +2,7 @@
 #define PLAYER_PROFILER_H
 
 #include <map>
+#include <string>
 
 struct PlayerProfile
 {

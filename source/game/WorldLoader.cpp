@@ -4,7 +4,6 @@
 
 #include "Point.h"
 
-// !!!Attention!!! - this code can move your brain inside out
 static void LoadCellsRecursively(pugi::xml_node root, pugi::xml_node parent_node, Cell *parent)
 {
 	pugi::xml_node child_id_node = parent_node.first_child();

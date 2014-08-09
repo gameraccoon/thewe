@@ -49,7 +49,6 @@ bool ArbitraryHull::Contain(const Point &point) const
 
 	for (i = 0, j = _pointsArray.size() - 1; i < _pointsArray.size(); j = i++)
 	{
-		// ...тада, я сам в шоке от этого кода.
 		if ((_pointsArray[i].y > point.y) != (_pointsArray[j].y > point.y) &&
 			(point.x < (_pointsArray[j].x - _pointsArray[i].x) * (point.y - _pointsArray[i].y) 
 			/ (_pointsArray[j].y-_pointsArray[i].y) + _pointsArray[i].x))
@@ -59,37 +58,4 @@ bool ArbitraryHull::Contain(const Point &point) const
 	}
 
 	return result;
-}
-
-void ArbitraryHull::SaveToXml(pugi::xml_document &docXml)
-{
-	pugi::xml_node root = docXml.first_child();
-
-	pugi::xml_node node;
-	node = root.append_child("Region");
-	node.append_attribute("Name").set_value("Unnamed");
-
-	for (std::vector<cocos2d::CCPoint>::iterator it = _pointsArray.begin(); it != _pointsArray.end(); ++it)
-	{
-		Point p = (*it);
-
-		pugi::xml_node point = node.append_child("Point");
-		point.append_attribute("x").set_value(p.x);
-		point.append_attribute("y").set_value(p.y);
-	}
-}
-
-bool ArbitraryHull::SaveToXml(const char *xmlFilename)
-{
-	pugi::xml_document doc;
-	pugi::xml_parse_result result = doc.load_file(xmlFilename);
-	
-	if (result)
-	{
-		SaveToXml(doc);
-		doc.save_file(xmlFilename);
-		return true;
-	}
-	
-	return false;
 }

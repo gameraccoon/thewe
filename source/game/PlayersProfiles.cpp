@@ -1,7 +1,9 @@
 #include "PlayersProfiles.h"
 
-#include <string>
-#include "World.h"
+#include <pugixml.hpp>
+#include <cocos2d.h>
+#include "Point.h"
+#include "ArbitraryHull.h"
 
 static const std::string profilesSettingsPath = "../_gamedata/saves/profiles.xml"; 
 

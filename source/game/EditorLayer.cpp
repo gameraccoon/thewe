@@ -138,11 +138,44 @@ void EditorLayer::_MenuInputListener(cocos2d::CCObject *sender)
 		_hull1.PopPoint();
 		break;
 	case MENU_ITEM_SAVE_XML:
-		_hull1.SaveToXml("../_gamedata/map/hulls.xml");
+		SaveHullToXml(_hull1, "../_gamedata/map/hulls.xml");
 		break;
 	case MENU_ITEM_RELOAD_WORLD:
 		WorldLoader::LoadWorld();
 		break;
 	default: break;
 	}
+}
+
+void EditorLayer::SaveHullToXml(const ArbitraryHull& hull, pugi::xml_document &docXml)
+{
+	pugi::xml_node root = docXml.first_child();
+
+	pugi::xml_node node;
+	node = root.append_child("Region");
+	node.append_attribute("Name").set_value("Unnamed");
+
+	for (std::vector<cocos2d::CCPoint>::const_iterator it = hull._pointsArray.begin(); it != hull._pointsArray.end(); ++it)
+	{
+		Point p = (*it);
+
+		pugi::xml_node point = node.append_child("Point");
+		point.append_attribute("x").set_value(p.x);
+		point.append_attribute("y").set_value(p.y);
+	}
+}
+
+bool EditorLayer::SaveHullToXml(const ArbitraryHull& hull, const char *xmlFilename)
+{
+	pugi::xml_document doc;
+	pugi::xml_parse_result result = doc.load_file(xmlFilename);
+	
+	if (result)
+	{
+		SaveHullToXml(hull, doc);
+		doc.save_file(xmlFilename);
+		return true;
+	}
+	
+	return false;
 }

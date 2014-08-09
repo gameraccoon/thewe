@@ -27,6 +27,9 @@ private:
 	};
 
 private:
+	void SaveHullToXml(const ArbitraryHull& hull, pugi::xml_document &docXml);
+	bool SaveHullToXml(const ArbitraryHull& hull, const char *xmlFilename);
+
 	Point _touchPos;
 	
 	cocos2d::CCLabelTTF *_printPos;
