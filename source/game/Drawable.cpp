@@ -1,5 +1,7 @@
 #include "Drawable.h"
 
+#include <cocos2d.h>
+
 Drawable::Drawable(cocos2d::CCNode* node)
 {
 	// умный указатель вместо delete будет вызывать release

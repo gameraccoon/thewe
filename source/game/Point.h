@@ -1,7 +1,12 @@
 #ifndef POINT_H
 #define POINT_H
 
-#include <cocos2d.h>
+// избавляемся от необходимости включать все заголовки cocos2d
+namespace cocos2d
+{
+	class CCPoint;
+	class CCSize;
+}
 
 struct Point
 {
@@ -34,8 +39,8 @@ struct Point
 	Point Project(Point base) const;
 	
 	/* Неявные преобразования в другие классы */
-	operator cocos2d::CCPoint() const { return cocos2d::CCPoint(x, y); }
-	operator cocos2d::CCSize() const { return cocos2d::CCSize(x, y); }
+	operator cocos2d::CCPoint() const;
+	operator cocos2d::CCSize() const;
 
 	/* Арифметические операции, доступные для двумерных векторов */
 

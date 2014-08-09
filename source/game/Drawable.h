@@ -1,9 +1,14 @@
 #ifndef DRAWABLE_H
 #define DRAWABLE_H
 
-#include <cocos2d.h>
 #include <memory>
 #include "Point.h"
+
+// избавляемся от необходимости включать все заголовки cocos2d
+namespace cocos2d
+{
+	class CCNode;
+}
 
 class Drawable
 {

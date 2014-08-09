@@ -1,5 +1,6 @@
 #include "Point.h"
 
+#include <cocos2d.h>
 #include <math.h>
 
 const float VECTOR_ERROR = 0.0001f;
@@ -77,6 +78,16 @@ Point Point::Project(Point base) const
 	}
 
 	return result;
+}
+
+Point::operator cocos2d::CCPoint() const
+{
+	return cocos2d::CCPoint(x, y);
+}
+
+Point::operator cocos2d::CCSize() const
+{
+	return cocos2d::CCSize(x, y);
 }
 
 Point operator-(const Point& vector)

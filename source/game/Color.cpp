@@ -1,5 +1,7 @@
 #include "Color.h"
 
+#include <cocos2d.h>
+
 Color::Color(float r, float g, float b, float a)
 {
 	this->r = r;
@@ -15,3 +17,13 @@ Color::Color(unsigned long color)
 	this->g = (color & 0x0000FF00) * 0.00390625f;
 	this->b = (color & 0x000000FF) * 0.00390625f;
 }
+
+Color::operator cocos2d::ccColor4F() const
+	{
+		cocos2d::ccColor4F color;
+		color.r = r;
+		color.g = g;
+		color.b = b;
+		color.a = a;
+		return color;
+	}

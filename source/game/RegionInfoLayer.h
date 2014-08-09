@@ -1,6 +1,7 @@
 #ifndef REGION_INFO_LAYER_H
 #define REGION_INFO_LAYER_H
 
+#include <cocos2d.h>
 #include "Region.h"
 
 class RegionInfoLayer : public cocos2d::CCLayer

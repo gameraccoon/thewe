@@ -1,5 +1,6 @@
 #include "EditorLayer.h"
 
+#include <cocos2d.h>
 #include "GameScene.h"
 
 EditorLayer::EditorLayer(MapProjector* projector)

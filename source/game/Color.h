@@ -1,7 +1,8 @@
 #ifndef COLOR_H
 #define COLOR_H
 
-#include <cocos2d.h>
+// избавляемся от необходимости включать все заголовки cocos2d
+#include <misc_nodes/ccrendertexture.h>
 
 struct Color
 {
@@ -14,15 +15,7 @@ struct Color
 	float a;
 	
 	/* Неявные преобразования в другие классы */
-	operator cocos2d::ccColor4F() const
-	{
-		cocos2d::ccColor4F color;
-		color.r = r;
-		color.g = g;
-		color.b = b;
-		color.a = a;
-		return color;
-	}
+	operator cocos2d::ccColor4F() const;
 };
 
 #endif // COLOR_H
