@@ -8,6 +8,8 @@
 #include "Region.h"
 #include "Cell.h"
 
+#include "TownInfoLayer.h"
+
 class WorldMapLayer : public cocos2d::CCLayer
 {
 public:
@@ -28,9 +30,22 @@ public:
 	void SetGuiEnabled(bool isEnabled);
 
 private:
+	enum E_MAP_OBJECT_TAG
+	{
+		MAP_OBJ_NONE
+		,MAP_OBJ_CELL
+		,MAP_OBJ_TOWN
+		,MAP_OBJ_REGION
+	};
+
+private:
+
+	Region::Ptr GetRegionUnderPoint(const Point& point) const;
+	Cell::Ptr GetCellUnderPoint(const Point& point) const;
 	Region::Ptr _GetRegionUnderPoint(const Point& point) const;
 	Cell::Ptr _GetCellUnderPoint(const Point& point) const;
 	void _AddCellToRender(Cell::Ptr cell);
+	Town::Ptr GetTownUnderPoint(const Point& point);
 
 	Point _touchLastPoint;
 	Point _touchFirstPos;

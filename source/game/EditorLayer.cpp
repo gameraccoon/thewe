@@ -120,7 +120,8 @@ void EditorLayer::ccTouchesMoved(cocos2d::CCSet* touches, cocos2d::CCEvent* even
 	}
 
 	char string[64];
-	sprintf_s(string, "X: %d, Y: %d", (int)point.x, (int)point.y);
+	Point projected_point = _mapProjector->ProjectOnMap(point);
+	sprintf_s(string, "X: %d, Y: %d", (int)projected_point.x, (int)projected_point.y);
 	_printPos->setString(string);
 }
 

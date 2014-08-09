@@ -52,6 +52,12 @@
     <ClCompile Include="..\..\game\Drawable.cpp">
       <Filter>EngineInterface</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\game\Town.cpp">
+      <Filter>GameElements</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\game\TownInfoLayer.cpp">
+      <Filter>Views\GameScene</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\game\World.cpp">
       <Filter>GameElements</Filter>
     </ClCompile>
@@ -104,6 +110,12 @@
     </ClInclude>
     <ClInclude Include="..\..\game\Drawable.h">
       <Filter>EngineInterface</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\game\Town.h">
+      <Filter>GameElements</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\game\TownInfoLayer.h">
+      <Filter>Views\GameScene</Filter>
     </ClInclude>
     <ClInclude Include="..\..\game\World.h">
       <Filter>GameElements</Filter>

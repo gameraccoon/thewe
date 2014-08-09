@@ -28,8 +28,12 @@ bool GameScene::init(void)
 	WorldLoader::LoadGameState();
 
 	_worldMap = new WorldMapLayer(&_mapProjector);
+	_townInfo = new TownInfoLayer();
 	addChild(_worldMap);
+	addChild(_townInfo);
 	_worldMap->autorelease();
+	_townInfo->autorelease();
+	_townInfo->setVisible(false);
 
 	scheduleUpdate();
 
@@ -99,4 +103,17 @@ void GameScene::ShowCellScreen(Cell::Ptr cell)
 	_cellScreen->autorelease();
 	_worldMap->SetMapInputEnabled(false);
 	_worldMap->SetGuiEnabled(false);
+}
+
+void GameScene::ShowTownInfo(Town::Ptr town)
+{
+	if (town)
+	{
+		dynamic_cast<TownInfoLayer *>(_townInfo)->SelectTown(town);
+		_townInfo->setVisible(true);
+	}
+	else
+	{
+		_townInfo->setVisible(false);
+	}
 }

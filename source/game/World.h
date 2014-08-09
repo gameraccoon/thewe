@@ -5,6 +5,7 @@
 
 #include "Region.h"
 #include "Cell.h"
+#include "Town.h"
 
 class World
 {
@@ -16,18 +17,21 @@ public:
 	
 	typedef std::vector<Region::Ptr> Regions;
 	typedef std::vector<Cell::Ptr> Cells;
+	typedef std::vector<Town::Ptr> Towns;
 
 public:
 	// удаляет все регионы
-	void CleanupRegions(void);
+	void CleanupMapContent(void);
 
 	const Regions& GetRegions() const;
 	const Cells& GetCells() const;
+	const Towns& GetTowns() const;
 
 	float GetWorldTime() const;
 
 	void AddRegion(Region::Ptr region);
 	void AddCell(Cell::Ptr cell);
+	void AddTown(Town::Ptr town);
 
 	const Region::Ptr GetRegionByName(const std::string name) const;
 
@@ -37,6 +41,7 @@ public:
 private:
 	Regions _regions;
 	Cells _cells;
+	Towns _towns;
 
 	float _worldTime;
 	bool isGamePaused;

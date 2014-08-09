@@ -1,7 +1,9 @@
 <?xml version="1.0"?>
 <Save>
 	<CellsNetwork>
-		<Cell id="1" parent_id="-1" region="Russia" location_x="200" location_y="200" cash="100" morale="0.1" contentment="45" members_num="57" />
+		<Cell id="1" parent_id="-1" region="Russia" location_x="200" location_y="200" cash="100" morale="0.1" contentment="45" members_num="57">
+			<Child id="2" />
+		</Cell>
 		<Cell id="2" parent_id="1" region="Russia" location_x="100" location_y="100" cash="100" morale="0.1" contentment="45" members_num="57" />
 	</CellsNetwork>
 </Save>

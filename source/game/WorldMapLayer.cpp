@@ -1,6 +1,6 @@
 #include "WorldMapLayer.h"
 
-#include "World.h"
+#include "WorldMap.h"
 #include "GameScene.h"
 #include "MapGuiLayer.h"
 
@@ -8,16 +8,15 @@ WorldMapLayer::WorldMapLayer(MapProjector* projector)
 	: _mapProjector(projector)
 	, _isInputEnabled(true)
 	, _mapGui(nullptr)
-	, _isPlacingCell(true)
 {
 	init();
 }
 
-cocos2d::CCSprite* AddSpriteToProjector(MapProjector *projector, Point location, Point shift, std::string spriteName, bool dontScale = false)
+cocos2d::CCSprite* AddSpriteToProjector(MapProjector *projector, Point location, Point shift, std::string spriteName, bool dontScale, float scale = 1.0f)
 {
 	cocos2d::CCSprite *sprite = new cocos2d::CCSprite();
 	sprite->initWithFile(spriteName.c_str());
-	projector->AddMapPart(Drawable::CastFromCocos(sprite), location, shift, 1.0f, dontScale);
+	projector->AddMapPart(Drawable::CastFromCocos(sprite), location, shift, scale, dontScale);
 	return sprite;
 }
 
@@ -28,7 +27,7 @@ bool WorldMapLayer::init(void)
 		return false;
 	}
 	
-	cocos2d::CCSprite * spr = AddSpriteToProjector(_mapProjector, Point(0.0f, 0.0f), Point(0.0f, 0.0f), "WorldMap.png");
+	cocos2d::CCSprite * spr = AddSpriteToProjector(_mapProjector, Point(0.0f, 0.0f), Point(0.0f, 0.0f), "WorldMap.png", false);
 	addChild(spr);
 	setTouchEnabled(true);
     setKeypadEnabled(true);
@@ -43,17 +42,23 @@ bool WorldMapLayer::init(void)
 
 	SetGuiEnabled(true);
 
-	for (const Cell::Ptr cell : World::Instance().GetCells())
+	for (const Cell::Ptr cell : WorldMap::Instance().GetCells())
 	{
-		_AddCellToRender(cell);
+		addChild(AddSpriteToProjector(_mapProjector, cell->GetLocation(), Point(-15.0f, -10.0f), "pin.png", true), 2, MAP_OBJ_CELL);
+	}
+	
+	for (const Town::Ptr town : WorldMap::Instance().GetTowns())
+	{
+		addChild(AddSpriteToProjector(_mapProjector, town->GetLocation(), Point(-15.0f, -10.0f), "town.png",
+			false, town->GetSpriteScale()), 1, MAP_OBJ_TOWN);
 	}
 	
 	// сообщаем где находится центр окна вывода
 	_mapProjector->SetScreenCenter(origin + screen / 2.0f);
 	// ставим спрайт карты ровно в центр экрана
 	_mapProjector->SetLocation(Point(0.0f, 0.0f));
-	// обновляем положение всех элементов на экране
-	_mapProjector->Update();
+	// ставим скейл, чтобы экран правильно отмасштабировался
+	_mapProjector->SetScale(1.0f);
 
 	return true;
 }
@@ -62,8 +67,6 @@ void WorldMapLayer::SetMapInputEnabled(bool isEnabled)
 {
 	_isInputEnabled = isEnabled;
 }
-
-
 
 void WorldMapLayer::SetGuiEnabled(bool isEnabled)
 {
@@ -108,32 +111,28 @@ void WorldMapLayer::ccTouchesEnded(cocos2d::CCSet* touches, cocos2d::CCEvent* ev
 
 		if (size <= tolerance)
 		{
-			Cell::Ptr cell = _GetCellUnderPoint(point);
+			Cell::Ptr cell = GetCellUnderPoint(point);
+			Town::Ptr town = GetTownUnderPoint(point);
 			
+			// тут надо сделать по-нормальному, а то не факт что предок - GameScene.
+			dynamic_cast<GameScene* >(getParent())->ShowTownInfo(town);
+			if (town)
+			{
+				return;
+			}
+
 			if (cell)
 			{
 				dynamic_cast<GameScene*>(this->getParent())->ShowCellScreen(cell);
-				return;
 			}
-			Region::Ptr region = _GetRegionUnderPoint(point);
-
-			if (region)
+			else
 			{
-				if (!_isPlacingCell)
+				Region::Ptr region = GetRegionUnderPoint(point);
+
+				if (region)
 				{
 					dynamic_cast<GameScene*>(this->getParent())->ShowRegionInfo(region);
 				}
-				else
-				{
-					Cell::Info cellInfo;
-					cellInfo.location = _mapProjector->ProjectOnMap(point);
-					cellInfo.region = _GetRegionUnderPoint(point);
-					Cell::Ptr cell = std::make_shared<Cell>(Cell(cellInfo));
-					_AddCellToRender(cell);
-					World::Instance().AddCell(cell);
-					_mapProjector->Update();
-				}
-				return;
 			}
 		}
 	}
@@ -154,7 +153,7 @@ void WorldMapLayer::visit()
 {
 	CCLayer::visit();
 
-	for (Region::Ptr region : World::Instance().GetRegions())
+	for (Region::Ptr region : WorldMap::Instance().GetRegions())
 	{
 		const Region::HullsArray &array = region->GetHullsArray();
 
@@ -166,10 +165,10 @@ void WorldMapLayer::visit()
 	}
 }
 
-Region::Ptr WorldMapLayer::_GetRegionUnderPoint(const Point& point) const
+Region::Ptr WorldMapLayer::GetRegionUnderPoint(const Point& point) const
 {
 	Point projectedClickPoint = _mapProjector->ProjectOnMap(point);
-	for (Region::Ptr region : World::Instance().GetRegions())
+	for (Region::Ptr region : WorldMap::Instance().GetRegions())
 	{
 		const Region::HullsArray &array = region->GetHullsArray();
 
@@ -185,11 +184,12 @@ Region::Ptr WorldMapLayer::_GetRegionUnderPoint(const Point& point) const
 	return Region::Ptr();
 }
 
-Cell::Ptr WorldMapLayer::_GetCellUnderPoint(const Point& point) const
+Cell::Ptr WorldMapLayer::GetCellUnderPoint(const Point& point) const
 {
-	for (Cell::Ptr cell : World::Instance().GetCells())
+	for (Cell::Ptr cell : WorldMap::Instance().GetCells())
 	{
-		Point projectedPoint = point - _mapProjector->ProjectOnScreen(cell->GetInfo().location);
+		Point projectedPoint = point - _mapProjector->ProjectOnScreen(cell->GetLocation());
+
 		if (_cellHull.Contain(projectedPoint))
 		{
 			return cell;
@@ -199,9 +199,33 @@ Cell::Ptr WorldMapLayer::_GetCellUnderPoint(const Point& point) const
 	return Cell::Ptr();
 }
 
-void WorldMapLayer::_AddCellToRender(Cell::Ptr cell)
+Town::Ptr WorldMapLayer::GetTownUnderPoint(const Point& point)
 {
-	addChild(AddSpriteToProjector(_mapProjector, cell->GetInfo().location, Point(-15.0f, -10.0f), "pin.png", true));
+	for (Town::Ptr town : WorldMap::Instance().GetTowns())
+	{
+		Point projectedPoint = point - _mapProjector->ProjectOnScreen(town->GetLocation());
+
+		cocos2d::CCSprite *town_sprite = dynamic_cast<cocos2d::CCSprite *>(getChildByTag(MAP_OBJ_TOWN));
+		if (!town_sprite)
+		{
+			return Town::Ptr();
+		}
+
+		cocos2d::CCRect tex_rect = town_sprite->getTextureRect();
+
+		float actual_w = tex_rect.size.width * town_sprite->getScaleX();
+		float actual_h = tex_rect.size.height * town_sprite->getScaleY();
+
+		cocos2d::CCRect rect;
+		rect.setRect(-(actual_w/2.0f), -(actual_h/2.0f), actual_w, actual_h);
+
+		if (rect.containsPoint(projectedPoint))
+		{
+			return town;
+		}
+	}
+
+	return Town::Ptr();
 }
 
 void WorldMapLayer::ModifyZoom(float multiplier)

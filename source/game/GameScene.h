@@ -22,13 +22,17 @@ public:
 	void ToggleEditor();
 	void ShowRegionInfo(Region::Ptr region);
 	void ShowCellScreen(Cell::Ptr cell);
+	void ShowTownInfo(Town::Ptr town);
 
 	MapProjector _mapProjector;
+
 private:
 	WorldMapLayer *_worldMap;
 	cocos2d::CCLayer *_regionInfo;
 	cocos2d::CCLayer *_RegionEditor;
 	cocos2d::CCLayer *_cellScreen;
+	cocos2d::CCLayer *_townInfo;
+
 };
 
 #endif

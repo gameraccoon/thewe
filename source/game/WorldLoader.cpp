@@ -1,9 +1,10 @@
 #include "WorldLoader.h"
 
-#include "World.h"
+#include "WorldMap.h"
 
 #include "Point.h"
 
+// !!!Attention!!! - this code can move your brain inside out
 static void LoadCellsRecursively(pugi::xml_node root, pugi::xml_node parent_node, Cell *parent)
 {
 	pugi::xml_node child_id_node = parent_node.first_child();
@@ -18,16 +19,17 @@ static void LoadCellsRecursively(pugi::xml_node root, pugi::xml_node parent_node
 
 		Cell::Info info;
 		info.parent = parent;
-		info.region = World::Instance().GetRegionByName(child.attribute("region").as_string());
+		info.region = WorldMap::Instance().GetRegionByName(child.attribute("region").as_string());
 		info.location.x = child.attribute("location_x").as_float();
 		info.location.y = child.attribute("location_y").as_float();
-		info.cash = child.attribute("cash").as_float();
+		info.cach = child.attribute("cash").as_float();
 		info.morale = child.attribute("morale").as_float();
 		info.contentment = child.attribute("contentment").as_float();
 		info.membersNum = child.attribute("members_num").as_int();
 
 		Cell::Ptr cell = std::make_shared<Cell>(Cell(info));
-		World::Instance().AddCell(cell);
+		WorldMap::Instance().AddCell(cell);
+		parent->AddChild(cell);
 
 		LoadCellsRecursively(root, child, cell.get());
 
@@ -66,8 +68,8 @@ bool WorldLoader::LoadWorld(void)
 		return false;
 	}
 
-	World &map = World::Instance();
-	map.CleanupRegions();
+	WorldMap &map = WorldMap::Instance();
+	map.CleanupMapContent();
 
 	pugi::xml_node root = regions_xml_doc.first_child();
 	pugi::xml_node region_node = root.first_child();
@@ -82,7 +84,10 @@ bool WorldLoader::LoadWorld(void)
 
 		Region::Ptr region = Region::Ptr(new Region(info));
 
-		pugi::xml_node hull_node = region_node.first_child();
+		pugi::xml_node hulls_root =  region_node.first_child();
+		pugi::xml_node towns_root = hulls_root.next_sibling();
+
+		pugi::xml_node hull_node = hulls_root.first_child();
 		while (hull_node)
 		{
 			const char *hull_name = hull_node.attribute("Name").as_string();
@@ -93,6 +98,27 @@ bool WorldLoader::LoadWorld(void)
 			region->AddHull(hull);
 
 			hull_node = hull_node.next_sibling();
+		}
+
+		pugi::xml_node town_node = towns_root.first_child();
+		while (town_node)
+		{
+			Town::Info info;
+
+			float x = town_node.attribute("x").as_float();
+			float y = town_node.attribute("y").as_float();
+
+			info.name = town_node.attribute("name").as_string();
+			info.desc = town_node.attribute("desc").as_string();
+			info.population = town_node.attribute("population").as_float();
+			info.rank = town_node.attribute("rank").as_float();
+			info.spriteScale = town_node.attribute("scale").as_float();
+			info.location = Point(x, y);
+
+			Town::Ptr town = std::make_shared<Town>(Town(info));
+			map.AddTown(town);
+
+			town_node = town_node.next_sibling();
 		}
 
 		map.AddRegion(region);
@@ -126,16 +152,16 @@ bool WorldLoader::LoadGameState(void)
 		{ 
 			Cell::Info info;
 			info.parent = nullptr;
-			info.region = World::Instance().GetRegionByName(cell_root.attribute("region").as_string());
+			info.region = WorldMap::Instance().GetRegionByName(cell_root.attribute("region").as_string());
 			info.location.x = cell_root.attribute("location_x").as_float();
 			info.location.y = cell_root.attribute("location_y").as_float();
-			info.cash = cell_root.attribute("cash").as_float();
+			info.cach = cell_root.attribute("cash").as_float();
 			info.morale = cell_root.attribute("morale").as_float();
 			info.contentment = cell_root.attribute("contentment").as_float();
 			info.membersNum = cell_root.attribute("members_num").as_int();
 
 			Cell::Ptr cell = std::make_shared<Cell>(Cell(info));
-			World::Instance().AddCell(cell);
+			WorldMap::Instance().AddCell(cell);
 
 			LoadCellsRecursively(cells_network, cell_root, cell.get());
 		}
@@ -169,12 +195,12 @@ bool WorldLoader::SaveGameState(void)
 
 		// Временный код без транзакционного сохранения.
 
-		World &map = World::Instance();
-		const World::Cells &cells = map.GetCells();
+		WorldMap &map = WorldMap::Instance();
+		const WorldMap::Cells &cells = map.GetCells();
 
 		std::map<const Cell *, int> cells_indices;
 		int index = 0;
-		for (World::Cells::const_iterator it = cells.begin(); it != cells.end(); ++it)
+		for (WorldMap::Cells::const_iterator it = cells.begin(); it != cells.end(); ++it)
 		{
 			index = index + 1;
 			cells_indices.insert(std::pair<const Cell *, int>((*it).get(), index));
@@ -185,7 +211,7 @@ bool WorldLoader::SaveGameState(void)
 
 		pugi::xml_node cells_root = root.append_child("CellsNetwork");
 
-		for (World::Cells::const_iterator it = cells.begin(); it != cells.end(); ++it)
+		for (WorldMap::Cells::const_iterator it = cells.begin(); it != cells.end(); ++it)
 		{
 			const Cell *cell = (*it).get();
 			const Cell::Info info = (*it)->GetInfo();
@@ -198,7 +224,7 @@ bool WorldLoader::SaveGameState(void)
 			cell_node.append_attribute("region").set_value(info.region->GetInfo().name.c_str());
 			cell_node.append_attribute("location_x").set_value(info.location.x);
 			cell_node.append_attribute("location_y").set_value(info.location.y);
-			cell_node.append_attribute("cash").set_value(info.cash);
+			cell_node.append_attribute("cash").set_value(info.cach);
 			cell_node.append_attribute("morale").set_value(info.morale);
 			cell_node.append_attribute("contentment").set_value(info.contentment);
 			cell_node.append_attribute("members_num").set_value(info.membersNum);

@@ -30,7 +30,7 @@ private:
 	cocos2d::CCLabelTTF *_contentmentText;
 	cocos2d::CCLabelTTF *_childCountText;
 	cocos2d::CCLabelTTF *_hasParentText;
-
+	
 	cocos2d::CCDrawNode *_bkgDraw;
 
 	Cell::Ptr _cell;
