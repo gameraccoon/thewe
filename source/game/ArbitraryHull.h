@@ -1,12 +1,16 @@
 #ifndef ARBITRARY_HULL_H
 #define ARBITRARY_HULL_H
 
-#include <cocos2d.h>
 #include <vector>
 #include <pugixml.hpp>
 #include "Color.h"
-
 #include "Point.h"
+
+// избавляемся от необходимости включать все заголовки cocos2d
+namespace cocos2d
+{
+	class CCpoint;
+}
 
 class ArbitraryHull
 {

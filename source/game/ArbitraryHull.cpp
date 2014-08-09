@@ -1,5 +1,7 @@
 #include "ArbitraryHull.h"
 
+#include <cocos2d.h>
+
 void ArbitraryHull::PushPoint(const Point &point)
 {
 	_pointsArray.push_back(point);
