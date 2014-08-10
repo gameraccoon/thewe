@@ -16,9 +16,10 @@ World& World::Instance()
 	return singleWorldMap;
 }
 
-void World::CleanupRegions(void)
+void World::CleanupMapContent(void)
 {
 	_regions.clear();
+	_towns.clear();
 }
 
 void World::AddRegion(Region::Ptr region)
@@ -29,6 +30,11 @@ void World::AddRegion(Region::Ptr region)
 void World::AddCell(Cell::Ptr cell)
 {
 	_cells.push_back(cell);
+}
+
+void World::AddTown(Town::Ptr cell)
+{
+	_towns.push_back(cell);
 }
 
 const Region::Ptr World::GetRegionByName(const std::string name) const
@@ -52,6 +58,11 @@ const World::Regions& World::GetRegions() const
 const World::Cells& World::GetCells() const
 {
 	return _cells;
+}
+
+const World::Towns& World::GetTowns() const
+{
+	return _towns;
 }
 
 float World::GetWorldTime() const

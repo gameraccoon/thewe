@@ -4,7 +4,9 @@ Town::Town(const Info &info)
 	: _name(info.name)
 	, _desc(info.desc)
 	, _population(info.population)
-	, _rect(info.rect)
+	, _rank(info.rank)
+	, _location(info.location)
+	, _spriteScale(info.spriteScale)
 {
 }
 
@@ -15,8 +17,10 @@ Town::Info Town::GetInfo(void) const
 	info.name = _name;
 	info.desc = _desc;
 	info.population = _population;
-	info.rect = _rect;
-	
+	info.rank = _rank;
+	info.location = _location;
+	info.spriteScale = _spriteScale;
+
 	return info;
 }
 
@@ -32,7 +36,12 @@ const std::string Town::GetDesc(void) const
 
 Point Town::GetLocation(void) const
 {
-	return _rect.origin;
+	return _location;
+}
+
+float Town::GetSpriteScale(void) const
+{
+	return _spriteScale;
 }
 
 Town& Town::operator= (const Town & other)

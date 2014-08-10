@@ -10,9 +10,10 @@ public:
 	{
 		std::string name;
 		std::string desc;
-		int population;
+		float population;
 		float rank;
-		cocos2d::CCRect rect;
+		float spriteScale;
+		Point location;
 	};
 
 	typedef std::shared_ptr<Town> Ptr;
@@ -26,14 +27,17 @@ public:
 	const std::string GetDesc(void) const;
 
 	Point GetLocation(void) const;
+	float GetSpriteScale(void) const;
 
 	Town& operator= (const Town & other);
 
 private:
 	const std::string _name;
 	const std::string _desc;
-	const int _population;
-	const cocos2d::CCRect _rect;
+	const float _population;
+	const float _rank;
+	const float _spriteScale;
+	const Point _location;
 };
 
 #endif // TONW_H

@@ -1,6 +1,6 @@
 #include "WorldMapLayer.h"
 
-#include "WorldMap.h"
+#include "World.h"
 #include "GameScene.h"
 #include "MapGuiLayer.h"
 
@@ -42,12 +42,12 @@ bool WorldMapLayer::init(void)
 
 	SetGuiEnabled(true);
 
-	for (const Cell::Ptr cell : WorldMap::Instance().GetCells())
+	for (const Cell::Ptr cell : World::Instance().GetCells())
 	{
-		addChild(AddSpriteToProjector(_mapProjector, cell->GetLocation(), Point(-15.0f, -10.0f), "pin.png", true), 2, MAP_OBJ_CELL);
+		addChild(AddSpriteToProjector(_mapProjector, cell->GetInfo().location, Point(-15.0f, -10.0f), "pin.png", true), 2, MAP_OBJ_CELL);
 	}
 	
-	for (const Town::Ptr town : WorldMap::Instance().GetTowns())
+	for (const Town::Ptr town : World::Instance().GetTowns())
 	{
 		addChild(AddSpriteToProjector(_mapProjector, town->GetLocation(), Point(-15.0f, -10.0f), "town.png",
 			false, town->GetSpriteScale()), 1, MAP_OBJ_TOWN);
@@ -153,7 +153,7 @@ void WorldMapLayer::visit()
 {
 	CCLayer::visit();
 
-	for (Region::Ptr region : WorldMap::Instance().GetRegions())
+	for (Region::Ptr region : World::Instance().GetRegions())
 	{
 		const Region::HullsArray &array = region->GetHullsArray();
 
@@ -168,7 +168,7 @@ void WorldMapLayer::visit()
 Region::Ptr WorldMapLayer::GetRegionUnderPoint(const Point& point) const
 {
 	Point projectedClickPoint = _mapProjector->ProjectOnMap(point);
-	for (Region::Ptr region : WorldMap::Instance().GetRegions())
+	for (Region::Ptr region : World::Instance().GetRegions())
 	{
 		const Region::HullsArray &array = region->GetHullsArray();
 
@@ -186,10 +186,9 @@ Region::Ptr WorldMapLayer::GetRegionUnderPoint(const Point& point) const
 
 Cell::Ptr WorldMapLayer::GetCellUnderPoint(const Point& point) const
 {
-	for (Cell::Ptr cell : WorldMap::Instance().GetCells())
+	for (Cell::Ptr cell : World::Instance().GetCells())
 	{
-		Point projectedPoint = point - _mapProjector->ProjectOnScreen(cell->GetLocation());
-
+		Point projectedPoint = point - _mapProjector->ProjectOnScreen(cell->GetInfo().location);
 		if (_cellHull.Contain(projectedPoint))
 		{
 			return cell;
@@ -201,7 +200,7 @@ Cell::Ptr WorldMapLayer::GetCellUnderPoint(const Point& point) const
 
 Town::Ptr WorldMapLayer::GetTownUnderPoint(const Point& point)
 {
-	for (Town::Ptr town : WorldMap::Instance().GetTowns())
+	for (Town::Ptr town : World::Instance().GetTowns())
 	{
 		Point projectedPoint = point - _mapProjector->ProjectOnScreen(town->GetLocation());
 
