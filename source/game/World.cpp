@@ -2,7 +2,8 @@
 
 World::World()
 	: _worldTime(0.0f)
-	, isGamePaused(false)
+	, _isGamePaused(false)
+	, _isFirstLaunch(true)
 {
 }
 
@@ -37,13 +38,39 @@ void World::AddTown(Town::Ptr cell)
 	_towns.push_back(cell);
 }
 
-const Region::Ptr World::GetRegionByName(const std::string name) const
+const Region::Ptr World::GetRegionByName(const std::string &name) const
 {
 	for (Region::Ptr region : _regions)
 	{
 		if (region->GetInfo().name == name)
 		{
 			return region;
+		}
+	}
+
+	return nullptr;
+}
+
+const Town::Ptr World::GetTownByName(const std::string &name) const
+{
+	for (Town::Ptr town : _towns)
+	{
+		if (town->GetInfo().name == name)
+		{
+			return town;
+		}
+	}
+
+	return nullptr;
+}
+
+const Cell::Ptr World::GetRootCell(void) const
+{
+	for (Cell::Ptr cell : _cells)
+	{
+		if (cell->GetInfo().parent == nullptr)
+		{
+			return cell;
 		}
 	}
 
@@ -72,7 +99,7 @@ float World::GetWorldTime() const
 
 void World::Update(float deltatime)
 {
-	if (!isGamePaused)
+	if (!_isGamePaused)
 	{
 		_worldTime += deltatime;
 
@@ -85,5 +112,28 @@ void World::Update(float deltatime)
 
 void World::SetPause(bool pause)
 {
-	isGamePaused = pause;
+	_isGamePaused = pause;
+}
+
+void World::SetFirstLaunch(bool newGame)
+{
+	_isFirstLaunch = newGame;
+}
+
+bool World::IsFirstLaunch(void) const
+{
+	return _isFirstLaunch;
+}
+
+bool World::IsTownAvaliableToPlaceCell(Town::Ptr town) const
+{
+	for (Cell::Ptr cell : _cells)
+	{
+		if (cell->GetInfo().town->GetName() == town->GetName())
+		{
+			return false;
+		}
+	}
+
+	return true;
 }

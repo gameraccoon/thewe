@@ -2,12 +2,14 @@
 #define TOWN_H
 
 #include "MapProjector.h"
+#include "Region.h"
 
 class Town
 {
 public:
 	struct Info
 	{
+		Region::Ptr region;
 		std::string name;
 		std::string desc;
 		float population;
@@ -28,10 +30,13 @@ public:
 
 	Point GetLocation(void) const;
 	float GetSpriteScale(void) const;
+	Region::Ptr GetRegion(void) const;
 
 	Town& operator= (const Town & other);
 
 private:
+	Region::Ptr _region;
+
 	const std::string _name;
 	const std::string _desc;
 	const float _population;

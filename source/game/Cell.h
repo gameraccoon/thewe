@@ -3,7 +3,7 @@
 
 #include <memory>
 
-#include "Region.h"
+#include "Town.h"
 #include "Point.h"
 
 class Cell
@@ -12,7 +12,7 @@ public:
 	struct Info
 	{
 		Cell *parent;
-		Region::Ptr region;
+		Town::Ptr town;
 		Point location;
 
 		float cash;
@@ -20,8 +20,6 @@ public:
 		float contentment;
 
 		int membersNum;
-	private:
-
 	};
 
 	typedef std::shared_ptr<Cell> Ptr;

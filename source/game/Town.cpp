@@ -1,7 +1,8 @@
 #include "Town.h"
 
 Town::Town(const Info &info)
-	: _name(info.name)
+	: _region(info.region)
+	, _name(info.name)
 	, _desc(info.desc)
 	, _population(info.population)
 	, _rank(info.rank)
@@ -14,6 +15,7 @@ Town::Info Town::GetInfo(void) const
 {
 	Info info;
 
+	info.region = _region;
 	info.name = _name;
 	info.desc = _desc;
 	info.population = _population;
@@ -42,6 +44,11 @@ Point Town::GetLocation(void) const
 float Town::GetSpriteScale(void) const
 {
 	return _spriteScale;
+}
+
+Region::Ptr Town::GetRegion(void) const
+{
+	return _region;
 }
 
 Town& Town::operator= (const Town & other)

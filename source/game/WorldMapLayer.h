@@ -1,7 +1,7 @@
 #ifndef WORLD_MAP_LAYER_H
 #define WORLD_MAP_LAYER_H
 
-#include "cocos2d.h"
+#include <cocos2d.h>
 
 #include "ArbitraryHull.h"
 #include "MapProjector.h"
@@ -10,10 +10,12 @@
 
 #include "TownInfoLayer.h"
 
+class GameScene;
+
 class WorldMapLayer : public cocos2d::CCLayer
 {
 public:
-	WorldMapLayer(MapProjector* projector);
+	WorldMapLayer(GameScene *gameScene, MapProjector* projector);
 
 	virtual bool init(void) override;
 	virtual void visit() override;
@@ -39,6 +41,7 @@ private:
 	};
 
 private:
+	GameScene *_gameScene;
 
 	Region::Ptr GetRegionUnderPoint(const Point& point) const;
 	Cell::Ptr GetCellUnderPoint(const Point& point) const;
@@ -46,6 +49,8 @@ private:
 	Cell::Ptr _GetCellUnderPoint(const Point& point) const;
 	void _AddCellToRender(Cell::Ptr cell);
 	Town::Ptr GetTownUnderPoint(const Point& point);
+
+	void _OnTownSelect(Town::Ptr town);
 
 	Point _touchLastPoint;
 	Point _touchFirstPos;

@@ -4,7 +4,6 @@
 
 #include "Point.h"
 
-// !!!Attention!!! - this code can move your brain inside out
 static void LoadCellsRecursively(pugi::xml_node root, pugi::xml_node parent_node, Cell *parent)
 {
 	pugi::xml_node child_id_node = parent_node.first_child();
@@ -19,7 +18,7 @@ static void LoadCellsRecursively(pugi::xml_node root, pugi::xml_node parent_node
 
 		Cell::Info info;
 		info.parent = parent;
-		info.region = World::Instance().GetRegionByName(child.attribute("region").as_string());
+		info.town = World::Instance().GetTownByName(child.attribute("town").as_string());
 		info.location.x = child.attribute("location_x").as_float();
 		info.location.y = child.attribute("location_y").as_float();
 		info.cash = child.attribute("cash").as_float();
@@ -150,9 +149,11 @@ bool WorldLoader::LoadGameState(void)
 
 		if (cell_root)
 		{ 
+			World::Instance().SetFirstLaunch(false);
+
 			Cell::Info info;
 			info.parent = nullptr;
-			info.region = World::Instance().GetRegionByName(cell_root.attribute("region").as_string());
+			info.town = World::Instance().GetTownByName(cell_root.attribute("town").as_string());
 			info.location.x = cell_root.attribute("location_x").as_float();
 			info.location.y = cell_root.attribute("location_y").as_float();
 			info.cash = cell_root.attribute("cash").as_float();
@@ -167,13 +168,7 @@ bool WorldLoader::LoadGameState(void)
 		}
 		else
 		{
-			/*
-			не удалось найти корневую €чейку
-			все очень плохо
-			*/
-
-			assert(false);
-			return false;
+			World::Instance().SetFirstLaunch(true);
 		}
 
 		return true;
@@ -221,7 +216,7 @@ bool WorldLoader::SaveGameState(void)
 			pugi::xml_node cell_node = cells_root.append_child("Cell");
 			cell_node.append_attribute("id").set_value(cells_indices.find(cell)->second);
 			cell_node.append_attribute("parent_id").set_value(parent_id);
-			cell_node.append_attribute("region").set_value(info.region->GetInfo().name.c_str());
+			cell_node.append_attribute("town").set_value(info.town->GetInfo().name.c_str());
 			cell_node.append_attribute("location_x").set_value(info.location.x);
 			cell_node.append_attribute("location_y").set_value(info.location.y);
 			cell_node.append_attribute("cash").set_value(info.cash);

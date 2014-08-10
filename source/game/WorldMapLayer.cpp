@@ -1,13 +1,15 @@
 #include "WorldMapLayer.h"
 
+#include "GameScene.h"
 #include "World.h"
 #include "GameScene.h"
 #include "MapGuiLayer.h"
 
-WorldMapLayer::WorldMapLayer(MapProjector* projector)
+WorldMapLayer::WorldMapLayer(GameScene *gameScene, MapProjector* projector)
 	: _mapProjector(projector)
 	, _isInputEnabled(true)
 	, _mapGui(nullptr)
+	, _gameScene(gameScene)
 {
 	init();
 }
@@ -112,27 +114,25 @@ void WorldMapLayer::ccTouchesEnded(cocos2d::CCSet* touches, cocos2d::CCEvent* ev
 		if (size <= tolerance)
 		{
 			Cell::Ptr cell = GetCellUnderPoint(point);
-			Town::Ptr town = GetTownUnderPoint(point);
-			
-			// тут надо сделать по-нормальному, а то не факт что предок - GameScene.
-			dynamic_cast<GameScene* >(getParent())->ShowTownInfo(town);
-			if (town)
-			{
-				return;
-			}
-
 			if (cell)
 			{
 				dynamic_cast<GameScene*>(this->getParent())->ShowCellScreen(cell);
+				return;
 			}
-			else
-			{
-				Region::Ptr region = GetRegionUnderPoint(point);
 
-				if (region)
-				{
-					dynamic_cast<GameScene*>(this->getParent())->ShowRegionInfo(region);
-				}
+			Town::Ptr town = GetTownUnderPoint(point);
+			_gameScene->ShowTownInfo(town);
+			if (town)
+			{
+				_OnTownSelect(town);
+				return;
+			}
+
+			Region::Ptr region = GetRegionUnderPoint(point);
+			if (region)
+			{
+				dynamic_cast<GameScene*>(this->getParent())->ShowRegionInfo(region);
+				return;
 			}
 		}
 	}
@@ -225,6 +225,64 @@ Town::Ptr WorldMapLayer::GetTownUnderPoint(const Point& point)
 	}
 
 	return Town::Ptr();
+}
+
+void WorldMapLayer::_OnTownSelect(Town::Ptr town)
+{
+	bool avaliable = World::Instance().IsTownAvaliableToPlaceCell(town);
+
+	if (!avaliable)
+	{
+		return;
+	}
+
+	if (World::Instance().IsFirstLaunch())
+	{
+		Cell::Info info;
+		info.parent = nullptr;
+		info.town = town;
+		info.location = town->GetLocation();
+		info.cash = 100;
+		info.morale = 1.0f;
+		info.contentment = 0.1f;
+		info.membersNum = 5;
+
+		Cell::Ptr cell = std::make_shared<Cell>(Cell(info));
+		World::Instance().AddCell(cell);
+		addChild(AddSpriteToProjector(_mapProjector, cell->GetInfo().location, Point(-15.0f, -10.0f), "pin.png", true), 2, MAP_OBJ_CELL);
+
+		_mapProjector->Update();
+
+		World::Instance().SetFirstLaunch(false);
+	}
+	else
+	{
+		// тут временный код
+
+		Cell::Ptr parent = World::Instance().GetRootCell();
+
+		if (!parent)
+		{
+			return;
+		}
+
+		Cell::Info info;
+		info.parent = parent.get();
+		info.town = town;
+		info.location = town->GetLocation();
+		info.cash = 100;
+		info.morale = 1.0f;
+		info.contentment = 0.1f;
+		info.membersNum = 5;
+
+		Cell::Ptr cell = std::make_shared<Cell>(Cell(info));
+		World::Instance().AddCell(cell);
+		addChild(AddSpriteToProjector(_mapProjector, cell->GetInfo().location, Point(-15.0f, -10.0f), "pin.png", true), 2, MAP_OBJ_CELL);
+
+		parent->AddChild(cell);
+
+		_mapProjector->Update();
+	}
 }
 
 void WorldMapLayer::ModifyZoom(float multiplier)

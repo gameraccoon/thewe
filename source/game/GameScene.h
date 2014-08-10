@@ -8,6 +8,7 @@
 #include "MapProjector.h"
 #include "WorldMapLayer.h"
 #include "Cell.h"
+#include "Town.h"
 
 class GameScene : public cocos2d::CCScene
 {

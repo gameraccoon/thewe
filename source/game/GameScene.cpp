@@ -27,7 +27,7 @@ bool GameScene::init(void)
 	WorldLoader::LoadWorld();
 	WorldLoader::LoadGameState();
 
-	_worldMap = new WorldMapLayer(&_mapProjector);
+	_worldMap = new WorldMapLayer(this, &_mapProjector);
 	_townInfo = new TownInfoLayer();
 	addChild(_worldMap);
 	addChild(_townInfo);
