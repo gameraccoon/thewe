@@ -1,8 +1,11 @@
 #include "WorldLoader.h"
 
+#include <pugixml.hpp>
+#include <string>
 #include "World.h"
-
 #include "Point.h"
+#include "PlayersProfiles.h"
+#include "Region.h"
 
 static void LoadCellsRecursively(pugi::xml_node root, pugi::xml_node parent_node, Cell *parent)
 {

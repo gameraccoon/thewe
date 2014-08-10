@@ -2,9 +2,6 @@
 #define APPLICATION_H
 
 #include <cocos2d.h>
-#include <pugixml.hpp>
-
-using namespace cocos2d;
 
 class AppDelegate : private cocos2d::CCApplication
 {
@@ -15,7 +12,7 @@ public:
     virtual bool applicationDidFinishLaunching();
     virtual void applicationDidEnterBackground();
     virtual void applicationWillEnterForeground();
-	void _MenuInputListener(CCObject *sender);
+	void _MenuInputListener(cocos2d::CCObject *sender);
 
 private:
 	enum E_MENU_ITEMS_TAGS

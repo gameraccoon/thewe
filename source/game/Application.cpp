@@ -27,12 +27,15 @@ bool AppDelegate::applicationDidFinishLaunching()
 
 	_menuScene = cocos2d::CCScene::create();
 	
-	_btnRunGame = CCMenuItemImage::create("btn-start-game-normal.png", "btn-start-game-selected.png",
-		_menuScene, menu_selector(AppDelegate::_MenuInputListener));
-	_btnTestScene1 = CCMenuItemImage::create("btn-test1-normal.png", "btn-test1-selected.png",
-		_menuScene, menu_selector(AppDelegate::_MenuInputListener));
-	_btnExitGame = CCMenuItemImage::create("btn-exit-normal.png", "btn-exit-selected.png",
-		_menuScene, menu_selector(AppDelegate::_MenuInputListener));
+	{
+		using namespace cocos2d;
+		_btnRunGame = cocos2d::CCMenuItemImage::create("btn-start-game-normal.png", "btn-start-game-selected.png",
+			_menuScene, menu_selector(AppDelegate::_MenuInputListener));
+		_btnTestScene1 = cocos2d::CCMenuItemImage::create("btn-test1-normal.png", "btn-test1-selected.png",
+			_menuScene, menu_selector(AppDelegate::_MenuInputListener));
+		_btnExitGame = cocos2d::CCMenuItemImage::create("btn-exit-normal.png", "btn-exit-selected.png",
+			_menuScene, menu_selector(AppDelegate::_MenuInputListener));
+	}
 
 	Point client = director->getVisibleSize();
 	Point origin = director->getVisibleOrigin();
@@ -48,7 +51,7 @@ bool AppDelegate::applicationDidFinishLaunching()
 	_btnExitGame->setTag(MENU_ITEM_EXIT);
 	_btnExitGame->setScale(5.0f);
 
-	_mainMenu = CCMenu::create(_btnRunGame, _btnTestScene1, _btnExitGame, NULL);
+	_mainMenu = cocos2d::CCMenu::create(_btnRunGame, _btnTestScene1, _btnExitGame, NULL);
 	_mainMenu->setPosition(0.0f, 0.0f);
 
 	_menuScene->addChild(_mainMenu);
@@ -66,10 +69,10 @@ void AppDelegate::applicationWillEnterForeground()
 {
 }
 
-void AppDelegate::_MenuInputListener(CCObject *sender)
+void AppDelegate::_MenuInputListener(cocos2d::CCObject *sender)
 {
-	CCDirector *director = CCDirector::sharedDirector();
-	CCScene *scene = NULL;
+	cocos2d::CCDirector *director = cocos2d::CCDirector::sharedDirector();
+	cocos2d::CCScene *scene = NULL;
 
 	cocos2d::CCMenuItemImage *item = dynamic_cast<cocos2d::CCMenuItemImage*>(sender);
 

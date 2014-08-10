@@ -5,6 +5,7 @@
 #include "ArbitraryHull.h"
 #include "WorldLoader.h"
 #include <cocos2d.h>
+#include <pugixml.hpp>
 
 class EditorLayer : public cocos2d::CCLayer
 {
