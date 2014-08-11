@@ -10,6 +10,7 @@ WorldMapLayer::WorldMapLayer(GameScene *gameScene, MapProjector* projector)
 	, _isInputEnabled(true)
 	, _mapGui(nullptr)
 	, _gameScene(gameScene)
+	, _nextCellParent(nullptr)
 {
 	init();
 }
@@ -84,6 +85,11 @@ void WorldMapLayer::SetGuiEnabled(bool isEnabled)
 		_mapGui->autorelease();
 		_mapProjector->SetScale(_mapProjector->GetScale());
 	}
+}
+
+void WorldMapLayer::SetNextCellParent(Cell::Ptr parent)
+{
+	_nextCellParent = parent;
 }
 
 void WorldMapLayer::menuCloseCallback(cocos2d::CCObject *Sender)
@@ -255,19 +261,10 @@ void WorldMapLayer::_OnTownSelect(Town::Ptr town)
 
 		World::Instance().SetFirstLaunch(false);
 	}
-	else
+	else if (_nextCellParent != nullptr)
 	{
-		// тут временный код
-
-		Cell::Ptr parent = World::Instance().GetRootCell();
-
-		if (!parent)
-		{
-			return;
-		}
-
 		Cell::Info info;
-		info.parent = parent.get();
+		info.parent = _nextCellParent.get();
 		info.town = town;
 		info.location = town->GetLocation();
 		info.cash = 100;
@@ -279,9 +276,10 @@ void WorldMapLayer::_OnTownSelect(Town::Ptr town)
 		World::Instance().AddCell(cell);
 		addChild(AddSpriteToProjector(_mapProjector, cell->GetInfo().location, Point(-15.0f, -10.0f), "pin.png", true), 2, MAP_OBJ_CELL);
 
-		parent->AddChild(cell);
-
 		_mapProjector->Update();
+
+		_nextCellParent->AddChild(cell);
+		_nextCellParent = nullptr;
 	}
 }
 

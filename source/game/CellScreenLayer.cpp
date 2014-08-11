@@ -4,9 +4,10 @@
 
 #include "Color.h"
 
-CellScreenLayer::CellScreenLayer(Cell::Ptr cell)
+CellScreenLayer::CellScreenLayer(Cell::Ptr cell, WorldMapLayer *worldMapLayer)
+	: _worldMapLayer(worldMapLayer)
+	, _cell(cell)
 {
-	_cell = cell;
 	init();
 }
 
@@ -25,6 +26,8 @@ bool CellScreenLayer::init()
 		using namespace cocos2d;
 		_btnBack = cocos2d::CCMenuItemImage::create("btn-back-arrow-normal.png", "btn-back-arrow-selected.png",
 			this, menu_selector(CellScreenLayer::_MenuInputListener));
+		_btnCreteChild = cocos2d::CCMenuItemImage::create("btn-create-child-normal.png", "btn-create-child-selected.png",
+			this, menu_selector(CellScreenLayer::_MenuInputListener));
 	}
 
 	Point pos;
@@ -34,6 +37,10 @@ bool CellScreenLayer::init()
 	_btnBack->setTag(MENU_ITEM_BACK);
 	_btnBack->setScale(5.0f);
 	_btnBack->setPosition(pos - ccp(-820.0f, 100.0f));
+	
+	_btnCreteChild->setTag(MENU_ITEM_CREATE_CHILD);
+	_btnCreteChild->setScale(4.0f);
+	_btnCreteChild->setPosition(pos - ccp(-700.0f, 320.0f));
 
 	const Cell::Info& cell = _cell->GetInfo();
 
@@ -64,7 +71,7 @@ bool CellScreenLayer::init()
 	_hasParentText->setPosition(Point(450.0f, screen.y - 500.0f));
 	_childCountText->setPosition(Point(450.0f, screen.y - 600.0f));
 
-	cocos2d::CCMenu *menu = cocos2d::CCMenu::create(_btnBack, NULL);
+	cocos2d::CCMenu *menu = cocos2d::CCMenu::create(_btnBack, _btnCreteChild, NULL);
 	menu->setPosition(0.0f, 0.0f);
 
 	_bkgDraw = cocos2d::CCDrawNode::create();
@@ -134,7 +141,11 @@ void CellScreenLayer::_MenuInputListener(cocos2d::CCObject *sender)
 	switch (tag)
 	{
 	case MENU_ITEM_BACK:
-		dynamic_cast<GameScene*>(getParent())->ShowMap();
+		dynamic_cast<GameScene *>(getParent())->ShowMap();
+		break;
+	case MENU_ITEM_CREATE_CHILD:
+		_worldMapLayer->SetNextCellParent(_cell);
+		dynamic_cast<GameScene *>(getParent())->ShowMap();
 		break;
 	default: break;
 	}

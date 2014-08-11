@@ -30,6 +30,7 @@ public:
 
 	void SetMapInputEnabled(bool isEnabled);
 	void SetGuiEnabled(bool isEnabled);
+	void SetNextCellParent(Cell::Ptr parent);
 
 private:
 	enum E_MAP_OBJECT_TAG
@@ -42,6 +43,8 @@ private:
 
 private:
 	GameScene *_gameScene;
+
+	Cell::Ptr _nextCellParent;
 
 	Region::Ptr GetRegionUnderPoint(const Point& point) const;
 	Cell::Ptr GetCellUnderPoint(const Point& point) const;

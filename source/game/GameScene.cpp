@@ -98,7 +98,7 @@ void GameScene::ShowRegionInfo(Region::Ptr region)
 void GameScene::ShowCellScreen(Cell::Ptr cell)
 {
 	ShowMap();
-	_cellScreen = new CellScreenLayer(cell);
+	_cellScreen = new CellScreenLayer(cell, _worldMap);
 	addChild(_cellScreen);
 	_cellScreen->autorelease();
 	_worldMap->SetMapInputEnabled(false);

@@ -3,11 +3,12 @@
 
 #include <cocos2d.h>
 #include "Cell.h"
+#include "WorldMapLayer.h"
 
 class CellScreenLayer : public cocos2d::CCLayer
 {
 public:
-	CellScreenLayer(Cell::Ptr cell);
+	CellScreenLayer(Cell::Ptr cell, WorldMapLayer *worldMapLayer);
 
 	virtual bool init() override;
 	virtual void update(float delta) override;
@@ -20,10 +21,14 @@ private:
 	enum E_MENU_TEMS_TAG
 	{
 		MENU_ITEM_BACK
+		,MENU_ITEM_CREATE_CHILD
 	};
 
 private:
+	WorldMapLayer *_worldMapLayer;
+
 	cocos2d::CCMenuItemImage *_btnBack;
+	cocos2d::CCMenuItemImage *_btnCreteChild;
 	cocos2d::CCLabelTTF *_membersText;
 	cocos2d::CCLabelTTF *_cashText;
 	cocos2d::CCLabelTTF *_moralText;
