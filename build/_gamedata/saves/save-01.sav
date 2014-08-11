@@ -1,16 +1,17 @@
 <?xml version="1.0"?>
 <Save>
 	<CellsNetwork>
-		<Cell id="1" parent_id="-1" town="Moscow" location_x="83" location_y="148" cash="0" morale="1" contentment="0.514676" members_num="5">
+		<Cell id="1" parent_id="-1" town="Norilsk" location_x="272" location_y="256" cash="0" morale="1" contentment="0.59816" members_num="5">
 			<Child id="2" />
+		</Cell>
+		<Cell id="2" parent_id="1" town="Simferopol" location_x="71" location_y="87" cash="0" morale="1" contentment="0.59816" members_num="5">
+			<Child id="3" />
+		</Cell>
+		<Cell id="3" parent_id="2" town="Saint Petersburg" location_x="56" location_y="176" cash="22.8653" morale="1" contentment="0.99816" members_num="5">
+			<Child id="4" />
 			<Child id="5" />
 		</Cell>
-		<Cell id="2" parent_id="1" town="Vologda" location_x="87" location_y="172" cash="0" morale="1" contentment="0.514676" members_num="5">
-			<Child id="3" />
-			<Child id="4" />
-		</Cell>
-		<Cell id="3" parent_id="2" town="Saint Petersburg" location_x="56" location_y="176" cash="0" morale="1" contentment="0.514676" members_num="5" />
-		<Cell id="4" parent_id="2" town="Norilsk" location_x="272" location_y="256" cash="0" morale="1" contentment="0.514676" members_num="5" />
-		<Cell id="5" parent_id="1" town="Simferopol" location_x="71" location_y="87" cash="0" morale="1" contentment="0.514676" members_num="5" />
+		<Cell id="4" parent_id="3" town="Moscow" location_x="83" location_y="148" cash="34.6163" morale="1" contentment="0.99816" members_num="5" />
+		<Cell id="5" parent_id="3" town="Vologda" location_x="87" location_y="172" cash="48.3092" morale="1" contentment="0.99816" members_num="5" />
 	</CellsNetwork>
 </Save>

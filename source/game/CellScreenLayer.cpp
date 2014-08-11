@@ -55,7 +55,7 @@ bool CellScreenLayer::init()
 	char hasParentInfo[64];
 	sprintf_s(hasParentInfo, cell.parent != nullptr ? "Has parent" : "Hasn't parent");
 	char childCountInfo[64];
-	sprintf_s(childCountInfo, "Childs: %d", _cell->GetChildren().size());
+	sprintf_s(childCountInfo, "Childs: %d", _cell->GetChildrens().size());
 
 	_membersText = cocos2d::CCLabelTTF::create(membersInfo, "Arial", 64);
 	_cashText = cocos2d::CCLabelTTF::create(cashInfo, "Arial", 64);
@@ -107,7 +107,7 @@ void CellScreenLayer::update(float delta)
 	char hasParentInfo[64];
 	sprintf_s(hasParentInfo, cell.parent != nullptr ? "Has parent" : "Hasn't parent");
 	char childCountInfo[64];
-	sprintf_s(childCountInfo, "Childs: %d", _cell->GetChildren().size());
+	sprintf_s(childCountInfo, "Childs: %d", _cell->GetChildrens().size());
 
 	_membersText->setString(membersInfo);
 	_cashText->setString(cashInfo);

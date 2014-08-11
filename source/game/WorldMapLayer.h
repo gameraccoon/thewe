@@ -46,14 +46,13 @@ private:
 
 	Cell::Ptr _nextCellParent;
 
-	Region::Ptr GetRegionUnderPoint(const Point& point) const;
-	Cell::Ptr GetCellUnderPoint(const Point& point) const;
 	Region::Ptr _GetRegionUnderPoint(const Point& point) const;
 	Cell::Ptr _GetCellUnderPoint(const Point& point) const;
-	void _AddCellToRender(Cell::Ptr cell);
-	Town::Ptr GetTownUnderPoint(const Point& point);
+	Town::Ptr _GetTownUnderPoint(const Point& point);
 
+	void _AddCellToRender(Cell::Ptr cell);
 	void _OnTownSelect(Town::Ptr town);
+	void _DrawCellsLinksRecurcively(Cell::Ptr cell);
 
 	Point _touchLastPoint;
 	Point _touchFirstPos;

@@ -40,7 +40,7 @@ public:
 	void RemoveChild(Cell::Ptr cell);
 
 	/** Возвращает все дочерние ячейки */
-	const std::vector<Cell::Ptr>& GetChildren() const;
+	const std::vector<Cell::Ptr>& GetChildrens() const;
 
 	/**
 	* Возвращает информацию о ячейке

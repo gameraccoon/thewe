@@ -224,7 +224,7 @@ bool WorldLoader::SaveGameState(void)
 			cell_node.append_attribute("contentment").set_value(info.contentment);
 			cell_node.append_attribute("members_num").set_value(info.membersNum);
 
-			for (Cell::Ptr child : cell->GetChildren())
+			for (Cell::Ptr child : cell->GetChildrens())
 			{
 				pugi::xml_node cell_child_node = cell_node.append_child("Child");
 				cell_child_node.append_attribute("id").set_value(cells_indices.find(child.get())->second);
