@@ -61,6 +61,9 @@
     <ClCompile Include="..\..\game\World.cpp">
       <Filter>GameElements</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\game\Log.cpp">
+      <Filter>EngineInterface</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\game\Region.h">
@@ -119,6 +122,9 @@
     </ClInclude>
     <ClInclude Include="..\..\game\World.h">
       <Filter>GameElements</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\game\Log.h">
+      <Filter>EngineInterface</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

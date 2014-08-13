@@ -3,6 +3,7 @@
 #include "GameScene.h"
 #include "Point.h"
 #include "PlayersProfiles.h"
+#include "Log.h"
 
 AppDelegate::AppDelegate()
 {
@@ -14,6 +15,8 @@ AppDelegate::~AppDelegate()
 
 bool AppDelegate::applicationDidFinishLaunching()
 {
+	Log::Instance().writeInit("Application launched");
+
 	cocos2d::CCDirector *director = cocos2d::CCDirector::sharedDirector();
 	cocos2d::CCEGLView *glview = cocos2d::CCEGLView::sharedOpenGLView();
 
