@@ -1,5 +1,7 @@
 #include "World.h"
 
+#include "TaskManager.h"
+
 World::World()
 	: _worldTime(0.0f)
 	, _isGamePaused(false)
@@ -107,6 +109,8 @@ void World::Update(float deltatime)
 		{
 			cell->Update(deltatime);
 		}
+
+		TaskManager::Instance().UpdateToTime(_worldTime);
 	}
 }
 

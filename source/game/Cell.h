@@ -5,6 +5,7 @@
 
 #include "Town.h"
 #include "Point.h"
+#include "Task.h"
 
 class Cell
 {
@@ -47,9 +48,13 @@ public:
 	*/
 	const Info& GetInfo(void) const;
 	
+	/** ќбновл€ем состо€ние €чейки */
 	void Update(float deltatime);
 
+	/** ƒобавл€ем задание как выполненное */
+	void AddCompletedTask(const Task::CompletedTaskInfo& completedTask);
 private:
+
 	/** ”становить €чейке родител€ */
 	void _SetParent(Cell* cell);
 
@@ -65,6 +70,9 @@ private:
 
 	/** ƒочерние €чейки */
 	std::vector<Cell::Ptr> _childCells;
+
+	/** —писок выполненных заданий */
+	std::vector<Task::CompletedTaskInfo> _completedTasks;
 
 	/** √еографическое расположение €чейки на карте */
 	Point _worldLocation;

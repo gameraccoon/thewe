@@ -70,3 +70,8 @@ void Cell::_UpdateContentment(float deltatime)
 	const float halfDelta = 0.3f;
 	_info.contentment = std::min(halfDelta + (_info.cash / _info.membersNum) * 30.0f, 1 - halfDelta) + sinf(World::Instance().GetWorldTime()) * halfDelta;
 }
+
+void Cell::AddCompletedTask(const Task::CompletedTaskInfo& completedTask)
+{
+	_completedTasks.push_back(completedTask);
+}
