@@ -62,7 +62,7 @@ void Cell::Update(float deltatime)
 
 void Cell::_UpdateCash(float deltalime)
 {
-	float cashDelta = deltalime * _info.membersNum;
+	float cashDelta = deltalime * _info.membersCount;
 	_info.cash = _info.cash > cashDelta ? _info.cash - cashDelta : 0.0f;
 }
 
@@ -74,7 +74,7 @@ void Cell::_UpdateMorale(float deltatime)
 void Cell::_UpdateContentment(float deltatime)
 {
 	const float halfDelta = 0.3f;
-	_info.contentment = std::min(halfDelta + (_info.cash / _info.membersNum) * 30.0f, 1 - halfDelta) + sinf(World::Instance().GetWorldTime()) * halfDelta;
+	_info.contentment = std::min(halfDelta + (_info.cash / _info.membersCount) * 30.0f, 1 - halfDelta) + sinf(World::Instance().GetWorldTime()) * halfDelta;
 }
 
 void Cell::AddCompletedTask(const Task::CompletedTaskInfo& completedTask)

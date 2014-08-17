@@ -45,7 +45,7 @@ bool CellScreenLayer::init()
 	const Cell::Info& cell = _cell->GetInfo();
 
 	char membersInfo[64];
-	sprintf_s(membersInfo, "%d members in the cell ", cell.membersNum);
+	sprintf_s(membersInfo, "%d members in the cell ", cell.membersCount);
 	char cashInfo[64];
 	sprintf_s(cashInfo, "Cash %.1f$", cell.cash);
 	char moralInfo[64];
@@ -97,7 +97,7 @@ void CellScreenLayer::update(float delta)
 	const Cell::Info& cell = _cell->GetInfo();
 
 	char membersInfo[64];
-	sprintf_s(membersInfo, "%d members in the cell ", cell.membersNum);
+	sprintf_s(membersInfo, "%d members in the cell ", cell.membersCount);
 	char cashInfo[64];
 	sprintf_s(cashInfo, "Cash %.1f$", cell.cash);
 	char moralInfo[64];

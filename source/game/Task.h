@@ -10,6 +10,15 @@ public:
 	typedef std::shared_ptr<Task> Ptr;
 	typedef std::weak_ptr<Task> WeakPtr;
 	
+	/** Статус задачи */
+	enum class Status
+	{
+		Runned
+		, Successed
+		, Failed
+		, Aborted
+	};
+
 	/** Статическая информация о задаче */
 	struct Info
 	{
@@ -31,9 +40,11 @@ public:
 
 	struct CompletedTaskInfo
 	{
+
 		const Info* taskInfo;
 		float startTime;
 		float endTime;
+		Status status;
 	};
 
 public:
@@ -46,18 +57,27 @@ public:
 	 *
 	 * @return true если задание уже выполнено
 	 */
-	bool CheckComleteness(float worldTime);
+	bool CheckCompleteness(float worldTime);
 
 	const Info* GetInfo() const;
 
 	float GetStartTime() const;
 	float GetEndTime() const;
+	bool IsAborted() const;
+	bool IsFastFinished() const;
+	/** Прервать выполнение задания */
+	void Abort();
+	/** Завершить задание сейчас (ускорить выполнение) */
+	void FastFinish();
 
 private:
 	/** Время начала выполнения задания */
 	float _startTime;
 	/** Время окончания выполнения задания */
 	float _endTime;
+
+	bool _isAborted;
+	bool _isFastFinished;
 
 	const Task::Info* _info;
 };

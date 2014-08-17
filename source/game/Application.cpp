@@ -25,6 +25,7 @@ bool AppDelegate::applicationDidFinishLaunching()
 	director->setAnimationInterval(1.0 / 60.0);
 
 	cocos2d::CCFileUtils::sharedFileUtils()->addSearchPath("../_gamedata/textures");
+	cocos2d::CCFileUtils::sharedFileUtils()->addSearchPath("../_gamedata/scripts");
 
 	ProfilesManager::Instance().LoadProfiles();
 

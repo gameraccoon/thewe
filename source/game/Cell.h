@@ -20,7 +20,7 @@ public:
 		float morale;
 		float contentment;
 
-		int membersNum;
+		int membersCount;
 	};
 
 	typedef std::shared_ptr<Cell> Ptr;

@@ -70,6 +70,15 @@
     <ClCompile Include="..\..\game\TaskManager.cpp">
       <Filter>Utils</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\game\LuaInstance.cpp">
+      <Filter>Utils\Lua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\game\LuaFunction.cpp">
+      <Filter>Utils\Lua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\game\LuaBindings.cpp">
+      <Filter>Utils\Lua</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\game\Region.h">
@@ -138,6 +147,15 @@
     <ClInclude Include="..\..\game\TaskManager.h">
       <Filter>Utils</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\game\LuaFunction.h">
+      <Filter>Utils\Lua</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\game\LuaInstance.h">
+      <Filter>Utils\Lua</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\game\LuaType.h">
+      <Filter>Utils\Lua</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Views">
@@ -175,6 +193,9 @@
     </Filter>
     <Filter Include="Utils">
       <UniqueIdentifier>{d154070b-6a0f-4a6a-ad9c-99fd053e2335}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Utils\Lua">
+      <UniqueIdentifier>{2c2cf9e6-a323-4f51-968e-9f1dbc3a5406}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

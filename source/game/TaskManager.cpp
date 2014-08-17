@@ -1,10 +1,39 @@
 #include "TaskManager.h"
 
+#include <fstream>
+#include <iostream>
+
 #include "Log.h"
+#include "LuaType.h"
+#include "LuaFunction.h"
+
+#include <cocos2d.h>
 
 TaskManager::TaskManager()
 {
 	isTasksFilled = false;
+
+	_luaScript = LuaInstance::Create();
+
+	LuaType::registerConstant(_luaScript.get(), "Log", &Log::Instance());
+
+	std::string fileName = "../_gamedata/scripts/tasks.lua";
+	std::string script;
+    char temp;
+	std::ifstream fileStream(fileName);
+    
+    if (!fileStream)
+	{
+		Log::Instance().writeError(std::string("File ").append(fileName).append(" not found error"));
+    }
+
+    fileStream.unsetf(std::ios::skipws);
+    while(fileStream >> temp)
+	{
+        script += temp;
+	}
+
+	_luaScript->execScript(script.c_str());
 }
 
 TaskManager::~TaskManager()
@@ -28,22 +57,73 @@ void TaskManager::RunTask(Cell::Ptr &cell, const Task::Info* info, float startTi
 
 void TaskManager::UpdateToTime(float worldTime)
 {
-	auto iterator = _runnedTasks.begin(), iEnd = _runnedTasks.end();
-	while (iterator < iEnd)
+	std::vector<RunnedTaskInfo>::iterator iterator = _runnedTasks.begin();
+	while (iterator != _runnedTasks.end())
 	{
 		Task* task = iterator->task.get();
 
-		bool isComplete = iterator->task->CheckComleteness(worldTime);
+		bool isEnded = iterator->task->CheckCompleteness(worldTime);
 
-		if (isComplete)
+		if (isEnded)
 		{
-			Task::CompletedTaskInfo info;
-			info.taskInfo = task->GetInfo();
-			info.startTime = task->GetStartTime();
-			info.endTime = task->GetEndTime();
-			iterator->cell->AddCompletedTask(info);
+			Cell::Ptr cell = iterator->cell.lock();
+			// если Cell ещё не удалена
+			if (cell)
+			{
+				const Cell::Info& cellInfo = cell->GetInfo();
+				const Task::Info* taskInfo = task->GetInfo();
 
-			// Освобождаем умный указатель и удаляем Task
+				Task::CompletedTaskInfo info;
+				info.taskInfo = task->GetInfo();
+				info.startTime = task->GetStartTime();
+				info.endTime = (task->IsAborted() || task->IsFastFinished()) ? worldTime : task->GetEndTime();
+				
+				std::string funcName;
+
+				if (!task->IsAborted())
+				{
+					// Вызываем луа функцию определения статуса задания
+					LuaFunction luaFunction;
+					luaFunction.readyToRunFunction(_luaScript.get(), "CheckStatus");
+						_luaScript->sendToLua<int>(cellInfo.membersCount);
+						_luaScript->sendToLua<float>(cellInfo.morale);
+						_luaScript->sendToLua<float>(cellInfo.contentment);
+						_luaScript->sendToLua<float>(taskInfo->moralLevel);
+						_luaScript->sendToLua<float>(taskInfo->severity);
+					luaFunction.runFunction(5, 1);
+						bool isSuccess = _luaScript->getFromLua<bool>(1);
+					luaFunction.clearAfterFunction();
+
+					if (isSuccess)
+					{
+						funcName = taskInfo->successFn;
+						info.status = Task::Status::Successed;
+					}
+					else
+					{
+						funcName = taskInfo->failFn;
+						info.status = Task::Status::Failed;
+					}
+				}
+				else
+				{
+					funcName = taskInfo->abortFn;
+					info.status = Task::Status::Aborted;
+				}
+
+				// вызываем из луа нужную функцию
+				LuaType::registerConstant(_luaScript.get(), "cell", cell.get());
+				LuaFunction luaFunction;
+				luaFunction.readyToRunFunction(_luaScript.get(), funcName.c_str());
+				luaFunction.runFunction(0, 0);
+				luaFunction.clearAfterFunction();
+				_luaScript->removeSymbol("cell");
+				
+				// добавляем информацию о законченном задании в ячейку
+				cell->AddCompletedTask(info);
+			}
+
+			// освобождаем умный указатель и удаляем Task
 			iterator = _runnedTasks.erase(iterator);
 		}
 		else

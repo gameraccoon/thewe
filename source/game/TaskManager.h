@@ -4,6 +4,7 @@
 #include <vector>
 #include "Cell.h"
 #include "Task.h"
+#include "LuaInstance.h"
 
 class TaskManager
 {
@@ -15,7 +16,7 @@ public:
 	 * Возвращает экземпляр класса
 	 */
 	static TaskManager& Instance();
-
+	
 public:
 	/**
 	 * Запустить новое задание для ячейки
@@ -40,10 +41,10 @@ private:
 	/** Информация о запущенной задаче */
 	struct RunnedTaskInfo
 	{
-		/** Ячейка, которая выполняет задание */
-		Cell::Ptr cell;
 		/** Задание */
 		Task::Ptr task;
+		/** Ячейка, которая выполняет задание */
+		Cell::WeakPtr cell;
 	};
 
 private:
@@ -54,6 +55,9 @@ private:
 
 	/** Задания, которые сейчас выполняются */
 	std::vector<RunnedTaskInfo> _runnedTasks;
+
+	/** Указатель на подсистему Lua */
+	LuaInstance::Ptr _luaScript;
 
 private:
 	/*

@@ -27,7 +27,7 @@ static void LoadCellsRecursively(pugi::xml_node root, pugi::xml_node parent_node
 		info.cash = child.attribute("cash").as_float();
 		info.morale = child.attribute("morale").as_float();
 		info.contentment = child.attribute("contentment").as_float();
-		info.membersNum = child.attribute("members_num").as_int();
+		info.membersCount = child.attribute("members_num").as_int();
 
 		Cell::Ptr cell = Cell::Create(info);
 		World::Instance().AddCell(cell);
@@ -162,7 +162,7 @@ bool WorldLoader::LoadGameState(void)
 			info.cash = cell_root.attribute("cash").as_float();
 			info.morale = cell_root.attribute("morale").as_float();
 			info.contentment = cell_root.attribute("contentment").as_float();
-			info.membersNum = cell_root.attribute("members_num").as_int();
+			info.membersCount = cell_root.attribute("members_num").as_int();
 
 			Cell::Ptr cell = Cell::Create(info);
 			World::Instance().AddCell(cell);
@@ -225,7 +225,7 @@ bool WorldLoader::SaveGameState(void)
 			cell_node.append_attribute("cash").set_value(info.cash);
 			cell_node.append_attribute("morale").set_value(info.morale);
 			cell_node.append_attribute("contentment").set_value(info.contentment);
-			cell_node.append_attribute("members_num").set_value(info.membersNum);
+			cell_node.append_attribute("members_num").set_value(info.membersCount);
 
 			for (Cell::Ptr child : cell->GetChildrens())
 			{

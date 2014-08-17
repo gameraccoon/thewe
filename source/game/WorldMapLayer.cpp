@@ -4,6 +4,7 @@
 #include "World.h"
 #include "GameScene.h"
 #include "MapGuiLayer.h"
+#include "TaskManager.h"
 
 WorldMapLayer::WorldMapLayer(GameScene *gameScene, MapProjector* projector)
 	: _mapProjector(projector)
@@ -123,6 +124,19 @@ void WorldMapLayer::ccTouchesEnded(cocos2d::CCSet* touches, cocos2d::CCEvent* ev
 			if (cell)
 			{
 				dynamic_cast<GameScene*>(this->getParent())->ShowCellScreen(cell);
+				std::vector<Task::Info> infos;
+				Task::Info info;
+				info.id = "test1";
+				info.successFn = "TestMissionSuccess";
+				info.failFn = "TestMissionFail";
+				info.abortFn = "TestMissionAbort";
+				info.duration = 2.0f;
+				infos.push_back(info);
+				TaskManager::Instance().FillTasks(infos);
+				TaskManager::TasksList list = TaskManager::Instance().GetAvailableTasks(cell.get());
+				
+				TaskManager::Instance().RunTask(cell, list[0], World::Instance().GetWorldTime());
+
 				return;
 			}
 
@@ -261,7 +275,7 @@ void WorldMapLayer::_OnTownSelect(Town::Ptr town)
 		info.cash = 100;
 		info.morale = 1.0f;
 		info.contentment = 0.1f;
-		info.membersNum = 5;
+		info.membersCount = 5;
 
 		Cell::Ptr cell = Cell::Create(info);
 		World::Instance().AddCell(cell);
@@ -280,7 +294,7 @@ void WorldMapLayer::_OnTownSelect(Town::Ptr town)
 		info.cash = 100;
 		info.morale = 1.0f;
 		info.contentment = 0.1f;
-		info.membersNum = 5;
+		info.membersCount = 5;
 
 		Cell::Ptr cell = Cell::Create(info);
 		World::Instance().AddCell(cell);

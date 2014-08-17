@@ -18,6 +18,9 @@
     <ClCompile Include="..\..\game\Color.cpp" />
     <ClCompile Include="..\..\game\Drawable.cpp" />
     <ClCompile Include="..\..\game\Log.cpp" />
+    <ClCompile Include="..\..\game\LuaFunction.cpp" />
+    <ClCompile Include="..\..\game\LuaInstance.cpp" />
+    <ClCompile Include="..\..\game\LuaBindings.cpp" />
     <ClCompile Include="..\..\game\MapGuiLayer.cpp" />
     <ClCompile Include="..\..\game\MapProjector.cpp" />
     <ClCompile Include="..\..\game\PlayersProfiles.cpp" />
@@ -43,6 +46,9 @@
     <ClInclude Include="..\..\game\Color.h" />
     <ClInclude Include="..\..\game\Drawable.h" />
     <ClInclude Include="..\..\game\Log.h" />
+    <ClInclude Include="..\..\game\LuaFunction.h" />
+    <ClInclude Include="..\..\game\LuaInstance.h" />
+    <ClInclude Include="..\..\game\LuaType.h" />
     <ClInclude Include="..\..\game\MapGuiLayer.h" />
     <ClInclude Include="..\..\game\MapProjector.h" />
     <ClInclude Include="..\..\game\PlayersProfiles.h" />
@@ -89,7 +95,7 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <OutDir>../../../build/Windows/</OutDir>
-    <IncludePath>../../externals/pugixml-1.4;../../engine/cocos2dx/platform/third_party/win32/OGLES;../../engine/cocos2dx/platform/win32;../../engine/cocos2dx/kazmath/include;../../engine/cocos2dx/include;../../engine/cocos2dx;$(VCInstallDir)include;$(VCInstallDir)atlmfc\include;$(WindowsSDK_IncludePath)</IncludePath>
+    <IncludePath>../../externals/lua52;../../externals/pugixml-1.4;../../engine/cocos2dx/platform/third_party/win32/OGLES;../../engine/cocos2dx/platform/win32;../../engine/cocos2dx/kazmath/include;../../engine/cocos2dx/include;../../engine/cocos2dx;$(VCInstallDir)include;$(VCInstallDir)atlmfc\include;$(WindowsSDK_IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <OutDir>../../../build/Windows/</OutDir>
@@ -106,8 +112,8 @@
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>opengl32.lib;glew32.lib;libcocos2d.lib;pugixmld.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>../../engine/Win32/;../../externals/pugixml-1.4/Win32;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>opengl32.lib;glew32.lib;libcocos2d.lib;pugixmld.lib;liblua52.a;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>../../engine/Win32/;../../externals/pugixml-1.4/Win32;../../externals/lua52/lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <SubSystem>Windows</SubSystem>
       <AdditionalOptions>/ignore:4099 %(AdditionalOptions)</AdditionalOptions>
     </Link>
