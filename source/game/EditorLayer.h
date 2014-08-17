@@ -3,7 +3,7 @@
 
 #include "MapProjector.h"
 #include "ArbitraryHull.h"
-#include "WorldLoader.h"
+#include "GameLoader.h"
 #include <cocos2d.h>
 #include <pugixml.hpp>
 

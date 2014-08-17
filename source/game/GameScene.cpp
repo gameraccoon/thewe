@@ -24,8 +24,8 @@ bool GameScene::init(void)
 	}
 
 	// долгая операция
-	WorldLoader::LoadWorld();
-	WorldLoader::LoadGameState();
+	GameLoader::LoadGameInfo();
+	GameLoader::LoadGameState();
 
 	_worldMap = new WorldMapLayer(this, &_mapProjector);
 	_townInfo = new TownInfoLayer();

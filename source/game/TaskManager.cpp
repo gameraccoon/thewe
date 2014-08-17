@@ -137,8 +137,7 @@ void TaskManager::FillTasks(const std::vector<Task::Info>& tasks)
 {
 	if (isTasksFilled)
 	{
-		Log::Instance().writeError("Trying to double filling tasks table");
-		assert(false);
+		Log::Instance().writeWarning("Trying to fill tasks info twice");
 	}
 
 	for (const Task::Info& info : tasks)

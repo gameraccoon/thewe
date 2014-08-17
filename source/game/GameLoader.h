@@ -1,10 +1,10 @@
-#ifndef WORLD_LOADER_H
-#define WORLD_LOADER_H
+#ifndef GAME_LOADER_H
+#define GAME_LOADER_H
 
-namespace WorldLoader
+namespace GameLoader
 {
-	/* загружает не зависящие от сейвов данные карты*/
-	bool LoadWorld(void);
+	/* загружает не зависящие от сейвов данные игры */
+	bool LoadGameInfo(void);
 	
 	/* восстанавливает состояние игры из файла */
 	bool LoadGameState(void);
@@ -16,4 +16,4 @@ namespace WorldLoader
 	void FlushGameState(void);
 };
 
-#endif
+#endif // GAME_LOADER_H

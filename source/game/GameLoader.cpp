@@ -1,4 +1,4 @@
-#include "WorldLoader.h"
+#include "GameLoader.h"
 
 #include <pugixml.hpp>
 #include <string>
@@ -6,6 +6,7 @@
 #include "Point.h"
 #include "PlayersProfiles.h"
 #include "Region.h"
+#include "TaskManager.h"
 
 static void LoadCellsRecursively(pugi::xml_node root, pugi::xml_node parent_node, Cell *parent)
 {
@@ -60,12 +61,48 @@ static void InitHullFromXml(const char *name, const pugi::xml_node &root,  Arbit
 	}
 }
 
-bool WorldLoader::LoadWorld(void)
+static bool LoadTasksInfo()
+{
+	pugi::xml_document tasks_xml_doc;
+	
+	if (!tasks_xml_doc.load_file("../_gamedata/worldinfo/tasks.xml"))
+	{
+		return false;
+	}
+
+	std::vector<Task::Info> infos;
+	
+	pugi::xml_node root = tasks_xml_doc.first_child();
+	pugi::xml_node task_node = root.first_child();
+
+	while (task_node)
+	{
+		Task::Info info;
+
+		info.id = task_node.attribute("Id").as_string();
+		info.severity = task_node.attribute("Severity").as_float();
+		info.duration = task_node.attribute("Duration").as_float();
+		info.moralLevel = task_node.attribute("MoralLevel").as_float();
+		info.successFn = task_node.attribute("SuccessFn").as_string();
+		info.failFn = task_node.attribute("FailFn").as_string();
+		info.abortFn = task_node.attribute("AbortFn").as_string();
+
+		infos.push_back(info);
+
+		task_node = task_node.next_sibling();
+	}
+	
+	TaskManager::Instance().FillTasks(infos);
+
+	return true;
+}
+
+static bool LoadWorld(void)
 {
 	pugi::xml_document hulls_xml_doc;
 	pugi::xml_document regions_xml_doc;
 	
-	if (!hulls_xml_doc.load_file("../_gamedata/map/hulls.xml") || !regions_xml_doc.load_file("../_gamedata/map/regions.xml"))
+	if (!hulls_xml_doc.load_file("../_gamedata/worldinfo/hulls.xml") || !regions_xml_doc.load_file("../_gamedata/worldinfo/regions.xml"))
 	{
 		return false;
 	}
@@ -131,7 +168,15 @@ bool WorldLoader::LoadWorld(void)
 	return true;
 }
 
-bool WorldLoader::LoadGameState(void)
+bool GameLoader::LoadGameInfo()
+{
+	bool result = true;
+	result &= LoadWorld();
+	result &= LoadTasksInfo();
+	return result;
+}
+
+bool GameLoader::LoadGameState(void)
 {
 	PlayerProfile *profile = ProfilesManager::Instance().GetCurrentProfile();
 
@@ -180,7 +225,7 @@ bool WorldLoader::LoadGameState(void)
 	return false;
 }
 
-bool WorldLoader::SaveGameState(void)
+bool GameLoader::SaveGameState(void)
 {
 	PlayerProfile *profile = ProfilesManager::Instance().GetCurrentProfile();
 
@@ -240,6 +285,6 @@ bool WorldLoader::SaveGameState(void)
 	return false;
 }
 
-void  WorldLoader::FlushGameState(void)
+void GameLoader::FlushGameState(void)
 {
 }

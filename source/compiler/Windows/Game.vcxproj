@@ -32,7 +32,7 @@
     <ClCompile Include="..\..\game\TaskManager.cpp" />
     <ClCompile Include="..\..\game\Town.cpp" />
     <ClCompile Include="..\..\game\TownInfoLayer.cpp" />
-    <ClCompile Include="..\..\game\WorldLoader.cpp" />
+    <ClCompile Include="..\..\game\GameLoader.cpp" />
     <ClCompile Include="..\..\game\World.cpp" />
     <ClCompile Include="..\..\game\WorldMapLayer.cpp" />
     <ClCompile Include="..\..\game\GameScene.cpp" />
@@ -60,7 +60,7 @@
     <ClInclude Include="..\..\game\TaskManager.h" />
     <ClInclude Include="..\..\game\Town.h" />
     <ClInclude Include="..\..\game\TownInfoLayer.h" />
-    <ClInclude Include="..\..\game\WorldLoader.h" />
+    <ClInclude Include="..\..\game\GameLoader.h" />
     <ClInclude Include="..\..\game\World.h" />
     <ClInclude Include="..\..\game\WorldMapLayer.h" />
     <ClInclude Include="..\..\game\GameScene.h" />

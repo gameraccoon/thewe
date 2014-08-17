@@ -28,9 +28,6 @@
     <ClCompile Include="..\..\game\MapGuiLayer.cpp">
       <Filter>Views\GameScene\WorldMap\MapGui</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\game\WorldLoader.cpp">
-      <Filter>Utils</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\game\EditorLayer.cpp">
       <Filter>Views\GameScene\RegionEditor</Filter>
     </ClCompile>
@@ -79,6 +76,9 @@
     <ClCompile Include="..\..\game\LuaBindings.cpp">
       <Filter>Utils\Lua</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\game\GameLoader.cpp">
+      <Filter>Utils</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\game\Region.h">
@@ -104,9 +104,6 @@
     </ClInclude>
     <ClInclude Include="..\..\game\MapGuiLayer.h">
       <Filter>Views\GameScene\WorldMap\MapGui</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\game\WorldLoader.h">
-      <Filter>Utils</Filter>
     </ClInclude>
     <ClInclude Include="..\..\game\EditorLayer.h">
       <Filter>Views\GameScene\RegionEditor</Filter>
@@ -155,6 +152,9 @@
     </ClInclude>
     <ClInclude Include="..\..\game\LuaType.h">
       <Filter>Utils\Lua</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\game\GameLoader.h">
+      <Filter>Utils</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

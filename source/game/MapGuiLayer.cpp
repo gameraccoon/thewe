@@ -3,7 +3,7 @@
 #include <math.h>
 
 #include "World.h"
-#include "WorldLoader.h"
+#include "GameLoader.h"
 #include "GameScene.h"
 #include "WorldMapLayer.h"
 
@@ -96,7 +96,7 @@ void MapGuiLayer::_MenuInputListener(cocos2d::CCObject *sender)
 		dynamic_cast<WorldMapLayer*>(getParent())->ModifyZoom(1.25f);
 		break;
 	case MENU_ITEM_SAVE:
-		WorldLoader::SaveGameState();
+		GameLoader::SaveGameState();
 		break;
 	default: break;
 	}
