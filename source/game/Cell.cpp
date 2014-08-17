@@ -4,7 +4,13 @@
 
 Cell::Cell(const Info &info)
 	: _info(info)
+	, _currentTask()
 {
+}
+
+Cell::Ptr Cell::Create(const Info &info)
+{
+	return std::make_shared<Cell>(Cell(info));
 }
 
 void Cell::AddChild(Cell::Ptr cell)

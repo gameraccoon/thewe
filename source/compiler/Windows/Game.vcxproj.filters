@@ -64,11 +64,11 @@
     <ClCompile Include="..\..\game\Log.cpp">
       <Filter>EngineInterface</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\game\TaskManager.cpp">
-      <Filter>GameElements</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\game\Task.cpp">
       <Filter>GameElements</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\game\TaskManager.cpp">
+      <Filter>Utils</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -132,11 +132,11 @@
     <ClInclude Include="..\..\game\Log.h">
       <Filter>EngineInterface</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\game\TaskManager.h">
-      <Filter>GameElements</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\game\Task.h">
       <Filter>GameElements</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\game\TaskManager.h">
+      <Filter>Utils</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

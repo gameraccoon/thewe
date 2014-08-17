@@ -29,7 +29,7 @@ static void LoadCellsRecursively(pugi::xml_node root, pugi::xml_node parent_node
 		info.contentment = child.attribute("contentment").as_float();
 		info.membersNum = child.attribute("members_num").as_int();
 
-		Cell::Ptr cell = std::make_shared<Cell>(Cell(info));
+		Cell::Ptr cell = Cell::Create(info);
 		World::Instance().AddCell(cell);
 		parent->AddChild(cell);
 
@@ -117,7 +117,7 @@ bool WorldLoader::LoadWorld(void)
 			info.spriteScale = town_node.attribute("scale").as_float();
 			info.location = Point(x, y);
 
-			Town::Ptr town = std::make_shared<Town>(Town(info));
+			Town::Ptr town = Town::Create(info);
 			map.AddTown(town);
 
 			town_node = town_node.next_sibling();
@@ -164,7 +164,7 @@ bool WorldLoader::LoadGameState(void)
 			info.contentment = cell_root.attribute("contentment").as_float();
 			info.membersNum = cell_root.attribute("members_num").as_int();
 
-			Cell::Ptr cell = std::make_shared<Cell>(Cell(info));
+			Cell::Ptr cell = Cell::Create(info);
 			World::Instance().AddCell(cell);
 
 			LoadCellsRecursively(cells_network, cell_root, cell.get());

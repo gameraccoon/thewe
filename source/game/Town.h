@@ -22,6 +22,7 @@ public:
 
 public:
 	Town(const Info &info);
+	static Town::Ptr Create(const Info &info);
 
 	Info GetInfo(void) const;
 

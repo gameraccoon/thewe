@@ -8,6 +8,7 @@ struct Task
 {
 public:
 	typedef std::shared_ptr<Task> Ptr;
+	typedef std::weak_ptr<Task> WeakPtr;
 	
 	/** Статическая информация о задаче */
 	struct Info
@@ -19,15 +20,13 @@ public:
 		/** Продолжительность */
 		float duration;
 		float moralLevel;
-		
-		void (*successFn)();
-		void (*failFn)();
-		void (*abortFn)();
-	private:
-		/** Закрытый конструктор */
-		Info();
-		/** Разрешаем конструировать Task::Info только классу TaskManager */
-		friend class TaskManager;
+
+		/** Имя Lua-функции, которая будет выполнена при успешном финале */
+		std::string successFn;
+		/** Имя Lua-функции, которая будет выполнена при провале задания */
+		std::string failFn;
+		/** Имя Lua-функции, которая будет выполнена при прерывании задания */
+		std::string abortFn;
 	};
 
 	struct CompletedTaskInfo
@@ -39,6 +38,8 @@ public:
 
 public:
 	Task(const Task::Info* info, float startTime);
+	
+	static Task::Ptr Create(const Task::Info* info, float startTime);
 
 	/**
 	 * Проверяет, не выполнилось ли задание

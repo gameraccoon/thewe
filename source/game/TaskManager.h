@@ -54,6 +54,7 @@ private:
 
 	/** Задания, которые сейчас выполняются */
 	std::vector<RunnedTaskInfo> _runnedTasks;
+
 private:
 	/*
 	 * Отключаем ненужные операции

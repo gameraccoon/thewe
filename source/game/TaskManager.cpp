@@ -21,7 +21,7 @@ void TaskManager::RunTask(Cell::Ptr &cell, const Task::Info* info, float startTi
 {
 	RunnedTaskInfo runnedTaskInfo;
 	runnedTaskInfo.cell = cell;
-	runnedTaskInfo.task = std::make_shared<Task>(Task(info, startTime));
+	runnedTaskInfo.task = Task::Create(info, startTime);
 
 	_runnedTasks.push_back(runnedTaskInfo);
 }
@@ -43,7 +43,7 @@ void TaskManager::UpdateToTime(float worldTime)
 			info.endTime = task->GetEndTime();
 			iterator->cell->AddCompletedTask(info);
 
-			// release smart ptr and delete task
+			// Освобождаем умный указатель и удаляем Task
 			iterator = _runnedTasks.erase(iterator);
 		}
 		else

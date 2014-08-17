@@ -6,6 +6,10 @@ Task::Task(const Task::Info* info, float startTime)
 	_startTime = startTime;
 	_endTime = startTime + info->duration;
 }
+Task::Ptr Task::Create(const Task::Info* info, float startTime)
+{
+	return std::make_shared<Task>(Task(info, startTime));
+}
 
 bool Task::CheckComleteness(float worldTime)
 {

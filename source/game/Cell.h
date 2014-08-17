@@ -24,9 +24,15 @@ public:
 	};
 
 	typedef std::shared_ptr<Cell> Ptr;
+	typedef std::weak_ptr<Cell> WeakPtr;
 
 public:
 	Cell(const Info &info);
+
+	/**
+	 * Создать Cell и вернуть умный указатель
+	 */
+	static Cell::Ptr Create(const Info &info);
 	
 	/**
 	 * Добавляет ячейке новую дочернюю ячейку
@@ -51,6 +57,9 @@ public:
 	/** Обновляем состояние ячейки */
 	void Update(float deltatime);
 
+	void AddCurrentTask();
+	Task::WeakPtr getTask();
+
 	/** Добавляем задание как выполненное */
 	void AddCompletedTask(const Task::CompletedTaskInfo& completedTask);
 private:
@@ -70,6 +79,9 @@ private:
 
 	/** Дочерние ячейки */
 	std::vector<Cell::Ptr> _childCells;
+
+	/** Задание, которое сейчас выполняется */
+	Task::WeakPtr _currentTask;
 
 	/** Список выполненных заданий */
 	std::vector<Task::CompletedTaskInfo> _completedTasks;

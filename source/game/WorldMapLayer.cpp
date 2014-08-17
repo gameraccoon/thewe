@@ -263,7 +263,7 @@ void WorldMapLayer::_OnTownSelect(Town::Ptr town)
 		info.contentment = 0.1f;
 		info.membersNum = 5;
 
-		Cell::Ptr cell = std::make_shared<Cell>(Cell(info));
+		Cell::Ptr cell = Cell::Create(info);
 		World::Instance().AddCell(cell);
 		addChild(AddSpriteToProjector(_mapProjector, cell->GetInfo().location, Point(-15.0f, -10.0f), "pin.png", true), 2, MAP_OBJ_CELL);
 
@@ -282,7 +282,7 @@ void WorldMapLayer::_OnTownSelect(Town::Ptr town)
 		info.contentment = 0.1f;
 		info.membersNum = 5;
 
-		Cell::Ptr cell = std::make_shared<Cell>(Cell(info));
+		Cell::Ptr cell = Cell::Create(info);
 		World::Instance().AddCell(cell);
 		addChild(AddSpriteToProjector(_mapProjector, cell->GetInfo().location, Point(-15.0f, -10.0f), "pin.png", true), 2, MAP_OBJ_CELL);
 

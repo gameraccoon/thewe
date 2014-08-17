@@ -10,6 +10,10 @@ Town::Town(const Info &info)
 	, _spriteScale(info.spriteScale)
 {
 }
+Town::Ptr Town::Create(const Info &info)
+{
+	return std::make_shared<Town>(Town(info));
+}
 
 Town::Info Town::GetInfo(void) const
 {
