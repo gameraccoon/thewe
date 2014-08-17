@@ -99,7 +99,7 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <OutDir>../../../build/Windows/</OutDir>
-    <IncludePath>../../externals/pugixml-1.4;../../engine/cocos2dx/platform/third_party/win32/OGLES;../../engine/cocos2dx/platform/win32;../../engine/cocos2dx/kazmath/include;../../engine/cocos2dx/include;../../engine/cocos2dx;$(VCInstallDir)include;$(VCInstallDir)atlmfc\include;$(WindowsSDK_IncludePath)</IncludePath>
+    <IncludePath>../../externals/lua52;../../externals/pugixml-1.4;../../engine/cocos2dx/platform/third_party/win32/OGLES;../../engine/cocos2dx/platform/win32;../../engine/cocos2dx/kazmath/include;../../engine/cocos2dx/include;../../engine/cocos2dx;$(VCInstallDir)include;$(VCInstallDir)atlmfc\include;$(WindowsSDK_IncludePath)</IncludePath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -132,8 +132,8 @@
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalLibraryDirectories>../../engine/Win32/;../../externals/pugixml-1.4/Win32;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>opengl32.lib;glew32.lib;libcocos2d.lib;pugixml.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>../../engine/Win32/;../../externals/pugixml-1.4/Win32;../../externals/lua52/lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>opengl32.lib;glew32.lib;libcocos2d.lib;pugixml.lib;liblua52.a;%(AdditionalDependencies)</AdditionalDependencies>
       <SubSystem>Windows</SubSystem>
       <AdditionalOptions>/WX %(AdditionalOptions)</AdditionalOptions>
     </Link>

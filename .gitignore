@@ -9,6 +9,7 @@
 *.sdf
 *.opensdf
 *.ilk
+log.txt
 /source/compiler/Windows/Debug
 /source/compiler/Windows/Release
 
@@ -67,4 +68,3 @@
 ; *.mkf
 ; *.l
 ; *.cc
-log.txt
