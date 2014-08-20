@@ -8,7 +8,7 @@
 class CellScreenLayer : public cocos2d::CCLayer
 {
 public:
-	CellScreenLayer(Cell::Ptr cell, WorldMapLayer *worldMapLayer);
+	CellScreenLayer(Cell::WeakPtr cell, WorldMapLayer *worldMapLayer);
 
 	virtual bool init() override;
 	virtual void update(float delta) override;
@@ -35,10 +35,11 @@ private:
 	cocos2d::CCLabelTTF *_contentmentText;
 	cocos2d::CCLabelTTF *_childCountText;
 	cocos2d::CCLabelTTF *_hasParentText;
+	cocos2d::CCLabelTTF *_currentTaskText;
 	
 	cocos2d::CCDrawNode *_bkgDraw;
 
-	Cell::Ptr _cell;
+	Cell::WeakPtr _cell;
 
 	void _MenuInputListener(cocos2d::CCObject *sender);
 	void _InitBackground(cocos2d::CCDrawNode *background) const;

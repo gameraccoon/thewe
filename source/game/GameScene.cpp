@@ -85,17 +85,17 @@ void GameScene::ToggleEditor()
 	}
 }
 
-void GameScene::ShowRegionInfo(Region::Ptr region)
+void GameScene::ShowRegionInfo(Region::WeakPtr region)
 {
 	ShowMap();
-	_regionInfo = new RegionInfoLayer(region->GetInfo());
+	_regionInfo = new RegionInfoLayer(region._Get()->GetInfo());
 	addChild(_regionInfo);
 	_regionInfo->autorelease();
 	_worldMap->SetMapInputEnabled(false);
 	_worldMap->SetGuiEnabled(false);
 }
 
-void GameScene::ShowCellScreen(Cell::Ptr cell)
+void GameScene::ShowCellScreen(Cell::WeakPtr cell)
 {
 	ShowMap();
 	_cellScreen = new CellScreenLayer(cell, _worldMap);
@@ -105,9 +105,9 @@ void GameScene::ShowCellScreen(Cell::Ptr cell)
 	_worldMap->SetGuiEnabled(false);
 }
 
-void GameScene::ShowTownInfo(Town::Ptr town)
+void GameScene::ShowTownInfo(Town::WeakPtr town)
 {
-	if (town)
+	if (!town.expired())
 	{
 		dynamic_cast<TownInfoLayer *>(_townInfo)->SelectTown(town);
 		_townInfo->setVisible(true);

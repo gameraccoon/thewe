@@ -13,7 +13,7 @@ public:
 	struct Info
 	{
 		Cell *parent;
-		Town::Ptr town;
+		Town::WeakPtr town;
 		Point location;
 
 		float cash;
@@ -57,8 +57,8 @@ public:
 	/** Обновляем состояние ячейки */
 	void Update(float deltatime);
 
-	void AddCurrentTask();
-	Task::WeakPtr getTask();
+	void AddCurrentTask(Task::WeakPtr currentTask);
+	Task::WeakPtr getCurrentTask() const;
 
 	/** Добавляем задание как выполненное */
 	void AddCompletedTask(const Task::CompletedTaskInfo& completedTask);

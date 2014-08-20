@@ -40,7 +40,7 @@ void World::AddTown(Town::Ptr cell)
 	_towns.push_back(cell);
 }
 
-const Region::Ptr World::GetRegionByName(const std::string &name) const
+const Region::WeakPtr World::GetRegionByName(const std::string &name) const
 {
 	for (Region::Ptr region : _regions)
 	{
@@ -50,10 +50,10 @@ const Region::Ptr World::GetRegionByName(const std::string &name) const
 		}
 	}
 
-	return nullptr;
+	return Region::WeakPtr();
 }
 
-const Town::Ptr World::GetTownByName(const std::string &name) const
+const Town::WeakPtr World::GetTownByName(const std::string &name) const
 {
 	for (Town::Ptr town : _towns)
 	{
@@ -63,10 +63,10 @@ const Town::Ptr World::GetTownByName(const std::string &name) const
 		}
 	}
 
-	return nullptr;
+	return Town::WeakPtr();
 }
 
-const Cell::Ptr World::GetRootCell(void) const
+const Cell::WeakPtr World::GetRootCell(void) const
 {
 	for (Cell::Ptr cell : _cells)
 	{
@@ -76,7 +76,7 @@ const Cell::Ptr World::GetRootCell(void) const
 		}
 	}
 
-	return nullptr;
+	return Cell::WeakPtr();
 }
 
 const World::Regions& World::GetRegions() const
@@ -129,11 +129,11 @@ bool World::IsFirstLaunch(void) const
 	return _isFirstLaunch;
 }
 
-bool World::IsTownAvaliableToPlaceCell(Town::Ptr town) const
+bool World::IsTownAvaliableToPlaceCell(Town::WeakPtr town) const
 {
 	for (Cell::Ptr cell : _cells)
 	{
-		if (cell->GetInfo().town->GetName() == town->GetName())
+		if (cell->GetInfo().town._Get()->GetName() == town._Get()->GetName())
 		{
 			return false;
 		}

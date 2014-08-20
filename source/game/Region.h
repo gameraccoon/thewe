@@ -16,6 +16,7 @@ public:
 	};
 
 	typedef std::shared_ptr<Region> Ptr;
+	typedef std::weak_ptr<Region> WeakPtr;
 	typedef std::vector<ArbitraryHull> HullsArray;
 
 public:

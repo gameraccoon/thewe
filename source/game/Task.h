@@ -63,6 +63,7 @@ public:
 
 	float GetStartTime() const;
 	float GetEndTime() const;
+	float CalculateProgress(float worldTime) const;
 	bool IsAborted() const;
 	bool IsFastFinished() const;
 	/** Прервать выполнение задания */

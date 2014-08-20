@@ -19,7 +19,7 @@ public:
 	};
 
 	typedef std::shared_ptr<Town> Ptr;
-
+	typedef std::weak_ptr<Town> WeakPtr;
 public:
 	Town(const Info &info);
 	static Town::Ptr Create(const Info &info);

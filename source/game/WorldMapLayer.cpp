@@ -11,7 +11,7 @@ WorldMapLayer::WorldMapLayer(GameScene *gameScene, MapProjector* projector)
 	, _isInputEnabled(true)
 	, _mapGui(nullptr)
 	, _gameScene(gameScene)
-	, _nextCellParent(nullptr)
+	, _nextCellParent()
 {
 	init();
 }
@@ -88,7 +88,7 @@ void WorldMapLayer::SetGuiEnabled(bool isEnabled)
 	}
 }
 
-void WorldMapLayer::SetNextCellParent(Cell::Ptr parent)
+void WorldMapLayer::SetNextCellParent(Cell::WeakPtr parent)
 {
 	_nextCellParent = parent;
 }
@@ -120,23 +120,23 @@ void WorldMapLayer::ccTouchesEnded(cocos2d::CCSet* touches, cocos2d::CCEvent* ev
 
 		if (size <= tolerance)
 		{
-			Cell::Ptr cell = _GetCellUnderPoint(point);
-			if (cell)
+			Cell::WeakPtr cell = _GetCellUnderPoint(point);
+			if (!cell.expired())
 			{
 				dynamic_cast<GameScene*>(this->getParent())->ShowCellScreen(cell);
 				return;
 			}
 
-			Town::Ptr town = _GetTownUnderPoint(point);
+			Town::WeakPtr town = _GetTownUnderPoint(point);
 			_gameScene->ShowTownInfo(town);
-			if (town)
+			if (!town.expired())
 			{
 				_OnTownSelect(town);
 				return;
 			}
 
-			Region::Ptr region = _GetRegionUnderPoint(point);
-			if (region)
+			Region::WeakPtr region = _GetRegionUnderPoint(point);
+			if (!region.expired())
 			{
 				dynamic_cast<GameScene*>(this->getParent())->ShowRegionInfo(region);
 				return;
@@ -171,9 +171,9 @@ void WorldMapLayer::visit()
 		}
 	}
 
-	Cell::Ptr root = World::Instance().GetRootCell();
+	Cell::WeakPtr root = World::Instance().GetRootCell();
 
-	if (root)
+	if (!root.expired())
 	{
 		Color color(1.0f, 0.0f, 0.0f);
 		cocos2d::ccDrawColor4F(color.r, color.g, color.b, color.a);
@@ -182,7 +182,7 @@ void WorldMapLayer::visit()
 	}
 }
 
-Region::Ptr WorldMapLayer::_GetRegionUnderPoint(const Point& point) const
+Region::WeakPtr WorldMapLayer::_GetRegionUnderPoint(const Point& point) const
 {
 	Point projectedClickPoint = _mapProjector->ProjectOnMap(point);
 	for (Region::Ptr region : World::Instance().GetRegions())
@@ -198,10 +198,10 @@ Region::Ptr WorldMapLayer::_GetRegionUnderPoint(const Point& point) const
 		}
 	}
 
-	return Region::Ptr();
+	return Region::WeakPtr();
 }
 
-Cell::Ptr WorldMapLayer::_GetCellUnderPoint(const Point& point) const
+Cell::WeakPtr WorldMapLayer::_GetCellUnderPoint(const Point& point) const
 {
 	for (Cell::Ptr cell : World::Instance().GetCells())
 	{
@@ -212,10 +212,10 @@ Cell::Ptr WorldMapLayer::_GetCellUnderPoint(const Point& point) const
 		}
 	}
 
-	return Cell::Ptr();
+	return Cell::WeakPtr();
 }
 
-Town::Ptr WorldMapLayer::_GetTownUnderPoint(const Point& point)
+Town::WeakPtr WorldMapLayer::_GetTownUnderPoint(const Point& point)
 {
 	for (Town::Ptr town : World::Instance().GetTowns())
 	{
@@ -241,10 +241,10 @@ Town::Ptr WorldMapLayer::_GetTownUnderPoint(const Point& point)
 		}
 	}
 
-	return Town::Ptr();
+	return Town::WeakPtr();
 }
 
-void WorldMapLayer::_OnTownSelect(Town::Ptr town)
+void WorldMapLayer::_OnTownSelect(Town::WeakPtr town)
 {
 	bool avaliable = World::Instance().IsTownAvaliableToPlaceCell(town);
 
@@ -258,7 +258,7 @@ void WorldMapLayer::_OnTownSelect(Town::Ptr town)
 		Cell::Info info;
 		info.parent = nullptr;
 		info.town = town;
-		info.location = town->GetLocation();
+		info.location = town._Get()->GetLocation();
 		info.cash = 100;
 		info.morale = 1.0f;
 		info.contentment = 0.1f;
@@ -272,12 +272,12 @@ void WorldMapLayer::_OnTownSelect(Town::Ptr town)
 
 		World::Instance().SetFirstLaunch(false);
 	}
-	else if (_nextCellParent != nullptr)
+	else if (!_nextCellParent.expired())
 	{
 		Cell::Info info;
-		info.parent = _nextCellParent.get();
+		info.parent = _nextCellParent._Get();
 		info.town = town;
-		info.location = town->GetLocation();
+		info.location = town._Get()->GetLocation();
 		info.cash = 100;
 		info.morale = 1.0f;
 		info.contentment = 0.1f;
@@ -289,16 +289,16 @@ void WorldMapLayer::_OnTownSelect(Town::Ptr town)
 
 		_mapProjector->Update();
 
-		_nextCellParent->AddChild(cell);
-		_nextCellParent = nullptr;
+		_nextCellParent._Get()->AddChild(cell);
+		_nextCellParent = Cell::WeakPtr();
 	}
 }
 
-void WorldMapLayer::_DrawCellsLinksRecurcively(Cell::Ptr cell)
+void WorldMapLayer::_DrawCellsLinksRecurcively(Cell::WeakPtr cell)
 {
-	Point p1(_mapProjector->ProjectOnScreen(cell->GetInfo().location));
+	Point p1(_mapProjector->ProjectOnScreen(cell._Get()->GetInfo().location));
 
-	for (Cell::Ptr child : cell->GetChildrens())
+	for (Cell::Ptr child : cell._Get()->GetChildrens())
 	{
 		Point p2(_mapProjector->ProjectOnScreen(child->GetInfo().location));
 		cocos2d::ccDrawLine(p1, p2);

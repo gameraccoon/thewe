@@ -30,7 +30,7 @@ public:
 
 	void SetMapInputEnabled(bool isEnabled);
 	void SetGuiEnabled(bool isEnabled);
-	void SetNextCellParent(Cell::Ptr parent);
+	void SetNextCellParent(Cell::WeakPtr parent);
 
 private:
 	enum E_MAP_OBJECT_TAG
@@ -44,15 +44,15 @@ private:
 private:
 	GameScene *_gameScene;
 
-	Cell::Ptr _nextCellParent;
+	Cell::WeakPtr _nextCellParent;
 
-	Region::Ptr _GetRegionUnderPoint(const Point& point) const;
-	Cell::Ptr _GetCellUnderPoint(const Point& point) const;
-	Town::Ptr _GetTownUnderPoint(const Point& point);
+	Region::WeakPtr _GetRegionUnderPoint(const Point& point) const;
+	Cell::WeakPtr _GetCellUnderPoint(const Point& point) const;
+	Town::WeakPtr _GetTownUnderPoint(const Point& point);
 
-	void _AddCellToRender(Cell::Ptr cell);
-	void _OnTownSelect(Town::Ptr town);
-	void _DrawCellsLinksRecurcively(Cell::Ptr cell);
+	void _AddCellToRender(Cell::WeakPtr cell);
+	void _OnTownSelect(Town::WeakPtr town);
+	void _DrawCellsLinksRecurcively(Cell::WeakPtr cell);
 
 	Point _touchLastPoint;
 	Point _touchFirstPos;

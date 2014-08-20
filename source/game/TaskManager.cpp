@@ -46,11 +46,12 @@ TaskManager& TaskManager::Instance()
 	return singleInstance;
 }
 
-void TaskManager::RunTask(Cell::Ptr &cell, const Task::Info* info, float startTime)
+void TaskManager::RunTask(Cell::WeakPtr &cell, const Task::Info* info, float startTime)
 {
 	RunnedTaskInfo runnedTaskInfo;
 	runnedTaskInfo.cell = cell;
 	runnedTaskInfo.task = Task::Create(info, startTime);
+	cell._Get()->AddCurrentTask(runnedTaskInfo.task);
 
 	_runnedTasks.push_back(runnedTaskInfo);
 }

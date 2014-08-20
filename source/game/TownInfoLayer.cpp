@@ -60,12 +60,12 @@ void TownInfoLayer::ccTouchesMoved(cocos2d::CCSet* touches, cocos2d::CCEvent* ev
 {
 }
 
-void TownInfoLayer::SelectTown(Town::Ptr town)
+void TownInfoLayer::SelectTown(Town::WeakPtr town)
 {
-	if (town)
+	if (!town.expired())
 	{
 		_town = town;
-		Town::Info info = _town->GetInfo();
+		Town::Info info = _town._Get()->GetInfo();
 
 		char name[64];
 		sprintf_s(name, "Town %s", info.name.c_str());

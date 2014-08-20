@@ -26,7 +26,7 @@ public:
 	 * @param startTime игровое время, которое нужно считать
 	 * временем начала выполнения задачи
 	 */
-	void RunTask(Cell::Ptr &cell, const Task::Info* info, float startTime);
+	void RunTask(Cell::WeakPtr &cell, const Task::Info* info, float startTime);
 	
 	/**
 	 * Возвращает список задач, которые достпны для данной ячейки

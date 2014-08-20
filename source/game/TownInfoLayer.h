@@ -15,10 +15,10 @@ public:
 	virtual void ccTouchesEnded(cocos2d::CCSet* touches, cocos2d::CCEvent* event) override;
 	virtual void ccTouchesMoved(cocos2d::CCSet* touches, cocos2d::CCEvent* event) override;
 
-	void SelectTown(Town::Ptr town);
+	void SelectTown(Town::WeakPtr town);
 
 private:
-	Town::Ptr _town;
+	Town::WeakPtr _town;
 
 	cocos2d::CCMenu *_menu;
 

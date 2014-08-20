@@ -53,7 +53,7 @@ namespace LuaType
 		instance->registerTableConstant<const char*, int>("membersCount", info.membersCount);
 		instance->registerTableConstant<const char*, float>("cash", info.cash);
 		instance->registerTableConstant<const char*, float>("morale", info.morale);
-		registerField<Town>(instance, "town", info.town.get());
+		registerField<Town>(instance, "town", info.town._Get());
 		//instance->registerTableFunction("getRotation", LuaType::cmdGetRotation);
 	}
 

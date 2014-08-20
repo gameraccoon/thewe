@@ -34,6 +34,11 @@ float Task::GetEndTime() const
 	return _endTime;
 }
 
+float Task::CalculateProgress(float worldTime) const
+{
+	return  1.0f - ((_endTime - worldTime) / (_endTime - _startTime));
+}
+
 bool Task::IsAborted() const
 {
 	return _isAborted;

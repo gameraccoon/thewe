@@ -264,7 +264,7 @@ bool GameLoader::SaveGameState(void)
 			pugi::xml_node cell_node = cells_root.append_child("Cell");
 			cell_node.append_attribute("id").set_value(cells_indices.find(cell)->second);
 			cell_node.append_attribute("parent_id").set_value(parent_id);
-			cell_node.append_attribute("town").set_value(info.town->GetInfo().name.c_str());
+			cell_node.append_attribute("town").set_value(info.town._Get()->GetInfo().name.c_str());
 			cell_node.append_attribute("location_x").set_value(info.location.x);
 			cell_node.append_attribute("location_y").set_value(info.location.y);
 			cell_node.append_attribute("cash").set_value(info.cash);

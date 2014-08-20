@@ -21,9 +21,9 @@ public:
 	void ShowMap();
 
 	void ToggleEditor();
-	void ShowRegionInfo(Region::Ptr region);
-	void ShowCellScreen(Cell::Ptr cell);
-	void ShowTownInfo(Town::Ptr town);
+	void ShowRegionInfo(Region::WeakPtr region);
+	void ShowCellScreen(Cell::WeakPtr cell);
+	void ShowTownInfo(Town::WeakPtr town);
 
 	MapProjector _mapProjector;
 

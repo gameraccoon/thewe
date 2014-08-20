@@ -77,6 +77,16 @@ void Cell::_UpdateContentment(float deltatime)
 	_info.contentment = std::min(halfDelta + (_info.cash / _info.membersCount) * 30.0f, 1 - halfDelta) + sinf(World::Instance().GetWorldTime()) * halfDelta;
 }
 
+void Cell::AddCurrentTask(Task::WeakPtr currentTask)
+{
+	_currentTask = currentTask;
+}
+
+Task::WeakPtr Cell::getCurrentTask() const
+{
+	return _currentTask;
+}
+
 void Cell::AddCompletedTask(const Task::CompletedTaskInfo& completedTask)
 {
 	_completedTasks.push_back(completedTask);

@@ -33,9 +33,9 @@ public:
 	void AddCell(Cell::Ptr cell);
 	void AddTown(Town::Ptr town);
 
-	const Region::Ptr GetRegionByName(const std::string &name) const;
-	const Town::Ptr GetTownByName(const std::string &name) const;
-	const Cell::Ptr GetRootCell(void) const;
+	const Region::WeakPtr GetRegionByName(const std::string &name) const;
+	const Town::WeakPtr GetTownByName(const std::string &name) const;
+	const Cell::WeakPtr GetRootCell(void) const;
 
 	void Update(float deltatime);
 
@@ -43,7 +43,7 @@ public:
 	void SetFirstLaunch(bool newGame);
 
 	bool IsFirstLaunch(void) const;
-	bool IsTownAvaliableToPlaceCell(Town::Ptr town) const;
+	bool IsTownAvaliableToPlaceCell(Town::WeakPtr town) const;
 
 private:
 	Regions _regions;
