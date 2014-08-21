@@ -4,6 +4,7 @@
 #include <cocos2d.h>
 #include "Cell.h"
 #include "WorldMapLayer.h"
+#include "TaskManager.h"
 
 class CellScreenLayer : public cocos2d::CCLayer
 {
@@ -41,8 +42,12 @@ private:
 
 	Cell::WeakPtr _cell;
 
+	TaskManager::TasksList _availableTasks;
+
 	void _MenuInputListener(cocos2d::CCObject *sender);
 	void _InitBackground(cocos2d::CCDrawNode *background) const;
+
+	void _TaskClickListener(cocos2d::CCObject *sender);
 };
 
 #endif // CELL_SCREEN_LAYER_H

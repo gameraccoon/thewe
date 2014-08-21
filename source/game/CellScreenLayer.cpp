@@ -45,6 +45,10 @@ bool CellScreenLayer::init()
 	_btnCreteChild->setScale(4.0f);
 	_btnCreteChild->setPosition(pos - ccp(-700.0f, 320.0f));
 
+	cocos2d::CCMenu *menu = cocos2d::CCMenu::create(_btnBack, _btnCreteChild, NULL);
+	menu->setPosition(0.0f, 0.0f);
+	addChild(menu, 1);
+
 	_membersText = cocos2d::CCLabelTTF::create("Not initialized", "Arial", 64);
 	_membersText->setPosition(Point(450.0f, screen.y - 100.0f));
 	addChild(_membersText, 1);
@@ -73,14 +77,35 @@ bool CellScreenLayer::init()
 	_currentTaskText->setPosition(Point(450.0f, screen.y - 700.0f));
 	addChild(_currentTaskText, 1);
 
-	cocos2d::CCMenu *menu = cocos2d::CCMenu::create(_btnBack, _btnCreteChild, NULL);
-	menu->setPosition(0.0f, 0.0f);
-
 	_bkgDraw = cocos2d::CCDrawNode::create();
 	_InitBackground(_bkgDraw);
-	
 	addChild(_bkgDraw, 0);
-	addChild(menu, 1);
+
+	_availableTasks = TaskManager::Instance().GetAvailableTasks(_cell);
+
+	cocos2d::CCArray taskMenuItems;
+	float tasksPosY = 0.0f;
+	int index = 0;
+	for (const Task::Info* task : _availableTasks)
+	{
+		cocos2d::CCLabelTTF* newLabel = cocos2d::CCLabelTTF::create(task->id.c_str(), "Arial", 64);
+		cocos2d::CCMenuItemLabel* newItem;
+		{
+			using namespace cocos2d;
+			newItem = cocos2d::CCMenuItemLabel::create(newLabel, this
+				, menu_selector(CellScreenLayer::_TaskClickListener));
+		}
+		newItem->setPosition(Point(0.0f, screen.y - (tasksPosY + 100.0f * index)));
+		newItem->setTag(index);
+
+		taskMenuItems.addObject(newItem);
+		index++;
+	}
+	
+	cocos2d::CCMenu *tasksMenu = cocos2d::CCMenu::createWithArray(&taskMenuItems);
+	tasksMenu->setPosition(1700.0f, -600.0f);
+	addChild(tasksMenu, 1);
+
 	setTouchEnabled(true);
 
 	scheduleUpdate();
@@ -155,7 +180,7 @@ void CellScreenLayer::ccTouchesMoved(cocos2d::CCSet* touches, cocos2d::CCEvent* 
 
 void CellScreenLayer::_MenuInputListener(cocos2d::CCObject *sender)
 {
-	cocos2d::CCMenuItemImage *item = dynamic_cast<cocos2d::CCMenuItemImage*>(sender);
+	cocos2d::CCMenuItem *item = dynamic_cast<cocos2d::CCMenuItem*>(sender);
 
 	int tag = item->getTag();
 
@@ -192,4 +217,13 @@ void CellScreenLayer::_InitBackground(cocos2d::CCDrawNode *background) const
 	Color border(0.6f, 0.6f, 0.6f, 0.7f);
 	
 	background->drawPolygon(vertices, 4, fill, 50.0f, border);
+}
+
+void CellScreenLayer::_TaskClickListener(cocos2d::CCObject *sender)
+{
+	cocos2d::CCMenuItem *item = dynamic_cast<cocos2d::CCMenuItem*>(sender);
+
+	int index = item->getTag();
+
+	TaskManager::Instance().RunTask(_cell, _availableTasks[index], World::Instance().GetWorldTime());
 }

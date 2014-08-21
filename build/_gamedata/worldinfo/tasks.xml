@@ -1,4 +1,5 @@
 <?xml version="1.0"?>
 <Tasks>
-	<Task Id="testTask" Severity="0.4" Duration="15.0" MoralLevel="0.3" SuccessFn="TestMissionSuccess" FailFn="TestMissionFail" AbortFn="TestMissionAbort" />
+	<Task Id="testTask1" Severity="0.4" Duration="15.0" MoralLevel="0.3" SuccessFn="TestMissionSuccess" FailFn="TestMissionFail" AbortFn="TestMissionAbort" />
+	<Task Id="testTask2" Severity="0.4" Duration="30.0" MoralLevel="0.7" SuccessFn="TestMissionSuccess" FailFn="TestMissionFail" AbortFn="TestMissionAbort" />
 </Tasks>

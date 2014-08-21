@@ -116,7 +116,8 @@ void TaskManager::UpdateToTime(float worldTime)
 				LuaType::registerConstant(_luaScript.get(), "cell", cell.get());
 				LuaFunction luaFunction;
 				luaFunction.readyToRunFunction(_luaScript.get(), funcName.c_str());
-				luaFunction.runFunction(0, 0);
+				luaFunction.sendParameter(taskInfo->id.c_str());
+				luaFunction.runFunction(1, 0);
 				luaFunction.clearAfterFunction();
 				_luaScript->removeSymbol("cell");
 				
@@ -149,9 +150,8 @@ void TaskManager::FillTasks(const std::vector<Task::Info>& tasks)
 	isTasksFilled = true;
 }
 
-const std::vector<const Task::Info*> TaskManager::GetAvailableTasks(Cell* cell) const
+TaskManager::TasksList TaskManager::GetAvailableTasks(Cell::WeakPtr cell) const
 {
-	
 	if (!isTasksFilled)
 	{
 		Log::Instance().writeError("Trying to acces to not initialized TaskManager");

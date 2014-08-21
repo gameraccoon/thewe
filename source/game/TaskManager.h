@@ -9,7 +9,7 @@
 class TaskManager
 {
 public:
-	typedef const std::vector<const Task::Info*> TasksList;
+	typedef std::vector<const Task::Info*> TasksList;
 
 public:
 	/**
@@ -31,7 +31,7 @@ public:
 	/**
 	 * Возвращает список задач, которые достпны для данной ячейки
 	 */
-	TasksList GetAvailableTasks(Cell* cell) const;
+	TasksList GetAvailableTasks(Cell::WeakPtr cell) const;
 
 	/** Обновить информацию к текущему игровому времени */
 	void UpdateToTime(float worldTime);

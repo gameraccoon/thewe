@@ -20,4 +20,19 @@ private:
 	int stackState;
 };
 
+
+template<typename T>
+void LuaFunction::sendParameter(T value)
+{
+	LuaInstance inst(this->luaState);
+	inst.sendToLua<T>(value);
+}
+
+template<typename T>
+T LuaFunction::getReturnValue(int index)
+{
+	LuaInstance inst(this->luaState);
+	return inst.getFromLua<T>(value);
+}
+
 #endif
