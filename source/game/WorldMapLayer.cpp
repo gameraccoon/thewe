@@ -5,6 +5,7 @@
 #include "GameScene.h"
 #include "MapGuiLayer.h"
 #include "TaskManager.h"
+#include "Log.h"
 
 WorldMapLayer::WorldMapLayer(GameScene *gameScene, MapProjector* projector)
 	: _mapProjector(projector)
@@ -32,6 +33,8 @@ bool WorldMapLayer::init(void)
 	}
 	
 	cocos2d::CCSprite * spr = AddSpriteToProjector(_mapProjector, Point(0.0f, 0.0f), Point(0.0f, 0.0f), "WorldMap.png", false);
+
+
 	addChild(spr);
 	setTouchEnabled(true);
     setKeypadEnabled(true);

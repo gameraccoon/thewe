@@ -7,6 +7,7 @@
 #include "PlayersProfiles.h"
 #include "Region.h"
 #include "TaskManager.h"
+#include "Log.h"
 
 static void LoadCellsRecursively(pugi::xml_node root, pugi::xml_node parent_node, Cell *parent)
 {
@@ -67,6 +68,7 @@ static bool LoadTasksInfo()
 	
 	if (!tasks_xml_doc.load_file("../_gamedata/worldinfo/tasks.xml"))
 	{
+		Log::Instance().writeError("Can't find file '../_gamedata/worldinfo/tasks.xml'");
 		return false;
 	}
 
@@ -102,8 +104,15 @@ static bool LoadWorld(void)
 	pugi::xml_document hulls_xml_doc;
 	pugi::xml_document regions_xml_doc;
 	
-	if (!hulls_xml_doc.load_file("../_gamedata/worldinfo/hulls.xml") || !regions_xml_doc.load_file("../_gamedata/worldinfo/regions.xml"))
+	if (!hulls_xml_doc.load_file("../_gamedata/worldinfo/hulls.xml"))
 	{
+		Log::Instance().writeError("Can't find file '../_gamedata/worldinfo/hulls.xml'");
+		return false;
+	}
+
+	if (!regions_xml_doc.load_file("../_gamedata/worldinfo/regions.xml"))
+	{
+		Log::Instance().writeError("Can't find file '../_gamedata/worldinfo/regions.xml'");
 		return false;
 	}
 

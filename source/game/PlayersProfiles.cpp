@@ -4,6 +4,7 @@
 #include <cocos2d.h>
 #include "Point.h"
 #include "ArbitraryHull.h"
+#include "Log.h"
 
 static const std::string profilesSettingsPath = "../_gamedata/saves/profiles.xml"; 
 
@@ -19,7 +20,12 @@ ProfilesManager::~ProfilesManager()
 void ProfilesManager::LoadProfiles(void)
 {
 	pugi::xml_document doc;
-	pugi::xml_parse_result result = doc.load_file(profilesSettingsPath.c_str());
+	pugi::xml_parse_result successfulLoaded = doc.load_file(profilesSettingsPath.c_str());
+
+	if (!successfulLoaded)
+	{
+		Log::Instance().writeError(std::string("Can't find file '").append(profilesSettingsPath).append("'"));
+	}
 
 	pugi::xml_node root = doc.first_child();
 	pugi::xml_node node = root.first_child();
