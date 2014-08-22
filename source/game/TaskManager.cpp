@@ -144,6 +144,7 @@ void TaskManager::FillTasks(const std::vector<Task::Info>& tasks)
 
 	for (const Task::Info& info : tasks)
 	{
+		_CheckTask(info);
 		_allTasks.insert(std::pair<const std::string, const Task::Info>(info.id, info));
 	}
 
@@ -167,4 +168,42 @@ TaskManager::TasksList TaskManager::GetAvailableTasks(Cell::WeakPtr cell) const
 	}
 
 	return availableTasks;
+}
+
+void TaskManager::_CheckTask(const Task::Info& taskInfo) const
+{
+	if (taskInfo.id == "")
+	{
+		Log::Instance().writeWarning("Empty task Id");
+	}
+
+	if (taskInfo.successFn == "")
+	{
+		Log::Instance().writeWarning("Empty success function name");
+	}
+
+	if (taskInfo.failFn == "")
+	{
+		Log::Instance().writeWarning("Empty fail function name");
+	}
+
+	if (taskInfo.abortFn == "")
+	{
+		Log::Instance().writeWarning("Empty abort function name");
+	}
+
+	if (taskInfo.moralLevel < 0.0f || 1.0f < taskInfo.moralLevel)
+	{
+		Log::Instance().writeWarning("Wrong moral level");
+	}
+
+	if (taskInfo.severity < 0.0f || 1.0f < taskInfo.severity)
+	{
+		Log::Instance().writeWarning("Wrong severity level");
+	}
+
+	if (taskInfo.duration < 0.0f)
+	{
+		Log::Instance().writeWarning("Negative duration");
+	}
 }

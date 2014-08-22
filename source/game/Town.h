@@ -9,7 +9,7 @@ class Town
 public:
 	struct Info
 	{
-		Region::Ptr region;
+		Region::WeakPtr region;
 		std::string name;
 		std::string desc;
 		float population;
@@ -31,12 +31,14 @@ public:
 
 	Point GetLocation(void) const;
 	float GetSpriteScale(void) const;
-	Region::Ptr GetRegion(void) const;
+	Region::WeakPtr GetRegion(void) const;
+
+	void _CheckValues() const;
 
 	Town& operator= (const Town & other);
 
 private:
-	Region::Ptr _region;
+	Region::WeakPtr _region;
 
 	const std::string _name;
 	const std::string _desc;

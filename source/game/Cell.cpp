@@ -1,16 +1,18 @@
 #include "Cell.h"
 
 #include "World.h"
+#include "Log.h"
 
 Cell::Cell(const Info &info)
 	: _info(info)
 	, _currentTask()
 {
+	_CheckValues();
 }
 
 Cell::Ptr Cell::Create(const Info &info)
 {
-	return std::make_shared<Cell>(Cell(info));
+	return std::make_shared<Cell>(info);
 }
 
 void Cell::AddChild(Cell::Ptr cell)
@@ -58,6 +60,7 @@ void Cell::Update(float deltatime)
 	_UpdateCash(deltatime);
 	_UpdateMorale(deltatime);
 	_UpdateContentment(deltatime);
+	_CheckValues();
 }
 
 void Cell::_UpdateCash(float deltalime)
@@ -90,4 +93,32 @@ Task::WeakPtr Cell::getCurrentTask() const
 void Cell::AddCompletedTask(const Task::CompletedTaskInfo& completedTask)
 {
 	_completedTasks.push_back(completedTask);
+}
+
+void Cell::_CheckValues() const
+{
+	if (_info.cash < 0.0f)
+	{
+		Log::Instance().writeWarning("Negative cash value");
+	}
+	
+	if (_info.contentment < 0.0f || 1.0f < _info.contentment)
+	{
+		Log::Instance().writeWarning("Wrong value of the containment");
+	}
+
+	if (_info.membersCount <= 0)
+	{
+		Log::Instance().writeWarning("Wrong members count");
+	}
+
+	if (_info.morale < 0.0f || 1.0f < _info.morale)
+	{
+		Log::Instance().writeWarning("Wrong morale value");
+	}
+
+	if (_info.town.expired())
+	{
+		Log::Instance().writeWarning("Dead reference to town");
+	}
 }

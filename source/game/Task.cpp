@@ -11,7 +11,7 @@ Task::Task(const Task::Info* info, float startTime)
 
 Task::Ptr Task::Create(const Task::Info* info, float startTime)
 {
-	return std::make_shared<Task>(Task(info, startTime));
+	return std::make_shared<Task>(info, startTime);
 }
 
 bool Task::CheckCompleteness(float worldTime)

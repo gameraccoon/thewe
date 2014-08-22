@@ -32,6 +32,10 @@ public:
 
 private:
 	void _Init(const Info &info);
+
+	/** Проверить значения и вывести в журнал все предупреждения */
+	void _CheckValues() const;
+
 	HullsArray _hulls;
 
 	float _population;

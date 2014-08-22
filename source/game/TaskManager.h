@@ -60,6 +60,9 @@ private:
 	LuaInstance::Ptr _luaScript;
 
 private:
+	/** Проверить информацию и вывести все предупреждения в журнал */
+	void _CheckTask(const Task::Info& taskInfo) const;
+
 	/*
 	 * Отключаем ненужные операции
 	 */

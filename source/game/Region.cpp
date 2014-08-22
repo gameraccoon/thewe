@@ -1,8 +1,11 @@
 #include "Region.h"
 
+#include "Log.h"
+
 Region::Region(const Info &info)
 {
 	_Init(info);
+	_CheckValues();
 }
 
 void Region::_Init(const Info &info)
@@ -40,4 +43,12 @@ Region::Info Region::GetInfo(void) const
 	info.desc = _shortDescription;
 
 	return info;
+}
+
+void Region::_CheckValues() const
+{
+	if (_population < 0.0f)
+	{
+		Log::Instance().writeWarning("Wrong population value");
+	}
 }

@@ -74,6 +74,9 @@ private:
 	/** Пересчитать удовлетворённость со временем */
 	void _UpdateContentment(float deltatime);
 
+	/** Проверить значения и вывести в журнал все предупреждения */
+	void _CheckValues() const;
+
 	/** Вся важная информация о ячейке */
 	Info _info;
 

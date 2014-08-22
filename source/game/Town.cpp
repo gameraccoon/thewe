@@ -1,5 +1,7 @@
 #include "Town.h"
 
+#include "Log.h"
+
 Town::Town(const Info &info)
 	: _region(info.region)
 	, _name(info.name)
@@ -9,10 +11,11 @@ Town::Town(const Info &info)
 	, _location(info.location)
 	, _spriteScale(info.spriteScale)
 {
+	_CheckValues();
 }
 Town::Ptr Town::Create(const Info &info)
 {
-	return std::make_shared<Town>(Town(info));
+	return std::make_shared<Town>(info);
 }
 
 Town::Info Town::GetInfo(void) const
@@ -50,7 +53,7 @@ float Town::GetSpriteScale(void) const
 	return _spriteScale;
 }
 
-Region::Ptr Town::GetRegion(void) const
+Region::WeakPtr Town::GetRegion(void) const
 {
 	return _region;
 }
@@ -58,4 +61,22 @@ Region::Ptr Town::GetRegion(void) const
 Town& Town::operator= (const Town & other)
 {
 	return *this;
+}
+
+void Town::_CheckValues() const
+{
+	if (_population < 0.0f)
+	{
+		Log::Instance().writeWarning("Wrong population value");
+	}
+
+	if (_region.expired())
+	{
+		Log::Instance().writeWarning("Dead reference to region");
+	}
+
+	if (_spriteScale < 0.0f)
+	{
+		Log::Instance().writeWarning("Negative sprite scale");
+	}
 }
