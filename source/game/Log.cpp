@@ -2,6 +2,7 @@
 
 #include <fstream>
 #include <ctime>
+#include <assert.h>
 
 Log* Log::singleInstance = nullptr;
 bool Log::isDestroyed = false;
@@ -76,11 +77,19 @@ void Log::killPhoenixSingletone()
 void Log::writeError(const std::string& text)
 {
 	this->writeLine(std::string(" Error: ").append(text));
+
+#ifdef _DEBUG
+	assert(false);
+#endif
 }
 
 void Log::writeWarning(const std::string& text)
 {
 	this->writeLine(std::string(" Warning: ").append(text));
+
+#ifdef _DEBUG
+	assert(false);
+#endif
 }
 
 void Log::writeLog(const std::string& text)
