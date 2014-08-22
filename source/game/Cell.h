@@ -32,7 +32,7 @@ public:
 	/**
 	 * —оздать Cell и вернуть умный указатель
 	 */
-	static Cell::Ptr Create(const Info &info);
+	static Ptr Create(const Info &info);
 	
 	/**
 	 * ƒобавл€ет €чейке новую дочернюю €чейку

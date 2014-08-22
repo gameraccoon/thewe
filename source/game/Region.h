@@ -21,6 +21,8 @@ public:
 
 public:
 	Region(const Info &info);
+	
+	static Ptr Create(const Info &info);
 
 	const ArbitraryHull& GetHullByIndex(int index) const;
 	const HullsArray& GetHullsArray(void) const;

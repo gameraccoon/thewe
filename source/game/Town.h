@@ -22,7 +22,7 @@ public:
 	typedef std::weak_ptr<Town> WeakPtr;
 public:
 	Town(const Info &info);
-	static Town::Ptr Create(const Info &info);
+	static Ptr Create(const Info &info);
 
 	Info GetInfo(void) const;
 

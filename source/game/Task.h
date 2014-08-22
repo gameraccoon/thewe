@@ -50,7 +50,7 @@ public:
 public:
 	Task(const Task::Info* info, float startTime);
 	
-	static Task::Ptr Create(const Task::Info* info, float startTime);
+	static Ptr Create(const Info* info, float startTime);
 
 	/**
 	 * Проверяет, не выполнилось ли задание

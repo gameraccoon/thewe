@@ -121,7 +121,7 @@ static bool LoadWorld(void)
 		info.population = region_node.attribute("Population").as_float();
 		info.desc = region_node.attribute("Desc").as_string();
 
-		Region::Ptr region = Region::Ptr(new Region(info));
+		Region::Ptr region = Region::Create(info);
 
 		pugi::xml_node hulls_root =  region_node.first_child();
 		pugi::xml_node towns_root = hulls_root.next_sibling();
@@ -147,6 +147,7 @@ static bool LoadWorld(void)
 			float x = town_node.attribute("x").as_float();
 			float y = town_node.attribute("y").as_float();
 
+			info.region = region;
 			info.name = town_node.attribute("name").as_string();
 			info.desc = town_node.attribute("desc").as_string();
 			info.population = town_node.attribute("population").as_float();

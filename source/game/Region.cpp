@@ -8,6 +8,11 @@ Region::Region(const Info &info)
 	_CheckValues();
 }
 
+Region::Ptr Region::Create(const Info& info)
+{
+	return std::make_shared<Region>(info);
+}
+
 void Region::_Init(const Info &info)
 {
 	_population = info.population;
