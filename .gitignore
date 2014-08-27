@@ -9,11 +9,8 @@
 *.sdf
 *.opensdf
 *.ilk
-log.txt
-/source/compiler/Windows/Debug
-/source/compiler/Windows/Release
 
-;для очистки
+;РґР»СЏ РѕС‡РёСЃС‚РєРё
 ; *.class
 ; *.cpp
 ; *.c
@@ -68,3 +65,9 @@ log.txt
 ; *.mkf
 ; *.l
 ; *.cc
+log.txt
+/proj.win32/Debug.win32
+/proj.win32/Release.win32
+*.apk
+*.o
+*.d
