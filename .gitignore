@@ -71,3 +71,5 @@ log.txt
 *.apk
 *.o
 *.d
+/proj.android/obj
+/proj.android/libs
