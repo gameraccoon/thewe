@@ -44,6 +44,8 @@ private:
 	void _InitBackground(cocos2d::DrawNode *background) const;
 
 	void _TaskClickListener(cocos2d::Object *sender);
+
+	void onKeyReleased(cocos2d::EventKeyboard::KeyCode key, cocos2d::Event *event) override;
 };
 
 #endif // CELL_SCREEN_LAYER_H

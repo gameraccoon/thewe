@@ -26,7 +26,7 @@ static void LoadCellsRecursively(pugi::xml_node root, pugi::xml_node parent_node
 		std::stringstream ss;
 		ss << child_id;
 		std::string s = ss.str();
-		pugi::xml_node child = root.find_child_by_attribute("id", s.c_str());
+		pugi::xml_node child = root.find_child_by_attribute("id", ss.str().c_str());
 
 		Cell::Info info;
 		info.parent = parent;

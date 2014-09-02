@@ -30,30 +30,27 @@ bool RegionInfoLayer::init(void)
 	pos.y = origin.y + screen.y - 100.0f;
 
 	_btnBack->setTag(MENU_ITEM_BACK);
-	_btnBack->setScale(5.0f);
-	_btnBack->setPosition(pos - Vector2(-820.0f, 100.0f));
+	_btnBack->setScale(2.0f);
+	_btnBack->setPosition(Vector2(65.0f, 65.0f));
 
-	char popul[64];
-	char name[128];
+	std::stringstream ss;
 
-	/*
-#ifdef CC_TARGET_PLATFORM == CC_PLATFORM_WIN32
-	sprintf_s(popul, "Pupulation %.1f millions", _regionInfo.population);
-	sprintf_s(name, "Name %s", _regionInfo.name.c_str());
-#elif CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID
-	sprintf_l(popul, "Pupulation %.1f millions", _regionInfo.population);
-	sprintf_l(name, "Name %s", _regionInfo.name.c_str());
-#endif
-*/
+	ss.str(std::string());
+	ss.clear();
+	ss << "Pupulation " << _regionInfo.population << " millions";
+	_populationText = cocos2d::CCLabelTTF::create(ss.str().c_str(), "Arial", 35);
 
-	_populationText = cocos2d::CCLabelTTF::create(popul, "Arial", 64);
-	_regionNameText = cocos2d::CCLabelTTF::create(name, "Arial", 64);
-	_shortDescText = cocos2d::CCLabelTTF::create(_regionInfo.desc.c_str(), "Arial", 64);
+	ss.str(std::string());
+	ss.clear();
+	ss << "Name " << _regionInfo.name.c_str();
+	_regionNameText = cocos2d::CCLabelTTF::create(ss.str().c_str(), "Arial", 35);
 
-	_populationText->setPosition(Vector2(450.0f, screen.y - 100.0f));
-	_regionNameText->setPosition(Vector2(450.0f, screen.y - 200.0f));
-	_shortDescText->setPosition(Vector2(850.0f, screen.y - 800.0f));
-	_shortDescText->setDimensions(Vector2(1500.0f, 1000.0f));
+	_shortDescText = cocos2d::CCLabelTTF::create(_regionInfo.desc.c_str(), "Arial", 20);
+
+	_populationText->setPosition(Vector2(430.0f, screen.y - 50.0f));
+	_regionNameText->setPosition(Vector2(430.0f, screen.y - 150.0f));
+	_shortDescText->setPosition(Vector2(440.0f, screen.y - 700.0f));
+	_shortDescText->setDimensions(Vector2(700.0f, 1000.0f));
 	_shortDescText->setHorizontalAlignment(cocos2d::kCCTextAlignmentLeft);
 
 	cocos2d::CCMenu *menu = cocos2d::CCMenu::create(_btnBack, NULL);
@@ -68,6 +65,7 @@ bool RegionInfoLayer::init(void)
 	addChild(_regionNameText, 1);
 	addChild(_shortDescText, 1);
 	setTouchEnabled(true);
+	setKeypadEnabled(true);
 
 	return true;
 }
@@ -115,5 +113,13 @@ void RegionInfoLayer::_InitBackground(cocos2d::CCDrawNode *background) const
 	border.b = 0.6f;
 	border.a = 0.7f;
 
-	background->drawPolygon(vertices, 4, fill, 50.0f, border);
+	background->drawPolygon(vertices, 4, fill, 15.0f, border);
+}
+
+void RegionInfoLayer::onKeyReleased(cocos2d::EventKeyboard::KeyCode key, cocos2d::Event *event)
+{
+	if (key == cocos2d::EventKeyboard::KeyCode::KEY_ESCAPE)
+	{
+		dynamic_cast<GameScene *>(getParent())->ShowMap();
+	}
 }

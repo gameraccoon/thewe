@@ -59,6 +59,7 @@ bool WorldMapLayer::init(void)
 			false, town->GetSpriteScale()), 1, (int)E_MAP_OBJECT_TAG::MAP_OBJ_TOWN);
 	}
 	
+
 	// сообщаем где находится центр окна вывода
 	_mapProjector->SetScreenCenter(origin + screen / 2.0f);
 	// ставим спрайт карты ровно в центр экрана
@@ -67,6 +68,7 @@ bool WorldMapLayer::init(void)
 	_mapProjector->SetScale(1.0f);
 
 	this->setTouchEnabled(true);
+	this->setKeyboardEnabled(true);
 
 	return true;
 }
@@ -86,7 +88,7 @@ void WorldMapLayer::SetGuiEnabled(bool isEnabled)
 	else if (!_mapGui && isEnabled)
 	{
 		_mapGui = new MapGuiLayer(_mapProjector);
-		addChild(_mapGui);
+		addChild(_mapGui, 3);
 		_mapGui->autorelease();
 		_mapProjector->SetScale(_mapProjector->GetScale());
 	}

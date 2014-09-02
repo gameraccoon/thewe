@@ -19,12 +19,17 @@ bool AppDelegate::applicationDidFinishLaunching()
 	
 	if(!glview) 
 	{
-        glview = GLView::create("Cpp Empty Test");
+        glview = GLView::create("Samsung Galaxy S II");
     }
+
+	// Take Samsung Galaxy S2 resolution as reference
+	float dr_w = 800;
+	float dr_h = 480;
 
 #if CC_TARGET_PLATFORM == CC_PLATFORM_WIN32
 	glview->setFrameZoomFactor(1.0f);
-	glview->setFrameSize(1024, 768); // 1280x720
+	glview->setFrameSize(dr_w, dr_h); // 1280x720
+	glview->setFrameZoomFactor(1.0f);
 	cocos2d::FileUtils::sharedFileUtils()->addSearchPath("../../Resources/textures");
 	cocos2d::FileUtils::sharedFileUtils()->addSearchPath("../../Resources/worldinfo");
 	cocos2d::FileUtils::sharedFileUtils()->addSearchPath("../../Resources/saves");
@@ -34,9 +39,15 @@ bool AppDelegate::applicationDidFinishLaunching()
 	cocos2d::FileUtils::sharedFileUtils()->addSearchPath("saves");
 #endif
 
+
 	director->setOpenGLView(glview);
 	director->setDisplayStats(true);
 	director->setAnimationInterval(1.0 / 60.0);
+
+	cocos2d::Size sr = glview->getFrameSize();
+
+	//director->setContentScaleFactor(sr.width / dr_w);
+	glview->setDesignResolutionSize(dr_w, dr_h, cocos2d::kResolutionFixedHeight);
 
 	ProfilesManager::Instance().LoadProfiles();
 
@@ -54,17 +65,17 @@ bool AppDelegate::applicationDidFinishLaunching()
 
 	Vector2 client = director->getVisibleSize();
 	Vector2 origin = director->getVisibleOrigin();
-	Vector2 pos(origin.x + client.x / 2.0f, origin.y + client.y - 100.0f);
+	Vector2 center(origin.x + client.x / 2.0f, origin.y + client.y - 100.0f);
 
-	_btnRunGame->setPosition(pos - Vector2(0.0f, 100.0f));
+	_btnRunGame->setPosition(center - Vector2(0.0f, 0.0f));
 	_btnRunGame->setTag(MENU_ITEM_RUN_GAME);
-	_btnRunGame->setScale(5.0f);
-	_btnTestScene1->setPosition(pos - Vector2(0.0f, 400.0f));
+	_btnRunGame->setScale(3.0f);
+	_btnTestScene1->setPosition(center - Vector2(0.0f, 135.0f));
 	_btnTestScene1->setTag(MENU_ITEM_TEST_SCENE_1);
-	_btnTestScene1->setScale(5.0f);
-	_btnExitGame->setPosition(pos - Vector2(0.0f, 700.0f));
+	_btnTestScene1->setScale(3.0f);
+	_btnExitGame->setPosition(center - Vector2(0.0f, 270.0f));
 	_btnExitGame->setTag(MENU_ITEM_EXIT);
-	_btnExitGame->setScale(5.0f);
+	_btnExitGame->setScale(3.0f);
 
 	_mainMenu = CCMenu::create(_btnRunGame, _btnTestScene1, _btnExitGame, NULL);
 	_mainMenu->setPosition(0.0f, 0.0f);

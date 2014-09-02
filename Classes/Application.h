@@ -2,6 +2,7 @@
 #define APPLICATION_H
 
 #include <cocos2d.h>
+#include <strstream>
 #include "pugixml\pugixml.hpp"
 
 using namespace cocos2d;

@@ -14,8 +14,8 @@ bool TownInfoLayer::init()
 
 	cocos2d::CCDrawNode *_bkg = cocos2d::CCDrawNode::create();
 
-	const float width = 800.0f;
-	const float height = 600.0f;
+	const float width = 400;
+	const float height = 200.0f;
 
 	cocos2d::Point origin = cocos2d::Director::sharedDirector()->getVisibleOrigin();
 
@@ -30,14 +30,14 @@ bool TownInfoLayer::init()
 	
 	_bkg->drawPolygon(vertices, 4, fill, 10.0f, border);
 
-	_nameText = cocos2d::LabelTTF::create("", "Arial", 64);
-	_populText = cocos2d::LabelTTF::create("", "Arial", 64);
-	_descText = cocos2d::LabelTTF::create("", "Arial", 32);
+	_nameText = cocos2d::LabelTTF::create("", "Arial", 25);
+	_populText = cocos2d::LabelTTF::create("", "Arial", 25);
+	_descText = cocos2d::LabelTTF::create("", "Arial", 15);
 
-	_nameText->setPosition(cocos2d::Point(400.0f, 500.0f));
-	_populText->setPosition(cocos2d::Point(400.0f, 400.0f));
-	_descText->setPosition(cocos2d::Point(400.0f, 100.0f));
-	_descText->setDimensions(Vector2(500.0f, 500.0f));
+	_nameText->setPosition(cocos2d::Point(200.0f, 167.0f));
+	_populText->setPosition(cocos2d::Point(200.0f, 135.0f));
+	_descText->setPosition(cocos2d::Point(200.0f, 50.0f));
+	_descText->setDimensions(Vector2(370.0f, 100.0f));
 	_descText->setHorizontalAlignment(cocos2d::kCCTextAlignmentCenter);
 
 	addChild(_bkg, 0);
@@ -53,24 +53,23 @@ void TownInfoLayer::SelectTown(Town::WeakPtr town)
 	if (!town.expired())
 	{
 		_town = town;
-		//Town::Info info = _town._Get()->GetInfo();
+		Town::Info info = _town.lock()->GetInfo();
 
-		/*
-#ifdef CC_TARGET_PLATFORM == CC_PLATFORM_WIN32
-		char name[64];
-		sprintf_s(name, "Town %s", info.name.c_str());
-		char popul[64];
-		sprintf_s(popul, "Population %.3f millions", info.population);
-#elif CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID
-		char name[64];
-		sprintf_l(name, "Town %s", info.name.c_str());
-		char popul[64];
-		sprintf_l(popul, "Population %.3f millions", info.population);
-#endif
-		_nameText->setString(name);
-		_populText->setString(popul);
-		_descText->setString(info.desc.c_str());
-		*/
+		std::stringstream ss;
 
+		ss.str(std::string());
+		ss.clear();
+		ss << "Town " << info.name.c_str();
+		_nameText->setString(ss.str().c_str());
+	
+		ss.str(std::string());
+		ss.clear();
+		ss << "Population " << info.population << " millions";
+		_populText->setString(ss.str().c_str());
+
+		ss.str(std::string());
+		ss.clear();
+		ss << info.desc.c_str();
+		_descText->setString(ss.str().c_str());
 	}
 }

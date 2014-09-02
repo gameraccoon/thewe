@@ -29,6 +29,8 @@ private:
 
 	void _MenuInputListener(cocos2d::Object *sender);
 	void _InitBackground(cocos2d::DrawNode *background) const;
+
+	void onKeyReleased(cocos2d::EventKeyboard::KeyCode key, cocos2d::Event *event) override;
 };
 
 #endif
