@@ -69,7 +69,7 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <Optimization>Disabled</Optimization>
-      <AdditionalIncludeDirectories>../dependencies/pugixml-1.4;../dependencies/boost_1_56_0;$(EngineRoot)cocos\audio\include;$(EngineRoot)external;$(EngineRoot)external\chipmunk\include\chipmunk;$(EngineRoot)extensions;..\Classes;..;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>../dependencies/lua-5.2.3;../dependencies/luabind-0.9.1;../dependencies/pugixml-1.4;../dependencies/boost_1_56_0;$(EngineRoot)cocos\audio\include;$(EngineRoot)external;$(EngineRoot)external\chipmunk\include\chipmunk;$(EngineRoot)extensions;..\Classes;..;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;_USE_MATH_DEFINES;GL_GLEXT_PROTOTYPES;CC_ENABLE_CHIPMUNK_INTEGRATION=1;COCOS2D_DEBUG=1;_CRT_SECURE_NO_WARNINGS;_SCL_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <MinimalRebuild>false</MinimalRebuild>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
@@ -155,6 +155,23 @@ xcopy /Y /Q "$(EngineRoot)external\websockets\prebuilt\win32\*.*" "$(OutDir)"</C
     <ClCompile Include="..\Classes\World.cpp" />
     <ClCompile Include="..\Classes\WorldLoader.cpp" />
     <ClCompile Include="..\Classes\WorldMapLayer.cpp" />
+    <ClCompile Include="..\dependencies\luabind-0.9.1\src\class.cpp" />
+    <ClCompile Include="..\dependencies\luabind-0.9.1\src\class_info.cpp" />
+    <ClCompile Include="..\dependencies\luabind-0.9.1\src\class_registry.cpp" />
+    <ClCompile Include="..\dependencies\luabind-0.9.1\src\class_rep.cpp" />
+    <ClCompile Include="..\dependencies\luabind-0.9.1\src\create_class.cpp" />
+    <ClCompile Include="..\dependencies\luabind-0.9.1\src\error.cpp" />
+    <ClCompile Include="..\dependencies\luabind-0.9.1\src\exception_handler.cpp" />
+    <ClCompile Include="..\dependencies\luabind-0.9.1\src\function.cpp" />
+    <ClCompile Include="..\dependencies\luabind-0.9.1\src\inheritance.cpp" />
+    <ClCompile Include="..\dependencies\luabind-0.9.1\src\link_compatibility.cpp" />
+    <ClCompile Include="..\dependencies\luabind-0.9.1\src\object_rep.cpp" />
+    <ClCompile Include="..\dependencies\luabind-0.9.1\src\open.cpp" />
+    <ClCompile Include="..\dependencies\luabind-0.9.1\src\pcall.cpp" />
+    <ClCompile Include="..\dependencies\luabind-0.9.1\src\scope.cpp" />
+    <ClCompile Include="..\dependencies\luabind-0.9.1\src\stack_content_by_name.cpp" />
+    <ClCompile Include="..\dependencies\luabind-0.9.1\src\weak_ref.cpp" />
+    <ClCompile Include="..\dependencies\luabind-0.9.1\src\wrapper_base.cpp" />
     <ClCompile Include="..\dependencies\pugixml-1.4\pugixml.cpp" />
     <ClCompile Include="main.cpp" />
   </ItemGroup>

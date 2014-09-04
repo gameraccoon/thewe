@@ -10,8 +10,14 @@
     <Filter Include="resource">
       <UniqueIdentifier>{715254bc-d70b-4ec5-bf29-467dd3ace079}</UniqueIdentifier>
     </Filter>
-    <Filter Include="pugixml">
+    <Filter Include="dependencies">
+      <UniqueIdentifier>{afa8f829-887f-44a1-81dc-5f87c708fcee}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="dependencies\pugixml">
       <UniqueIdentifier>{f87ad588-1cb6-446f-8e84-090547919cbf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="dependencies\luabind">
+      <UniqueIdentifier>{0c8dd3dd-c3ee-4595-8497-4ec0235ef2f5}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -85,7 +91,58 @@
       <Filter>Classes</Filter>
     </ClCompile>
     <ClCompile Include="..\dependencies\pugixml-1.4\pugixml.cpp">
-      <Filter>pugixml</Filter>
+      <Filter>dependencies\pugixml</Filter>
+    </ClCompile>
+    <ClCompile Include="..\dependencies\luabind-0.9.1\src\class.cpp">
+      <Filter>dependencies\luabind</Filter>
+    </ClCompile>
+    <ClCompile Include="..\dependencies\luabind-0.9.1\src\class_info.cpp">
+      <Filter>dependencies\luabind</Filter>
+    </ClCompile>
+    <ClCompile Include="..\dependencies\luabind-0.9.1\src\class_registry.cpp">
+      <Filter>dependencies\luabind</Filter>
+    </ClCompile>
+    <ClCompile Include="..\dependencies\luabind-0.9.1\src\class_rep.cpp">
+      <Filter>dependencies\luabind</Filter>
+    </ClCompile>
+    <ClCompile Include="..\dependencies\luabind-0.9.1\src\create_class.cpp">
+      <Filter>dependencies\luabind</Filter>
+    </ClCompile>
+    <ClCompile Include="..\dependencies\luabind-0.9.1\src\error.cpp">
+      <Filter>dependencies\luabind</Filter>
+    </ClCompile>
+    <ClCompile Include="..\dependencies\luabind-0.9.1\src\exception_handler.cpp">
+      <Filter>dependencies\luabind</Filter>
+    </ClCompile>
+    <ClCompile Include="..\dependencies\luabind-0.9.1\src\function.cpp">
+      <Filter>dependencies\luabind</Filter>
+    </ClCompile>
+    <ClCompile Include="..\dependencies\luabind-0.9.1\src\inheritance.cpp">
+      <Filter>dependencies\luabind</Filter>
+    </ClCompile>
+    <ClCompile Include="..\dependencies\luabind-0.9.1\src\link_compatibility.cpp">
+      <Filter>dependencies\luabind</Filter>
+    </ClCompile>
+    <ClCompile Include="..\dependencies\luabind-0.9.1\src\object_rep.cpp">
+      <Filter>dependencies\luabind</Filter>
+    </ClCompile>
+    <ClCompile Include="..\dependencies\luabind-0.9.1\src\open.cpp">
+      <Filter>dependencies\luabind</Filter>
+    </ClCompile>
+    <ClCompile Include="..\dependencies\luabind-0.9.1\src\pcall.cpp">
+      <Filter>dependencies\luabind</Filter>
+    </ClCompile>
+    <ClCompile Include="..\dependencies\luabind-0.9.1\src\scope.cpp">
+      <Filter>dependencies\luabind</Filter>
+    </ClCompile>
+    <ClCompile Include="..\dependencies\luabind-0.9.1\src\stack_content_by_name.cpp">
+      <Filter>dependencies\luabind</Filter>
+    </ClCompile>
+    <ClCompile Include="..\dependencies\luabind-0.9.1\src\weak_ref.cpp">
+      <Filter>dependencies\luabind</Filter>
+    </ClCompile>
+    <ClCompile Include="..\dependencies\luabind-0.9.1\src\wrapper_base.cpp">
+      <Filter>dependencies\luabind</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -162,10 +219,10 @@
       <Filter>Classes</Filter>
     </ClInclude>
     <ClInclude Include="..\dependencies\pugixml-1.4\pugiconfig.hpp">
-      <Filter>pugixml</Filter>
+      <Filter>dependencies\pugixml</Filter>
     </ClInclude>
     <ClInclude Include="..\dependencies\pugixml-1.4\pugixml.hpp">
-      <Filter>pugixml</Filter>
+      <Filter>dependencies\pugixml</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
