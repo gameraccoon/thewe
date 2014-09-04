@@ -51,7 +51,7 @@ bool WorldMapLayer::init(void)
 
 	for (const Cell::Ptr cell : World::Instance().GetCells())
 	{
-		addChild(AddSpriteToProjector(_mapProjector, cell->GetInfo().location, Vector2(-15.0f, -10.0f), "pin.png", true), 2, (int)E_MAP_OBJECT_TAG::MAP_OBJ_CELL);
+		addChild(AddSpriteToProjector(_mapProjector, cell->GetInfo().location, Vector2(-15.0f, -10.0f), "pin.png", true, 0.6f), 2, (int)E_MAP_OBJECT_TAG::MAP_OBJ_CELL);
 	}
 	
 	for (const Town::Ptr town : World::Instance().GetTowns())
@@ -141,6 +141,7 @@ void WorldMapLayer::onTouchesEnded(const std::vector<cocos2d::Touch* > &touches,
 				_OnTownSelect(town);
 				return;
 			}
+
 
 			Region::WeakPtr region = _GetRegionUnderPoint(point);
 			if (!region.expired())

@@ -4,9 +4,6 @@
 #include "Vector2.h"
 #include "PlayersProfiles.h"
 
-#include <boost/lambda/lambda.hpp>
-#include <iostream>
-
 AppDelegate::AppDelegate()
 {
 }
@@ -17,11 +14,6 @@ AppDelegate::~AppDelegate()
 
 bool AppDelegate::applicationDidFinishLaunching()
 {
-	using namespace boost::lambda;
-    typedef std::istream_iterator<int> in;
-
-    std::for_each(in(std::cin), in(), std::cout << (_1 * 3) << " " );
-
 	cocos2d::Director *director = cocos2d::Director::sharedDirector();
 	cocos2d::GLView *glview = director->getOpenGLView();
 	

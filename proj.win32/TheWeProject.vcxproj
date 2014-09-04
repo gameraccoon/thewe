@@ -69,7 +69,7 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <Optimization>Disabled</Optimization>
-      <AdditionalIncludeDirectories>../dependencies/lua-5.2.3;../dependencies/luabind-0.9.1;../dependencies/pugixml-1.4;../dependencies/boost_1_56_0;$(EngineRoot)cocos\audio\include;$(EngineRoot)external;$(EngineRoot)external\chipmunk\include\chipmunk;$(EngineRoot)extensions;..\Classes;..;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>../dependencies/lua-5.1;../dependencies/luabind-0.9.1;../dependencies/pugixml-1.4;../dependencies/boost_1_56_0;$(EngineRoot)cocos\audio\include;$(EngineRoot)external;$(EngineRoot)external\chipmunk\include\chipmunk;$(EngineRoot)extensions;..\Classes;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;_USE_MATH_DEFINES;GL_GLEXT_PROTOTYPES;CC_ENABLE_CHIPMUNK_INTEGRATION=1;COCOS2D_DEBUG=1;_CRT_SECURE_NO_WARNINGS;_SCL_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <MinimalRebuild>false</MinimalRebuild>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
@@ -155,6 +155,36 @@ xcopy /Y /Q "$(EngineRoot)external\websockets\prebuilt\win32\*.*" "$(OutDir)"</C
     <ClCompile Include="..\Classes\World.cpp" />
     <ClCompile Include="..\Classes\WorldLoader.cpp" />
     <ClCompile Include="..\Classes\WorldMapLayer.cpp" />
+    <ClCompile Include="..\dependencies\lua-5.1\lapi.c" />
+    <ClCompile Include="..\dependencies\lua-5.1\lauxlib.c" />
+    <ClCompile Include="..\dependencies\lua-5.1\lbaselib.c" />
+    <ClCompile Include="..\dependencies\lua-5.1\lcode.c" />
+    <ClCompile Include="..\dependencies\lua-5.1\ldblib.c" />
+    <ClCompile Include="..\dependencies\lua-5.1\ldebug.c" />
+    <ClCompile Include="..\dependencies\lua-5.1\ldo.c" />
+    <ClCompile Include="..\dependencies\lua-5.1\ldump.c" />
+    <ClCompile Include="..\dependencies\lua-5.1\lfunc.c" />
+    <ClCompile Include="..\dependencies\lua-5.1\lgc.c" />
+    <ClCompile Include="..\dependencies\lua-5.1\linit.c" />
+    <ClCompile Include="..\dependencies\lua-5.1\liolib.c" />
+    <ClCompile Include="..\dependencies\lua-5.1\llex.c" />
+    <ClCompile Include="..\dependencies\lua-5.1\lmathlib.c" />
+    <ClCompile Include="..\dependencies\lua-5.1\lmem.c" />
+    <ClCompile Include="..\dependencies\lua-5.1\loadlib.c" />
+    <ClCompile Include="..\dependencies\lua-5.1\lobject.c" />
+    <ClCompile Include="..\dependencies\lua-5.1\lopcodes.c" />
+    <ClCompile Include="..\dependencies\lua-5.1\loslib.c" />
+    <ClCompile Include="..\dependencies\lua-5.1\lparser.c" />
+    <ClCompile Include="..\dependencies\lua-5.1\lstate.c" />
+    <ClCompile Include="..\dependencies\lua-5.1\lstring.c" />
+    <ClCompile Include="..\dependencies\lua-5.1\lstrlib.c" />
+    <ClCompile Include="..\dependencies\lua-5.1\ltable.c" />
+    <ClCompile Include="..\dependencies\lua-5.1\ltablib.c" />
+    <ClCompile Include="..\dependencies\lua-5.1\ltm.c" />
+    <ClCompile Include="..\dependencies\lua-5.1\lundump.c" />
+    <ClCompile Include="..\dependencies\lua-5.1\lvm.c" />
+    <ClCompile Include="..\dependencies\lua-5.1\lzio.c" />
+    <ClCompile Include="..\dependencies\lua-5.1\print.c" />
     <ClCompile Include="..\dependencies\luabind-0.9.1\src\class.cpp" />
     <ClCompile Include="..\dependencies\luabind-0.9.1\src\class_info.cpp" />
     <ClCompile Include="..\dependencies\luabind-0.9.1\src\class_registry.cpp" />
@@ -199,6 +229,29 @@ xcopy /Y /Q "$(EngineRoot)external\websockets\prebuilt\win32\*.*" "$(OutDir)"</C
     <ClInclude Include="..\Classes\World.h" />
     <ClInclude Include="..\Classes\WorldLoader.h" />
     <ClInclude Include="..\Classes\WorldMapLayer.h" />
+    <ClInclude Include="..\dependencies\lua-5.1\lapi.h" />
+    <ClInclude Include="..\dependencies\lua-5.1\lauxlib.h" />
+    <ClInclude Include="..\dependencies\lua-5.1\lcode.h" />
+    <ClInclude Include="..\dependencies\lua-5.1\ldebug.h" />
+    <ClInclude Include="..\dependencies\lua-5.1\ldo.h" />
+    <ClInclude Include="..\dependencies\lua-5.1\lfunc.h" />
+    <ClInclude Include="..\dependencies\lua-5.1\lgc.h" />
+    <ClInclude Include="..\dependencies\lua-5.1\llex.h" />
+    <ClInclude Include="..\dependencies\lua-5.1\llimits.h" />
+    <ClInclude Include="..\dependencies\lua-5.1\lmem.h" />
+    <ClInclude Include="..\dependencies\lua-5.1\lobject.h" />
+    <ClInclude Include="..\dependencies\lua-5.1\lopcodes.h" />
+    <ClInclude Include="..\dependencies\lua-5.1\lparser.h" />
+    <ClInclude Include="..\dependencies\lua-5.1\lstate.h" />
+    <ClInclude Include="..\dependencies\lua-5.1\lstring.h" />
+    <ClInclude Include="..\dependencies\lua-5.1\ltable.h" />
+    <ClInclude Include="..\dependencies\lua-5.1\ltm.h" />
+    <ClInclude Include="..\dependencies\lua-5.1\lua.h" />
+    <ClInclude Include="..\dependencies\lua-5.1\luaconf.h" />
+    <ClInclude Include="..\dependencies\lua-5.1\lualib.h" />
+    <ClInclude Include="..\dependencies\lua-5.1\lundump.h" />
+    <ClInclude Include="..\dependencies\lua-5.1\lvm.h" />
+    <ClInclude Include="..\dependencies\lua-5.1\lzio.h" />
     <ClInclude Include="..\dependencies\pugixml-1.4\pugiconfig.hpp" />
     <ClInclude Include="..\dependencies\pugixml-1.4\pugixml.hpp" />
     <ClInclude Include="main.h" />
