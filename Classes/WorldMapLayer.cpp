@@ -20,6 +20,7 @@ WorldMapLayer::WorldMapLayer(GameScene *gameScene, MapProjector* projector)
 cocos2d::Sprite* AddSpriteToProjector(MapProjector *projector, Vector2 location, Vector2 shift, std::string spriteName, bool dontScale, float scale = 1.0f)
 {
 	cocos2d::Sprite *sprite = cocos2d::Sprite::create(spriteName.c_str());
+	sprite->retain();
 	projector->AddMapPart(Drawable::CastFromCocos(sprite), location, shift, scale, dontScale);
 	return sprite;
 }
