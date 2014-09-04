@@ -75,9 +75,6 @@
     <ClCompile Include="..\Classes\WorldMapLayer.cpp">
       <Filter>Classes</Filter>
     </ClCompile>
-    <ClCompile Include="..\Classes\pugixml\pugixml.cpp">
-      <Filter>pugixml</Filter>
-    </ClCompile>
     <ClCompile Include="..\Classes\TaskManager.cpp">
       <Filter>Classes</Filter>
     </ClCompile>
@@ -86,6 +83,9 @@
     </ClCompile>
     <ClCompile Include="..\Classes\Log.cpp">
       <Filter>Classes</Filter>
+    </ClCompile>
+    <ClCompile Include="..\dependencies\pugixml-1.4\pugixml.cpp">
+      <Filter>pugixml</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -152,12 +152,6 @@
     <ClInclude Include="..\Classes\WorldMapLayer.h">
       <Filter>Classes</Filter>
     </ClInclude>
-    <ClInclude Include="..\Classes\pugixml\pugiconfig.hpp">
-      <Filter>pugixml</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Classes\pugixml\pugixml.hpp">
-      <Filter>pugixml</Filter>
-    </ClInclude>
     <ClInclude Include="..\Classes\TaskManager.h">
       <Filter>Classes</Filter>
     </ClInclude>
@@ -166,6 +160,12 @@
     </ClInclude>
     <ClInclude Include="..\Classes\Log.h">
       <Filter>Classes</Filter>
+    </ClInclude>
+    <ClInclude Include="..\dependencies\pugixml-1.4\pugiconfig.hpp">
+      <Filter>pugixml</Filter>
+    </ClInclude>
+    <ClInclude Include="..\dependencies\pugixml-1.4\pugixml.hpp">
+      <Filter>pugixml</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

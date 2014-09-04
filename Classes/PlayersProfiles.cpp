@@ -1,6 +1,6 @@
 #include "PlayersProfiles.h"
 
-#include "pugixml/pugixml.hpp"
+#include <pugixml.hpp>
 #include <cocos2d.h>
 #include "Vector2.h"
 #include "ArbitraryHull.h"

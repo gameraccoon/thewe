@@ -3,7 +3,7 @@
 
 #include <cocos2d.h>
 #include <strstream>
-#include "pugixml\pugixml.hpp"
+#include <pugixml.hpp>
 
 using namespace cocos2d;
 

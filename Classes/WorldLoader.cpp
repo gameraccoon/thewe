@@ -1,6 +1,6 @@
 #include "WorldLoader.h"
 
-#include "pugixml/pugixml.hpp"
+#include <pugixml.hpp>
 
 #include "World.h"
 #include "Vector2.h"

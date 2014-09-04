@@ -4,6 +4,9 @@
 #include "Vector2.h"
 #include "PlayersProfiles.h"
 
+#include <boost/lambda/lambda.hpp>
+#include <iostream>
+
 AppDelegate::AppDelegate()
 {
 }
@@ -14,6 +17,11 @@ AppDelegate::~AppDelegate()
 
 bool AppDelegate::applicationDidFinishLaunching()
 {
+	using namespace boost::lambda;
+    typedef std::istream_iterator<int> in;
+
+    std::for_each(in(std::cin), in(), std::cout << (_1 * 3) << " " );
+
 	cocos2d::Director *director = cocos2d::Director::sharedDirector();
 	cocos2d::GLView *glview = director->getOpenGLView();
 	
@@ -28,7 +36,7 @@ bool AppDelegate::applicationDidFinishLaunching()
 
 #if CC_TARGET_PLATFORM == CC_PLATFORM_WIN32
 	glview->setFrameZoomFactor(1.0f);
-	glview->setFrameSize(dr_w, dr_h); // 1280x720
+	glview->setFrameSize(dr_w, dr_h);
 	glview->setFrameZoomFactor(1.0f);
 	cocos2d::FileUtils::sharedFileUtils()->addSearchPath("../../Resources/textures");
 	cocos2d::FileUtils::sharedFileUtils()->addSearchPath("../../Resources/worldinfo");
