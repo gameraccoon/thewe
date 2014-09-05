@@ -243,13 +243,20 @@ else()
 endif()
 
 target_link_libraries(${APP_NAME}
+	# кокосовские библиотеки
 	spine
 	cocostudio
 	cocosbuilder
 	extensions
 	audio
 	cocos2d
+	# библиотеки для ogl и x11
 	glfw3
+	Xxf86vm
+	Xrandr
+	Xcursor
+	Xi
+	# наши библиотеки
 	pugixml
 	luabind
 	lua5.1
