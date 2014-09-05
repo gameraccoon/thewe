@@ -16,7 +16,7 @@ public:
 private:
 	Town::WeakPtr _town;
 
-	cocos2d::CCMenu *_menu;
+	cocos2d::Menu *_menu;
 
 	cocos2d::LabelTTF *_nameText;
 	cocos2d::LabelTTF *_populText;

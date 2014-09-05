@@ -33,26 +33,15 @@ bool MapGuiLayer::init(void)
 			this, menu_selector(MapGuiLayer::_MenuInputListener));
 		_btnSave = cocos2d::CCMenuItemImage::create("Btn_S.png", "Btn_S_Pressed.png",
 			this, menu_selector(MapGuiLayer::_MenuInputListener));
-
-		/*
-		_btnZoomIn = cocos2d::CCMenuItemImage::create("btn-zoom-in-normal.png", "btn-zoom-in-selected.png",
-			this, menu_selector(MapGuiLayer::_MenuInputListener));
-		_btnZoomOut = cocos2d::CCMenuItemImage::create("btn-zoom-out-normal.png", "btn-zoom-out-selected.png",
-			this, menu_selector(MapGuiLayer::_MenuInputListener));
-		_btnEditor = cocos2d::CCMenuItemImage::create("btn-editor-normal.png", "btn-editor-selected.png",
-			this, menu_selector(MapGuiLayer::_MenuInputListener));
-		_btnSave = cocos2d::CCMenuItemImage::create("btn-save-game-normal.png", "btn-save-game-selected.png",
-			this, menu_selector(MapGuiLayer::_MenuInputListener));
-		*/
 	}
 	
-	cocos2d::CCDirector *director = cocos2d::CCDirector::sharedDirector();
+	cocos2d::Director *director = cocos2d::Director::getInstance();
 	Vector2 screen = director->getVisibleSize();
 	Vector2 origin = director->getVisibleOrigin();
 
 	Vector2 pos(0.0f, origin.y + screen.y);
 
-	_printTime = cocos2d::CCLabelTTF::create("Time: 0", "Arial", 32);
+	_printTime = cocos2d::LabelTTF::create("Time: 0", "Arial", 32);
 	_printTime->setPosition(Vector2(pos.x, origin.y + screen.y - 50));
 	
 	_btnEditor->setScale(1.0f);
@@ -81,7 +70,7 @@ bool MapGuiLayer::init(void)
 	_btnZoomIn->setPosition(pos);
 	_btnZoomIn->setAnchorPoint(cocos2d::Vec2(0.0f, 1.0f));
 
-	cocos2d::CCMenu *menu = cocos2d::CCMenu::create(_btnZoomIn, _btnZoomOut, _btnEditor, _btnSave, NULL);
+	cocos2d::Menu *menu = cocos2d::Menu::create(_btnZoomIn, _btnZoomOut, _btnEditor, _btnSave, NULL);
 	menu->setPosition(0.0f, 0.0f);
 
 	addChild(menu);
@@ -92,9 +81,9 @@ bool MapGuiLayer::init(void)
 	return true;
 }
 
-void MapGuiLayer::_MenuInputListener(cocos2d::CCObject *sender)
+void MapGuiLayer::_MenuInputListener(cocos2d::Ref *sender)
 {
-	cocos2d::CCMenuItemImage *item = dynamic_cast<cocos2d::CCMenuItemImage*>(sender);
+	cocos2d::MenuItemImage *item = dynamic_cast<cocos2d::MenuItemImage*>(sender);
 
 	int tag = item->getTag();
 

@@ -5,8 +5,6 @@
 #include <strstream>
 #include <pugixml.hpp>
 
-using namespace cocos2d;
-
 class AppDelegate : private cocos2d::Application
 {
 public:
@@ -16,7 +14,7 @@ public:
     virtual bool applicationDidFinishLaunching() override;
     virtual void applicationDidEnterBackground() override;
     virtual void applicationWillEnterForeground() override;
-	void _MenuInputListener(CCObject *sender);
+	void _MenuInputListener(cocos2d::Ref *sender);
 
 private:
 	enum E_MENU_ITEMS_TAGS
@@ -27,12 +25,12 @@ private:
 	};
 
 private:
-	cocos2d::CCScene *_menuScene;
+	cocos2d::Scene *_menuScene;
 
-	cocos2d::CCMenuItemImage *_btnRunGame;
-	cocos2d::CCMenuItemImage *_btnTestScene1;
-	cocos2d::CCMenuItemImage *_btnExitGame;
-	cocos2d::CCMenu *_mainMenu;
+	cocos2d::MenuItemImage *_btnRunGame;
+	cocos2d::MenuItemImage *_btnTestScene1;
+	cocos2d::MenuItemImage *_btnExitGame;
+	cocos2d::Menu *_mainMenu;
 };
 
 #endif

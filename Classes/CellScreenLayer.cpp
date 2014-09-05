@@ -31,7 +31,7 @@ bool CellScreenLayer::init()
 			this, menu_selector(CellScreenLayer::_MenuInputListener));
 	}
 
-	cocos2d::Director *director = cocos2d::Director::sharedDirector();
+	cocos2d::Director *director = cocos2d::Director::getInstance();
 	Vector2 screen = director->getVisibleSize();
 	Vector2 origin = director->getVisibleOrigin();
 
@@ -165,7 +165,7 @@ void CellScreenLayer::update(float delta)
 	}
 }
 
-void CellScreenLayer::_MenuInputListener(cocos2d::Object *sender)
+void CellScreenLayer::_MenuInputListener(cocos2d::Ref *sender)
 {
 	cocos2d::MenuItem *item = dynamic_cast<cocos2d::MenuItem*>(sender);
 
@@ -191,10 +191,10 @@ void CellScreenLayer::_InitBackground(cocos2d::DrawNode *background) const
 		return;
 	}
 
-	Vector2 screen = cocos2d::Director::sharedDirector()->getVisibleSize();
-	Vector2 origin = cocos2d::Director::sharedDirector()->getVisibleOrigin();
+	Vector2 screen = cocos2d::Director::getInstance()->getVisibleSize();
+	Vector2 origin = cocos2d::Director::getInstance()->getVisibleOrigin();
 
-	cocos2d::CCPoint vertices[4];
+	cocos2d::Point vertices[4];
 	vertices[0] = origin;
 	vertices[1] = origin + cocos2d::Point(screen.x, 0.0f);
 	vertices[2] = origin + cocos2d::Point(screen.x, screen.y);
@@ -206,7 +206,7 @@ void CellScreenLayer::_InitBackground(cocos2d::DrawNode *background) const
 	background->drawPolygon(vertices, 4, fill, 15.0f, border);
 }
 
-void CellScreenLayer::_TaskClickListener(cocos2d::Object *sender)
+void CellScreenLayer::_TaskClickListener(cocos2d::Ref *sender)
 {
 	cocos2d::MenuItem *item = dynamic_cast<cocos2d::MenuItem*>(sender);
 

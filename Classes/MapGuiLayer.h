@@ -11,7 +11,7 @@ public:
 
 	virtual bool init(void) override;
 
-	void menuCloseCallback(cocos2d::Object *Sender);
+	void menuCloseCallback(cocos2d::Ref *Sender);
 
 private:
 	enum E_MENU_TEMS_TAG
@@ -24,7 +24,7 @@ private:
 	};
 
 private:
-	void _MenuInputListener(cocos2d::Object *sender);
+	void _MenuInputListener(cocos2d::Ref *sender);
 
 	cocos2d::MenuItemImage *_btnZoomIn;
 	cocos2d::MenuItemImage *_btnZoomOut;

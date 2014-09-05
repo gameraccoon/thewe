@@ -19,7 +19,7 @@ struct Color
 	float a;
 	
 	/* Ќе€вные преобразовани€ в другие классы */
-	operator cocos2d::ccColor4F() const;
+	operator cocos2d::Color4F() const;
 };
 
 #endif // COLOR_H

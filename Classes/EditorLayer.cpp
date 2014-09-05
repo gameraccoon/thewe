@@ -20,7 +20,7 @@ bool EditorLayer::init(void)
 	_touchPos.x = 0.0f;
 	_touchPos.y = 0.0f;
 
-	cocos2d::Director *director = cocos2d::Director::sharedDirector();
+	cocos2d::Director *director = cocos2d::Director::getInstance();
 	Vector2 screen = director->getVisibleSize();
 	Vector2 origin = director->getVisibleOrigin();
 
@@ -62,7 +62,7 @@ bool EditorLayer::init(void)
 	_btnReloadWorld->setTag(MENU_ITEM_RELOAD_WORLD);
 	_btnReloadWorld->setPosition(pos - Vector2(-700.0f, 700.0f));
 
-	cocos2d::CCMenu *menu = cocos2d::CCMenu::create(_btnToggle, _btnDelete, _btnSaveXml, _btnReloadWorld, NULL);
+	cocos2d::Menu *menu = cocos2d::Menu::create(_btnToggle, _btnDelete, _btnSaveXml, _btnReloadWorld, NULL);
 	menu->setPosition(0.0f, 0.0f);
 	
 	addChild(_printPos);
@@ -88,7 +88,7 @@ void EditorLayer::update(float dt)
 
 void EditorLayer::onTouchesBegan(const std::vector<cocos2d::Touch* > &touches, cocos2d::Event* event)
 {
-	cocos2d::CCTouch *touch = touches.at(0);
+	cocos2d::Touch *touch = touches.at(0);
 
 	if (_isCreationAllowed)
 	{
@@ -96,7 +96,7 @@ void EditorLayer::onTouchesBegan(const std::vector<cocos2d::Touch* > &touches, c
 	}
 	else
 	{
-		cocos2d::CCTouch *touch = touches.at(0);
+		cocos2d::Touch *touch = touches.at(0);
 		_touchLastPoint = touch->getLocation();
 	}
 
@@ -110,13 +110,13 @@ void EditorLayer::onTouchesBegan(const std::vector<cocos2d::Touch* > &touches, c
 
 void EditorLayer::onTouchesEnded(const std::vector<cocos2d::Touch* > &touches, cocos2d::Event* event)
 {
-	cocos2d::CCTouch *touch = touches.at(0);
+	cocos2d::Touch *touch = touches.at(0);
 	_touchPos = touch->getLocation();
 }
 
 void EditorLayer::onTouchesMoved(const std::vector<cocos2d::Touch* > &touches, cocos2d::Event* event)
 {
-	cocos2d::CCTouch *touch = touches.at(0);
+	cocos2d::Touch *touch = touches.at(0);
 	Vector2 point = touch->getLocation();
 
 	if (!_isCreationAllowed)
@@ -134,7 +134,7 @@ void EditorLayer::onTouchesMoved(const std::vector<cocos2d::Touch* > &touches, c
 	*/
 }
 
-void EditorLayer::_MenuInputListener(cocos2d::CCObject *sender)
+void EditorLayer::_MenuInputListener(cocos2d::Ref *sender)
 {
 	cocos2d::MenuItemImage *item = dynamic_cast<cocos2d::MenuItemImage*>(sender);
 

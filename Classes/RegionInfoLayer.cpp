@@ -15,13 +15,13 @@ bool RegionInfoLayer::init(void)
 		return false;
 	}
 
-	cocos2d::Director *director = cocos2d::Director::sharedDirector();
+	cocos2d::Director *director = cocos2d::Director::getInstance();
 	Vector2 screen = director->getVisibleSize();
 	Vector2 origin = director->getVisibleOrigin();
 
 	{
 		using namespace cocos2d;
-		_btnBack = cocos2d::CCMenuItemImage::create("btn-back-arrow-normal.png", "btn-back-arrow-selected.png",
+		_btnBack = cocos2d::MenuItemImage::create("btn-back-arrow-normal.png", "btn-back-arrow-selected.png",
 			this, menu_selector(RegionInfoLayer::_MenuInputListener));
 	}
 
@@ -38,25 +38,25 @@ bool RegionInfoLayer::init(void)
 	ss.str(std::string());
 	ss.clear();
 	ss << "Pupulation " << _regionInfo.population << " millions";
-	_populationText = cocos2d::CCLabelTTF::create(ss.str().c_str(), "Arial", 35);
+	_populationText = cocos2d::LabelTTF::create(ss.str().c_str(), "Arial", 35);
 
 	ss.str(std::string());
 	ss.clear();
 	ss << "Name " << _regionInfo.name.c_str();
-	_regionNameText = cocos2d::CCLabelTTF::create(ss.str().c_str(), "Arial", 35);
+	_regionNameText = cocos2d::LabelTTF::create(ss.str().c_str(), "Arial", 35);
 
-	_shortDescText = cocos2d::CCLabelTTF::create(_regionInfo.desc.c_str(), "Arial", 20);
+	_shortDescText = cocos2d::LabelTTF::create(_regionInfo.desc.c_str(), "Arial", 20);
 
 	_populationText->setPosition(Vector2(430.0f, screen.y - 50.0f));
 	_regionNameText->setPosition(Vector2(430.0f, screen.y - 150.0f));
 	_shortDescText->setPosition(Vector2(440.0f, screen.y - 700.0f));
 	_shortDescText->setDimensions(Vector2(700.0f, 1000.0f));
-	_shortDescText->setHorizontalAlignment(cocos2d::kCCTextAlignmentLeft);
+	_shortDescText->setHorizontalAlignment(cocos2d::TextHAlignment::LEFT);
 
-	cocos2d::CCMenu *menu = cocos2d::CCMenu::create(_btnBack, NULL);
+	cocos2d::Menu *menu = cocos2d::Menu::create(_btnBack, NULL);
 	menu->setPosition(0.0f, 0.0f);
 
-	_bkgDraw = cocos2d::CCDrawNode::create();
+	_bkgDraw = cocos2d::DrawNode::create();
 	_InitBackground(_bkgDraw);
 	
 	addChild(_bkgDraw, 0);
@@ -70,9 +70,9 @@ bool RegionInfoLayer::init(void)
 	return true;
 }
 
-void RegionInfoLayer::_MenuInputListener(cocos2d::CCObject *sender)
+void RegionInfoLayer::_MenuInputListener(cocos2d::Ref *sender)
 {
-	cocos2d::CCMenuItemImage *item = dynamic_cast<cocos2d::CCMenuItemImage*>(sender);
+	cocos2d::MenuItemImage *item = dynamic_cast<cocos2d::MenuItemImage*>(sender);
 
 	int tag = item->getTag();
 
@@ -85,21 +85,21 @@ void RegionInfoLayer::_MenuInputListener(cocos2d::CCObject *sender)
 	}
 }
 
-void RegionInfoLayer::_InitBackground(cocos2d::CCDrawNode *background) const
+void RegionInfoLayer::_InitBackground(cocos2d::DrawNode *background) const
 {
 	if (!background)
 	{
 		return;
 	}
 
-	cocos2d::CCPoint screen = cocos2d::CCDirector::sharedDirector()->getVisibleSize();
-	cocos2d::CCPoint origin = cocos2d::CCDirector::sharedDirector()->getVisibleOrigin();
+	cocos2d::Point screen = cocos2d::Director::sharedDirector()->getVisibleSize();
+	cocos2d::Point origin = cocos2d::Director::sharedDirector()->getVisibleOrigin();
 
-	cocos2d::CCPoint vertices[4];
+	cocos2d::Point vertices[4];
 	vertices[0] = origin;
-	vertices[1] = origin + cocos2d::CCPoint(screen.x, 0.0f);
-	vertices[2] = origin + cocos2d::CCPoint(screen.x, screen.y);
-	vertices[3] = origin + cocos2d::CCPoint(0.0f, screen.y);
+	vertices[1] = origin + cocos2d::Point(screen.x, 0.0f);
+	vertices[2] = origin + cocos2d::Point(screen.x, screen.y);
+	vertices[3] = origin + cocos2d::Point(0.0f, screen.y);
 
 	cocos2d::ccColor4F fill, border;
 	
