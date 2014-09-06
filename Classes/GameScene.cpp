@@ -3,7 +3,6 @@
 #include "WorldMapLayer.h"
 #include "RegionInfoLayer.h"
 #include "EditorLayer.h"
-#include "CellScreenLayer.h"
 #include "World.h"
 
 GameScene::GameScene(void)
@@ -97,12 +96,16 @@ void GameScene::ShowRegionInfo(Region::WeakPtr region)
 
 void GameScene::ShowCellScreen(Cell::WeakPtr cell)
 {
+	/*
 	ShowMap();
 	_cellScreen = new CellScreenLayer(cell, _worldMap);
 	addChild(_cellScreen);
 	_cellScreen->autorelease();
 	_worldMap->SetMapInputEnabled(false);
 	_worldMap->SetGuiEnabled(false);
+	*/
+
+
 }
 
 void GameScene::ShowTownInfo(Town::WeakPtr town)

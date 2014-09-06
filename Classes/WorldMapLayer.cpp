@@ -5,6 +5,7 @@
 #include "GameScene.h"
 #include "MapGuiLayer.h"
 #include "TaskManager.h"
+#include "CellGameInterface.h"
 #include "Log.h"
 
 WorldMapLayer::WorldMapLayer(GameScene *gameScene, MapProjector* projector)
@@ -13,6 +14,7 @@ WorldMapLayer::WorldMapLayer(GameScene *gameScene, MapProjector* projector)
 	, _mapGui(nullptr)
 	, _gameScene(gameScene)
 	, _nextCellParent()
+	, _cellMenu(nullptr)
 {
 	init();
 }
@@ -60,7 +62,6 @@ bool WorldMapLayer::init(void)
 			false, town->GetSpriteScale()), 1, (int)E_MAP_OBJECT_TAG::MAP_OBJ_TOWN);
 	}
 	
-
 	// сообщаем где находится центр окна вывода
 	_mapProjector->SetScreenCenter(origin + screen / 2.0f);
 	// ставим спрайт карты ровно в центр экрана
@@ -108,6 +109,11 @@ void WorldMapLayer::onTouchesBegan(const std::vector<cocos2d::Touch* > &touches,
 {
 	if (_isInputEnabled)
 	{
+		if (_IsCellGameInterfaceOnScreen())
+		{
+			_HideCellGameInterface();
+		}
+
 		cocos2d::Touch *touch = touches.at(0);//dynamic_cast<cocos2d::CCTouch*>(touches->anyObject());
 		_touchLastPoint = touch->getLocation();
 		_touchFirstPos = touch->getLocation();
@@ -130,8 +136,14 @@ void WorldMapLayer::onTouchesEnded(const std::vector<cocos2d::Touch* > &touches,
 			Cell::WeakPtr cell = _GetCellUnderPoint(point);
 			if (!cell.expired())
 			{
-				dynamic_cast<GameScene*>(this->getParent())->ShowCellScreen(cell);
+				_HideCellGameInterface();
+				_ShowCellGameInterface(cell.lock());
+				
 				return;
+			}
+			else
+			{
+				_HideCellGameInterface();			
 			}
 
 			Town::WeakPtr town = _GetTownUnderPoint(point);
@@ -141,7 +153,6 @@ void WorldMapLayer::onTouchesEnded(const std::vector<cocos2d::Touch* > &touches,
 				_OnTownSelect(town);
 				return;
 			}
-
 
 			Region::WeakPtr region = _GetRegionUnderPoint(point);
 			if (!region.expired())
@@ -159,10 +170,37 @@ void WorldMapLayer::onTouchesMoved(const std::vector<cocos2d::Touch* > &touches,
 
 	if (_isInputEnabled)
 	{
-		cocos2d::Touch *touch = touches.at(0);//dynamic_cast<cocos2d::CCTouch*>(touches->anyObject());
+		cocos2d::Touch *touch = touches.at(0);
 
 		_mapProjector->ShiftView(-_touchLastPoint + touch->getLocation());
 		_touchLastPoint = touch->getLocation();
+	}
+}
+
+bool WorldMapLayer::_IsCellGameInterfaceOnScreen(void) const
+{
+	return _cellMenu != nullptr;
+}
+
+void WorldMapLayer::_ShowCellGameInterface(Cell::Ptr cell)
+{
+	if (!_cellMenu)
+	{
+		Vector2 cell_pos = cell.get()->GetInfo().location;
+		Vector2 menu_pos = _mapProjector->ProjectOnScreen(cell_pos);
+
+		_cellMenu = new CellMenuSelector(cell, menu_pos);
+		addChild(_cellMenu, 4);
+	}
+}
+
+void WorldMapLayer::_HideCellGameInterface(void)
+{
+	if (_cellMenu)
+	{
+		removeChild(_cellMenu, true);
+		_cellMenu->release();
+		_cellMenu = nullptr;
 	}
 }
 

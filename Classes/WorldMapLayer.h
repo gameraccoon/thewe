@@ -11,6 +11,7 @@
 #include "TownInfoLayer.h"
 
 class GameScene;
+class CellMenuSelector;
 
 class WorldMapLayer : public cocos2d::Layer
 {
@@ -45,6 +46,11 @@ private:
 
 	Cell::WeakPtr _nextCellParent;
 
+	bool _IsCellGameInterfaceOnScreen(void) const;
+
+	void _ShowCellGameInterface(Cell::Ptr cell);
+	void _HideCellGameInterface(void);
+
 	Region::WeakPtr _GetRegionUnderPoint(const Vector2& point) const;
 	Cell::WeakPtr _GetCellUnderPoint(const Vector2& point) const;
 	Town::WeakPtr _GetTownUnderPoint(const Vector2& point);
@@ -54,6 +60,8 @@ private:
 	void _AddCellToRender(Cell::WeakPtr cell);
 	void _OnTownSelect(Town::WeakPtr town);
 	void _DrawCellsLinksRecurcively(Cell::WeakPtr cell);
+
+	CellMenuSelector *_cellMenu;
 
 	Vector2 _touchLastPoint;
 	Vector2 _touchFirstPos;
