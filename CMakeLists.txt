@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 2.6)
 
-set(APP_NAME MyGame)
+set(APP_NAME TheWe)
 project (${APP_NAME})
 
 include(cocos2d/build/BuildHelpers.CMakeLists.txt)
@@ -64,6 +64,7 @@ set(GAME_SRC
 	Classes/Color.cpp
 	Classes/Drawable.cpp
 	Classes/EditorLayer.cpp
+	Classes/FileUtils.cpp
 	Classes/GameScene.cpp
 	Classes/Log.cpp
 	Classes/MapGuiLayer.cpp

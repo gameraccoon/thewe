@@ -58,13 +58,13 @@ void Log::create()
 
 void Log::onDeadReference()
 {
-	// Ïîëó÷àåì "ïåïåë" (ðàñïîëîæåíèå ñòàðîãî ñèíãëòîíà)
+	// ÐŸÐ¾Ð»ÑƒÑ‡Ð°ÐµÐ¼ "Ð¿ÐµÐ¿ÐµÐ»" (Ñ€Ð°ÑÐ¿Ð¾Ð»Ð¾Ð¶ÐµÐ½Ð¸Ðµ ÑÑ‚Ð°Ñ€Ð¾Ð³Ð¾ ÑÐ¸Ð½Ð³Ð»Ñ‚Ð¾Ð½Ð°)
 	Log::create();
-	// Ñîçäà¸ì íà åãî ìåñòå íîâûé ñèíãëòîí
+	// Ð¡Ð¾Ð·Ð´Ð°Ñ‘Ð¼ Ð½Ð° ÐµÐ³Ð¾ Ð¼ÐµÑÑ‚Ðµ Ð½Ð¾Ð²Ñ‹Ð¹ ÑÐ¸Ð½Ð³Ð»Ñ‚Ð¾Ð½
 	new (Log::singleInstance) Log;
-	// Ïîìåùàåì åãî â î÷åðåäü íà óäàëåíèå
+	// ÐŸÐ¾Ð¼ÐµÑ‰Ð°ÐµÐ¼ ÐµÐ³Ð¾ Ð² Ð¾Ñ‡ÐµÑ€ÐµÐ´ÑŒ Ð½Ð° ÑƒÐ´Ð°Ð»ÐµÐ½Ð¸Ðµ
 	atexit(killPhoenixSingletone);
-	// Óáèðàåì ôëàã óíè÷òîæåííîñòè
+	// Ð£Ð±Ð¸Ñ€Ð°ÐµÐ¼ Ñ„Ð»Ð°Ð³ ÑƒÐ½Ð¸Ñ‡Ñ‚Ð¾Ð¶ÐµÐ½Ð½Ð¾ÑÑ‚Ð¸
 	Log::isDestroyed = false;
 }
 
@@ -106,14 +106,6 @@ void Log::writeLine(const std::string& text)
 {
 	if (this->logFileStream->is_open())
 	{
-		/*
-		char dateStr[9];
-		char timeStr[9];
-		_strdate_s(dateStr);
-		*this->logFileStream << dateStr << " ";
-		_strtime_s(timeStr);
-		*this->logFileStream << timeStr;
 		*this->logFileStream << text << std::endl;
-		*/
 	}
 }

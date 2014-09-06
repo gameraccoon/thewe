@@ -3,6 +3,8 @@
 #include "GameScene.h"
 #include "Vector2.h"
 #include "PlayersProfiles.h"
+#include "FileUtils.h"
+#include "Log.h"
 
 AppDelegate::AppDelegate()
 {
@@ -26,18 +28,13 @@ bool AppDelegate::applicationDidFinishLaunching()
 	float dr_w = 800;
 	float dr_h = 480;
 
-#if CC_TARGET_PLATFORM == CC_PLATFORM_WIN32
-	glview->setFrameZoomFactor(1.0f);
-	glview->setFrameSize(dr_w, dr_h);
-	glview->setFrameZoomFactor(1.0f);
-	cocos2d::FileUtils::getInstance()->addSearchPath("../../Resources/textures");
-	cocos2d::FileUtils::getInstance()->addSearchPath("../../Resources/worldinfo");
-	cocos2d::FileUtils::getInstance()->addSearchPath("../../Resources/saves");
-#elif CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID
-	cocos2d::FileUtils::getInstance()->addSearchPath("textures");
-	cocos2d::FileUtils::getInstance()->addSearchPath("worldinfo");
-	cocos2d::FileUtils::getInstance()->addSearchPath("saves");
-#endif
+	std::string basePath = Utils::GetResourcesPath();
+
+	Log::Instance().writeError("test");
+
+	cocos2d::FileUtils::getInstance()->addSearchPath(basePath + "textures");
+	cocos2d::FileUtils::getInstance()->addSearchPath(basePath + "worldinfo");
+	cocos2d::FileUtils::getInstance()->addSearchPath(basePath + "saves");
 
 
 	director->setOpenGLView(glview);
