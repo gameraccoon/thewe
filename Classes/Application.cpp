@@ -30,8 +30,6 @@ bool AppDelegate::applicationDidFinishLaunching()
 
 	std::string basePath = Utils::GetResourcesPath();
 
-	Log::Instance().writeError("test");
-
 	cocos2d::FileUtils::getInstance()->addSearchPath(basePath + "textures");
 	cocos2d::FileUtils::getInstance()->addSearchPath(basePath + "worldinfo");
 	cocos2d::FileUtils::getInstance()->addSearchPath(basePath + "saves");

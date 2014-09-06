@@ -237,6 +237,9 @@
     <ClCompile Include="..\dependencies\lua-5.1\print.c">
       <Filter>dependencies\lua</Filter>
     </ClCompile>
+    <ClCompile Include="..\Classes\FileUtils.cpp">
+      <Filter>Classes</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="main.h">
@@ -385,6 +388,9 @@
     </ClInclude>
     <ClInclude Include="..\dependencies\lua-5.1\lzio.h">
       <Filter>dependencies\lua</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\FileUtils.h">
+      <Filter>Classes</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
