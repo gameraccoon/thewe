@@ -27,7 +27,7 @@ private:
 
 	Region::Info _regionInfo;
 
-	void _MenuInputListener(cocos2d::Object *sender);
+	void _MenuInputListener(cocos2d::Ref *sender);
 	void _InitBackground(cocos2d::DrawNode *background) const;
 
 	void onKeyReleased(cocos2d::EventKeyboard::KeyCode key, cocos2d::Event *event) override;

@@ -46,8 +46,8 @@ bool WorldMapLayer::init(void)
 	_cellHull.PushPoint(Vector2(50.0f, 50.0f));
 	_cellHull.PushPoint(Vector2(-20.0f, 50.0f));
 
-	Vector2 origin = cocos2d::Director::sharedDirector()->getVisibleOrigin();
-	Vector2 screen = cocos2d::Director::sharedDirector()->getVisibleSize();
+	Vector2 origin = cocos2d::Director::getInstance()->getVisibleOrigin();
+	Vector2 screen = cocos2d::Director::getInstance()->getVisibleSize();
 
 	SetGuiEnabled(true);
 
@@ -101,7 +101,7 @@ void WorldMapLayer::SetNextCellParent(Cell::WeakPtr parent)
 	_nextCellParent = parent;
 }
 
-void WorldMapLayer::menuCloseCallback(cocos2d::CCObject *Sender)
+void WorldMapLayer::menuCloseCallback(cocos2d::Ref *Sender)
 {
 }
 
@@ -243,7 +243,7 @@ Town::WeakPtr WorldMapLayer::_GetTownUnderPoint(const Vector2& point)
 	{
 		Vector2 projectedPoint = point - _mapProjector->ProjectOnScreen(town->GetLocation());
 
-		cocos2d::CCSprite *town_sprite = dynamic_cast<cocos2d::CCSprite *>(getChildByTag((int)E_MAP_OBJECT_TAG::MAP_OBJ_TOWN));
+		cocos2d::Sprite *town_sprite = dynamic_cast<cocos2d::Sprite *>(getChildByTag((int)E_MAP_OBJECT_TAG::MAP_OBJ_TOWN));
 		if (!town_sprite)
 		{
 			return Town::Ptr();
@@ -254,7 +254,7 @@ Town::WeakPtr WorldMapLayer::_GetTownUnderPoint(const Vector2& point)
 		float actual_w = tex_rect.size.width * town_sprite->getScaleX();
 		float actual_h = tex_rect.size.height * town_sprite->getScaleY();
 
-		cocos2d::CCRect rect;
+		cocos2d::Rect rect;
 		rect.setRect(-(actual_w/2.0f), -(actual_h/2.0f), actual_w, actual_h);
 
 		if (rect.containsPoint(projectedPoint))

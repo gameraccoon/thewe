@@ -5,19 +5,9 @@
 #include "Vector2.h"
 #include "ArbitraryHull.h"
 #include "Log.h"
+#include "FileUtils.h"
 
-/*
-Временное решение.
-Нужно добавить директорию
-поиска и реализовать поиск файлов по ней в 
-методе load_file
-*/
-
-#ifdef CC_TARGET_PLATFORM == CC_PLATFORM_WIN32
-static const std::string profilesSettingsPath = "../../Resources/saves/profiles.xml";
-#elif CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID 
-static const std::string profilesSettingsPath = "saves/profiles.xml";
-#endif
+static const std::string profilesSettingsPath = Utils::GetResourcesPath() + "saves/profiles.xml";
 
 ProfilesManager::ProfilesManager()
 	: _currentProfile(NULL)

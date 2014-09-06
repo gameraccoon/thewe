@@ -3,6 +3,8 @@
 #include "GameScene.h"
 #include "Vector2.h"
 #include "PlayersProfiles.h"
+#include "FileUtils.h"
+#include "Log.h"
 
 AppDelegate::AppDelegate()
 {
@@ -14,30 +16,23 @@ AppDelegate::~AppDelegate()
 
 bool AppDelegate::applicationDidFinishLaunching()
 {
-	cocos2d::Director *director = cocos2d::Director::sharedDirector();
+	cocos2d::Director *director = cocos2d::Director::getInstance();
 	cocos2d::GLView *glview = director->getOpenGLView();
 	
 	if(!glview) 
 	{
-        glview = GLView::create("Samsung Galaxy S II");
+        glview = cocos2d::GLView::create("Samsung Galaxy S II");
     }
 
 	// Take Samsung Galaxy S2 resolution as reference
 	float dr_w = 800;
 	float dr_h = 480;
 
-#if CC_TARGET_PLATFORM == CC_PLATFORM_WIN32
-	glview->setFrameZoomFactor(1.0f);
-	glview->setFrameSize(dr_w, dr_h);
-	glview->setFrameZoomFactor(1.0f);
-	cocos2d::FileUtils::sharedFileUtils()->addSearchPath("../../Resources/textures");
-	cocos2d::FileUtils::sharedFileUtils()->addSearchPath("../../Resources/worldinfo");
-	cocos2d::FileUtils::sharedFileUtils()->addSearchPath("../../Resources/saves");
-#elif CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID
-	cocos2d::FileUtils::sharedFileUtils()->addSearchPath("textures");
-	cocos2d::FileUtils::sharedFileUtils()->addSearchPath("worldinfo");
-	cocos2d::FileUtils::sharedFileUtils()->addSearchPath("saves");
-#endif
+	std::string basePath = Utils::GetResourcesPath();
+
+	cocos2d::FileUtils::getInstance()->addSearchPath(basePath + "textures");
+	cocos2d::FileUtils::getInstance()->addSearchPath(basePath + "worldinfo");
+	cocos2d::FileUtils::getInstance()->addSearchPath(basePath + "saves");
 
 
 	director->setOpenGLView(glview);
@@ -47,7 +42,7 @@ bool AppDelegate::applicationDidFinishLaunching()
 	cocos2d::Size sr = glview->getFrameSize();
 
 	//director->setContentScaleFactor(sr.width / dr_w);
-	glview->setDesignResolutionSize(dr_w, dr_h, cocos2d::kResolutionFixedHeight);
+	glview->setDesignResolutionSize(dr_w, dr_h, ResolutionPolicy::FIXED_HEIGHT);
 
 	ProfilesManager::Instance().LoadProfiles();
 
@@ -77,7 +72,7 @@ bool AppDelegate::applicationDidFinishLaunching()
 	_btnExitGame->setTag(MENU_ITEM_EXIT);
 	_btnExitGame->setScale(3.0f);
 
-	_mainMenu = CCMenu::create(_btnRunGame, _btnTestScene1, _btnExitGame, NULL);
+	_mainMenu = cocos2d::Menu::create(_btnRunGame, _btnTestScene1, _btnExitGame, NULL);
 	_mainMenu->setPosition(0.0f, 0.0f);
 
 	_menuScene->addChild(_mainMenu);
@@ -95,12 +90,12 @@ void AppDelegate::applicationWillEnterForeground()
 {
 }
 
-void AppDelegate::_MenuInputListener(Object *sender)
+void AppDelegate::_MenuInputListener(cocos2d::Ref *sender)
 {
-	CCDirector *director = CCDirector::sharedDirector();
-	CCScene *scene = NULL;
+	cocos2d::Director *director = cocos2d::Director::getInstance();
+	cocos2d::Scene *scene = NULL;
 
-	cocos2d::CCMenuItemImage *item = dynamic_cast<cocos2d::CCMenuItemImage*>(sender);
+	cocos2d::MenuItemImage *item = dynamic_cast<cocos2d::MenuItemImage*>(sender);
 
 	int tag = item->getTag();
 
@@ -115,7 +110,7 @@ void AppDelegate::_MenuInputListener(Object *sender)
 		break;
 	case MENU_ITEM_EXIT:
 		{
-			cocos2d::CCDirector *director = cocos2d::CCDirector::sharedDirector();
+			cocos2d::Director *director = cocos2d::Director::getInstance();
 			director->end();
 		}
 		break;

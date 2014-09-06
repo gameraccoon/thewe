@@ -44,7 +44,7 @@ void TaskManager::UpdateToTime(float worldTime)
 		if (isEnded)
 		{
 			Cell::Ptr cell = iterator->cell.lock();
-			// если Cell ещё не удалена
+			// РµСЃР»Рё Cell РµС‰С‘ РЅРµ СѓРґР°Р»РµРЅР°
 			if (cell)
 			{
 				const Cell::Info& cellInfo = cell->GetInfo();
@@ -59,8 +59,8 @@ void TaskManager::UpdateToTime(float worldTime)
 
 				if (!task->IsAborted())
 				{
-					// Вызываем луа функцию определения статуса задания
-					// TODO: сделать нормальную реализацию
+					// Р’С‹Р·С‹РІР°РµРј Р»СѓР° С„СѓРЅРєС†РёСЋ РѕРїСЂРµРґРµР»РµРЅРёСЏ СЃС‚Р°С‚СѓСЃР° Р·Р°РґР°РЅРёСЏ
+					// TODO: СЃРґРµР»Р°С‚СЊ РЅРѕСЂРјР°Р»СЊРЅСѓСЋ СЂРµР°Р»РёР·Р°С†РёСЋ
 					bool isSuccess = true;
 
 					if (isSuccess)
@@ -80,14 +80,14 @@ void TaskManager::UpdateToTime(float worldTime)
 					info.status = Task::Status::Aborted;
 				}
 
-				// вызываем из луа нужную функцию
-				// TODO: реализовать функцию в новой системе
+				// РІС‹Р·С‹РІР°РµРј РёР· Р»СѓР° РЅСѓР¶РЅСѓСЋ С„СѓРЅРєС†РёСЋ
+				// TODO: СЂРµР°Р»РёР·РѕРІР°С‚СЊ С„СѓРЅРєС†РёСЋ РІ РЅРѕРІРѕР№ СЃРёСЃС‚РµРјРµ
 				
-				// добавляем информацию о законченном задании в ячейку
+				// РґРѕР±Р°РІР»СЏРµРј РёРЅС„РѕСЂРјР°С†РёСЋ Рѕ Р·Р°РєРѕРЅС‡РµРЅРЅРѕРј Р·Р°РґР°РЅРёРё РІ СЏС‡РµР№РєСѓ
 				cell->AddCompletedTask(info);
 			}
 
-			// освобождаем умный указатель и удаляем Task
+			// РѕСЃРІРѕР±РѕР¶РґР°РµРј СѓРјРЅС‹Р№ СѓРєР°Р·Р°С‚РµР»СЊ Рё СѓРґР°Р»СЏРµРј Task
 			iterator = _runnedTasks.erase(iterator);
 		}
 		else
@@ -118,14 +118,13 @@ TaskManager::TasksList TaskManager::GetAvailableTasks(Cell::WeakPtr cell) const
 	if (!isTasksFilled)
 	{
 		Log::Instance().writeError("Trying to acces to not initialized TaskManager");
-		assert(false);
 	}
 
 	std::vector<const Task::Info*> availableTasks;
 
 	for (const auto& pair : _allTasks)
 	{
-		// ToDo: тут надо добавить необходимые проверки
+		// ToDo: С‚СѓС‚ РЅР°РґРѕ РґРѕР±Р°РІРёС‚СЊ РЅРµРѕР±С…РѕРґРёРјС‹Рµ РїСЂРѕРІРµСЂРєРё
 		availableTasks.push_back(&pair.second);
 	}
 

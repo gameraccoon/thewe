@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 2.6)
 
-set(APP_NAME MyGame)
+set(APP_NAME TheWe)
 project (${APP_NAME})
 
 include(cocos2d/build/BuildHelpers.CMakeLists.txt)
@@ -49,79 +49,100 @@ endif(USE_CHIPMUNK)
 
 # architecture
 if ( CMAKE_SIZEOF_VOID_P EQUAL 8 )
-set(ARCH_DIR "64-bit")
+	set(ARCH_DIR "64-bit")
 else()
-set(ARCH_DIR "32-bit")
+	set(ARCH_DIR "32-bit")
 endif()
 
 if( UNIX ) #assume linux
 set(GAME_SRC
-  proj.linux/main.cpp
-  Classes/AppDelegate.cpp
-  Classes/HelloWorldScene.cpp
+	proj.linux/main.cpp
+	Classes/Application.cpp
+	Classes/ArbitraryHull.cpp
+	Classes/Cell.cpp
+	Classes/CellScreenLayer.cpp
+	Classes/Color.cpp
+	Classes/Drawable.cpp
+	Classes/EditorLayer.cpp
+	Classes/FileUtils.cpp
+	Classes/GameScene.cpp
+	Classes/Log.cpp
+	Classes/MapGuiLayer.cpp
+	Classes/MapProjector.cpp
+	Classes/PlayersProfiles.cpp
+	Classes/Region.cpp
+	Classes/RegionInfoLayer.cpp
+	Classes/Task.cpp
+	Classes/TaskManager.cpp
+	Classes/Town.cpp
+	Classes/TownInfoLayer.cpp
+	Classes/Vector2.cpp
+	Classes/World.cpp
+	Classes/WorldLoader.cpp
+	Classes/WorldMapLayer.cpp
 )
 elseif ( WIN32 )
 set(GAME_SRC
-  proj.win32/main.cpp
-  proj.win32/main.h
-  proj.win32/resource.h
-  Classes/AppDelegate.cpp
-  Classes/HelloWorldScene.cpp
+	proj.win32/main.cpp
+	proj.win32/main.h
+	proj.win32/resource.h
+	Classes/AppDelegate.cpp
+	Classes/HelloWorldScene.cpp
 )
 endif()
 
 set(COCOS2D_ROOT ${CMAKE_SOURCE_DIR}/cocos2d)
 if (WIN32)
 include_directories(
-  ${COCOS2D_ROOT}
-  ${COCOS2D_ROOT}/cocos
-  ${COCOS2D_ROOT}/cocos/audio/include
-  ${COCOS2D_ROOT}/cocos/2d
-  ${COCOS2D_ROOT}/cocos/2d/renderer
-  ${COCOS2D_ROOT}/cocos/2d/platform
-  ${COCOS2D_ROOT}/cocos/2d/platform/desktop
-  ${COCOS2D_ROOT}/cocos/2d/platform/win32
-  ${COCOS2D_ROOT}/cocos/base
-  ${COCOS2D_ROOT}/cocos/deprecated
-  ${COCOS2D_ROOT}/cocos/physics
-  ${COCOS2D_ROOT}/cocos/editor-support
-  ${COCOS2D_ROOT}/cocos/math
-  ${COCOS2D_ROOT}/extensions
-  ${COCOS2D_ROOT}/external
-  ${COCOS2D_ROOT}/external/edtaa3func
-  ${COCOS2D_ROOT}/external/jpeg/include/win32
-  ${COCOS2D_ROOT}/external/png/include/win32
-  ${COCOS2D_ROOT}/external/tiff/include/win32
-  ${COCOS2D_ROOT}/external/webp/include/win32
-  ${COCOS2D_ROOT}/external/curl/include/win32
-  ${COCOS2D_ROOT}/external/tinyxml2
-  ${COCOS2D_ROOT}/external/unzip
-  ${COCOS2D_ROOT}/external/sqlite3/include
-  ${COCOS2D_ROOT}/external/chipmunk/include/chipmunk
-  ${COCOS2D_ROOT}/external/freetype2/include/win32
-  ${COCOS2D_ROOT}/external/websockets/include/win32
-  ${COCOS2D_ROOT}/external/spidermonkey/include/win32
-  ${COCOS2D_ROOT}/external/glfw3/include/win32
-  ${COCOS2D_ROOT}/external/win32-specific/gles/include/OGLES
-  ${COCOS2D_ROOT}/external/win32-specific/icon/include
-  ${COCOS2D_ROOT}/external/win32-specific/zlib/include
-  ${COCOS2D_ROOT}/external/xxhash
+	${COCOS2D_ROOT}
+	${COCOS2D_ROOT}/cocos
+	${COCOS2D_ROOT}/cocos/audio/include
+	${COCOS2D_ROOT}/cocos/2d
+	${COCOS2D_ROOT}/cocos/2d/renderer
+	${COCOS2D_ROOT}/cocos/2d/platform
+	${COCOS2D_ROOT}/cocos/2d/platform/desktop
+	${COCOS2D_ROOT}/cocos/2d/platform/win32
+	${COCOS2D_ROOT}/cocos/base
+	${COCOS2D_ROOT}/cocos/deprecated
+	${COCOS2D_ROOT}/cocos/physics
+	${COCOS2D_ROOT}/cocos/editor-support
+	${COCOS2D_ROOT}/cocos/math
+	${COCOS2D_ROOT}/extensions
+	${COCOS2D_ROOT}/external
+	${COCOS2D_ROOT}/external/edtaa3func
+	${COCOS2D_ROOT}/external/jpeg/include/win32
+	${COCOS2D_ROOT}/external/png/include/win32
+	${COCOS2D_ROOT}/external/tiff/include/win32
+	${COCOS2D_ROOT}/external/webp/include/win32
+	${COCOS2D_ROOT}/external/curl/include/win32
+	${COCOS2D_ROOT}/external/tinyxml2
+	${COCOS2D_ROOT}/external/unzip
+	${COCOS2D_ROOT}/external/sqlite3/include
+	${COCOS2D_ROOT}/external/chipmunk/include/chipmunk
+	${COCOS2D_ROOT}/external/freetype2/include/win32
+	${COCOS2D_ROOT}/external/websockets/include/win32
+	${COCOS2D_ROOT}/external/spidermonkey/include/win32
+	${COCOS2D_ROOT}/external/glfw3/include/win32
+	${COCOS2D_ROOT}/external/win32-specific/gles/include/OGLES
+	${COCOS2D_ROOT}/external/win32-specific/icon/include
+	${COCOS2D_ROOT}/external/win32-specific/zlib/include
+	${COCOS2D_ROOT}/external/xxhash
 )
 link_directories(
-  /usr/local/lib
-  ${COCOS2D_ROOT}/external/png/prebuilt/win32
-  ${COCOS2D_ROOT}/external/jpeg/prebuilt/win32
-  ${COCOS2D_ROOT}/external/tiff/prebuilt/win32
-  ${COCOS2D_ROOT}/external/glfw3/prebuilt/win32
-  ${COCOS2D_ROOT}/external/webp/prebuilt/win32
-  ${COCOS2D_ROOT}/external/curl/prebuilt/win32
-  ${COCOS2D_ROOT}/external/sqlite3/libraries/win32
-  ${COCOS2D_ROOT}/external/freetype2/prebuilt/win32
-  ${COCOS2D_ROOT}/external/websockets/prebuilt/win32
-  ${COCOS2D_ROOT}/external/spidermonkey/prebuilt/win32
-  ${COCOS2D_ROOT}/external/win32-specific/gles/prebuilt
-  ${COCOS2D_ROOT}/external/win32-specific/icon/prebuilt
-  ${COCOS2D_ROOT}/external/win32-specific/zlib/prebuilt
+	/usr/local/lib
+	${COCOS2D_ROOT}/external/png/prebuilt/win32
+	${COCOS2D_ROOT}/external/jpeg/prebuilt/win32
+	${COCOS2D_ROOT}/external/tiff/prebuilt/win32
+	${COCOS2D_ROOT}/external/glfw3/prebuilt/win32
+	${COCOS2D_ROOT}/external/webp/prebuilt/win32
+	${COCOS2D_ROOT}/external/curl/prebuilt/win32
+	${COCOS2D_ROOT}/external/sqlite3/libraries/win32
+	${COCOS2D_ROOT}/external/freetype2/prebuilt/win32
+	${COCOS2D_ROOT}/external/websockets/prebuilt/win32
+	${COCOS2D_ROOT}/external/spidermonkey/prebuilt/win32
+	${COCOS2D_ROOT}/external/win32-specific/gles/prebuilt
+	${COCOS2D_ROOT}/external/win32-specific/icon/prebuilt
+	${COCOS2D_ROOT}/external/win32-specific/zlib/prebuilt
 )
 
 elseif(UNIX) #assumed linux
@@ -217,18 +238,29 @@ else()
 endif()
 
 if ( CMAKE_SIZEOF_VOID_P EQUAL 8 )
-set(FMOD_LIB "fmodex64")
+	set(FMOD_LIB "fmodex64")
 else()
-set(FMOD_LIB "fmodex")
+	set(FMOD_LIB "fmodex")
 endif()
 
 target_link_libraries(${APP_NAME}
-  spine
-  cocostudio
-  cocosbuilder
-  extensions
-  audio
-  cocos2d
+	# кокосовские библиотеки
+	spine
+	cocostudio
+	cocosbuilder
+	extensions
+	audio
+	cocos2d
+	# библиотеки для ogl и x11
+	glfw3
+	Xxf86vm
+	Xrandr
+	Xcursor
+	Xi
+	# наши библиотеки
+	pugixml
+	luabind
+	lua5.1
   )
 
 set(APP_BIN_DIR "${CMAKE_BINARY_DIR}/bin")

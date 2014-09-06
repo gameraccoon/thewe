@@ -237,6 +237,9 @@
     <ClCompile Include="..\Classes\CellGameInterface.cpp">
       <Filter>Classes</Filter>
     </ClCompile>
+    <ClCompile Include="..\Classes\FileUtils.cpp">
+      <Filter>Classes</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="main.h">
@@ -384,6 +387,9 @@
       <Filter>dependencies\lua</Filter>
     </ClInclude>
     <ClInclude Include="..\Classes\CellGameInterface.h">
+      <Filter>Classes</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\FileUtils.h">
       <Filter>Classes</Filter>
     </ClInclude>
   </ItemGroup>

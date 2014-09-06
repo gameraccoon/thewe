@@ -9,6 +9,7 @@
 #include "TaskManager.h"
 #include "Log.h"
 #include "Vector2.h"
+#include "FileUtils.h"
 
 #include <string>
 #include <strstream>
@@ -21,8 +22,6 @@ static void LoadCellsRecursively(pugi::xml_node root, pugi::xml_node parent_node
 	{
 		int child_id = child_id_node.attribute("id").as_int();
 
-		//char s[16];
-		//sprintf_s(s, "%d", child_id);
 		std::stringstream ss;
 		ss << child_id;
 		std::string s = ss.str();
@@ -72,12 +71,11 @@ static void InitHullFromXml(const char *name, const pugi::xml_node &root,  Arbit
 static bool LoadTasksInfo()
 {
 	pugi::xml_document tasks_xml_doc;
-	
-	if (!tasks_xml_doc.load_file("../../Resources/worldinfo/tasks.xml"))
-	{
-		Log::Instance().writeError("Can't find file 'worldinfo/tasks.xml'");
-		return false;
-	}
+	std::string fullPath = cocos2d::FileUtils::getInstance()->fullPathForFilename("tasks.xml");
+	unsigned char* pBuffer = NULL;
+	ssize_t bufferSize = 0;
+	pBuffer = cocos2d::FileUtils::getInstance()->getFileData(fullPath.c_str(), "r", &bufferSize);
+	pugi::xml_parse_result result = tasks_xml_doc.load_buffer(pBuffer,bufferSize);
 
 	std::vector<Task::Info> infos;
 	
@@ -110,30 +108,7 @@ static bool LoadWorld(void)
 {
 	pugi::xml_document hulls_xml_doc;
 	pugi::xml_document regions_xml_doc;
-	
-	/*
-	Временное решение.
-	Нужно добавить директорию
-	поиска и реализовать поиск файлов по ней в 
-	методе load_file
-	*/
-	
-	std::string filename_hulls, filename_regions;
-#ifdef CC_TARGET_PLATFORM == CC_PLATFORM_WIN32
-	filename_hulls = "../../Resources/worldinfo/hulls.xml";
-	filename_regions = "../../Resources/worldinfo/regions.xml";
-#elif CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID 
-	filename_hulls = "map/hulls.xml";
-	filename_regions = "map/regions.xml";
-#endif
 
-	/*if (!hulls_xml_doc.load_file(filename_hulls.c_str()) || !regions_xml_doc.load_file(filename_regions.c_str()))
-	{
-		Log::Instance().writeError("Can't find file 'worldinfo/hulls.xml'");
-		return false;
-	}*/
-
-	//cocos2d::FileUtils::getInstance()->full
 	std::string fullPath = cocos2d::FileUtils::getInstance()->fullPathForFilename("hulls.xml");
 	unsigned char* pBuffer = NULL;
 	ssize_t bufferSize = 0;
@@ -225,14 +200,10 @@ bool WorldLoader::LoadGameState(void)
 
 	if (profile)
 	{
-		// 1. Находим корневую ячейку
-		// 2. рекурсивно добавляем детей
+		// 1. РќР°С…РѕРґРёРј РєРѕСЂРЅРµРІСѓСЋ СЏС‡РµР№РєСѓ
+		// 2. СЂРµРєСѓСЂСЃРёРІРЅРѕ РґРѕР±Р°РІР»СЏРµРј РґРµС‚РµР№
 
 		pugi::xml_document doc;
-		/*if (!doc.load_file(profile->gameStateFilename.c_str()))
-		{
-			return false;
-		}*/
 
 		std::string fullPath = cocos2d::FileUtils::getInstance()->fullPathForFilename(profile->gameStateFilename.c_str());
 		unsigned char* pBuffer = NULL;
@@ -282,11 +253,11 @@ bool WorldLoader::SaveGameState(void)
 	if (profile)
 	{
 		// TODO
-		// 1. узнать какой по счету профиль
-		// 2. создать и сохранить xml файл с именем save-@имя профиля@-@какой по счету + 1@
-		// 3. если удалось сохранить удаляем предидущий.
+		// 1. СѓР·РЅР°С‚СЊ РєР°РєРѕР№ РїРѕ СЃС‡РµС‚Сѓ РїСЂРѕС„РёР»СЊ
+		// 2. СЃРѕР·РґР°С‚СЊ Рё СЃРѕС…СЂР°РЅРёС‚СЊ xml С„Р°Р№Р» СЃ РёРјРµРЅРµРј save-@РёРјСЏ РїСЂРѕС„РёР»СЏ@-@РєР°РєРѕР№ РїРѕ СЃС‡РµС‚Сѓ + 1@
+		// 3. РµСЃР»Рё СѓРґР°Р»РѕСЃСЊ СЃРѕС…СЂР°РЅРёС‚СЊ СѓРґР°Р»СЏРµРј РїСЂРµРґРёРґСѓС‰РёР№.
 
-		// Временный код без транзакционного сохранения.
+		// Р’СЂРµРјРµРЅРЅС‹Р№ РєРѕРґ Р±РµР· С‚СЂР°РЅР·Р°РєС†РёРѕРЅРЅРѕРіРѕ СЃРѕС…СЂР°РЅРµРЅРёСЏ.
 
 		World &map = World::Instance();
 		const World::Cells &cells = map.GetCells();

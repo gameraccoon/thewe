@@ -20,7 +20,7 @@ public:
 
 	virtual bool init(void) override;
 
-	void menuCloseCallback(cocos2d::Object *Sender);
+	void menuCloseCallback(cocos2d::Ref *Sender);
 
 	void onTouchesBegan(const std::vector<cocos2d::Touch* > &touches, cocos2d::Event* event) override;
 	void onTouchesEnded(const std::vector<cocos2d::Touch* > &touches, cocos2d::Event* event) override;

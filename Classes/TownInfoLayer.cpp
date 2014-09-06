@@ -12,12 +12,12 @@ bool TownInfoLayer::init()
 		return false;
 	}
 
-	cocos2d::CCDrawNode *_bkg = cocos2d::CCDrawNode::create();
+	cocos2d::DrawNode *_bkg = cocos2d::DrawNode::create();
 
 	const float width = 400;
 	const float height = 200.0f;
 
-	cocos2d::Point origin = cocos2d::Director::sharedDirector()->getVisibleOrigin();
+	cocos2d::Point origin = cocos2d::Director::getInstance()->getVisibleOrigin();
 
 	cocos2d::Point vertices[4];
 	vertices[0] = origin;
@@ -38,7 +38,7 @@ bool TownInfoLayer::init()
 	_populText->setPosition(cocos2d::Point(200.0f, 135.0f));
 	_descText->setPosition(cocos2d::Point(200.0f, 50.0f));
 	_descText->setDimensions(Vector2(370.0f, 100.0f));
-	_descText->setHorizontalAlignment(cocos2d::kCCTextAlignmentCenter);
+	_descText->setHorizontalAlignment(cocos2d::TextHAlignment::CENTER);
 
 	addChild(_bkg, 0);
 	addChild(_nameText, 1);
