@@ -1,6 +1,7 @@
 #include "FileUtils.h"
 
 #include <cocos2d.h>
+#include "Log.h"
 
 std::string Utils::GetResourcesPath()
 {

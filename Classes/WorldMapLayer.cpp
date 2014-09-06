@@ -62,11 +62,11 @@ bool WorldMapLayer::init(void)
 			false, town->GetSpriteScale()), 1, (int)E_MAP_OBJECT_TAG::MAP_OBJ_TOWN);
 	}
 	
-	// сообщаем где находится центр окна вывода
+	// СЃРѕРѕР±С‰Р°РµРј РіРґРµ РЅР°С…РѕРґРёС‚СЃСЏ С†РµРЅС‚СЂ РѕРєРЅР° РІС‹РІРѕРґР°
 	_mapProjector->SetScreenCenter(origin + screen / 2.0f);
-	// ставим спрайт карты ровно в центр экрана
+	// СЃС‚Р°РІРёРј СЃРїСЂР°Р№С‚ РєР°СЂС‚С‹ СЂРѕРІРЅРѕ РІ С†РµРЅС‚СЂ СЌРєСЂР°РЅР°
 	_mapProjector->SetLocation(Vector2(0.0f, 0.0f));
-	// ставим скейл, чтобы экран правильно отмасштабировался
+	// СЃС‚Р°РІРёРј СЃРєРµР№Р», С‡С‚РѕР±С‹ СЌРєСЂР°РЅ РїСЂР°РІРёР»СЊРЅРѕ РѕС‚РјР°СЃС€С‚Р°Р±РёСЂРѕРІР°Р»СЃСЏ
 	_mapProjector->SetScale(1.0f);
 
 	this->setTouchEnabled(true);
@@ -182,11 +182,11 @@ bool WorldMapLayer::_IsCellGameInterfaceOnScreen(void) const
 	return _cellMenu != nullptr;
 }
 
-void WorldMapLayer::_ShowCellGameInterface(Cell::Ptr cell)
+void WorldMapLayer::_ShowCellGameInterface(Cell::WeakPtr cell)
 {
 	if (!_cellMenu)
 	{
-		Vector2 cell_pos = cell.get()->GetInfo().location;
+		Vector2 cell_pos = cell.lock()->GetInfo().location;
 		Vector2 menu_pos = _mapProjector->ProjectOnScreen(cell_pos);
 
 		_cellMenu = new CellMenuSelector(cell, menu_pos);
@@ -354,7 +354,7 @@ void WorldMapLayer::_RecursiveUpdateNetworkVisualiser(cocos2d::DrawNode *visuali
 		Vector2 p2(_mapProjector->ProjectOnScreen(child->GetInfo().location));
 		visualiser->drawSegment(p1, p2, 4.0f, Color(1.0f, 0.0f, 0.0f, 1.0f));
 
-		// рекурсивный вызов
+		// СЂРµРєСѓСЂСЃРёРІРЅС‹Р№ РІС‹Р·РѕРІ
 		_RecursiveUpdateNetworkVisualiser(visualiser, child);
 	}
 }

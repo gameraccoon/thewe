@@ -4,16 +4,22 @@
 #include <iostream>
 
 #include "Log.h"
+#include "LuaInstance.h"
 
 #include <cocos2d.h>
 
 TaskManager::TaskManager()
+	: _isTasksFilled(false)
 {
-	isTasksFilled = false;
+	std::string fullPath = cocos2d::FileUtils::getInstance()->fullPathForFilename("tasks.lua");
+	_luaScript = new LuaInstance();
+	_luaScript->BindClass<Log>();
+	_luaScript->ExecScriptFromFile(fullPath.c_str());
 }
 
 TaskManager::~TaskManager()
 {
+	delete _luaScript;
 }
 
 TaskManager& TaskManager::Instance()
@@ -99,7 +105,7 @@ void TaskManager::UpdateToTime(float worldTime)
 
 void TaskManager::FillTasks(const std::vector<Task::Info>& tasks)
 {
-	if (isTasksFilled)
+	if (_isTasksFilled)
 	{
 		Log::Instance().writeWarning("Trying to fill tasks info twice");
 	}
@@ -110,12 +116,12 @@ void TaskManager::FillTasks(const std::vector<Task::Info>& tasks)
 		_allTasks.insert(std::pair<const std::string, const Task::Info>(info.id, info));
 	}
 
-	isTasksFilled = true;
+	_isTasksFilled = true;
 }
 
 TaskManager::TasksList TaskManager::GetAvailableTasks(Cell::WeakPtr cell) const
 {
-	if (!isTasksFilled)
+	if (!_isTasksFilled)
 	{
 		Log::Instance().writeError("Trying to acces to not initialized TaskManager");
 	}

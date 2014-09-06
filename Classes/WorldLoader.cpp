@@ -75,7 +75,7 @@ static bool LoadTasksInfo()
 	unsigned char* pBuffer = NULL;
 	ssize_t bufferSize = 0;
 	pBuffer = cocos2d::FileUtils::getInstance()->getFileData(fullPath.c_str(), "r", &bufferSize);
-	pugi::xml_parse_result result = tasks_xml_doc.load_buffer(pBuffer,bufferSize);
+	pugi::xml_parse_result result = tasks_xml_doc.load_buffer(pBuffer, bufferSize);
 
 	std::vector<Task::Info> infos;
 	

@@ -48,7 +48,7 @@ private:
 
 	bool _IsCellGameInterfaceOnScreen(void) const;
 
-	void _ShowCellGameInterface(Cell::Ptr cell);
+	void _ShowCellGameInterface(Cell::WeakPtr cell);
 	void _HideCellGameInterface(void);
 
 	Region::WeakPtr _GetRegionUnderPoint(const Vector2& point) const;

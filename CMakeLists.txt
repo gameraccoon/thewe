@@ -60,13 +60,15 @@ set(GAME_SRC
 	Classes/Application.cpp
 	Classes/ArbitraryHull.cpp
 	Classes/Cell.cpp
-	Classes/CellScreenLayer.cpp
+	Classes/CellGameInterface.cpp
 	Classes/Color.cpp
 	Classes/Drawable.cpp
 	Classes/EditorLayer.cpp
 	Classes/FileUtils.cpp
 	Classes/GameScene.cpp
 	Classes/Log.cpp
+	Classes/LuaBindings.cpp
+	Classes/LuaInstance.cpp
 	Classes/MapGuiLayer.cpp
 	Classes/MapProjector.cpp
 	Classes/PlayersProfiles.cpp
@@ -147,28 +149,29 @@ link_directories(
 
 elseif(UNIX) #assumed linux
 include_directories(
-  /usr/local/include/GLFW
-  /usr/include/GLFW
-  ${COCOS2D_ROOT}
-  ${COCOS2D_ROOT}/cocos
-  ${COCOS2D_ROOT}/cocos/audio/include
-  ${COCOS2D_ROOT}/cocos/platform
-  ${COCOS2D_ROOT}/cocos/platform/desktop
-  ${COCOS2D_ROOT}/cocos/platform/linux
-  ${COCOS2D_ROOT}/cocos/editor-support
-  ${COCOS2D_ROOT}/extensions
-  ${COCOS2D_ROOT}/external
-  ${COCOS2D_ROOT}/external/edtaa3func
-  ${COCOS2D_ROOT}/external/jpeg/include/linux
-  ${COCOS2D_ROOT}/external/tiff/include/linux
-  ${COCOS2D_ROOT}/external/webp/include/linux
-  ${COCOS2D_ROOT}/external/tinyxml2
-  ${COCOS2D_ROOT}/external/unzip
-  ${COCOS2D_ROOT}/external/freetype2/include/linux
-  ${COCOS2D_ROOT}/external/websockets/include/linux
-  ${COCOS2D_ROOT}/external/spidermonkey/include/linux
-  ${COCOS2D_ROOT}/external/linux-specific/fmod/include/${ARCH_DIR}
-  ${COCOS2D_ROOT}/external/xxhash
+	./dependencies/lua-5.2.0
+	/usr/local/include/GLFW
+	/usr/include/GLFW
+	${COCOS2D_ROOT}
+	${COCOS2D_ROOT}/cocos
+	${COCOS2D_ROOT}/cocos/audio/include
+	${COCOS2D_ROOT}/cocos/platform
+	${COCOS2D_ROOT}/cocos/platform/desktop
+	${COCOS2D_ROOT}/cocos/platform/linux
+	${COCOS2D_ROOT}/cocos/editor-support
+	${COCOS2D_ROOT}/extensions
+	${COCOS2D_ROOT}/external
+	${COCOS2D_ROOT}/external/edtaa3func
+	${COCOS2D_ROOT}/external/jpeg/include/linux
+	${COCOS2D_ROOT}/external/tiff/include/linux
+	${COCOS2D_ROOT}/external/webp/include/linux
+	${COCOS2D_ROOT}/external/tinyxml2
+	${COCOS2D_ROOT}/external/unzip
+	${COCOS2D_ROOT}/external/freetype2/include/linux
+	${COCOS2D_ROOT}/external/websockets/include/linux
+	${COCOS2D_ROOT}/external/spidermonkey/include/linux
+	${COCOS2D_ROOT}/external/linux-specific/fmod/include/${ARCH_DIR}
+	${COCOS2D_ROOT}/external/xxhash
 )
 
 link_directories(
@@ -260,7 +263,7 @@ target_link_libraries(${APP_NAME}
 	# наши библиотеки
 	pugixml
 	luabind
-	lua5.1
+	lua5.2
   )
 
 set(APP_BIN_DIR "${CMAKE_BINARY_DIR}/bin")

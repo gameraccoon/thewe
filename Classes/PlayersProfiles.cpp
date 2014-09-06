@@ -29,8 +29,6 @@ void ProfilesManager::LoadProfiles(void)
 	pBuffer = cocos2d::FileUtils::getInstance()->getFileData(fullPath.c_str(), "r", &bufferSize);
 	successfulLoaded = doc.load_buffer(pBuffer,bufferSize);
 
-
-
 	if (!successfulLoaded)
 	{
 		Log::Instance().writeError(std::string("Can't find file '").append(profilesSettingsPath).append("'"));
