@@ -33,15 +33,17 @@ bool AppDelegate::applicationDidFinishLaunching()
 	cocos2d::FileUtils::getInstance()->addSearchPath(basePath + "textures");
 	cocos2d::FileUtils::getInstance()->addSearchPath(basePath + "worldinfo");
 	cocos2d::FileUtils::getInstance()->addSearchPath(basePath + "saves");
-
+	cocos2d::FileUtils::getInstance()->addSearchPath(basePath + "scripts");
 
 	director->setOpenGLView(glview);
 	director->setDisplayStats(true);
 	director->setAnimationInterval(1.0 / 60.0);
 
-	cocos2d::Size sr = glview->getFrameSize();
+#if CC_TARGET_PLATFORM != CC_PLATFORM_ANDROID && CC_TARGET_PLATFORM != CC_PLATFORM_IOS
+	glview->setFrameZoomFactor(1.0f);
+	glview->setFrameSize(dr_w, dr_h);
+#endif
 
-	//director->setContentScaleFactor(sr.width / dr_w);
 	glview->setDesignResolutionSize(dr_w, dr_h, ResolutionPolicy::FIXED_HEIGHT);
 
 	ProfilesManager::Instance().LoadProfiles();
