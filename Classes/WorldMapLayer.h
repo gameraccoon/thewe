@@ -61,6 +61,9 @@ private:
 	void _OnTownSelect(Town::WeakPtr town);
 	void _DrawCellsLinksRecurcively(Cell::WeakPtr cell);
 
+	void RecalculateTouches(const std::vector<cocos2d::Touch* > &touches, bool updateView);
+	void ResetTouches();
+
 	CellMenuSelector *_cellMenu;
 
 	Vector2 _touchLastPoint;
@@ -76,6 +79,11 @@ private:
 	bool _isPlacingCell;
 
 	ArbitraryHull _cellHull;
+
+	Vector2 _touchesCenter;
+	int _lastTouchesCount;
+	float _avgTouchDistance;
+	bool _isTouchesCountUpdated;
 };
 
 #endif
