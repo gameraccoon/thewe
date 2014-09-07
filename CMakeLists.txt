@@ -67,8 +67,6 @@ set(GAME_SRC
 	Classes/FileUtils.cpp
 	Classes/GameScene.cpp
 	Classes/Log.cpp
-	Classes/LuaBindings.cpp
-	Classes/LuaInstance.cpp
 	Classes/MapGuiLayer.cpp
 	Classes/MapProjector.cpp
 	Classes/PlayersProfiles.cpp
@@ -149,7 +147,6 @@ link_directories(
 
 elseif(UNIX) #assumed linux
 include_directories(
-	./dependencies/lua-5.2.0
 	/usr/local/include/GLFW
 	/usr/include/GLFW
 	${COCOS2D_ROOT}
@@ -262,8 +259,6 @@ target_link_libraries(${APP_NAME}
 	Xi
 	# наши библиотеки
 	pugixml
-	luabind
-	lua5.2
   )
 
 set(APP_BIN_DIR "${CMAKE_BINARY_DIR}/bin")

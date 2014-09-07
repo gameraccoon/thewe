@@ -9,6 +9,9 @@
 *.sdf
 *.opensdf
 *.ilk
+proj.android/bin/
+proj.android/assets/
+CMakeLists.txt.user
 
 ;для очистки
 ; *.class

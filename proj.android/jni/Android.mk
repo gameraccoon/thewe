@@ -8,34 +8,42 @@ $(call import-add-path,$(LOCAL_PATH)/../../cocos2d/cocos)
 
 LOCAL_MODULE := cocos2dcpp_shared
 
+LOCAL_CPP_FEATURES += exceptions
+
 LOCAL_MODULE_FILENAME := libcocos2dcpp
 
 LOCAL_SRC_FILES := hellocpp/main.cpp \
-                   ../../Classes/Application.cpp \
-                   ../../Classes/ArbitraryHull.cpp \
-                   ../../Classes/Cell.cpp \
-                   ../../Classes/CellScreenLayer.cpp \
-                   ../../Classes/Color.cpp \
-                   ../../Classes/Drawable.cpp \
-                   ../../Classes/EditorLayer.cpp \
-                   ../../Classes/GameScene.cpp \
-                   ../../Classes/MapGuiLayer.cpp \
-                   ../../Classes/MapProjector.cpp \
-                   ../../Classes/PlayersProfiles.cpp \
-                   ../../Classes/Region.cpp \
-                   ../../Classes/RegionInfoLayer.cpp \
-                   ../../Classes/Town.cpp \
-                   ../../Classes/TownInfoLayer.cpp \
-                   ../../Classes/Vector2.cpp \
-                   ../../Classes/World.cpp \
-                   ../../Classes/WorldLoader.cpp \
-                   ../../Classes/WorldMapLayer.cpp \
-                   ../../Classes/Log.cpp \
-                   ../../Classes/Task.cpp \
-                   ../../Classes/TaskManager.cpp \
-                   ../../Classes/pugixml/pugixml.cpp
+				   	../../Classes/Application.cpp \
+				   	../../Classes/ArbitraryHull.cpp \
+				   	../../Classes/Cell.cpp \
+				   	../../Classes/CellGameInterface.cpp \
+				   	../../Classes/Color.cpp \
+				   	../../Classes/Drawable.cpp \
+				   	../../Classes/EditorLayer.cpp \
+				   	../../Classes/FileUtils.cpp \
+				   	../../Classes/GameScene.cpp \
+				   	../../Classes/Log.cpp \
+				   	../../Classes/MapGuiLayer.cpp \
+				   	../../Classes/MapProjector.cpp \
+				   	../../Classes/PlayersProfiles.cpp \
+				   	../../Classes/Region.cpp \
+				   	../../Classes/RegionInfoLayer.cpp \
+				   	../../Classes/Task.cpp \
+				   	../../Classes/TaskManager.cpp \
+				   	../../Classes/Town.cpp \
+				   	../../Classes/TownInfoLayer.cpp \
+				   	../../Classes/Vector2.cpp \
+				   	../../Classes/World.cpp \
+				   	../../Classes/WorldLoader.cpp \
+				   	../../Classes/WorldMapLayer.cpp \
+                  	../../dependencies/pugixml-1.4/pugixml.cpp
+                   
 
-LOCAL_C_INCLUDES := $(LOCAL_PATH)/../../Classes
+LOCAL_C_INCLUDES := $(LOCAL_PATH)/../../Classes \
+					$(LOCAL_PATH)/../../dependencies/boost_1_56_0 \
+					$(LOCAL_PATH)/../../dependencies/lua-5.1 \
+					$(LOCAL_PATH)/../../dependencies/luabind-0.9.1 \
+					$(LOCAL_PATH)/../../dependencies/pugixml-1.4 \
 
 LOCAL_WHOLE_STATIC_LIBRARIES := cocos2dx_static
 LOCAL_WHOLE_STATIC_LIBRARIES += cocosdenshion_static
