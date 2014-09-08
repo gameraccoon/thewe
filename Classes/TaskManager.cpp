@@ -12,9 +12,9 @@ TaskManager::TaskManager()
 	: _isTasksFilled(false)
 {
 	std::string fullPath = cocos2d::FileUtils::getInstance()->fullPathForFilename("tasks.lua");
-	/*_luaScript = new LuaInstance();
-	_luaScript->BindClass<Log>();
-	_luaScript->ExecScriptFromFile(fullPath.c_str());*/
+//	_luaScript = new LuaInstance();
+//	_luaScript->BindClass<Log>();
+//	_luaScript->ExecScriptFromFile(fullPath.c_str());
 }
 
 TaskManager::~TaskManager()

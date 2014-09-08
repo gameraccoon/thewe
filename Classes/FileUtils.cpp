@@ -8,6 +8,6 @@ std::string Utils::GetResourcesPath()
 #if CC_TARGET_PLATFORM == CC_PLATFORM_WIN32
 	return "../../Resources/";
 #else
-	return "./";
+	return "";
 #endif
 }

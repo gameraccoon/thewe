@@ -120,6 +120,8 @@ void WorldMapLayer::onTouchesBegan(const std::vector<cocos2d::Touch* > &touches,
 		{
 			_cellMenu->DisappearWithAnimation();
 		}
+
+		ResetTouches();
 	}
 }
 
@@ -127,44 +129,50 @@ void WorldMapLayer::onTouchesEnded(const std::vector<cocos2d::Touch* > &touches,
 {
 	if (_isInputEnabled)
 	{
-		cocos2d::Touch *touch = touches.at(0);
-		Vector2 point = touch->getLocation();
-		Vector2 v = _touchFirstPos - point;
-		
-		const float size = v.Size();
-		const float tolerance = 5.0f;
-
-		if (size <= tolerance)
+		if (touches.size() == 1)
 		{
+			cocos2d::Touch *touch = touches.at(0);
+			Vector2 point = touch->getLocation();
+			Vector2 v = _touchFirstPos - point;
+
 			Cell::WeakPtr cell = _GetCellUnderPoint(point);
-			if (!cell.expired())
-			{
-				Vector2 cell_pos = cell.lock()->GetInfo().location;
-				Vector2 menu_pos = _mapProjector->ProjectOnScreen(cell_pos);
 
-				_cellMenu->DisappearImmedaitely();
-				_cellMenu->AppearWithAnimation(cell, menu_pos);
-				
-				return;
-			}
-			else
-			{
-				_cellMenu->DisappearWithAnimation();		
-			}
+			const float size = v.Size();
+			const float tolerance = 5.0f;
 
-			Town::WeakPtr town = _GetTownUnderPoint(point);
-			_gameScene->ShowTownInfo(town);
-			if (!town.expired())
+			if (size <= tolerance)
 			{
-				_OnTownSelect(town);
-				return;
-			}
+				Cell::WeakPtr cell = _GetCellUnderPoint(point);
+				if (!cell.expired())
+				{
+					Vector2 cell_pos = cell.lock()->GetInfo().location;
+					Vector2 menu_pos = _mapProjector->ProjectOnScreen(cell_pos);
 
-			Region::WeakPtr region = _GetRegionUnderPoint(point);
-			if (!region.expired())
-			{
-				dynamic_cast<GameScene*>(this->getParent())->ShowRegionInfo(region);
-				return;
+
+					_cellMenu->DisappearImmedaitely();
+					_cellMenu->AppearWithAnimation(cell, menu_pos);
+
+					return;
+				}
+				else
+				{
+					_cellMenu->DisappearWithAnimation();		
+				}
+
+				Town::WeakPtr town = _GetTownUnderPoint(point);
+				_gameScene->ShowTownInfo(town);
+				if (!town.expired())
+				{
+					_OnTownSelect(town);
+					return;
+				}
+
+				Region::WeakPtr region = _GetRegionUnderPoint(point);
+				if (!region.expired())
+				{
+					dynamic_cast<GameScene*>(this->getParent())->ShowRegionInfo(region);
+					return;
+				}
 			}
 		}
 	}
@@ -174,13 +182,54 @@ void WorldMapLayer::onTouchesMoved(const std::vector<cocos2d::Touch* > &touches,
 {
 	_UpdateNetwork();
 
-	if (_isInputEnabled)
+	if (_isInputEnabled && touches.size() > 0)
 	{
-		cocos2d::Touch *touch = touches.at(0);
-
-		_mapProjector->ShiftView(-_touchLastPoint + touch->getLocation());
-		_touchLastPoint = touch->getLocation();
+		if (!_isTouchesCountUpdated && (unsigned)_lastTouchesCount == touches.size())
+		{
+			RecalculateTouches(touches, true);
+		}
+		else
+		{
+			RecalculateTouches(touches, false);
+		}
 	}
+}
+
+void WorldMapLayer::RecalculateTouches(const std::vector<cocos2d::Touch* > &touches, bool updateView)
+{
+	_lastTouchesCount = touches.size();
+
+	// положение средней точки между всеми тачами
+	Vector2 newTouchPoint(0.0f, 0.0f);
+	for (const cocos2d::Touch* touch : touches)
+	{
+		newTouchPoint += touch->getLocation();
+	}
+	newTouchPoint /= _lastTouchesCount;
+
+	float newAvgDistance = 0;
+	for (const cocos2d::Touch* touch : touches)
+	{
+		newAvgDistance += (newTouchPoint - touch->getLocation()).Size();
+	}
+	newAvgDistance /= _lastTouchesCount;
+
+	if (updateView)
+	{
+		_mapProjector->ShiftView(newTouchPoint - _touchesCenter);
+		if (_avgTouchDistance > 0.01 && newAvgDistance > 0.01)
+		_mapProjector->SetScale(_mapProjector->GetScale() * (newAvgDistance / _avgTouchDistance));
+	}
+
+	_avgTouchDistance = newAvgDistance;
+	_touchesCenter = newTouchPoint;
+
+	_isTouchesCountUpdated = false;
+}
+
+void WorldMapLayer::ResetTouches()
+{
+	_isTouchesCountUpdated = true;
 }
 
 Region::WeakPtr WorldMapLayer::_GetRegionUnderPoint(const Vector2& point) const
