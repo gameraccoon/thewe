@@ -4,7 +4,7 @@
 #include <iostream>
 
 #include "Log.h"
-#include "LuaInstance.h"
+//#include "LuaInstance.h"
 
 #include <cocos2d.h>
 
@@ -12,14 +12,14 @@ TaskManager::TaskManager()
 	: _isTasksFilled(false)
 {
 	std::string fullPath = cocos2d::FileUtils::getInstance()->fullPathForFilename("tasks.lua");
-	_luaScript = new LuaInstance();
+	/*_luaScript = new LuaInstance();
 	_luaScript->BindClass<Log>();
-	_luaScript->ExecScriptFromFile(fullPath.c_str());
+	_luaScript->ExecScriptFromFile(fullPath.c_str());*/
 }
 
 TaskManager::~TaskManager()
 {
-	delete _luaScript;
+	//delete _luaScript;
 }
 
 TaskManager& TaskManager::Instance()

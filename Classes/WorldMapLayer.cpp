@@ -5,7 +5,6 @@
 #include "GameScene.h"
 #include "MapGuiLayer.h"
 #include "TaskManager.h"
-#include "CellGameInterface.h"
 #include "Log.h"
 
 WorldMapLayer::WorldMapLayer(GameScene *gameScene, MapProjector* projector)
@@ -69,6 +68,10 @@ bool WorldMapLayer::init(void)
 	// ставим скейл, чтобы экран правильно отмасштабировался
 	_mapProjector->SetScale(1.0f);
 
+	_cellMenu = new CellMenuSelector();
+	_cellMenu->autorelease();
+	addChild(_cellMenu, 3);
+
 	this->setTouchEnabled(true);
 	this->setKeyboardEnabled(true);
 
@@ -90,7 +93,7 @@ void WorldMapLayer::SetGuiEnabled(bool isEnabled)
 	else if (!_mapGui && isEnabled)
 	{
 		_mapGui = new MapGuiLayer(_mapProjector);
-		addChild(_mapGui, 3);
+		addChild(_mapGui, 4);
 		_mapGui->autorelease();
 		_mapProjector->SetScale(_mapProjector->GetScale());
 	}
@@ -109,14 +112,14 @@ void WorldMapLayer::onTouchesBegan(const std::vector<cocos2d::Touch* > &touches,
 {
 	if (_isInputEnabled)
 	{
-		if (_IsCellGameInterfaceOnScreen())
-		{
-			_HideCellGameInterface();
-		}
-
-		cocos2d::Touch *touch = touches.at(0);//dynamic_cast<cocos2d::CCTouch*>(touches->anyObject());
+		cocos2d::Touch *touch = touches.at(0);
 		_touchLastPoint = touch->getLocation();
 		_touchFirstPos = touch->getLocation();
+
+		if (_cellMenu->isVisible() && _GetCellUnderPoint(_touchLastPoint).expired())
+		{
+			_cellMenu->DisappearWithAnimation();
+		}
 	}
 }
 
@@ -124,7 +127,7 @@ void WorldMapLayer::onTouchesEnded(const std::vector<cocos2d::Touch* > &touches,
 {
 	if (_isInputEnabled)
 	{
-		cocos2d::Touch *touch = touches.at(0);//dynamic_cast<cocos2d::CCTouch *>(touches->anyObject());
+		cocos2d::Touch *touch = touches.at(0);
 		Vector2 point = touch->getLocation();
 		Vector2 v = _touchFirstPos - point;
 		
@@ -136,14 +139,17 @@ void WorldMapLayer::onTouchesEnded(const std::vector<cocos2d::Touch* > &touches,
 			Cell::WeakPtr cell = _GetCellUnderPoint(point);
 			if (!cell.expired())
 			{
-				_HideCellGameInterface();
-				_ShowCellGameInterface(cell.lock());
+				Vector2 cell_pos = cell.lock()->GetInfo().location;
+				Vector2 menu_pos = _mapProjector->ProjectOnScreen(cell_pos);
+
+				_cellMenu->DisappearImmedaitely();
+				_cellMenu->AppearWithAnimation(cell, menu_pos);
 				
 				return;
 			}
 			else
 			{
-				_HideCellGameInterface();			
+				_cellMenu->DisappearWithAnimation();		
 			}
 
 			Town::WeakPtr town = _GetTownUnderPoint(point);
@@ -174,33 +180,6 @@ void WorldMapLayer::onTouchesMoved(const std::vector<cocos2d::Touch* > &touches,
 
 		_mapProjector->ShiftView(-_touchLastPoint + touch->getLocation());
 		_touchLastPoint = touch->getLocation();
-	}
-}
-
-bool WorldMapLayer::_IsCellGameInterfaceOnScreen(void) const
-{
-	return _cellMenu != nullptr;
-}
-
-void WorldMapLayer::_ShowCellGameInterface(Cell::WeakPtr cell)
-{
-	if (!_cellMenu)
-	{
-		Vector2 cell_pos = cell.lock()->GetInfo().location;
-		Vector2 menu_pos = _mapProjector->ProjectOnScreen(cell_pos);
-
-		_cellMenu = new CellMenuSelector(cell, menu_pos);
-		addChild(_cellMenu, 4);
-	}
-}
-
-void WorldMapLayer::_HideCellGameInterface(void)
-{
-	if (_cellMenu)
-	{
-		removeChild(_cellMenu, true);
-		_cellMenu->release();
-		_cellMenu = nullptr;
 	}
 }
 
@@ -335,6 +314,10 @@ void WorldMapLayer::ModifyZoom(float multiplier)
 	_UpdateNetwork();
 }
 
+void WorldMapLayer::HideCellGameInterface(void)
+{
+	_cellMenu->DisappearWithAnimation();
+}
 
 void WorldMapLayer::_UpdateNetwork()
 {

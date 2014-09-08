@@ -4,22 +4,44 @@
 #include <cocos2d.h>
 
 #include "Cell.h"
-#include "WorldMapLayer.h"
 #include "TaskManager.h"
 
 class CellMenuSelector : public cocos2d::Layer
 {
 public:
-	CellMenuSelector(Cell::WeakPtr cell, const Vector2 &position);
+	CellMenuSelector(void);
 		
 	virtual bool init() override;
+	virtual void update(float dt) override;
+
+	bool IsCursorOnMenu(const Vector2 &cursorPos) const;
+	
+	void AppearImmediately(Cell::WeakPtr cell, const Vector2 &position);
+	void AppearWithAnimation(Cell::WeakPtr cell, const Vector2 &position);
+	void DisappearImmedaitely(void);
+	void DisappearWithAnimation(void);
 
 private:
+	enum CELL_MENU_TAGS
+	{
+		CELL_OPEN_TASKS = 0,
+		CELL_OPEN_INFO,
+		CELL_OPEN_SPINOFF,
+		CELL_NUM_TAGS
+	};
+
+	typedef std::vector<cocos2d::MenuItemImage *> ButtonsList;
+
+private:
+	void _PrepearButtonToAppear(cocos2d::MenuItemImage *item, Vector2 pos);
+	void _PrepearButtonToDisappear(cocos2d::MenuItemImage *item);
+	void _MenuInputListener(cocos2d::Ref *sender);
+	bool _IsAnimationFinished(void);
+
 	Cell::WeakPtr _cell;
-
-	cocos2d::Sprite *_test;
-
+	bool _isDisappearing;
 	Vector2 _position;
+	ButtonsList _button;
 };
 
 #endif

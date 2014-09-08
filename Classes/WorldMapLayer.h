@@ -7,11 +7,10 @@
 #include "MapProjector.h"
 #include "Region.h"
 #include "Cell.h"
-
+#include "CellGameInterface.h"
 #include "TownInfoLayer.h"
 
 class GameScene;
-class CellMenuSelector;
 
 class WorldMapLayer : public cocos2d::Layer
 {
@@ -27,6 +26,7 @@ public:
 	void onTouchesMoved(const std::vector<cocos2d::Touch* > &touches, cocos2d::Event* event) override;
 
 	void ModifyZoom(float multiplier);
+	void HideCellGameInterface(void);
 
 	void SetMapInputEnabled(bool isEnabled);
 	void SetGuiEnabled(bool isEnabled);
@@ -45,11 +45,6 @@ private:
 	GameScene *_gameScene;
 
 	Cell::WeakPtr _nextCellParent;
-
-	bool _IsCellGameInterfaceOnScreen(void) const;
-
-	void _ShowCellGameInterface(Cell::WeakPtr cell);
-	void _HideCellGameInterface(void);
 
 	Region::WeakPtr _GetRegionUnderPoint(const Vector2& point) const;
 	Cell::WeakPtr _GetCellUnderPoint(const Vector2& point) const;

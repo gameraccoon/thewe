@@ -85,6 +85,8 @@ void MapGuiLayer::_MenuInputListener(cocos2d::Ref *sender)
 {
 	cocos2d::MenuItemImage *item = dynamic_cast<cocos2d::MenuItemImage*>(sender);
 
+	dynamic_cast<WorldMapLayer*>(getParent())->HideCellGameInterface();
+
 	int tag = item->getTag();
 
 	switch (tag)

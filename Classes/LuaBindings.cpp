@@ -1,4 +1,5 @@
 #include "LuaInstance.h"
+
 #include <luabind/luabind.hpp>
 
 #include "Log.h"
