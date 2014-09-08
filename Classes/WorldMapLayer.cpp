@@ -68,7 +68,7 @@ bool WorldMapLayer::init(void)
 	// ставим скейл, чтобы экран правильно отмасштабировался
 	_mapProjector->SetScale(1.0f);
 
-	_cellMenu = new CellMenuSelector();
+	_cellMenu = new CellMenuSelector(_mapProjector);
 	_cellMenu->autorelease();
 	addChild(_cellMenu, 3);
 

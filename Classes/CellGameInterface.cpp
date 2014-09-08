@@ -1,7 +1,8 @@
 #include "CellGameInterface.h"
 
-CellMenuSelector::CellMenuSelector(void)
-	: _isDisappearing(false)
+CellMenuSelector::CellMenuSelector(MapProjector *proj)
+	: _projector(proj)
+	, _isDisappearing(false)
 {
 	init();
 }
@@ -19,18 +20,18 @@ bool CellMenuSelector::init()
 		_button.resize(CELL_NUM_TAGS);
 		_button[CELL_OPEN_TASKS] = MenuItemImage::create("1_norm.png", "1_press.png", CC_CALLBACK_1(CellMenuSelector::_MenuInputListener, this));
 		_button[CELL_OPEN_INFO] = MenuItemImage::create("2_norm.png", "2_press.png", CC_CALLBACK_1(CellMenuSelector::_MenuInputListener, this));
-		_button[CELL_OPEN_SPINOFF] = MenuItemImage::create("2_norm.png", "2_press.png", CC_CALLBACK_1(CellMenuSelector::_MenuInputListener, this));
+		_button[CELL_OPEN_SPINOFF] = MenuItemImage::create("3_norm.png", "3_press.png", CC_CALLBACK_1(CellMenuSelector::_MenuInputListener, this));
 
 		_button[CELL_OPEN_TASKS]->setTag(CELL_OPEN_TASKS);
 		_button[CELL_OPEN_INFO]->setTag(CELL_OPEN_INFO);
 		_button[CELL_OPEN_SPINOFF]->setTag(CELL_OPEN_SPINOFF);
 	}
 
-	cocos2d::Menu *menu = cocos2d::Menu::create(_button[CELL_OPEN_TASKS],
+	_menu = cocos2d::Menu::create(_button[CELL_OPEN_TASKS],
 		_button[CELL_OPEN_INFO], _button[CELL_OPEN_SPINOFF], nullptr);
-	menu->setPosition(0.0f, 0.0f);
+	_menu->setPosition(_position);
 
-	addChild(menu, 0);
+	addChild(_menu, 0);
 	scheduleUpdate();
 	setVisible(false);
 
@@ -43,6 +44,14 @@ void CellMenuSelector::update(float dt)
 	{
 		setVisible(false);
 		_isDisappearing = false;
+	}
+
+	if (isVisible())
+	{
+		Vector2 initialPos = _cell.lock()->GetInfo().location;
+		Vector2 updatedPos = _projector->ProjectOnScreen(initialPos);
+
+		_menu->setPosition(updatedPos);
 	}
 }
 
@@ -77,6 +86,8 @@ void CellMenuSelector::AppearWithAnimation(Cell::WeakPtr cell, const Vector2 &po
 	_cell = cell;
 	_position = position;
 
+	_menu->setPosition(_position);
+
 	cocos2d::Vec2 dir(0.0f, 1.0f);
 	const float dist = 45.0f;
 	const float angle = 2.0f * 3.14159265f / (float)CELL_NUM_TAGS;
@@ -93,7 +104,7 @@ void CellMenuSelector::AppearWithAnimation(Cell::WeakPtr cell, const Vector2 &po
 		}
 
 		item->stopAllActions();
-		_PrepearButtonToAppear(item, _position + dir * dist);
+		_PrepearButtonToAppear(item, dir * dist);
 	}
 
 	setVisible(true);
@@ -126,10 +137,11 @@ void CellMenuSelector::_PrepearButtonToAppear(cocos2d::MenuItemImage *item, Vect
 {
 	if (!item)
 	{
+		assert(false);
 		return;
 	}
 
-	item->setPosition(_position);
+	item->setPosition(cocos2d::Vec2::ZERO);
 	item->setScale(0.4f);
 	item->setOpacity(0);
 
@@ -149,10 +161,11 @@ void CellMenuSelector::_PrepearButtonToDisappear(cocos2d::MenuItemImage *item)
 {
 	if (!item)
 	{
+		assert(false);
 		return;
 	}
 	
-	cocos2d::MoveTo *move = cocos2d::MoveTo::create(0.35f, _position);
+	cocos2d::MoveTo *move = cocos2d::MoveTo::create(0.35f, cocos2d::Vec2::ZERO);
 	cocos2d::ScaleTo *scale = cocos2d::ScaleTo::create(0.35f, 0.4f, 0.4f);
 	cocos2d::FadeOut *fade = cocos2d::FadeOut::create(0.25f);
 

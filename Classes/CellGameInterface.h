@@ -9,7 +9,7 @@
 class CellMenuSelector : public cocos2d::Layer
 {
 public:
-	CellMenuSelector(void);
+	CellMenuSelector(MapProjector *proj);
 		
 	virtual bool init() override;
 	virtual void update(float dt) override;
@@ -37,6 +37,10 @@ private:
 	void _PrepearButtonToDisappear(cocos2d::MenuItemImage *item);
 	void _MenuInputListener(cocos2d::Ref *sender);
 	bool _IsAnimationFinished(void);
+
+	MapProjector *_projector;
+
+	cocos2d::Menu *_menu;
 
 	Cell::WeakPtr _cell;
 	bool _isDisappearing;
