@@ -148,7 +148,6 @@ void WorldMapLayer::onTouchesEnded(const std::vector<cocos2d::Touch* > &touches,
 					Vector2 cell_pos = cell.lock()->GetInfo().location;
 					Vector2 menu_pos = _mapProjector->ProjectOnScreen(cell_pos);
 
-
 					_cellMenu->DisappearImmedaitely();
 					_cellMenu->AppearWithAnimation(cell, menu_pos);
 

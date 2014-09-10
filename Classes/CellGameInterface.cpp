@@ -1,5 +1,48 @@
 #include "CellGameInterface.h"
 
+class CellTasksScreen : public cocos2d::Layer
+{
+public:
+	CellTasksScreen(Cell::WeakPtr cell)
+		: _cell(cell)
+	{
+		init();
+	}
+
+	virtual bool init(void) override
+	{
+		if (!cocos2d::Layer::init())
+		{
+			return false;
+		}
+		
+		cocos2d::Point screen = cocos2d::Director::getInstance()->getVisibleSize();
+		cocos2d::Point origin = cocos2d::Director::getInstance()->getVisibleOrigin();
+		cocos2d::Point center = origin + screen / 2.0f;
+		
+		cocos2d::ScaleTo *scale = cocos2d::ScaleTo::create(0.8f, 1.0f, 1.0f);
+		cocos2d::FadeIn *fade = cocos2d::FadeIn::create(0.5f);
+		
+		cocos2d::EaseElasticOut *elastic_scale = cocos2d::EaseElasticOut::create(scale, 5.0f);
+
+		_bkgDraw = cocos2d::Sprite::create("cell-menu-bkg.png");
+		_bkgDraw->setPosition(center);
+		_bkgDraw->setScale(0.01f);
+		_bkgDraw->setOpacity(0);
+		_bkgDraw->runAction(elastic_scale);
+		_bkgDraw->runAction(fade);
+
+		addChild(_bkgDraw, 0);
+
+		return true;
+	}
+	
+private:
+	Cell::WeakPtr _cell;
+
+	cocos2d::Sprite *_bkgDraw;
+};
+
 CellMenuSelector::CellMenuSelector(MapProjector *proj)
 	: _projector(proj)
 	, _isDisappearing(false)
@@ -26,7 +69,7 @@ bool CellMenuSelector::init()
 		_button[CELL_OPEN_INFO]->setTag(CELL_OPEN_INFO);
 		_button[CELL_OPEN_SPINOFF]->setTag(CELL_OPEN_SPINOFF);
 	}
-
+	
 	_menu = cocos2d::Menu::create(_button[CELL_OPEN_TASKS],
 		_button[CELL_OPEN_INFO], _button[CELL_OPEN_SPINOFF], nullptr);
 	_menu->setPosition(_position);
@@ -64,7 +107,7 @@ bool CellMenuSelector::IsCursorOnMenu(const Vector2 &cursorPos) const
 			return true;
 		}
 	}
-
+	
 	return false;
 }
 	
@@ -179,7 +222,29 @@ void CellMenuSelector::_PrepearButtonToDisappear(cocos2d::MenuItemImage *item)
 
 void CellMenuSelector::_MenuInputListener(cocos2d::Ref *sender)
 {
-	cocos2d::Ref *ref = sender;
+	cocos2d::MenuItemImage *item = dynamic_cast<cocos2d::MenuItemImage *>(sender);
+
+	CELL_MENU_TAGS tag = (CELL_MENU_TAGS)item->getTag();
+
+	switch (tag)
+	{
+		case CELL_OPEN_TASKS:
+		{
+			CellTasksScreen *tasksScr = new CellTasksScreen(_cell);
+			tasksScr->autorelease();
+
+			addChild(tasksScr);
+
+			break;
+		}
+
+		case CELL_OPEN_INFO:
+			break;
+		case CELL_OPEN_SPINOFF:
+			break;
+
+		default: break;
+	};
 }
 
 bool CellMenuSelector::_IsAnimationFinished(void)
