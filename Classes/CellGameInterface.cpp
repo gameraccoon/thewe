@@ -1,5 +1,7 @@
 #include "CellGameInterface.h"
 
+#include "WorldMapLayer.h"
+
 class CellTasksScreen : public cocos2d::Layer
 {
 public:
@@ -22,7 +24,7 @@ public:
 		
 		cocos2d::ScaleTo *scale = cocos2d::ScaleTo::create(0.8f, 1.0f, 1.0f);
 		cocos2d::FadeIn *fade = cocos2d::FadeIn::create(0.5f);
-		
+
 		cocos2d::EaseElasticOut *elastic_scale = cocos2d::EaseElasticOut::create(scale, 5.0f);
 
 		_bkgDraw = cocos2d::Sprite::create("cell-menu-bkg.png");
@@ -31,7 +33,7 @@ public:
 		_bkgDraw->setOpacity(0);
 		_bkgDraw->runAction(elastic_scale);
 		_bkgDraw->runAction(fade);
-
+		
 		addChild(_bkgDraw, 0);
 
 		return true;
@@ -233,7 +235,8 @@ void CellMenuSelector::_MenuInputListener(cocos2d::Ref *sender)
 			CellTasksScreen *tasksScr = new CellTasksScreen(_cell);
 			tasksScr->autorelease();
 
-			addChild(tasksScr);
+			dynamic_cast<WorldMapLayer *>(getParent())->ShowCellGameInterface(tasksScr);
+			DisappearWithAnimation();
 
 			break;
 		}

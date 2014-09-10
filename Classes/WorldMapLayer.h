@@ -31,6 +31,9 @@ public:
 	void SetMapInputEnabled(bool isEnabled);
 	void SetGuiEnabled(bool isEnabled);
 	void SetNextCellParent(Cell::WeakPtr parent);
+	void ShowCellGameInterface(cocos2d::Layer *layer);
+
+	void onKeyReleased(cocos2d::EventKeyboard::KeyCode key, cocos2d::Event *event) override;
 
 private:
 	enum class E_MAP_OBJECT_TAG
@@ -60,6 +63,7 @@ private:
 	void ResetTouches();
 
 	CellMenuSelector *_cellMenu;
+	cocos2d::Layer *_cellGameInterface;
 
 	Vector2 _touchLastPoint;
 	Vector2 _touchFirstPos;

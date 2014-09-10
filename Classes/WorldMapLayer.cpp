@@ -14,6 +14,7 @@ WorldMapLayer::WorldMapLayer(GameScene *gameScene, MapProjector* projector)
 	, _gameScene(gameScene)
 	, _nextCellParent()
 	, _cellMenu(nullptr)
+	, _cellGameInterface(nullptr)
 {
 	init();
 }
@@ -102,6 +103,31 @@ void WorldMapLayer::SetGuiEnabled(bool isEnabled)
 void WorldMapLayer::SetNextCellParent(Cell::WeakPtr parent)
 {
 	_nextCellParent = parent;
+}
+
+void WorldMapLayer::ShowCellGameInterface(cocos2d::Layer *layer)
+{
+	_cellGameInterface = layer;
+	SetGuiEnabled(false);
+	SetMapInputEnabled(false);
+
+	addChild(_cellGameInterface, 4);
+}
+
+void WorldMapLayer::onKeyReleased(cocos2d::EventKeyboard::KeyCode key, cocos2d::Event *event)
+{
+	if (key == cocos2d::EventKeyboard::KeyCode::KEY_ESCAPE)
+	{
+		if (_cellGameInterface)
+		{
+			removeChild(_cellGameInterface);
+			_cellGameInterface->release();
+			_cellGameInterface = nullptr;
+
+			SetGuiEnabled(true);
+			SetMapInputEnabled(true);
+		}
+	}
 }
 
 void WorldMapLayer::menuCloseCallback(cocos2d::Ref *Sender)

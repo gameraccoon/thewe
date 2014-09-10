@@ -33,20 +33,7 @@ void TaskManager::RunTask(Cell::WeakPtr &cell, const Task::Info* info, float sta
 	RunnedTaskInfo runnedTaskInfo;
 	runnedTaskInfo.cell = cell;
 	runnedTaskInfo.task = Task::Create(info, startTime);
-	Cell::Ptr lockedCell = cell.lock();
-	if (cell.expired())
-	{
-		Log::Instance().writeWarning("Trying to access dead link to cell");
-		return;
-	}
-
-	if (cell->GetCurrentTask() == nullptr)
-	{
-		Log::Instance().writeWarning("Trying to add task to busy cell");
-		return;
-	}
-
-	lockedCell->AddCurrentTask(runnedTaskInfo.task);
+	cell.lock()->AddCurrentTask(runnedTaskInfo.task);
 
 	_runnedTasks.push_back(runnedTaskInfo);
 }
