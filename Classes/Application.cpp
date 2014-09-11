@@ -2,6 +2,7 @@
 
 #include "GameScene.h"
 #include "MainMenuScene.h"
+#include "SplashScreenScene.h"
 #include "Vector2.h"
 #include "PlayersProfiles.h"
 #include "FileUtils.h"
@@ -38,7 +39,6 @@ bool AppDelegate::applicationDidFinishLaunching()
 	cocos2d::FileUtils::getInstance()->addSearchPath(basePath + "scripts");
 
 	director->setOpenGLView(glview);
-	director->setDisplayStats(true);
 	director->setAnimationInterval(1.0 / 60.0);
 
 #if CC_TARGET_PLATFORM != CC_PLATFORM_ANDROID && CC_TARGET_PLATFORM != CC_PLATFORM_IOS
@@ -48,27 +48,33 @@ bool AppDelegate::applicationDidFinishLaunching()
 
 	glview->setDesignResolutionSize(dr_w, dr_h, ResolutionPolicy::FIXED_HEIGHT);
 
-	GameScene* gameScene = new GameScene();
-	MainMenuScene* mainMenuScene = new MainMenuScene();
+	GameScene* gameScene = new GameScene(); // нет автоматического init()
+	MainMenuScene* mainMenuScene = new MainMenuScene(); // нет автоматического init()
+	SplashScreenScene* splashScreenScene = new SplashScreenScene();
 
 	// делаем основной - игровую сцену
 	director->runWithScene(gameScene);
 	// ставим поверх главное меню
 	director->pushScene(mainMenuScene);
-	// ToDo: поверх нужно будет добавлять SplashScreen
+	// ставим поверх всего SplashScreen
+	director->pushScene(splashScreenScene);
+	// готовимся выгрузить SplashScreen
+	splashScreenScene->autorelease();
 
 	// загружаем игровые данные
 	ProfilesManager::Instance().LoadProfiles();
 	WorldLoader::LoadGameInfo();
 	WorldLoader::LoadGameState();
 
-	// инициализируем графику
+	// отложенно инициализируем графику
 	mainMenuScene->init();
 	gameScene->init();
 
 	// регистрируем сцены в сборщике мусора
 	mainMenuScene->autorelease();
 	gameScene->autorelease();
+
+	director->setDisplayStats(true);
 
 	return true;
 }

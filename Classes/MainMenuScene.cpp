@@ -1,9 +1,6 @@
 #include "MainMenuScene.h"
 
-#include "WorldMapLayer.h"
-#include "RegionInfoLayer.h"
-#include "EditorLayer.h"
-#include "World.h"
+#include "Vector2.h"
 #include "Log.h"
 
 MainMenuScene::MainMenuScene(void)
