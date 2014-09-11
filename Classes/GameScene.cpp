@@ -4,6 +4,7 @@
 #include "RegionInfoLayer.h"
 #include "EditorLayer.h"
 #include "World.h"
+#include "Log.h"
 
 GameScene::GameScene(void)
 	: _mapProjector(Vector2(1390.0f, 1003.0f))
@@ -12,7 +13,11 @@ GameScene::GameScene(void)
 	, _worldMap(nullptr)
 	, _cellScreen(nullptr)
 {
-	init();
+}
+
+GameScene::~GameScene(void)
+{
+	Log::Instance().writeLog("GameScene unloaded sucessfully");
 }
 
 bool GameScene::init(void)
@@ -21,10 +26,6 @@ bool GameScene::init(void)
 	{
 		return false;
 	}
-
-	// долгая операция
-	WorldLoader::LoadGameInfo();
-	WorldLoader::LoadGameState();
 
 	_worldMap = new WorldMapLayer(this, &_mapProjector);
 	_townInfo = new TownInfoLayer();
@@ -72,7 +73,7 @@ void GameScene::ToggleEditor()
 {
 	if (!_RegionEditor)
 	{
-		ShowMap(); // изменяет стостояние _editor
+		ShowMap(); // РёР·РјРµРЅСЏРµС‚ СЃС‚РѕСЃС‚РѕСЏРЅРёРµ _editor
 		_RegionEditor = new EditorLayer(&_mapProjector);
 		addChild(_RegionEditor);
 		_RegionEditor->autorelease();

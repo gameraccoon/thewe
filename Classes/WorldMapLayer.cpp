@@ -121,7 +121,7 @@ void WorldMapLayer::onKeyReleased(cocos2d::EventKeyboard::KeyCode key, cocos2d::
 		if (_cellGameInterface)
 		{
 			removeChild(_cellGameInterface);
-			_cellGameInterface->release();
+			//_cellGameInterface->release();
 			_cellGameInterface = nullptr;
 
 			SetGuiEnabled(true);
