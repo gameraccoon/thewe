@@ -12,6 +12,21 @@ MainMenuScene::~MainMenuScene(void)
 	Log::Instance().writeLog("Main menu unloaded sucessfully");
 }
 
+void MainMenuScene::_AddButton(std::string imgNormal, std::string imgPressed, Vector2 position, MenuItemTag tag)
+{
+	cocos2d::MenuItem *button;
+
+	{
+		using namespace cocos2d;
+		button = cocos2d::MenuItemImage::create(imgNormal.c_str(), imgPressed.c_str(),
+			this, menu_selector(MainMenuScene::_MenuInputListener));
+	}
+
+	button->setPosition(position);
+	button->setTag(static_cast<int>(tag));
+	_buttons.insert(std::pair<MenuItemTag, cocos2d::MenuItem*>(tag, button));
+}
+
 bool MainMenuScene::init(void)
 {
 	if (!cocos2d::CCScene::init())
@@ -21,31 +36,21 @@ bool MainMenuScene::init(void)
 
 	cocos2d::Director *director = cocos2d::Director::getInstance();
 
-	{
-		using namespace cocos2d;
-		_btnRunGame = MenuItemImage::create("btn-start-game-normal.png", "btn-start-game-selected.png",
-			CC_CALLBACK_1(MainMenuScene::_MenuInputListener, this));
-		_btnTestScene1 = MenuItemImage::create("btn-test1-normal.png", "btn-test1-selected.png",
-			CC_CALLBACK_1(MainMenuScene::_MenuInputListener, this));
-		_btnExitGame = MenuItemImage::create("btn-exit-normal.png", "btn-exit-selected.png",
-			CC_CALLBACK_1(MainMenuScene::_MenuInputListener, this));
-	}
-
 	Vector2 client = director->getVisibleSize();
 	Vector2 origin = director->getVisibleOrigin();
 	Vector2 center(origin.x + client.x / 2.0f, origin.y + client.y - 100.0f);
 
-	_btnRunGame->setPosition(center - Vector2(0.0f, 0.0f));
-	_btnRunGame->setTag(MENU_ITEM_RUN_GAME);
-	_btnRunGame->setScale(3.0f);
-	_btnTestScene1->setPosition(center - Vector2(0.0f, 135.0f));
-	_btnTestScene1->setTag(MENU_ITEM_TEST_SCENE_1);
-	_btnTestScene1->setScale(3.0f);
-	_btnExitGame->setPosition(center - Vector2(0.0f, 270.0f));
-	_btnExitGame->setTag(MENU_ITEM_EXIT);
-	_btnExitGame->setScale(3.0f);
+	_AddButton("btn-menu_map-normal.png", "btn-menu_map-selected.png", center - Vector2(0.0f, 0.0f),
+			  MenuItemTag::MAP);
 
-	_mainMenu = cocos2d::Menu::create(_btnRunGame, _btnTestScene1, _btnExitGame, NULL);
+	// переводим map в массив
+	cocos2d::Vector<cocos2d::MenuItem*> v;
+	v.reserve(_buttons.size());
+	std::for_each(_buttons.begin(),_buttons.end(),
+		[&v](const std::map<MenuItemTag, cocos2d::MenuItem*>::value_type& p)
+		{ v.pushBack(p.second); });
+
+	_mainMenu = cocos2d::Menu::createWithArray(v);
 	_mainMenu->setPosition(0.0f, 0.0f);
 
 	addChild(_mainMenu);
@@ -55,21 +60,20 @@ bool MainMenuScene::init(void)
 
 void MainMenuScene::_MenuInputListener(cocos2d::Ref *sender)
 {
-	cocos2d::Director *director = cocos2d::Director::getInstance();
-	cocos2d::Scene *scene = NULL;
+	cocos2d::MenuItem *item = dynamic_cast<cocos2d::MenuItem*>(sender);
 
-	cocos2d::MenuItemImage *item = dynamic_cast<cocos2d::MenuItemImage*>(sender);
-
-	int tag = item->getTag();
+	MenuItemTag tag = static_cast<MenuItemTag>(item->getTag());
 
 	switch (tag)
 	{
-	case MENU_ITEM_RUN_GAME:
+	case MainMenuScene::MenuItemTag::MAP:
 		cocos2d::Director::getInstance()->popScene();
 		break;
-	case MENU_ITEM_TEST_SCENE_1:
+	case MainMenuScene::MenuItemTag::MESSAGES:
 		break;
-	case MENU_ITEM_EXIT:
+	case MainMenuScene::MenuItemTag::SETTINGS:
+		break;
+	case MainMenuScene::MenuItemTag::EXIT:
 		{
 			cocos2d::Director *director = cocos2d::Director::getInstance();
 			director->end();

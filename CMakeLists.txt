@@ -11,6 +11,7 @@ option(DEBUG_MODE "Debug or release?" ON)
 
 if(DEBUG_MODE)
   set(CMAKE_BUILD_TYPE DEBUG)
+	add_definitions(-D_DEBUG)
 else(DEBUG_MODE)
   set(CMAKE_BUILD_TYPE RELEASE)
 endif(DEBUG_MODE)

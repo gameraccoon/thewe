@@ -2,6 +2,7 @@
 #define MAIN_MENU_H
 
 #include <cocos2d.h>
+#include "Vector2.h"
 
 class MainMenuScene : public cocos2d::Scene
 {
@@ -11,23 +12,22 @@ public:
 
 	virtual bool init() override;
 
-	void _MenuInputListener(cocos2d::Ref *sender);
-
 private:
-	enum E_MENU_ITEMS_TAGS
+	enum class MenuItemTag
 	{
-		MENU_ITEM_RUN_GAME,
-		MENU_ITEM_TEST_SCENE_1,
-		MENU_ITEM_EXIT
+		MAP,
+		SETTINGS,
+		MESSAGES,
+		EXIT
 	};
 
 private:
-	cocos2d::MenuItemImage *_btnRunGame;
-	cocos2d::MenuItemImage *_btnTestScene1;
-	cocos2d::MenuItemImage *_btnExitGame;
+	std::map<MenuItemTag, cocos2d::MenuItem*> _buttons;
 	cocos2d::Menu *_mainMenu;
 
 private:
+	void _AddButton(std::string imgNormal, std::string imgPressed, Vector2 position, MenuItemTag tag);
+	void _MenuInputListener(cocos2d::CCObject *sender);
 };
 
 #endif // MAIN_MENU_H
