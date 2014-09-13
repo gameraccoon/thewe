@@ -17,8 +17,9 @@ private:
 	{
 		MAP,
 		SETTINGS,
-		MESSAGES,
-		EXIT
+		MAILBOX,
+		TEAM,
+		CHAT
 	};
 
 private:

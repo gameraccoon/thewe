@@ -3,7 +3,6 @@
 
 #include <cocos2d.h>
 #include <cocos-ext.h>
-#include <ui\CocosGUI.h>
 
 #include "Cell.h"
 #include "TaskManager.h"

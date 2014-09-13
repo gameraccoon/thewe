@@ -229,7 +229,7 @@ void CellMenuSelector::AppearWithAnimation(Cell::WeakPtr cell, const Vector2 &po
 	{
 		cocos2d::MenuItemImage *item = (*it);
 
-		// поворачиваем все векторы, кроме первого
+		// РїРѕРІРѕСЂР°С‡РёРІР°РµРј РІСЃРµ РІРµРєС‚РѕСЂС‹, РєСЂРѕРјРµ РїРµСЂРІРѕРіРѕ
 		if (it != _button.begin())
 		{
 			dir = dir.rotateByAngle(cocos2d::Vec2::ZERO, angle);

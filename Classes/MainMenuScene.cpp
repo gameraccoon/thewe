@@ -40,8 +40,20 @@ bool MainMenuScene::init(void)
 	Vector2 origin = director->getVisibleOrigin();
 	Vector2 center(origin.x + client.x / 2.0f, origin.y + client.y - 100.0f);
 
-	_AddButton("btn-menu_map-normal.png", "btn-menu_map-selected.png", center - Vector2(0.0f, 0.0f),
+	_AddButton("btn-menu_map-normal.png", "btn-menu_map-selected.png", center + Vector2(0.0f, -100.0f),
 			  MenuItemTag::MAP);
+
+	_AddButton("btn-mail-normal.png", "btn-mail-selected.png", center + Vector2(-300.0f, -270.0f),
+			  MenuItemTag::MAILBOX);
+
+	_AddButton("btn-chat-normal.png", "btn-chat-selected.png", center + Vector2(-100.0f, -270.0f),
+			  MenuItemTag::CHAT);
+
+	_AddButton("btn-command-normal.png", "btn-command-selected.png", center + Vector2(100.0f, -270.0f),
+			  MenuItemTag::TEAM);
+
+	_AddButton("btn-settings-normal.png", "btn-settings-selected.png", center + Vector2(300.0f, -270.0f),
+			  MenuItemTag::SETTINGS);
 
 	// переводим map в массив
 	cocos2d::Vector<cocos2d::MenuItem*> v;
@@ -69,15 +81,13 @@ void MainMenuScene::_MenuInputListener(cocos2d::Ref *sender)
 	case MainMenuScene::MenuItemTag::MAP:
 		cocos2d::Director::getInstance()->popScene();
 		break;
-	case MainMenuScene::MenuItemTag::MESSAGES:
+	case MainMenuScene::MenuItemTag::MAILBOX:
 		break;
 	case MainMenuScene::MenuItemTag::SETTINGS:
 		break;
-	case MainMenuScene::MenuItemTag::EXIT:
-		{
-			cocos2d::Director *director = cocos2d::Director::getInstance();
-			director->end();
-		}
+	case MainMenuScene::MenuItemTag::CHAT:
+		break;
+	case MainMenuScene::MenuItemTag::TEAM:
 		break;
 	default: break;
 	}
