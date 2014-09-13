@@ -31,9 +31,6 @@ public:
 	void SetMapInputEnabled(bool isEnabled);
 	void SetGuiEnabled(bool isEnabled);
 	void SetNextCellParent(Cell::WeakPtr parent);
-	void ShowCellGameInterface(cocos2d::Layer *layer);
-
-	void onKeyReleased(cocos2d::EventKeyboard::KeyCode key, cocos2d::Event *event) override;
 
 private:
 	enum class E_MAP_OBJECT_TAG

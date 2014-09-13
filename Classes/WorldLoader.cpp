@@ -209,7 +209,7 @@ bool WorldLoader::LoadGameState(void)
 		unsigned char* pBuffer = NULL;
 		ssize_t bufferSize = 0;
 		pBuffer = cocos2d::FileUtils::getInstance()->getFileData(fullPath.c_str(), "r", &bufferSize);
-		pugi::xml_parse_result r = doc.load_buffer(pBuffer,bufferSize);
+		pugi::xml_parse_result r = doc.load_buffer(pBuffer, bufferSize);
 
 
 		pugi::xml_node root = doc.first_child();

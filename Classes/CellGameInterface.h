@@ -2,14 +2,18 @@
 #define CELL_GAME_INTERFACE_H
 
 #include <cocos2d.h>
+#include <cocos-ext.h>
+#include <ui\CocosGUI.h>
 
 #include "Cell.h"
 #include "TaskManager.h"
 
+class WorldMapLayer;
+
 class CellMenuSelector : public cocos2d::Layer
 {
 public:
-	CellMenuSelector(MapProjector *proj);
+	CellMenuSelector(MapProjector *proj, WorldMapLayer *map);
 		
 	virtual bool init() override;
 	virtual void update(float dt) override;
@@ -20,6 +24,8 @@ public:
 	void AppearWithAnimation(Cell::WeakPtr cell, const Vector2 &position);
 	void DisappearImmedaitely(void);
 	void DisappearWithAnimation(void);
+
+	void OnCellMenuClosed(void);
 
 private:
 	enum CELL_MENU_TAGS
@@ -38,6 +44,7 @@ private:
 	void _MenuInputListener(cocos2d::Ref *sender);
 	bool _IsAnimationFinished(void);
 
+	WorldMapLayer *_worldMapLayer;
 	MapProjector *_projector;
 
 	cocos2d::Menu *_menu;

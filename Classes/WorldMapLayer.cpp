@@ -69,7 +69,7 @@ bool WorldMapLayer::init(void)
 	// ставим скейл, чтобы экран правильно отмасштабировался
 	_mapProjector->SetScale(1.0f);
 
-	_cellMenu = new CellMenuSelector(_mapProjector);
+	_cellMenu = new CellMenuSelector(_mapProjector, this);
 	_cellMenu->autorelease();
 	addChild(_cellMenu, 3);
 
@@ -103,31 +103,6 @@ void WorldMapLayer::SetGuiEnabled(bool isEnabled)
 void WorldMapLayer::SetNextCellParent(Cell::WeakPtr parent)
 {
 	_nextCellParent = parent;
-}
-
-void WorldMapLayer::ShowCellGameInterface(cocos2d::Layer *layer)
-{
-	_cellGameInterface = layer;
-	SetGuiEnabled(false);
-	SetMapInputEnabled(false);
-
-	addChild(_cellGameInterface, 4);
-}
-
-void WorldMapLayer::onKeyReleased(cocos2d::EventKeyboard::KeyCode key, cocos2d::Event *event)
-{
-	if (key == cocos2d::EventKeyboard::KeyCode::KEY_ESCAPE)
-	{
-		if (_cellGameInterface)
-		{
-			removeChild(_cellGameInterface);
-			_cellGameInterface->release();
-			_cellGameInterface = nullptr;
-
-			SetGuiEnabled(true);
-			SetMapInputEnabled(true);
-		}
-	}
 }
 
 void WorldMapLayer::menuCloseCallback(cocos2d::Ref *Sender)
