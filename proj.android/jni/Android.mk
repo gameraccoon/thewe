@@ -23,11 +23,13 @@ LOCAL_SRC_FILES := hellocpp/main.cpp \
 				   	../../Classes/FileUtils.cpp \
 				   	../../Classes/GameScene.cpp \
 				   	../../Classes/Log.cpp \
+				   	../../Classes/MainMenuScene.cpp \
 				   	../../Classes/MapGuiLayer.cpp \
 				   	../../Classes/MapProjector.cpp \
 				   	../../Classes/PlayersProfiles.cpp \
 				   	../../Classes/Region.cpp \
 				   	../../Classes/RegionInfoLayer.cpp \
+				   	../../Classes/SplashScreenScene.cpp \
 				   	../../Classes/Task.cpp \
 				   	../../Classes/TaskManager.cpp \
 				   	../../Classes/Town.cpp \

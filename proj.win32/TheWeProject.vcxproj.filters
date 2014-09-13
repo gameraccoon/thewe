@@ -93,6 +93,12 @@
     <ClCompile Include="..\Classes\FileUtils.cpp">
       <Filter>Classes</Filter>
     </ClCompile>
+    <ClCompile Include="..\Classes\MainMenuScene.cpp">
+      <Filter>Classes</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\SplashScreenScene.cpp">
+      <Filter>Classes</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="main.h">
@@ -174,6 +180,12 @@
       <Filter>Classes</Filter>
     </ClInclude>
     <ClInclude Include="..\Classes\FileUtils.h">
+      <Filter>Classes</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\MainMenuScene.h">
+      <Filter>Classes</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\SplashScreenScene.h">
       <Filter>Classes</Filter>
     </ClInclude>
   </ItemGroup>
