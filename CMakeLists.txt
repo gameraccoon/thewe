@@ -62,6 +62,7 @@ set(GAME_SRC
 	Classes/ArbitraryHull.cpp
 	Classes/Cell.cpp
 	Classes/CellGameInterface.cpp
+	Classes/CellTasksMenu.cpp
 	Classes/Color.cpp
 	Classes/Drawable.cpp
 	Classes/EditorLayer.cpp
