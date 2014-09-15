@@ -46,6 +46,7 @@ LOCAL_C_INCLUDES := $(LOCAL_PATH)/../../Classes \
 					$(LOCAL_PATH)/../../dependencies/lua-5.1 \
 					$(LOCAL_PATH)/../../dependencies/luabind-0.9.1 \
 					$(LOCAL_PATH)/../../dependencies/pugixml-1.4 \
+					$(LOCAL_PATH)/../../cocos2d/extensions
 
 LOCAL_WHOLE_STATIC_LIBRARIES := cocos2dx_static
 LOCAL_WHOLE_STATIC_LIBRARIES += cocosdenshion_static
@@ -55,7 +56,7 @@ LOCAL_WHOLE_STATIC_LIBRARIES += cocosdenshion_static
 # LOCAL_WHOLE_STATIC_LIBRARIES += spine_static
 # LOCAL_WHOLE_STATIC_LIBRARIES += cocostudio_static
 # LOCAL_WHOLE_STATIC_LIBRARIES += cocos_network_static
-# LOCAL_WHOLE_STATIC_LIBRARIES += cocos_extension_static
+LOCAL_WHOLE_STATIC_LIBRARIES += cocos_extension_static
 
 
 include $(BUILD_SHARED_LIBRARY)
@@ -68,4 +69,4 @@ $(call import-module,audio/android)
 # $(call import-module,editor-support/spine)
 # $(call import-module,editor-support/cocostudio)
 # $(call import-module,network)
-# $(call import-module,extensions)
+$(call import-module,extensions)
