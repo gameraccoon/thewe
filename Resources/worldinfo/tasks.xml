@@ -2,4 +2,22 @@
 <Tasks>
 	<Task Id="testTask1" Severity="0.4" Duration="15.0" MoralLevel="0.3" SuccessFn="TestMissionSuccess" FailFn="TestMissionFail" AbortFn="TestMissionAbort" />
 	<Task Id="testTask2" Severity="0.4" Duration="30.0" MoralLevel="0.7" SuccessFn="TestMissionSuccess" FailFn="TestMissionFail" AbortFn="TestMissionAbort" />
+	<Task Id="testTask3" Severity="0.4" Duration="30.0" MoralLevel="0.7" SuccessFn="TestMissionSuccess" FailFn="TestMissionFail" AbortFn="TestMissionAbort" />
+	<Task Id="testTask4" Severity="0.4" Duration="30.0" MoralLevel="0.7" SuccessFn="TestMissionSuccess" FailFn="TestMissionFail" AbortFn="TestMissionAbort" />
+	<Task Id="testTask5" Severity="0.4" Duration="30.0" MoralLevel="0.7" SuccessFn="TestMissionSuccess" FailFn="TestMissionFail" AbortFn="TestMissionAbort" />
+	<Task Id="testTask6" Severity="0.4" Duration="30.0" MoralLevel="0.7" SuccessFn="TestMissionSuccess" FailFn="TestMissionFail" AbortFn="TestMissionAbort" />
+	<Task Id="testTask7" Severity="0.4" Duration="30.0" MoralLevel="0.7" SuccessFn="TestMissionSuccess" FailFn="TestMissionFail" AbortFn="TestMissionAbort" />
+	<Task Id="testTask8" Severity="0.4" Duration="30.0" MoralLevel="0.7" SuccessFn="TestMissionSuccess" FailFn="TestMissionFail" AbortFn="TestMissionAbort" />
+	<Task Id="testTask9" Severity="0.4" Duration="30.0" MoralLevel="0.7" SuccessFn="TestMissionSuccess" FailFn="TestMissionFail" AbortFn="TestMissionAbort" />
+	<Task Id="testTask10" Severity="0.4" Duration="30.0" MoralLevel="0.7" SuccessFn="TestMissionSuccess" FailFn="TestMissionFail" AbortFn="TestMissionAbort" />
+	<Task Id="testTask11" Severity="0.4" Duration="30.0" MoralLevel="0.7" SuccessFn="TestMissionSuccess" FailFn="TestMissionFail" AbortFn="TestMissionAbort" />
+	<Task Id="testTask12" Severity="0.4" Duration="30.0" MoralLevel="0.7" SuccessFn="TestMissionSuccess" FailFn="TestMissionFail" AbortFn="TestMissionAbort" />
+	<Task Id="testTask13" Severity="0.4" Duration="30.0" MoralLevel="0.7" SuccessFn="TestMissionSuccess" FailFn="TestMissionFail" AbortFn="TestMissionAbort" />
+	<Task Id="testTask14" Severity="0.4" Duration="30.0" MoralLevel="0.7" SuccessFn="TestMissionSuccess" FailFn="TestMissionFail" AbortFn="TestMissionAbort" />
+	<Task Id="testTask15" Severity="0.4" Duration="30.0" MoralLevel="0.7" SuccessFn="TestMissionSuccess" FailFn="TestMissionFail" AbortFn="TestMissionAbort" />
+	<Task Id="testTask16" Severity="0.4" Duration="30.0" MoralLevel="0.7" SuccessFn="TestMissionSuccess" FailFn="TestMissionFail" AbortFn="TestMissionAbort" />
+	<Task Id="testTask17" Severity="0.4" Duration="30.0" MoralLevel="0.7" SuccessFn="TestMissionSuccess" FailFn="TestMissionFail" AbortFn="TestMissionAbort" />
+	<Task Id="testTask18" Severity="0.4" Duration="30.0" MoralLevel="0.7" SuccessFn="TestMissionSuccess" FailFn="TestMissionFail" AbortFn="TestMissionAbort" />
+	<Task Id="testTask19" Severity="0.4" Duration="30.0" MoralLevel="0.7" SuccessFn="TestMissionSuccess" FailFn="TestMissionFail" AbortFn="TestMissionAbort" />
+	<Task Id="testTask20" Severity="0.4" Duration="30.0" MoralLevel="0.7" SuccessFn="TestMissionSuccess" FailFn="TestMissionFail" AbortFn="TestMissionAbort" />
 </Tasks>

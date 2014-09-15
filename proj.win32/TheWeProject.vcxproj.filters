@@ -99,6 +99,9 @@
     <ClCompile Include="..\Classes\SplashScreenScene.cpp">
       <Filter>Classes</Filter>
     </ClCompile>
+    <ClCompile Include="..\Classes\CellTasksMenu.cpp">
+      <Filter>Classes</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="main.h">
@@ -186,6 +189,9 @@
       <Filter>Classes</Filter>
     </ClInclude>
     <ClInclude Include="..\Classes\SplashScreenScene.h">
+      <Filter>Classes</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\CellTasksMenu.h">
       <Filter>Classes</Filter>
     </ClInclude>
   </ItemGroup>

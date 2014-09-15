@@ -49,9 +49,11 @@ private:
 	cocos2d::Menu *_menu;
 
 	Cell::WeakPtr _cell;
-	bool _isDisappearing;
 	Vector2 _position;
 	ButtonsList _button;
+
+	bool _isDisappearing;
+	const std::string _menuNodeName;
 };
 
 #endif

@@ -62,6 +62,7 @@ public:
 
 	/** Добавляем задание как выполненное */
 	void AddCompletedTask(const Task::CompletedTaskInfo& completedTask);
+
 private:
 
 	/** Установить ячейке родителя */
