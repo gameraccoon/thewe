@@ -1,10 +1,14 @@
 #include "MainMenuScene.h"
 
+#include "Color.h"
 #include "Vector2.h"
 #include "Log.h"
+#include "GameScene.h"
+#include "TransitionZoomFade.h"
 
-MainMenuScene::MainMenuScene(void)
+MainMenuScene::MainMenuScene(cocos2d::Scene* gameScene)
 {
+	_gameScene = gameScene;
 }
 
 MainMenuScene::~MainMenuScene(void)
@@ -19,7 +23,7 @@ void MainMenuScene::_AddButton(std::string imgNormal, std::string imgPressed, Ve
 	{
 		using namespace cocos2d;
 		button = cocos2d::MenuItemImage::create(imgNormal.c_str(), imgPressed.c_str(),
-			this, menu_selector(MainMenuScene::_MenuInputListener));
+			CC_CALLBACK_1(MainMenuScene::_MenuInputListener, this));
 	}
 
 	button->setPosition(position);
@@ -79,7 +83,13 @@ void MainMenuScene::_MenuInputListener(cocos2d::Ref *sender)
 	switch (tag)
 	{
 	case MainMenuScene::MenuItemTag::MAP:
-		cocos2d::Director::getInstance()->popScene();
+	{
+		GameScene* scene = new GameScene();
+		scene->autorelease();
+		scene->init();
+		cocos2d::TransitionScene* transition = TransitionZoomFade::create(1, scene);
+		cocos2d::Director::getInstance()->replaceScene(transition);
+	}
 		break;
 	case MainMenuScene::MenuItemTag::MAILBOX:
 		break;

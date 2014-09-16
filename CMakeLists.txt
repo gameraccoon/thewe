@@ -80,6 +80,7 @@ set(GAME_SRC
 	Classes/TaskManager.cpp
 	Classes/Town.cpp
 	Classes/TownInfoLayer.cpp
+	Classes/TransitionZoomFade.cpp
 	Classes/Vector2.cpp
 	Classes/World.cpp
 	Classes/WorldLoader.cpp

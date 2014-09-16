@@ -18,8 +18,9 @@ struct Color
 	float b;
 	float a;
 	
-	/* Неявные преобразования в другие классы */
+	/* РќРµСЏРІРЅС‹Рµ РїСЂРµРѕР±СЂР°Р·РѕРІР°РЅРёСЏ РІ РґСЂСѓРіРёРµ РєР»Р°СЃСЃС‹ */
 	operator cocos2d::Color4F() const;
+	operator cocos2d::Color4B() const;
 };
 
 #endif // COLOR_H
