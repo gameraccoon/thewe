@@ -2,6 +2,8 @@
 
 #include "WorldMapLayer.h"
 #include "CellTasksMenu.h"
+#include "CellInfoMenu.h"
+#include "CellSpinoffMenu.h"
 
 CellMenuSelector::CellMenuSelector(MapProjector *proj, WorldMapLayer *map)
 	: _projector(proj)
@@ -206,7 +208,7 @@ void CellMenuSelector::_MenuInputListener(cocos2d::Ref *sender)
 	}
 
 	cocos2d::MenuItemImage *item = dynamic_cast<cocos2d::MenuItemImage *>(sender);
-	cocos2d::Layer *menu;
+	cocos2d::Layer *menu = nullptr;
 
 	CELL_MENU_TAGS tag = (CELL_MENU_TAGS)item->getTag();
 
@@ -217,17 +219,27 @@ void CellMenuSelector::_MenuInputListener(cocos2d::Ref *sender)
 		menu->autorelease();
 		menu->setName(_menuNodeName);
 		addChild(menu);
-
-		_worldMapLayer->SetGuiEnabled(false);
-		_worldMapLayer->SetMapInputEnabled(false);
-
 		break;
 	case CELL_OPEN_INFO:
+		menu = new CellInfoMenu(_cell, this);
+		menu->autorelease();
+		menu->setName(_menuNodeName);
+		addChild(menu);
 		break;
 		case CELL_OPEN_SPINOFF:
+		menu = new CellSpinoffMenu(_cell, this);
+		menu->autorelease();
+		menu->setName(_menuNodeName);
+		addChild(menu);
 		break;
 	default: break;
 	};
+
+	if (menu)
+	{
+		_worldMapLayer->SetGuiEnabled(false);
+		_worldMapLayer->SetMapInputEnabled(false);
+	}
 }
 
 bool CellMenuSelector::_IsAnimationFinished(void)

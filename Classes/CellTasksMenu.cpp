@@ -94,6 +94,18 @@ bool CellTasksScreen::init(void)
 	cocos2d::Sprite *menuBackground = cocos2d::Sprite::create("cell-tasks-menu.png");
 	menuBackground->setPosition(center);
 	
+	cocos2d::TTFConfig ttfConfig("arial.ttf", 18);
+	cocos2d::Label *labelTitle = cocos2d::Label::createWithTTF(ttfConfig, "Cell Tasks", cocos2d::TextHAlignment::CENTER);
+	
+	float close_x = menuBackground->getContentSize().width  / 2 - closeButton->getContentSize().width  + 5.0f;
+	float close_y = menuBackground->getContentSize().height / 2 - closeButton->getContentSize().height + 5.0f;
+	closeButton->setPosition(close_x, close_y);
+
+	float title_x = center.x;
+	float title_y = center.y + menuBackground->getContentSize().height / 2 - 16.0f;
+	labelTitle->setPosition(title_x, title_y);
+	labelTitle->setColor(cocos2d::Color3B(255, 255, 255));
+
 	float offset_top = 47.0f;
 	float offset_btm = 14.0f;
 	cocos2d::Size menu_size = menuBackground->getContentSize();
@@ -102,10 +114,6 @@ bool CellTasksScreen::init(void)
 	menu_pos.y += offset_btm;
 	menu_size.height -= offset_top;
 
-	float close_x = menuBackground->getContentSize().width  / 2 - closeButton->getContentSize().width  + 5.0f;
-	float close_y = menuBackground->getContentSize().height / 2 - closeButton->getContentSize().height + 5.0f;
-	closeButton->setPosition(close_x, close_y);
-	
 	_CreateTasksScrollViewMenu(TaskManager::Instance().GetAvailableTasks(_cell), menu_pos, menu_size);
 
 	cocos2d::ScaleTo *scale = cocos2d::ScaleTo::create(0.8f, 1.0f, 1.0f);
@@ -118,7 +126,8 @@ bool CellTasksScreen::init(void)
 	runAction(fade);
 	addChild(menuBackground, 0);
 	addChild(menu, 1);
-	addChild(_scrollTasksView, 2);	
+	addChild(labelTitle, 1);
+	addChild(_scrollTasksView, 2);
 
 	return true;
 }

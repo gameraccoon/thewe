@@ -137,6 +137,8 @@ xcopy /Y /Q "$(EngineRoot)external\websockets\prebuilt\win32\*.*" "$(OutDir)"</C
     <ClCompile Include="..\Classes\ArbitraryHull.cpp" />
     <ClCompile Include="..\Classes\Cell.cpp" />
     <ClCompile Include="..\Classes\CellGameInterface.cpp" />
+    <ClCompile Include="..\Classes\CellInfoMenu.cpp" />
+    <ClCompile Include="..\Classes\CellSpinoffMenu.cpp" />
     <ClCompile Include="..\Classes\CellTasksMenu.cpp" />
     <ClCompile Include="..\Classes\Color.cpp" />
     <ClCompile Include="..\Classes\Drawable.cpp" />
@@ -155,6 +157,7 @@ xcopy /Y /Q "$(EngineRoot)external\websockets\prebuilt\win32\*.*" "$(OutDir)"</C
     <ClCompile Include="..\Classes\TaskManager.cpp" />
     <ClCompile Include="..\Classes\Town.cpp" />
     <ClCompile Include="..\Classes\TownInfoLayer.cpp" />
+    <ClCompile Include="..\Classes\TransitionZoomFade.cpp" />
     <ClCompile Include="..\Classes\Vector2.cpp" />
     <ClCompile Include="..\Classes\World.cpp" />
     <ClCompile Include="..\Classes\WorldLoader.cpp" />
@@ -167,6 +170,8 @@ xcopy /Y /Q "$(EngineRoot)external\websockets\prebuilt\win32\*.*" "$(OutDir)"</C
     <ClInclude Include="..\Classes\ArbitraryHull.h" />
     <ClInclude Include="..\Classes\Cell.h" />
     <ClInclude Include="..\Classes\CellGameInterface.h" />
+    <ClInclude Include="..\Classes\CellInfoMenu.h" />
+    <ClInclude Include="..\Classes\CellSpinoffMenu.h" />
     <ClInclude Include="..\Classes\CellTasksMenu.h" />
     <ClInclude Include="..\Classes\Color.h" />
     <ClInclude Include="..\Classes\Drawable.h" />
@@ -186,6 +191,7 @@ xcopy /Y /Q "$(EngineRoot)external\websockets\prebuilt\win32\*.*" "$(OutDir)"</C
     <ClInclude Include="..\Classes\TaskManager.h" />
     <ClInclude Include="..\Classes\Town.h" />
     <ClInclude Include="..\Classes\TownInfoLayer.h" />
+    <ClInclude Include="..\Classes\TransitionZoomFade.h" />
     <ClInclude Include="..\Classes\Vector2.h" />
     <ClInclude Include="..\Classes\World.h" />
     <ClInclude Include="..\Classes\WorldLoader.h" />
