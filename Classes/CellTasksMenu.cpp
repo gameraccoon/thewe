@@ -138,8 +138,11 @@ void CellTasksScreen::_CreateTasksScrollViewMenu(const TaskManager::TasksList &t
 	_scrollTasksView->setPosition(pos);
 	_scrollTasksView->setDirection(cocos2d::extension::ScrollView::Direction::VERTICAL);
 
-	float contentSizeY = tasksList.size() * 75.0f;
-	if (contentSizeY > size.height)
+	float itemOffsetY = 1.0f;
+	float itemContentWidth = 75.0f;
+	float contentSizeY = tasksList.size() * (itemContentWidth - itemOffsetY);
+
+	if (contentSizeY * itemContentWidth > size.height)
 	{
 		_scrollTasksView->setContentSize(cocos2d::Size(size.width, contentSizeY - 3.0f));
 	}
@@ -148,7 +151,7 @@ void CellTasksScreen::_CreateTasksScrollViewMenu(const TaskManager::TasksList &t
 		_scrollTasksView->setContentSize(size);
 	}
 
-	float y = _scrollTasksView->getContentSize().height - 35.0f;
+	float y = _scrollTasksView->getContentSize().height - itemContentWidth / 2.0f;
 
 	int index = 0;
 	for (TaskManager::TasksList::const_iterator it = tasksList.begin(); it != tasksList.end(); it++, ++index)
@@ -159,7 +162,7 @@ void CellTasksScreen::_CreateTasksScrollViewMenu(const TaskManager::TasksList &t
 		item->setPosition(item->getContentSize().width / 2.0f, y);
 		item->autorelease();
 
-		y -= item->getContentSize().height;
+		y -= item->getContentSize().height - itemOffsetY;
 
 		_scrollTasksView->addChild(item);
 	}

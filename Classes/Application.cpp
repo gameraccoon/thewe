@@ -49,14 +49,11 @@ bool AppDelegate::applicationDidFinishLaunching()
 
 	glview->setDesignResolutionSize(dr_w, dr_h, ResolutionPolicy::FIXED_HEIGHT);
 
-	GameScene* gameScene = new GameScene(); // нет автоматического init()
-	MainMenuScene* mainMenuScene = new MainMenuScene(); // нет автоматического init()
+	MainMenuScene* mainMenuScene = new MainMenuScene(nullptr); // нет автоматического init()
 	SplashScreenScene* splashScreenScene = new SplashScreenScene();
 
-	// делаем основной - игровую сцену
-	director->runWithScene(gameScene);
-	// ставим поверх главное меню
-	director->pushScene(mainMenuScene);
+	// делаем основной сценой - меню
+	director->runWithScene(mainMenuScene);
 	// ставим поверх всего SplashScreen
 	director->pushScene(splashScreenScene);
 	// готовимся выгрузить SplashScreen
@@ -67,13 +64,11 @@ bool AppDelegate::applicationDidFinishLaunching()
 	WorldLoader::LoadGameInfo();
 	WorldLoader::LoadGameState();
 
-	// отложенно инициализируем графику
+	// инициализируем графику уже после того как всё загрузилось
 	mainMenuScene->init();
-	gameScene->init();
 
 	// регистрируем сцены в сборщике мусора
 	mainMenuScene->autorelease();
-	gameScene->autorelease();
 
 	director->setDisplayStats(true);
 

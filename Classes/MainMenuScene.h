@@ -7,7 +7,7 @@
 class MainMenuScene : public cocos2d::Scene
 {
 public:
-	MainMenuScene();
+	MainMenuScene(cocos2d::Scene* gameScene);
 	virtual ~MainMenuScene();
 
 	virtual bool init() override;
@@ -28,7 +28,8 @@ private:
 
 private:
 	void _AddButton(std::string imgNormal, std::string imgPressed, Vector2 position, MenuItemTag tag);
-	void _MenuInputListener(cocos2d::CCObject *sender);
+	void _MenuInputListener(cocos2d::Ref *sender);
+	cocos2d::Scene* _gameScene;
 };
 
 #endif // MAIN_MENU_H

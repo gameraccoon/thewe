@@ -19,11 +19,11 @@ Color::Color(unsigned long color)
 }
 
 Color::operator cocos2d::Color4F() const
-	{
-		cocos2d::Color4F color;
-		color.r = r;
-		color.g = g;
-		color.b = b;
-		color.a = a;
-		return color;
-	}
+{
+	return cocos2d::Color4F(r, g, b, a);
+}
+
+Color::operator cocos2d::Color4B() const
+{
+	return cocos2d::Color4B(r, g, b, a);
+}
