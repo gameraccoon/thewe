@@ -37,7 +37,8 @@ bool AppDelegate::applicationDidFinishLaunching()
 	cocos2d::FileUtils::getInstance()->addSearchPath(basePath + "worldinfo");
 	cocos2d::FileUtils::getInstance()->addSearchPath(basePath + "saves");
 	cocos2d::FileUtils::getInstance()->addSearchPath(basePath + "scripts");
-
+	cocos2d::FileUtils::getInstance()->addSearchPath(basePath + "fonts");
+	
 	director->setOpenGLView(glview);
 	director->setAnimationInterval(1.0 / 60.0);
 

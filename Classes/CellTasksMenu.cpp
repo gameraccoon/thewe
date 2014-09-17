@@ -14,7 +14,7 @@ public:
 		cocos2d::MenuItemImage *startBtn;
 		{
 			using namespace cocos2d;
-			startBtn = MenuItemImage::create("TasksStartBtn_active.png", "TasksStartBtn_active_pressed.png",
+			startBtn = MenuItemImage::create("TasksStartBtn_active.png", "TasksStartBtn_pressed.png",
 				CC_CALLBACK_1(CellTaskMenuItem::_OnStartPressed, this));
 		}
 
@@ -25,9 +25,32 @@ public:
 		menu->setPosition(0.0f, 0.0f);
 		startBtn->setPosition(-size.width / 2.0 + startBtn->getContentSize().width / 2.0f, 0.0f);
 
+		cocos2d::TTFConfig ttfConfig("arial.ttf");
+		cocos2d::Label *labelStart = cocos2d::Label::createWithTTF(ttfConfig, "Start", cocos2d::TextHAlignment::CENTER);
+		labelStart->setColor(cocos2d::Color3B(0, 0, 0));	
+		labelStart->setPosition(startBtn->getPosition());
+
+		cocos2d::Label *labelDesc = cocos2d::Label::createWithBMFont("futura-48.fnt", _taskInfo.id, cocos2d::TextHAlignment::LEFT);
+		labelDesc->setPosition(-60.0f, 0.0f);
+		labelDesc->setScale(0.35f);
+
+		std::string stringMorale = cocos2d::StringUtils::format("Morale: %.1f", _taskInfo.moralLevel);
+		cocos2d::Label *labelMorale = cocos2d::Label::createWithBMFont("futura-48.fnt", stringMorale, cocos2d::TextHAlignment::CENTER);
+		labelMorale->setPosition(45.0f, 0.0f);
+		labelMorale->setScale(0.35f);
+
+		std::string stringDifficult = cocos2d::StringUtils::format("Severity: %.1f", _taskInfo.severity);
+		cocos2d::Label *labelSeverity = cocos2d::Label::createWithBMFont("futura-48.fnt", stringDifficult, cocos2d::TextHAlignment::RIGHT);
+		labelSeverity->setPosition(150.0f, 0.0f);
+		labelSeverity->setScale(0.35f);
+
 		setContentSize(size);
 		addChild(bkg, 0);
 		addChild(menu, 1);
+		addChild(labelStart, 2);
+		addChild(labelDesc, 1);
+		addChild(labelMorale, 1);
+		addChild(labelSeverity, 1);
 
 		return true;
 	}
@@ -36,7 +59,7 @@ private:
 	void _OnStartPressed(cocos2d::Ref *sender)
 	{
 	}
-
+	
 	const Task::Info _taskInfo;
 };
 
@@ -116,7 +139,7 @@ void CellTasksScreen::_CreateTasksScrollViewMenu(const TaskManager::TasksList &t
 	_scrollTasksView->setDirection(cocos2d::extension::ScrollView::Direction::VERTICAL);
 
 	float contentSizeY = tasksList.size() * 75.0f;
-	if (contentSizeY * 75.0f > size.height)
+	if (contentSizeY > size.height)
 	{
 		_scrollTasksView->setContentSize(cocos2d::Size(size.width, contentSizeY - 3.0f));
 	}
