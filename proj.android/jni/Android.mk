@@ -17,6 +17,8 @@ LOCAL_SRC_FILES := hellocpp/main.cpp \
 				   	../../Classes/ArbitraryHull.cpp \
 				   	../../Classes/Cell.cpp \
 				   	../../Classes/CellGameInterface.cpp \
+				   	../../Classes/CellInfoMenu.cpp \
+				   	../../Classes/CellSpinoffMenu.cpp \
 				   	../../Classes/CellTasksMenu.cpp \
 				   	../../Classes/Color.cpp \
 				   	../../Classes/Drawable.cpp \
@@ -35,6 +37,7 @@ LOCAL_SRC_FILES := hellocpp/main.cpp \
 				   	../../Classes/TaskManager.cpp \
 				   	../../Classes/Town.cpp \
 				   	../../Classes/TownInfoLayer.cpp \
+				   	../../Classes/TransitionZoomFade.cpp \
 				   	../../Classes/Vector2.cpp \
 				   	../../Classes/World.cpp \
 				   	../../Classes/WorldLoader.cpp \
