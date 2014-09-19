@@ -76,6 +76,8 @@ bool WorldMapLayer::init(void)
 	this->setTouchEnabled(true);
 	this->setKeyboardEnabled(true);
 
+	_UpdateNetwork();
+
 	return true;
 }
 
