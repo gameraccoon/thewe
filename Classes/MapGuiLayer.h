@@ -3,6 +3,7 @@
 
 #include "cocos2d.h"
 #include "MapProjector.h"
+#include "MessageWidget.h"
 
 class MapGuiLayer : public cocos2d::Layer
 {
@@ -10,6 +11,7 @@ public:
 	MapGuiLayer(MapProjector *mapProjector);
 
 	virtual bool init(void) override;
+	virtual void update(float delta);
 
 	void menuCloseCallback(cocos2d::Ref *Sender);
 
@@ -26,6 +28,11 @@ private:
 private:
 	void _MenuInputListener(cocos2d::Ref *sender);
 
+	int UpdateMessages();
+	void UpdateMessagesPos();
+	void AddNewMessage(int key, const std::map<int, UserMessage::Ptr>& messages);
+
+private:
 	cocos2d::MenuItemImage *_btnZoomIn;
 	cocos2d::MenuItemImage *_btnZoomOut;
 	cocos2d::MenuItemImage *_btnEditor;
@@ -33,7 +40,12 @@ private:
 
 	cocos2d::LabelTTF *_printTime;
 
-	 MapProjector *_mapProjector;
+	MapProjector *_mapProjector;
+
+	std::map<int, MessageWidget*> _userMessages;
+
+	Vector2 _messagesMargin;
+	Vector2 _messagesPosition;
 };
 
 #endif

@@ -74,6 +74,8 @@ set(GAME_SRC
 	Classes/MainMenuScene.cpp
 	Classes/MapGuiLayer.cpp
 	Classes/MapProjector.cpp
+	Classes/MessageManager.cpp
+	Classes/MessageWidget.cpp
 	Classes/PlayersProfiles.cpp
 	Classes/Region.cpp
 	Classes/RegionInfoLayer.cpp
@@ -83,6 +85,7 @@ set(GAME_SRC
 	Classes/Town.cpp
 	Classes/TownInfoLayer.cpp
 	Classes/TransitionZoomFade.cpp
+	Classes/UserMessage.cpp
 	Classes/Vector2.cpp
 	Classes/World.cpp
 	Classes/WorldLoader.cpp

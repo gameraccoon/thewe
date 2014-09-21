@@ -4,7 +4,7 @@
 #include <memory>
 #include "Vector2.h"
 
-// избавляемся от необходимости включать все заголовки cocos2d
+// РёР·Р±Р°РІР»СЏРµРјСЃСЏ РѕС‚ РЅРµРѕР±С…РѕРґРёРјРѕСЃС‚Рё РІРєР»СЋС‡Р°С‚СЊ РІСЃРµ Р·Р°РіРѕР»РѕРІРєРё cocos2d
 namespace cocos2d
 {
 	class Node;
@@ -16,7 +16,7 @@ public:
 	typedef std::shared_ptr<Drawable> Ptr;
 public:
 	~Drawable();
-	/** Фабрика */
+	/** Р¤Р°Р±СЂРёРєР° */
 	static Drawable::Ptr CastFromCocos(cocos2d::Node *node);
 
 	void SetPosition(Vector2 location);
