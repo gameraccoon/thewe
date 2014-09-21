@@ -20,16 +20,20 @@ LOCAL_SRC_FILES := hellocpp/main.cpp \
 				   	../../Classes/CellInfoMenu.cpp \
 				   	../../Classes/CellSpinoffMenu.cpp \
 				   	../../Classes/CellTasksMenu.cpp \
+				   	../../Classes/CellTaskInfoMenu.cpp \
 				   	../../Classes/Color.cpp \
 				   	../../Classes/Drawable.cpp \
 				   	../../Classes/EditorLayer.cpp \
 				   	../../Classes/FileUtils.cpp \
 				   	../../Classes/GameScene.cpp \
 				   	../../Classes/Log.cpp \
+				   	../../Classes/MessageManager.cpp \
+				   	../../Classes/MessageWidget.cpp \
 				   	../../Classes/MainMenuScene.cpp \
 				   	../../Classes/MapGuiLayer.cpp \
 				   	../../Classes/MapProjector.cpp \
 				   	../../Classes/PlayersProfiles.cpp \
+				   	../../Classes/ProgressBar.cpp \
 				   	../../Classes/Region.cpp \
 				   	../../Classes/RegionInfoLayer.cpp \
 				   	../../Classes/SplashScreenScene.cpp \
@@ -38,6 +42,7 @@ LOCAL_SRC_FILES := hellocpp/main.cpp \
 				   	../../Classes/Town.cpp \
 				   	../../Classes/TownInfoLayer.cpp \
 				   	../../Classes/TransitionZoomFade.cpp \
+				   	../../Classes/UserMessage.cpp \
 				   	../../Classes/Vector2.cpp \
 				   	../../Classes/World.cpp \
 				   	../../Classes/WorldLoader.cpp \

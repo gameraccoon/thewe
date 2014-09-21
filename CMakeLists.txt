@@ -65,6 +65,7 @@ set(GAME_SRC
 	Classes/CellInfoMenu.cpp
 	Classes/CellSpinoffMenu.cpp
 	Classes/CellTasksMenu.cpp
+	Classes/CellTaskInfoMenu.cpp
 	Classes/Color.cpp
 	Classes/Drawable.cpp
 	Classes/EditorLayer.cpp
@@ -77,6 +78,7 @@ set(GAME_SRC
 	Classes/MessageManager.cpp
 	Classes/MessageWidget.cpp
 	Classes/PlayersProfiles.cpp
+	Classes/ProgressBar.cpp
 	Classes/Region.cpp
 	Classes/RegionInfoLayer.cpp
 	Classes/SplashScreenScene.cpp
