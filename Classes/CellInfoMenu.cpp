@@ -3,6 +3,7 @@
 CellInfoMenu::CellInfoMenu(Cell::WeakPtr cell, CellMenuSelector *selector)
 	: _cell(cell)
 	, _cellMenuSelector(selector)
+	, _taskProgressBar(nullptr)
 {
 	init();
 }
@@ -77,12 +78,38 @@ bool CellInfoMenu::init(void)
 	_labelChildrensInfo->setPosition(info_x, info_y);
 	_labelChildrensInfo->setScale(0.35);
 
-	UpdateInfoBy(_cell.lock());
+	Cell::Ptr cell = _cell.lock();
+	_cellCurrentTask = cell->getCurrentTask().lock();
+
+	UpdateInfoBy(cell);
+
+	if (_cellCurrentTask != nullptr)
+	{
+		float w = background->getContentSize().width - 50.0f;
+		float x = center.x - background->getContentSize().width / 2.0f + 25.0f;
+		float y = center.y - background->getContentSize().height / 2.0f + 25.0f;
+		
+		float time = World::Instance().GetWorldTime();
+		float progress = _cellCurrentTask->CalculateProgress(time);
+
+		_taskProgressBar = new ProgressBar(w, 10.0f, cocos2d::Color4F(1.0f, 0.5f, 0, 1.0f));
+		_taskProgressBar->setPosition(x, y);
+		_taskProgressBar->autorelease();
+		_taskProgressBar->SetProgress(progress);
+
+		std::string strTaskLabel = cocos2d::StringUtils::format("Cell is now performing %s task", _cellCurrentTask->GetInfo()->id.c_str());
+		_currentTaskLabel = cocos2d::Label::createWithTTF(ttfConfig, strTaskLabel, cocos2d::TextHAlignment::CENTER);
+		_currentTaskLabel->setPosition(center.x, y+25.0f);
+
+		addChild(_taskProgressBar, 1);
+		addChild(_currentTaskLabel, 1);
+	}
 
 	cocos2d::ScaleTo *scale = cocos2d::ScaleTo::create(0.8f, 1.0f, 1.0f);
 	cocos2d::FadeIn *fade = cocos2d::FadeIn::create(0.5f);
 	cocos2d::EaseElasticOut *elastic_scale = cocos2d::EaseElasticOut::create(scale, 5.0f);
 
+	scheduleUpdate();
 	setScale(0.01f);
 	setOpacity(0);	
 	runAction(elastic_scale);
@@ -97,6 +124,25 @@ bool CellInfoMenu::init(void)
 	addChild(_labelChildrensInfo, 1);
 
 	return true;
+}
+
+void CellInfoMenu::update(float dt)
+{
+	if (_cellCurrentTask)
+	{
+		if (_taskProgressBar->IsFinished())
+		{
+			removeChild(_taskProgressBar, true);
+			removeChild(_currentTaskLabel, true);
+			_cellCurrentTask = nullptr;
+		}
+		else
+		{
+			float time = World::Instance().GetWorldTime();
+			float progress = _cellCurrentTask->CalculateProgress(time);
+			_taskProgressBar->SetProgress(progress * 100.0f);
+		}
+	}
 }
 
 void CellInfoMenu::UpdateInfoBy(Cell::Ptr cell)

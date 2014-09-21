@@ -71,12 +71,12 @@ void TaskManager::UpdateToTime(float worldTime)
 
 					if (isSuccess)
 					{
-						funcName = taskInfo->successFn;
+						//funcName = taskInfo->successFn;
 						info.status = Task::Status::Successed;
 					}
 					else
 					{
-						funcName = taskInfo->failFn;
+						//funcName = taskInfo->failFn;
 						info.status = Task::Status::Failed;
 					}
 				}

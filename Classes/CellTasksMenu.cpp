@@ -1,10 +1,14 @@
 #include "CellTasksMenu.h"
 
+#include "World.h"
+
 class CellTaskMenuItem : public cocos2d::Node
 {
 public:
-	CellTaskMenuItem(const Task::Info &taskInfo)
-		: _taskInfo(taskInfo)
+	CellTaskMenuItem(CellTasksScreen *menu, Cell::WeakPtr cell, const Task::Info *taskInfo)
+		: _tasksScreen(menu)
+		, _cell(cell)
+		, _taskInfo(taskInfo)
 	{
 		init();
 	}
@@ -30,16 +34,16 @@ public:
 		labelStart->setColor(cocos2d::Color3B(0, 0, 0));	
 		labelStart->setPosition(startBtn->getPosition());
 
-		cocos2d::Label *labelDesc = cocos2d::Label::createWithBMFont("futura-48.fnt", _taskInfo.id, cocos2d::TextHAlignment::LEFT);
+		cocos2d::Label *labelDesc = cocos2d::Label::createWithBMFont("futura-48.fnt", _taskInfo->id, cocos2d::TextHAlignment::LEFT);
 		labelDesc->setPosition(-60.0f, 0.0f);
 		labelDesc->setScale(0.35f);
 
-		std::string stringMorale = cocos2d::StringUtils::format("Morale: %.1f", _taskInfo.moralLevel);
+		std::string stringMorale = cocos2d::StringUtils::format("Morale: %.1f", _taskInfo->moralLevel);
 		cocos2d::Label *labelMorale = cocos2d::Label::createWithBMFont("futura-48.fnt", stringMorale, cocos2d::TextHAlignment::CENTER);
 		labelMorale->setPosition(45.0f, 0.0f);
 		labelMorale->setScale(0.35f);
 
-		std::string stringDifficult = cocos2d::StringUtils::format("Severity: %.1f", _taskInfo.severity);
+		std::string stringDifficult = cocos2d::StringUtils::format("Severity: %.1f", _taskInfo->severity);
 		cocos2d::Label *labelSeverity = cocos2d::Label::createWithBMFont("futura-48.fnt", stringDifficult, cocos2d::TextHAlignment::RIGHT);
 		labelSeverity->setPosition(150.0f, 0.0f);
 		labelSeverity->setScale(0.35f);
@@ -58,9 +62,13 @@ public:
 private:
 	void _OnStartPressed(cocos2d::Ref *sender)
 	{
+		TaskManager::Instance().RunTask(_cell, _taskInfo, World::Instance().GetWorldTime());
+		_tasksScreen->CloseMenu();
 	}
-	
-	const Task::Info _taskInfo;
+
+	CellTasksScreen *_tasksScreen;
+	Cell::WeakPtr _cell;
+	const Task::Info *_taskInfo;
 };
 
 CellTasksScreen::CellTasksScreen(Cell::WeakPtr cell, CellMenuSelector *cellMenu)
@@ -95,7 +103,7 @@ bool CellTasksScreen::init(void)
 	menuBackground->setPosition(center);
 	
 	cocos2d::TTFConfig ttfConfig("arial.ttf", 18);
-	cocos2d::Label *labelTitle = cocos2d::Label::createWithTTF(ttfConfig, "Cell Tasks", cocos2d::TextHAlignment::CENTER);
+	cocos2d::Label *labelTitle = cocos2d::Label::createWithTTF(ttfConfig, "Cell Avaliable Tasks", cocos2d::TextHAlignment::CENTER);
 	
 	float close_x = menuBackground->getContentSize().width  / 2 - closeButton->getContentSize().width  + 5.0f;
 	float close_y = menuBackground->getContentSize().height / 2 - closeButton->getContentSize().height + 5.0f;
@@ -131,14 +139,19 @@ bool CellTasksScreen::init(void)
 
 	return true;
 }
-	
-void CellTasksScreen::_OnCloseCallback(cocos2d::Ref *sender)
+
+void CellTasksScreen::CloseMenu(void)
 {
 	cocos2d::ScaleTo *scale = cocos2d::ScaleTo::create(0.2f, 0.2f, 0.01f);
 	cocos2d::EaseElasticIn *elastic_scale = cocos2d::EaseElasticIn::create(scale, 5.0f);
 	cocos2d::CallFunc *func = cocos2d::CallFunc::create(CC_CALLBACK_0(CellMenuSelector::OnCellMenuClosed, _cellMenu));
 
 	runAction(cocos2d::Sequence::create(elastic_scale, func, nullptr));
+}
+
+void CellTasksScreen::_OnCloseCallback(cocos2d::Ref *sender)
+{
+	CloseMenu();
 }
 
 void CellTasksScreen::_CreateTasksScrollViewMenu(const TaskManager::TasksList &tasksList, const cocos2d::Vec2 &pos, const cocos2d::Size &size)
@@ -165,8 +178,8 @@ void CellTasksScreen::_CreateTasksScrollViewMenu(const TaskManager::TasksList &t
 	int index = 0;
 	for (TaskManager::TasksList::const_iterator it = tasksList.begin(); it != tasksList.end(); it++, ++index)
 	{
-		const Task::Info &info = *(*it);
-		CellTaskMenuItem *item = new CellTaskMenuItem(info);
+		const Task::Info *info = (*it);
+		CellTaskMenuItem *item = new CellTaskMenuItem(this, _cell, info);
 
 		item->setPosition(item->getContentSize().width / 2.0f, y);
 		item->autorelease();

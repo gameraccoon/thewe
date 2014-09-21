@@ -2,6 +2,7 @@
 
 #include "WorldMapLayer.h"
 #include "CellTasksMenu.h"
+#include "CellTaskInfoMenu.h"
 #include "CellInfoMenu.h"
 #include "CellSpinoffMenu.h"
 
@@ -25,9 +26,9 @@ bool CellMenuSelector::init()
 		using namespace cocos2d;
 
 		_button.resize(CELL_NUM_TAGS);
-		_button[CELL_OPEN_TASKS] = MenuItemImage::create("1_norm.png", "1_press.png", CC_CALLBACK_1(CellMenuSelector::_MenuInputListener, this));
+		_button[CELL_OPEN_TASKS] = MenuItemImage::create("3_norm.png", "3_press.png", CC_CALLBACK_1(CellMenuSelector::_MenuInputListener, this));
 		_button[CELL_OPEN_INFO] = MenuItemImage::create("2_norm.png", "2_press.png", CC_CALLBACK_1(CellMenuSelector::_MenuInputListener, this));
-		_button[CELL_OPEN_SPINOFF] = MenuItemImage::create("3_norm.png", "3_press.png", CC_CALLBACK_1(CellMenuSelector::_MenuInputListener, this));
+		_button[CELL_OPEN_SPINOFF] = MenuItemImage::create("1_norm.png", "1_press.png", CC_CALLBACK_1(CellMenuSelector::_MenuInputListener, this));
 
 		_button[CELL_OPEN_TASKS]->setTag(CELL_OPEN_TASKS);
 		_button[CELL_OPEN_INFO]->setTag(CELL_OPEN_INFO);
@@ -149,7 +150,7 @@ void CellMenuSelector::OnCellMenuClosed(void)
 	if (menu)
 	{
 		removeChild(menu, true);
-		DisappearWithAnimation();
+		//DisappearWithAnimation();
 
 		_worldMapLayer->SetGuiEnabled(true);
 		_worldMapLayer->SetMapInputEnabled(true);
@@ -215,7 +216,10 @@ void CellMenuSelector::_MenuInputListener(cocos2d::Ref *sender)
 	switch (tag)
 	{
 	case CELL_OPEN_TASKS:
-		menu = new CellTasksScreen(_cell, this);
+		if (_cell.lock()->IsCurrentTaskPresented())
+			menu = new CellTaskInfoMenu(_cell, this);
+		else
+			menu = new CellTasksScreen(_cell, this);
 		menu->autorelease();
 		menu->setName(_menuNodeName);
 		addChild(menu);

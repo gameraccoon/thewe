@@ -6,6 +6,8 @@
 
 #include "Cell.h"
 #include "TaskManager.h"
+#include "ProgressBar.h"
+#include "World.h"
 
 class WorldMapLayer;
 
