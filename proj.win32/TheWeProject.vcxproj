@@ -139,6 +139,7 @@ xcopy /Y /Q "$(EngineRoot)external\websockets\prebuilt\win32\*.*" "$(OutDir)"</C
     <ClCompile Include="..\Classes\CellGameInterface.cpp" />
     <ClCompile Include="..\Classes\CellInfoMenu.cpp" />
     <ClCompile Include="..\Classes\CellSpinoffMenu.cpp" />
+    <ClCompile Include="..\Classes\CellTaskInfoMenu.cpp" />
     <ClCompile Include="..\Classes\CellTasksMenu.cpp" />
     <ClCompile Include="..\Classes\Color.cpp" />
     <ClCompile Include="..\Classes\Drawable.cpp" />
@@ -150,6 +151,7 @@ xcopy /Y /Q "$(EngineRoot)external\websockets\prebuilt\win32\*.*" "$(OutDir)"</C
     <ClCompile Include="..\Classes\MapGuiLayer.cpp" />
     <ClCompile Include="..\Classes\MapProjector.cpp" />
     <ClCompile Include="..\Classes\PlayersProfiles.cpp" />
+    <ClCompile Include="..\Classes\ProgressBar.cpp" />
     <ClCompile Include="..\Classes\Region.cpp" />
     <ClCompile Include="..\Classes\RegionInfoLayer.cpp" />
     <ClCompile Include="..\Classes\SplashScreenScene.cpp" />
@@ -172,6 +174,7 @@ xcopy /Y /Q "$(EngineRoot)external\websockets\prebuilt\win32\*.*" "$(OutDir)"</C
     <ClInclude Include="..\Classes\CellGameInterface.h" />
     <ClInclude Include="..\Classes\CellInfoMenu.h" />
     <ClInclude Include="..\Classes\CellSpinoffMenu.h" />
+    <ClInclude Include="..\Classes\CellTaskInfoMenu.h" />
     <ClInclude Include="..\Classes\CellTasksMenu.h" />
     <ClInclude Include="..\Classes\Color.h" />
     <ClInclude Include="..\Classes\Drawable.h" />
@@ -182,6 +185,7 @@ xcopy /Y /Q "$(EngineRoot)external\websockets\prebuilt\win32\*.*" "$(OutDir)"</C
     <ClInclude Include="..\Classes\MainMenuScene.h" />
     <ClInclude Include="..\Classes\MapGuiLayer.h" />
     <ClInclude Include="..\Classes\MapProjector.h" />
+    <ClInclude Include="..\Classes\ProgressBar.h" />
     <ClInclude Include="..\Classes\PlayersProfiles.h" />
     <ClInclude Include="..\Classes\Region.h" />
     <ClInclude Include="..\Classes\RegionInfoLayer.h" />

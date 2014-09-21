@@ -90,6 +90,11 @@ Task::WeakPtr Cell::getCurrentTask() const
 	return _currentTask;
 }
 
+bool Cell::IsCurrentTaskPresented(void) const
+{
+	return _currentTask.use_count() > 0;
+}
+
 void Cell::AddCompletedTask(const Task::CompletedTaskInfo& completedTask)
 {
 	_completedTasks.push_back(completedTask);

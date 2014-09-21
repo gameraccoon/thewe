@@ -60,6 +60,8 @@ public:
 	void AddCurrentTask(Task::WeakPtr currentTask);
 	Task::WeakPtr getCurrentTask() const;
 
+	bool IsCurrentTaskPresented(void) const;
+
 	/** Добавляем задание как выполненное */
 	void AddCompletedTask(const Task::CompletedTaskInfo& completedTask);
 

@@ -9,6 +9,8 @@ public:
 	CellTasksScreen(Cell::WeakPtr cell, CellMenuSelector *cellMenu);
 
 	virtual bool init(void) override;
+
+	void CloseMenu(void);
 	
 private:
 	void _OnCloseCallback(cocos2d::Ref *sender);
