@@ -1,5 +1,7 @@
 #include "TaskManager.h"
 
+#include "MessageManager.h"
+
 #include <fstream>
 #include <iostream>
 
@@ -71,13 +73,15 @@ void TaskManager::UpdateToTime(float worldTime)
 
 					if (isSuccess)
 					{
-						//funcName = taskInfo->successFn;
+						funcName = taskInfo->successFn;
 						info.status = Task::Status::Successed;
+						MessageManager::Instance().SendGameMessage("Task completed");
 					}
 					else
 					{
-						//funcName = taskInfo->failFn;
+						funcName = taskInfo->failFn;
 						info.status = Task::Status::Failed;
+						MessageManager::Instance().SendGameMessage("Task failed");
 					}
 				}
 				else
