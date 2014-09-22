@@ -231,7 +231,7 @@ void CellMenuSelector::_MenuInputListener(cocos2d::Ref *sender)
 		addChild(menu);
 		break;
 		case CELL_OPEN_SPINOFF:
-		menu = new CellSpinoffMenu(_cell, this);
+		menu = new CellSpinoffMenu(_cell, this, _worldMapLayer);
 		menu->autorelease();
 		menu->setName(_menuNodeName);
 		addChild(menu);

@@ -6,12 +6,23 @@
 class CellSpinoffMenu : public cocos2d::Layer
 {
 public:
-	CellSpinoffMenu(Cell::WeakPtr cell, CellMenuSelector *selector);
+	CellSpinoffMenu(Cell::WeakPtr cell, CellMenuSelector *selector, WorldMapLayer *worldMap);
 
 	virtual bool init(void) override;
 
+	void UpdateSpinoffState(const Cell::Info &info);
+
 private:
 	void _OnCloseCallback(cocos2d::Ref *sender);
+	void _OnCreateNewCell(cocos2d::Ref *sender);
+
+	bool _isCellCreationPossible;
+
+	cocos2d::Label *_necessaryMembers;
+	cocos2d::Label *_necessaryCash;
+	cocos2d::MenuItemImage *_createCellButton;
+
+	WorldMapLayer *_worldMapLayer;
 
 	Cell::WeakPtr _cell;
 	CellMenuSelector *_cellMenuSelector;
