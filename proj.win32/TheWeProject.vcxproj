@@ -150,6 +150,8 @@ xcopy /Y /Q "$(EngineRoot)external\websockets\prebuilt\win32\*.*" "$(OutDir)"</C
     <ClCompile Include="..\Classes\MainMenuScene.cpp" />
     <ClCompile Include="..\Classes\MapGuiLayer.cpp" />
     <ClCompile Include="..\Classes\MapProjector.cpp" />
+    <ClCompile Include="..\Classes\MessageManager.cpp" />
+    <ClCompile Include="..\Classes\MessageWidget.cpp" />
     <ClCompile Include="..\Classes\PlayersProfiles.cpp" />
     <ClCompile Include="..\Classes\ProgressBar.cpp" />
     <ClCompile Include="..\Classes\Region.cpp" />
@@ -160,6 +162,7 @@ xcopy /Y /Q "$(EngineRoot)external\websockets\prebuilt\win32\*.*" "$(OutDir)"</C
     <ClCompile Include="..\Classes\Town.cpp" />
     <ClCompile Include="..\Classes\TownInfoLayer.cpp" />
     <ClCompile Include="..\Classes\TransitionZoomFade.cpp" />
+    <ClCompile Include="..\Classes\UserMessage.cpp" />
     <ClCompile Include="..\Classes\Vector2.cpp" />
     <ClCompile Include="..\Classes\World.cpp" />
     <ClCompile Include="..\Classes\WorldLoader.cpp" />
@@ -185,6 +188,8 @@ xcopy /Y /Q "$(EngineRoot)external\websockets\prebuilt\win32\*.*" "$(OutDir)"</C
     <ClInclude Include="..\Classes\MainMenuScene.h" />
     <ClInclude Include="..\Classes\MapGuiLayer.h" />
     <ClInclude Include="..\Classes\MapProjector.h" />
+    <ClInclude Include="..\Classes\MessageManager.h" />
+    <ClInclude Include="..\Classes\MessageWidget.h" />
     <ClInclude Include="..\Classes\ProgressBar.h" />
     <ClInclude Include="..\Classes\PlayersProfiles.h" />
     <ClInclude Include="..\Classes\Region.h" />
@@ -196,6 +201,7 @@ xcopy /Y /Q "$(EngineRoot)external\websockets\prebuilt\win32\*.*" "$(OutDir)"</C
     <ClInclude Include="..\Classes\Town.h" />
     <ClInclude Include="..\Classes\TownInfoLayer.h" />
     <ClInclude Include="..\Classes\TransitionZoomFade.h" />
+    <ClInclude Include="..\Classes\UserMessage.h" />
     <ClInclude Include="..\Classes\Vector2.h" />
     <ClInclude Include="..\Classes\World.h" />
     <ClInclude Include="..\Classes\WorldLoader.h" />

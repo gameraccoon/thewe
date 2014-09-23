@@ -15,12 +15,12 @@ MessageManager& MessageManager::Instance()
 	return singleInstance;
 }
 
-void MessageManager::SendMessage(UserMessage::Ptr message)
+void MessageManager::SendGameMessage(UserMessage::Ptr message)
 {
 	_messages.insert(std::pair<int, UserMessage::Ptr>(++_maxSetKey, message));
 }
 
-void MessageManager::SendMessage(std::string text, float timeToShow)
+void MessageManager::SendGameMessage(std::string text, float timeToShow)
 {
 	_messages.insert(std::pair<int, UserMessage::Ptr>(++_maxSetKey
 		,std::make_shared<UserMessage>(UserMessage(text, timeToShow))));

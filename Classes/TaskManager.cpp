@@ -75,13 +75,13 @@ void TaskManager::UpdateToTime(float worldTime)
 					{
 						funcName = taskInfo->successFn;
 						info.status = Task::Status::Successed;
-						MessageManager::Instance().SendMessage("Task completed");
+						MessageManager::Instance().SendGameMessage("Task completed");
 					}
 					else
 					{
 						funcName = taskInfo->failFn;
 						info.status = Task::Status::Failed;
-						MessageManager::Instance().SendMessage("Task failed");
+						MessageManager::Instance().SendGameMessage("Task failed");
 					}
 				}
 				else
