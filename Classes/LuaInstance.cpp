@@ -1,6 +1,9 @@
 #include "LuaInstance.h"
 
-#include <lua.hpp>
+extern "C"
+{
+	#include <lua.h>
+}
 #include <luabind/luabind.hpp>
 
 #include "Log.h"

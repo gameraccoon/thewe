@@ -16,6 +16,12 @@
     <Filter Include="dependencies\pugixml">
       <UniqueIdentifier>{f87ad588-1cb6-446f-8e84-090547919cbf}</UniqueIdentifier>
     </Filter>
+    <Filter Include="dependencies\lua">
+      <UniqueIdentifier>{add7b705-d304-47e4-ad4b-ac26cf2e061c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="dependencies\luabind">
+      <UniqueIdentifier>{17439e94-e488-4f40-8735-ed246466a291}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -124,6 +130,153 @@
       <Filter>Classes</Filter>
     </ClCompile>
     <ClCompile Include="..\Classes\UserMessage.cpp">
+      <Filter>Classes</Filter>
+    </ClCompile>
+    <ClCompile Include="..\dependencies\lua-5.1.5\lapi.c">
+      <Filter>dependencies\lua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\dependencies\lua-5.1.5\lauxlib.c">
+      <Filter>dependencies\lua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\dependencies\lua-5.1.5\lbaselib.c">
+      <Filter>dependencies\lua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\dependencies\lua-5.1.5\lcode.c">
+      <Filter>dependencies\lua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\dependencies\lua-5.1.5\ldblib.c">
+      <Filter>dependencies\lua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\dependencies\lua-5.1.5\ldebug.c">
+      <Filter>dependencies\lua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\dependencies\lua-5.1.5\ldo.c">
+      <Filter>dependencies\lua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\dependencies\lua-5.1.5\ldump.c">
+      <Filter>dependencies\lua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\dependencies\lua-5.1.5\lfunc.c">
+      <Filter>dependencies\lua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\dependencies\lua-5.1.5\lgc.c">
+      <Filter>dependencies\lua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\dependencies\lua-5.1.5\linit.c">
+      <Filter>dependencies\lua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\dependencies\lua-5.1.5\liolib.c">
+      <Filter>dependencies\lua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\dependencies\lua-5.1.5\llex.c">
+      <Filter>dependencies\lua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\dependencies\lua-5.1.5\lmathlib.c">
+      <Filter>dependencies\lua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\dependencies\lua-5.1.5\lmem.c">
+      <Filter>dependencies\lua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\dependencies\lua-5.1.5\loadlib.c">
+      <Filter>dependencies\lua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\dependencies\lua-5.1.5\lobject.c">
+      <Filter>dependencies\lua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\dependencies\lua-5.1.5\lopcodes.c">
+      <Filter>dependencies\lua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\dependencies\lua-5.1.5\loslib.c">
+      <Filter>dependencies\lua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\dependencies\lua-5.1.5\lparser.c">
+      <Filter>dependencies\lua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\dependencies\lua-5.1.5\lstate.c">
+      <Filter>dependencies\lua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\dependencies\lua-5.1.5\lstring.c">
+      <Filter>dependencies\lua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\dependencies\lua-5.1.5\lstrlib.c">
+      <Filter>dependencies\lua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\dependencies\lua-5.1.5\ltable.c">
+      <Filter>dependencies\lua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\dependencies\lua-5.1.5\ltablib.c">
+      <Filter>dependencies\lua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\dependencies\lua-5.1.5\ltm.c">
+      <Filter>dependencies\lua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\dependencies\lua-5.1.5\lundump.c">
+      <Filter>dependencies\lua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\dependencies\lua-5.1.5\lvm.c">
+      <Filter>dependencies\lua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\dependencies\lua-5.1.5\lzio.c">
+      <Filter>dependencies\lua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\dependencies\lua-5.1.5\print.c">
+      <Filter>dependencies\lua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\dependencies\luabind-0.9.1\src\class.cpp">
+      <Filter>dependencies\luabind</Filter>
+    </ClCompile>
+    <ClCompile Include="..\dependencies\luabind-0.9.1\src\class_info.cpp">
+      <Filter>dependencies\luabind</Filter>
+    </ClCompile>
+    <ClCompile Include="..\dependencies\luabind-0.9.1\src\class_registry.cpp">
+      <Filter>dependencies\luabind</Filter>
+    </ClCompile>
+    <ClCompile Include="..\dependencies\luabind-0.9.1\src\class_rep.cpp">
+      <Filter>dependencies\luabind</Filter>
+    </ClCompile>
+    <ClCompile Include="..\dependencies\luabind-0.9.1\src\create_class.cpp">
+      <Filter>dependencies\luabind</Filter>
+    </ClCompile>
+    <ClCompile Include="..\dependencies\luabind-0.9.1\src\error.cpp">
+      <Filter>dependencies\luabind</Filter>
+    </ClCompile>
+    <ClCompile Include="..\dependencies\luabind-0.9.1\src\exception_handler.cpp">
+      <Filter>dependencies\luabind</Filter>
+    </ClCompile>
+    <ClCompile Include="..\dependencies\luabind-0.9.1\src\function.cpp">
+      <Filter>dependencies\luabind</Filter>
+    </ClCompile>
+    <ClCompile Include="..\dependencies\luabind-0.9.1\src\inheritance.cpp">
+      <Filter>dependencies\luabind</Filter>
+    </ClCompile>
+    <ClCompile Include="..\dependencies\luabind-0.9.1\src\link_compatibility.cpp">
+      <Filter>dependencies\luabind</Filter>
+    </ClCompile>
+    <ClCompile Include="..\dependencies\luabind-0.9.1\src\object_rep.cpp">
+      <Filter>dependencies\luabind</Filter>
+    </ClCompile>
+    <ClCompile Include="..\dependencies\luabind-0.9.1\src\open.cpp">
+      <Filter>dependencies\luabind</Filter>
+    </ClCompile>
+    <ClCompile Include="..\dependencies\luabind-0.9.1\src\pcall.cpp">
+      <Filter>dependencies\luabind</Filter>
+    </ClCompile>
+    <ClCompile Include="..\dependencies\luabind-0.9.1\src\scope.cpp">
+      <Filter>dependencies\luabind</Filter>
+    </ClCompile>
+    <ClCompile Include="..\dependencies\luabind-0.9.1\src\stack_content_by_name.cpp">
+      <Filter>dependencies\luabind</Filter>
+    </ClCompile>
+    <ClCompile Include="..\dependencies\luabind-0.9.1\src\weak_ref.cpp">
+      <Filter>dependencies\luabind</Filter>
+    </ClCompile>
+    <ClCompile Include="..\dependencies\luabind-0.9.1\src\wrapper_base.cpp">
+      <Filter>dependencies\luabind</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\LuaBindings.cpp">
+      <Filter>Classes</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\LuaInstance.cpp">
       <Filter>Classes</Filter>
     </ClCompile>
   </ItemGroup>
@@ -242,10 +395,87 @@
     <ClInclude Include="..\Classes\UserMessage.h">
       <Filter>Classes</Filter>
     </ClInclude>
+    <ClInclude Include="..\dependencies\lua-5.1.5\lapi.h">
+      <Filter>dependencies\lua</Filter>
+    </ClInclude>
+    <ClInclude Include="..\dependencies\lua-5.1.5\lauxlib.h">
+      <Filter>dependencies\lua</Filter>
+    </ClInclude>
+    <ClInclude Include="..\dependencies\lua-5.1.5\lcode.h">
+      <Filter>dependencies\lua</Filter>
+    </ClInclude>
+    <ClInclude Include="..\dependencies\lua-5.1.5\ldebug.h">
+      <Filter>dependencies\lua</Filter>
+    </ClInclude>
+    <ClInclude Include="..\dependencies\lua-5.1.5\ldo.h">
+      <Filter>dependencies\lua</Filter>
+    </ClInclude>
+    <ClInclude Include="..\dependencies\lua-5.1.5\lfunc.h">
+      <Filter>dependencies\lua</Filter>
+    </ClInclude>
+    <ClInclude Include="..\dependencies\lua-5.1.5\lgc.h">
+      <Filter>dependencies\lua</Filter>
+    </ClInclude>
+    <ClInclude Include="..\dependencies\lua-5.1.5\llex.h">
+      <Filter>dependencies\lua</Filter>
+    </ClInclude>
+    <ClInclude Include="..\dependencies\lua-5.1.5\llimits.h">
+      <Filter>dependencies\lua</Filter>
+    </ClInclude>
+    <ClInclude Include="..\dependencies\lua-5.1.5\lmem.h">
+      <Filter>dependencies\lua</Filter>
+    </ClInclude>
+    <ClInclude Include="..\dependencies\lua-5.1.5\lobject.h">
+      <Filter>dependencies\lua</Filter>
+    </ClInclude>
+    <ClInclude Include="..\dependencies\lua-5.1.5\lopcodes.h">
+      <Filter>dependencies\lua</Filter>
+    </ClInclude>
+    <ClInclude Include="..\dependencies\lua-5.1.5\lparser.h">
+      <Filter>dependencies\lua</Filter>
+    </ClInclude>
+    <ClInclude Include="..\dependencies\lua-5.1.5\lstate.h">
+      <Filter>dependencies\lua</Filter>
+    </ClInclude>
+    <ClInclude Include="..\dependencies\lua-5.1.5\lstring.h">
+      <Filter>dependencies\lua</Filter>
+    </ClInclude>
+    <ClInclude Include="..\dependencies\lua-5.1.5\ltable.h">
+      <Filter>dependencies\lua</Filter>
+    </ClInclude>
+    <ClInclude Include="..\dependencies\lua-5.1.5\ltm.h">
+      <Filter>dependencies\lua</Filter>
+    </ClInclude>
+    <ClInclude Include="..\dependencies\lua-5.1.5\lua.h">
+      <Filter>dependencies\lua</Filter>
+    </ClInclude>
+    <ClInclude Include="..\dependencies\lua-5.1.5\luaconf.h">
+      <Filter>dependencies\lua</Filter>
+    </ClInclude>
+    <ClInclude Include="..\dependencies\lua-5.1.5\lualib.h">
+      <Filter>dependencies\lua</Filter>
+    </ClInclude>
+    <ClInclude Include="..\dependencies\lua-5.1.5\lundump.h">
+      <Filter>dependencies\lua</Filter>
+    </ClInclude>
+    <ClInclude Include="..\dependencies\lua-5.1.5\lvm.h">
+      <Filter>dependencies\lua</Filter>
+    </ClInclude>
+    <ClInclude Include="..\dependencies\lua-5.1.5\lzio.h">
+      <Filter>dependencies\lua</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\LuaInstance.h">
+      <Filter>Classes</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="game.rc">
       <Filter>resource</Filter>
     </ResourceCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\dependencies\lua-5.1.5\Makefile">
+      <Filter>dependencies\lua</Filter>
+    </None>
   </ItemGroup>
 </Project>
