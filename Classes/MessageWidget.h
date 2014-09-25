@@ -25,5 +25,4 @@ private:
 	float _showedTime;
 	bool _isOutdated;
 };
-
 #endif // MESSAGE_WIDGET_H
