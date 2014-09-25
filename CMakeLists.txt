@@ -10,7 +10,7 @@ option(USE_BOX2D "Use box2d for physics library" OFF)
 option(DEBUG_MODE "Debug or release?" ON)
 
 if(DEBUG_MODE)
-  set(CMAKE_BUILD_TYPE DEBUG)
+	set(CMAKE_BUILD_TYPE DEBUG)
 	add_definitions(-D_DEBUG)
 else(DEBUG_MODE)
   set(CMAKE_BUILD_TYPE RELEASE)
@@ -25,7 +25,7 @@ if (MSVC)
 
 elseif (CMAKE_COMPILER_IS_GNUCC OR CMAKE_COMPILER_IS_GNUCXX)
 	set(CMAKE_C_FLAGS_DEBUG "-g -Wall -DCOCOS2D_DEBUG=1")
-	set(CMAKE_CXX_FLAGS_DEBUG ${CMAKE_C_FLAGS_DEBUG})
+	set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_C_FLAGS_DEBUG} -Wno-reorder -Wno-deprecated-declarations -Wno-unused-but-set-variable")
 
 	set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -std=c99")
 	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
@@ -72,6 +72,8 @@ set(GAME_SRC
 	Classes/FileUtils.cpp
 	Classes/GameScene.cpp
 	Classes/Log.cpp
+	Classes/LuaBindings.cpp
+	Classes/LuaInstance.cpp
 	Classes/MainMenuScene.cpp
 	Classes/MapGuiLayer.cpp
 	Classes/MapProjector.cpp
@@ -92,9 +94,59 @@ set(GAME_SRC
 	Classes/World.cpp
 	Classes/WorldLoader.cpp
 	Classes/WorldMapLayer.cpp
+
+dependencies/luabind-0.9.1/src/class.cpp
+dependencies/luabind-0.9.1/src/class_info.cpp
+dependencies/luabind-0.9.1/src/class_registry.cpp
+dependencies/luabind-0.9.1/src/class_rep.cpp
+dependencies/luabind-0.9.1/src/create_class.cpp
+dependencies/luabind-0.9.1/src/error.cpp
+dependencies/luabind-0.9.1/src/exception_handler.cpp
+dependencies/luabind-0.9.1/src/function.cpp
+dependencies/luabind-0.9.1/src/inheritance.cpp
+dependencies/luabind-0.9.1/src/link_compatibility.cpp
+dependencies/luabind-0.9.1/src/object_rep.cpp
+dependencies/luabind-0.9.1/src/open.cpp
+dependencies/luabind-0.9.1/src/pcall.cpp
+dependencies/luabind-0.9.1/src/scope.cpp
+dependencies/luabind-0.9.1/src/stack_content_by_name.cpp
+dependencies/luabind-0.9.1/src/weak_ref.cpp
+dependencies/luabind-0.9.1/src/wrapper_base.cpp
+
+dependencies/lua-5.1.5/lapi.c
+dependencies/lua-5.1.5/lauxlib.c
+dependencies/lua-5.1.5/lbaselib.c
+dependencies/lua-5.1.5/lcode.c
+dependencies/lua-5.1.5/ldblib.c
+dependencies/lua-5.1.5/ldebug.c
+dependencies/lua-5.1.5/ldo.c
+dependencies/lua-5.1.5/ldump.c
+dependencies/lua-5.1.5/lfunc.c
+dependencies/lua-5.1.5/lgc.c
+dependencies/lua-5.1.5/linit.c
+dependencies/lua-5.1.5/liolib.c
+dependencies/lua-5.1.5/llex.c
+dependencies/lua-5.1.5/lmathlib.c
+dependencies/lua-5.1.5/lmem.c
+dependencies/lua-5.1.5/loadlib.c
+dependencies/lua-5.1.5/lobject.c
+dependencies/lua-5.1.5/lopcodes.c
+dependencies/lua-5.1.5/loslib.c
+dependencies/lua-5.1.5/lparser.c
+dependencies/lua-5.1.5/lstate.c
+dependencies/lua-5.1.5/lstring.c
+dependencies/lua-5.1.5/lstrlib.c
+dependencies/lua-5.1.5/ltable.c
+dependencies/lua-5.1.5/ltablib.c
+dependencies/lua-5.1.5/ltm.c
+dependencies/lua-5.1.5/lundump.c
+dependencies/lua-5.1.5/lvm.c
+dependencies/lua-5.1.5/lzio.c
+dependencies/lua-5.1.5/print.c
+
 )
 elseif ( WIN32 )
-set(GAME_SRC
+set(GAME_SRCcos2d::c
 	proj.win32/main.cpp
 	proj.win32/main.h
 	proj.win32/resource.h
@@ -181,6 +233,9 @@ include_directories(
 	${COCOS2D_ROOT}/external/spidermonkey/include/linux
 	${COCOS2D_ROOT}/external/linux-specific/fmod/include/${ARCH_DIR}
 	${COCOS2D_ROOT}/external/xxhash
+	${COCOS2D_ROOT}/../dependencies/boost_1_55_0
+	${COCOS2D_ROOT}/../dependencies/luabind-0.9.1
+	${COCOS2D_ROOT}/../dependencies/lua-5.1.5
 )
 
 link_directories(
