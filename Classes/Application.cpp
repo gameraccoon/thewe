@@ -4,7 +4,6 @@
 #include "MainMenuScene.h"
 #include "SplashScreenScene.h"
 #include "Vector2.h"
-#include "PlayersProfiles.h"
 #include "FileUtils.h"
 #include "Log.h"
 #include "WorldLoader.h"
@@ -60,7 +59,6 @@ bool AppDelegate::applicationDidFinishLaunching()
 	splashScreenScene->autorelease();
 
 	// загружаем игровые данные
-	ProfilesManager::Instance().LoadProfiles();
 	WorldLoader::LoadGameInfo();
 	WorldLoader::LoadGameState();
 

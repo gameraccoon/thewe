@@ -15,6 +15,7 @@ public:
 private:
 	void _OnCloseCallback(cocos2d::Ref *sender);
 	void _OnCreateNewCell(cocos2d::Ref *sender);
+	void _SelfClose(void);
 
 	bool _isCellCreationPossible;
 

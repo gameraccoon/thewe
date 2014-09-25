@@ -54,9 +54,6 @@
     <ClCompile Include="..\Classes\MapProjector.cpp">
       <Filter>Classes</Filter>
     </ClCompile>
-    <ClCompile Include="..\Classes\PlayersProfiles.cpp">
-      <Filter>Classes</Filter>
-    </ClCompile>
     <ClCompile Include="..\Classes\Region.cpp">
       <Filter>Classes</Filter>
     </ClCompile>
@@ -309,9 +306,6 @@
       <Filter>Classes</Filter>
     </ClInclude>
     <ClInclude Include="..\Classes\MapProjector.h">
-      <Filter>Classes</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Classes\PlayersProfiles.h">
       <Filter>Classes</Filter>
     </ClInclude>
     <ClInclude Include="..\Classes\Region.h">

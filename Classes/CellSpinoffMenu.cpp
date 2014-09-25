@@ -1,5 +1,7 @@
 #include "CellSpinoffMenu.h"
 
+#include "WorldMapLayer.h"
+
 static const unsigned int NECESSARY_MEMBERS = 0;//10;
 static const unsigned int NECESSARY_CACH = 0;//10000;
 
@@ -123,13 +125,20 @@ void CellSpinoffMenu::UpdateSpinoffState(const Cell::Info &info)
 
 void CellSpinoffMenu::_OnCloseCallback(cocos2d::Ref *sender)
 {
+	_SelfClose();
+}
+
+void CellSpinoffMenu::_OnCreateNewCell(cocos2d::Ref *sender)
+{
+	_worldMapLayer->SetNextCellParent(_cell);
+	_SelfClose();
+}
+
+void CellSpinoffMenu::_SelfClose(void)
+{
 	cocos2d::ScaleTo *scale = cocos2d::ScaleTo::create(0.2f, 0.2f, 0.01f);
 	cocos2d::EaseElasticIn *elastic_scale = cocos2d::EaseElasticIn::create(scale, 5.0f);
 	cocos2d::CallFunc *func = cocos2d::CallFunc::create(CC_CALLBACK_0(CellMenuSelector::OnCellMenuClosed, _cellMenuSelector));
 
 	runAction(cocos2d::Sequence::create(elastic_scale, func, nullptr));
-}
-
-void CellSpinoffMenu::_OnCreateNewCell(cocos2d::Ref *sender)
-{
 }

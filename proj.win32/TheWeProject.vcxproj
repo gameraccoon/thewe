@@ -154,7 +154,6 @@ xcopy /Y /Q "$(EngineRoot)external\websockets\prebuilt\win32\*.*" "$(OutDir)"</C
     <ClCompile Include="..\Classes\MapProjector.cpp" />
     <ClCompile Include="..\Classes\MessageManager.cpp" />
     <ClCompile Include="..\Classes\MessageWidget.cpp" />
-    <ClCompile Include="..\Classes\PlayersProfiles.cpp" />
     <ClCompile Include="..\Classes\ProgressBar.cpp" />
     <ClCompile Include="..\Classes\Region.cpp" />
     <ClCompile Include="..\Classes\RegionInfoLayer.cpp" />
@@ -241,7 +240,6 @@ xcopy /Y /Q "$(EngineRoot)external\websockets\prebuilt\win32\*.*" "$(OutDir)"</C
     <ClInclude Include="..\Classes\MessageManager.h" />
     <ClInclude Include="..\Classes\MessageWidget.h" />
     <ClInclude Include="..\Classes\ProgressBar.h" />
-    <ClInclude Include="..\Classes\PlayersProfiles.h" />
     <ClInclude Include="..\Classes\Region.h" />
     <ClInclude Include="..\Classes\RegionInfoLayer.h" />
     <ClInclude Include="..\Classes\SettingsManager.h" />

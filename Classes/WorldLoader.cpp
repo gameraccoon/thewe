@@ -4,7 +4,6 @@
 
 #include "World.h"
 #include "Vector2.h"
-#include "PlayersProfiles.h"
 #include "Region.h"
 #include "TaskManager.h"
 #include "Log.h"
@@ -181,6 +180,16 @@ static bool LoadWorld(void)
 	return true;
 }
 
+static bool CreateEmptyGameState(const std::string &filename)
+{
+	pugi::xml_document doc;
+
+	pugi::xml_node root = doc.append_child("Save");
+	pugi::xml_node node = root.append_child("CellsNetwork");
+
+	return doc.save_file(Utils::GetDocumentsPath().append("save.sav").c_str());
+}
+
 bool WorldLoader::LoadGameInfo()
 {
 	bool result = true;
@@ -195,21 +204,42 @@ bool WorldLoader::LoadGameInfo()
 }
 
 bool WorldLoader::LoadGameState(void)
-{
-	PlayerProfile *profile = ProfilesManager::Instance().GetCurrentProfile();
+{	
+	cocos2d::FileUtils *fu = cocos2d::FileUtils::getInstance();
+	std::string fullPath;
+	unsigned char* pBuffer = NULL;
+	ssize_t bufferSize = 0;
+	std::string filename = "save.sav";
 
-	if (profile)
+	pugi::xml_document doc;
+	pugi::xml_parse_result result;
+
+	fullPath = fu->fullPathForFilename(Utils::GetDocumentsPath().append(filename).c_str());
+	pBuffer = fu->getFileData(fullPath.c_str(), "r", &bufferSize);
+	result = doc.load_buffer(pBuffer, bufferSize);
+
+	if (!result)
+	{
+		if (CreateEmptyGameState(filename))
+		{
+			fullPath = fu->fullPathForFilename(Utils::GetDocumentsPath().append(filename).c_str());
+			pBuffer = fu->getFileData(fullPath.c_str(), "r", &bufferSize);
+			result = doc.load_buffer(pBuffer, bufferSize);
+		}
+		else
+		{
+			Log::Instance().writeError("Failed to create empty world state file.");
+		}
+	}
+
+	if (!result)
+	{
+		Log::Instance().writeError("Failed to read world .");
+	}
+	else
 	{
 		// 1. Находим корневую ячейку
 		// 2. рекурсивно добавляем детей
-
-		pugi::xml_document doc;
-
-		std::string fullPath = cocos2d::FileUtils::getInstance()->fullPathForFilename(profile->gameStateFilename.c_str());
-		unsigned char* pBuffer = NULL;
-		ssize_t bufferSize = 0;
-		pBuffer = cocos2d::FileUtils::getInstance()->getFileData(fullPath.c_str(), "r", &bufferSize);
-		pugi::xml_parse_result r = doc.load_buffer(pBuffer, bufferSize);
 
 
 		pugi::xml_node root = doc.first_child();
@@ -248,62 +278,55 @@ bool WorldLoader::LoadGameState(void)
 
 bool WorldLoader::SaveGameState(void)
 {
-	PlayerProfile *profile = ProfilesManager::Instance().GetCurrentProfile();
+	// TODO
+	// 1. узнать какой по счету профиль
+	// 2. создать и сохранить xml файл с именем save-@имя профиля@-@какой по счету + 1@
+	// 3. если удалось сохранить удаляем предидущий.
 
-	if (profile)
+	// Временный код без транзакционного сохранения.
+
+	World &map = World::Instance();
+	const World::Cells &cells = map.GetCells();
+
+	std::map<const Cell *, int> cells_indices;
+	int index = 0;
+	for (World::Cells::const_iterator it = cells.begin(); it != cells.end(); ++it)
 	{
-		// TODO
-		// 1. узнать какой по счету профиль
-		// 2. создать и сохранить xml файл с именем save-@имя профиля@-@какой по счету + 1@
-		// 3. если удалось сохранить удаляем предидущий.
-
-		// Временный код без транзакционного сохранения.
-
-		World &map = World::Instance();
-		const World::Cells &cells = map.GetCells();
-
-		std::map<const Cell *, int> cells_indices;
-		int index = 0;
-		for (World::Cells::const_iterator it = cells.begin(); it != cells.end(); ++it)
-		{
-			index = index + 1;
-			cells_indices.insert(std::pair<const Cell *, int>((*it).get(), index));
-		}
-
-		pugi::xml_document doc;
-		pugi::xml_node root = doc.append_child("Save");
-
-		pugi::xml_node cells_root = root.append_child("CellsNetwork");
-
-		for (World::Cells::const_iterator it = cells.begin(); it != cells.end(); ++it)
-		{
-			const Cell *cell = (*it).get();
-			const Cell::Info info = (*it)->GetInfo();
-	
-			int parent_id = info.parent != nullptr ? cells_indices.find(info.parent)->second : -1;
-
-			pugi::xml_node cell_node = cells_root.append_child("Cell");
-			cell_node.append_attribute("id").set_value(cells_indices.find(cell)->second);
-			cell_node.append_attribute("parent_id").set_value(parent_id);
-			cell_node.append_attribute("town").set_value(info.town.lock()->GetInfo().name.c_str());
-			cell_node.append_attribute("location_x").set_value(info.location.x);
-			cell_node.append_attribute("location_y").set_value(info.location.y);
-			cell_node.append_attribute("cash").set_value(info.cash);
-			cell_node.append_attribute("morale").set_value(info.morale);
-			cell_node.append_attribute("contentment").set_value(info.contentment);
-			cell_node.append_attribute("members_num").set_value(info.membersCount);
-
-			for (Cell::Ptr child : cell->GetChildrens())
-			{
-				pugi::xml_node cell_child_node = cell_node.append_child("Child");
-				cell_child_node.append_attribute("id").set_value(cells_indices.find(child.get())->second);
-			}
-		}
-
-		doc.save_file(profile->gameStateFilename.c_str());
+		index = index + 1;
+		cells_indices.insert(std::pair<const Cell *, int>((*it).get(), index));
 	}
 
-	return false;
+	pugi::xml_document doc;
+	pugi::xml_node root = doc.append_child("Save");
+
+	pugi::xml_node cells_root = root.append_child("CellsNetwork");
+
+	for (World::Cells::const_iterator it = cells.begin(); it != cells.end(); ++it)
+	{
+		const Cell *cell = (*it).get();
+		const Cell::Info info = (*it)->GetInfo();
+	
+		int parent_id = info.parent != nullptr ? cells_indices.find(info.parent)->second : -1;
+
+		pugi::xml_node cell_node = cells_root.append_child("Cell");
+		cell_node.append_attribute("id").set_value(cells_indices.find(cell)->second);
+		cell_node.append_attribute("parent_id").set_value(parent_id);
+		cell_node.append_attribute("town").set_value(info.town.lock()->GetInfo().name.c_str());
+		cell_node.append_attribute("location_x").set_value(info.location.x);
+		cell_node.append_attribute("location_y").set_value(info.location.y);
+		cell_node.append_attribute("cash").set_value(info.cash);
+		cell_node.append_attribute("morale").set_value(info.morale);
+		cell_node.append_attribute("contentment").set_value(info.contentment);
+		cell_node.append_attribute("members_num").set_value(info.membersCount);
+
+		for (Cell::Ptr child : cell->GetChildrens())
+		{
+			pugi::xml_node cell_child_node = cell_node.append_child("Child");
+			cell_child_node.append_attribute("id").set_value(cells_indices.find(child.get())->second);
+		}
+	}
+
+	return doc.save_file(Utils::GetDocumentsPath().append("save.sav").c_str());
 }
 
 void WorldLoader::FlushGameState(void)
