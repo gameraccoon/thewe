@@ -2,7 +2,7 @@
 
 #include "Log.h"
 
-ProgressBar::ProgressBar(float maxSizeX, float maxSizeY, cocos2d::Color4F color)
+SquareProgressBar::SquareProgressBar(float maxSizeX, float maxSizeY, cocos2d::Color4F color)
 	: _progress(0.0f)
 	, _maxSizeX(maxSizeX)
 	, _maxSizeY(maxSizeY)
@@ -11,7 +11,7 @@ ProgressBar::ProgressBar(float maxSizeX, float maxSizeY, cocos2d::Color4F color)
 	init();
 }
 
-void ProgressBar::UpdateBarSize(float width, float height)
+void SquareProgressBar::UpdateBarSize(float width, float height)
 {
 	cocos2d::Vec2 vertices[4];
 	vertices[0] = cocos2d::Vec2(0.0f, 0.0f);
@@ -23,7 +23,7 @@ void ProgressBar::UpdateBarSize(float width, float height)
 	_progressDraw->drawPolygon(vertices, 4, _barColor, 0.0f, cocos2d::Color4F(0,0,0,0));
 }
 
-bool ProgressBar::init(void)
+bool SquareProgressBar::init(void)
 {
 	cocos2d::Color4F c(1.0f, 0.0f, 0.0f, 1.0f);
 
@@ -44,7 +44,7 @@ bool ProgressBar::init(void)
 	return true;
 }
 
-void ProgressBar::SetProgress(float progress)
+void SquareProgressBar::SetProgressPercentage(float progress)
 {	
 	_progress = progress;
 
@@ -56,22 +56,60 @@ void ProgressBar::SetProgress(float progress)
 	UpdateBarSize(_maxSizeX * _progress / 100.0f, _maxSizeY);
 }
 
-float ProgressBar::GetMaxWidth(void) const
+float SquareProgressBar::GetMaxWidth(void) const
 {
 	return _maxSizeX;
 }
 
-float ProgressBar::GetMaxHeight(void) const
+float SquareProgressBar::GetMaxHeight(void) const
 {
 	return _maxSizeY;
 }
 
-float ProgressBar::GetCurrentProgress(void) const
+float SquareProgressBar::GetCurrentProgress(void) const
 {
 	return _progress;
 }
 
-bool ProgressBar::IsFinished(void)
+bool SquareProgressBar::IsFinished(void)
 {
 	return _progress >= 100.0f;
+}
+
+// RoundProgressBar implementation
+
+RoundProgressBar::RoundProgressBar(const std::string &roundTexture)
+	: _roundTexturName(roundTexture)
+	, _progressPercantage(100.0f)
+{
+	init();
+}
+
+bool RoundProgressBar::init(void)
+{
+	_roundTexture = cocos2d::Sprite::create(_roundTexturName);
+	_progressTimer = cocos2d::ProgressTimer::create(_roundTexture);
+	_progressTimer->setPosition(0.0f, 0.0f);
+	_progressTimer->setType(cocos2d::ProgressTimer::Type::RADIAL);
+
+	addChild(_progressTimer, 0);
+
+	return true;
+}
+
+void RoundProgressBar::SetProgressPercentage(float progress, float duration)
+{
+	cocos2d::ProgressFromTo *p = cocos2d::ProgressFromTo::create(duration, _progressPercantage, progress);
+
+	_progressTimer->runAction(p);
+}
+
+float RoundProgressBar::GetCurrentProgress(void)
+{
+	return _progressPercantage;
+}
+
+bool RoundProgressBar::IsFinished(void) const
+{
+	return _progressPercantage > 100.0f;
 }

@@ -16,7 +16,7 @@ public:
 private:
 	void _OnCloseCallback(cocos2d::Ref *sender);
 
-	ProgressBar *_taskProgressBar;
+	SquareProgressBar *_taskProgressBar;
 
 	cocos2d::Label *_labelCachInfo;
 	cocos2d::Label *_labelMembersInfo;

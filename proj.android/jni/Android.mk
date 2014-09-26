@@ -34,7 +34,6 @@ LOCAL_SRC_FILES := hellocpp/main.cpp \
 				   	../../Classes/MainMenuScene.cpp \
 				   	../../Classes/MapGuiLayer.cpp \
 				   	../../Classes/MapProjector.cpp \
-				   	../../Classes/PlayersProfiles.cpp \
 				   	../../Classes/ProgressBar.cpp \
 				   	../../Classes/Region.cpp \
 				   	../../Classes/RegionInfoLayer.cpp \

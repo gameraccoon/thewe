@@ -48,14 +48,13 @@ bool CellTaskInfoMenu::init(void)
 	float time = World::Instance().GetWorldTime();
 	float progress = _cellCurrentTask->CalculateProgress(time);
 
-	_taskProgressBar = new ProgressBar(w, 50.0f, cocos2d::Color4F(1.0f, 0.5f, 0, 1.0f));
+	_taskProgressBar = new SquareProgressBar(w, 50.0f, cocos2d::Color4F(1.0f, 0.5f, 0, 1.0f));
 	_taskProgressBar->setPosition(x, y);
 	_taskProgressBar->autorelease();
-	_taskProgressBar->SetProgress(progress);
+	_taskProgressBar->SetProgressPercentage(progress);
 
 	_taskProgressLabel = cocos2d::Label::createWithTTF(ttfConfig, "", cocos2d::TextHAlignment::CENTER);
 	_taskProgressLabel->setPosition(center.x, y-25.0f);
-
 
 	cocos2d::ScaleTo *scale = cocos2d::ScaleTo::create(0.8f, 1.0f, 1.0f);
 	cocos2d::FadeIn *fade = cocos2d::FadeIn::create(0.5f);
@@ -89,7 +88,7 @@ void CellTaskInfoMenu::update(float dt)
 		{
 			float time = World::Instance().GetWorldTime();
 			float progress = _cellCurrentTask->CalculateProgress(time);
-			_taskProgressBar->SetProgress(progress * 100.0f);
+			_taskProgressBar->SetProgressPercentage(progress * 100.0f);
 
 			std::string label = cocos2d::StringUtils::format("(%d %%)", (int)(progress * 100.0f));
 			_taskProgressLabel->setString(label);

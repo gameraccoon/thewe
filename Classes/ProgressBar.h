@@ -3,14 +3,14 @@
 
 #include <cocos2d.h>
 
-class ProgressBar : public cocos2d::Node
+class SquareProgressBar : public cocos2d::Node
 {
 public:
-	ProgressBar(float maxSizeX, float maxSizeY, cocos2d::Color4F color = cocos2d::Color4F(0.3f, 0.3f, 0.3f, 1.0f));
+	SquareProgressBar(float maxSizeX, float maxSizeY, cocos2d::Color4F color = cocos2d::Color4F(0.3f, 0.3f, 0.3f, 1.0f));
 
 	virtual bool init(void) override;
 
-	void SetProgress(float progress);
+	void SetProgressPercentage(float progress);
 
 	float GetMaxWidth(void) const;
 	float GetMaxHeight(void) const;
@@ -29,5 +29,25 @@ protected:
 	float _maxSizeX, _maxSizeY;
 };
 
+class RoundProgressBar : public cocos2d::Node
+{
+public:
+	RoundProgressBar(const std::string &roundTexture);
+
+	virtual bool init(void) override;
+
+	void SetProgressPercentage(float progress, float duration = 0.0f);
+
+	float GetCurrentProgress(void);
+	bool IsFinished(void) const;
+
+public:
+	cocos2d::ProgressTimer *_progressTimer;
+	cocos2d::Sprite *_roundTexture;
+
+	std::string _roundTexturName;
+
+	float _progressPercantage;
+};
 
 #endif

@@ -16,7 +16,7 @@ private:
 
 	cocos2d::Label *_taskProgressLabel;
 
-	ProgressBar *_taskProgressBar;
+	SquareProgressBar *_taskProgressBar;
 
 	Cell::WeakPtr _cell;
 	Task::Ptr _cellCurrentTask;

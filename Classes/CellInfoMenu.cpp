@@ -48,35 +48,35 @@ bool CellInfoMenu::init(void)
 	_labelCachInfo = cocos2d::Label::createWithBMFont("futura-48.fnt", "", cocos2d::TextHAlignment::LEFT);
 	_labelCachInfo->setAnchorPoint(cocos2d::Vec2(0.0f, 0.0f));
 	_labelCachInfo->setPosition(info_x, info_y);
-	_labelCachInfo->setScale(0.35);
+	_labelCachInfo->setScale(0.35f);
 	
 	info_y -= 20.0f;
 	
 	_labelMembersInfo = cocos2d::Label::createWithBMFont("futura-48.fnt", "", cocos2d::TextHAlignment::LEFT);
 	_labelMembersInfo->setAnchorPoint(cocos2d::Vec2(0.0f, 0.0f));
 	_labelMembersInfo->setPosition(info_x, info_y);
-	_labelMembersInfo->setScale(0.35);
+	_labelMembersInfo->setScale(0.35f);
 		
 	info_y -= 20.0f;
 	
 	_labelContentmentInfo = cocos2d::Label::createWithBMFont("futura-48.fnt", "", cocos2d::TextHAlignment::LEFT);
 	_labelContentmentInfo->setAnchorPoint(cocos2d::Vec2(0.0f, 0.0f));
 	_labelContentmentInfo->setPosition(info_x, info_y);
-	_labelContentmentInfo->setScale(0.35);
+	_labelContentmentInfo->setScale(0.35f);
 
 	info_y -= 20.0f;
 	
 	_labelMoraleInfo = cocos2d::Label::createWithBMFont("futura-48.fnt", "", cocos2d::TextHAlignment::LEFT);
 	_labelMoraleInfo->setAnchorPoint(cocos2d::Vec2(0.0f, 0.0f));
 	_labelMoraleInfo->setPosition(info_x, info_y);
-	_labelMoraleInfo->setScale(0.35);
+	_labelMoraleInfo->setScale(0.35f);
 
 	info_y -= 20.0f;
 	
 	_labelChildrensInfo = cocos2d::Label::createWithBMFont("futura-48.fnt", "", cocos2d::TextHAlignment::LEFT);
 	_labelChildrensInfo->setAnchorPoint(cocos2d::Vec2(0.0f, 0.0f));
 	_labelChildrensInfo->setPosition(info_x, info_y);
-	_labelChildrensInfo->setScale(0.35);
+	_labelChildrensInfo->setScale(0.35f);
 
 	Cell::Ptr cell = _cell.lock();
 	_cellCurrentTask = cell->getCurrentTask().lock();
@@ -92,10 +92,10 @@ bool CellInfoMenu::init(void)
 		float time = World::Instance().GetWorldTime();
 		float progress = _cellCurrentTask->CalculateProgress(time);
 
-		_taskProgressBar = new ProgressBar(w, 10.0f, cocos2d::Color4F(1.0f, 0.5f, 0, 1.0f));
+		_taskProgressBar = new SquareProgressBar(w, 10.0f, cocos2d::Color4F(1.0f, 0.5f, 0, 1.0f));
 		_taskProgressBar->setPosition(x, y);
 		_taskProgressBar->autorelease();
-		_taskProgressBar->SetProgress(progress);
+		_taskProgressBar->SetProgressPercentage(progress);
 
 		std::string strTaskLabel = cocos2d::StringUtils::format("Cell is now performing %s task", _cellCurrentTask->GetInfo()->id.c_str());
 		_currentTaskLabel = cocos2d::Label::createWithTTF(ttfConfig, strTaskLabel, cocos2d::TextHAlignment::CENTER);
@@ -140,7 +140,7 @@ void CellInfoMenu::update(float dt)
 		{
 			float time = World::Instance().GetWorldTime();
 			float progress = _cellCurrentTask->CalculateProgress(time);
-			_taskProgressBar->SetProgress(progress * 100.0f);
+			_taskProgressBar->SetProgressPercentage(progress * 100.0f);
 		}
 	}
 }
