@@ -1,8 +1,8 @@
 #include "UserMessage.h"
 
-UserMessage::UserMessage(std::string text, float timeToShow)
+UserMessage::UserMessage(std::string text)
 	: _text(text)
-	, _timeToShow(timeToShow)
+	, _timeToShow(5.0f)
 {
 }
 

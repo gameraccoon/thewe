@@ -57,7 +57,7 @@ const Cell::Info& Cell::GetInfo(void) const
 
 void Cell::Update(float deltatime)
 {
-	// пересчитать наличные
+	// РїРµСЂРµСЃС‡РёС‚Р°С‚СЊ РЅР°Р»РёС‡РЅС‹Рµ
 	_UpdateCash(deltatime);
 	_UpdateMorale(deltatime);
 	_UpdateContentment(deltatime);
@@ -120,6 +120,11 @@ void Cell::GetHitArea(float &beginX, float &endX, float &beginY, float &endY) co
 	endX = _hitAreaEndX;
 	beginY = _hitAreaBeginY;
 	endY = _hitAreaEndY;
+}
+
+float Cell::GetCash()
+{
+	return _info.cash;
 }
 
 void Cell::_CheckValues() const

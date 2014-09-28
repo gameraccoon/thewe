@@ -30,6 +30,11 @@ LuaInstance::~LuaInstance()
 	}
 }
 
+lua_State* LuaInstance::GetLuaState()
+{
+	return _luaState;
+}
+
 int LuaInstance::ExecScript(const char* script)
 {
 	int res = luaL_dostring(this->_luaState, script);
@@ -138,4 +143,9 @@ template<>
 void LuaInstance::SendToLua<void*>(void* value)
 {
 	lua_pushlightuserdata(this->_luaState, value);
+}
+
+void LuaInstance::UnregisterVariable(const char* name)
+{
+	luabind::globals(_luaState)[name] = nullptr;
 }

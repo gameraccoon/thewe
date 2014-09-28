@@ -27,7 +27,8 @@ public:
 	 * временем начала выполнения задачи
 	 */
 	void RunTask(Cell::WeakPtr &cell, const Task::Info* info, float startTime);
-	
+	void RunTask(Cell::WeakPtr &cell, const std::string& info, float startTime);
+
 	/**
 	 * Возвращает список задач, которые достпны для данной ячейки
 	 */
@@ -60,6 +61,8 @@ private:
 private:
 	/** Проверить информацию и вывести все предупреждения в журнал */
 	void _CheckTask(const Task::Info& taskInfo) const;
+
+	const Task::Info* GetTaskInfoById(const std::string& id);
 
 	/*
 	 * Отключаем ненужные операции

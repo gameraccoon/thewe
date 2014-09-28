@@ -16,6 +16,8 @@ public:
 
 	int GetArgumentsCount();
 
+	lua_State* GetLuaState();
+
 	template<typename T>
 	T GetFromLua(int index);
 	template<typename T>
@@ -23,6 +25,10 @@ public:
 
 	template<typename T>
 	void BindClass();
+
+	template<typename T>
+	void RegisterVariable(const char* name, T* value);
+	void UnregisterVariable(const char* name);
 private:
 	lua_State *_luaState;
 	bool _isMainInstance;

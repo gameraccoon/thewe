@@ -1,19 +1,29 @@
-Log:Log("Script task.lua initalization started")
+Log:log("Script task.lua initalization started")
 
--- function CheckStatus(cellMembers, cellMorale, cellHappyness, taskMoral, taskSeverity)
--- 	return true
--- end
+function CheckStatus(cellMembers, cellMorale, cellHappyness, taskMoral, taskSeverity)
+	return false
+end
 
--- function TestMissionSuccess(taskId)
--- 	Log:Log("Task "..taskId.." in city "..cell.town.name.." successfully finished!")
--- end
+function SayCompleted(taskName)
+	MessageManager:sendMessage("Task " .. taskName .. " completed")
+end
 
--- function TestMissionFail(taskId)
--- 	Log:Log("Task "..taskId.." in city "..cell.town.name.." failed.")
--- end
+function SayFailed(taskName)
+	MessageManager:sendMessage("Task " .. taskName .. " failed")
+end
 
--- function TestMissionAbort(taskId)
--- 	Log:Log("Task "..taskId.." in city "..cell.town.name.." aborted")
--- end
+function TestMissionSuccess(taskId)
+	Log:log("Task "..taskId.." with cash "..cell.cash.." successfully finished!")
+	SayCompleted(taskId)
+end
 
-Log:Log("Script task.lua initalization finished")
+function TestMissionFail(taskId)
+	Log:log("Task "..taskId.." with cash "..cell.cash.." failed.")
+	SayFailed(taskId)
+end
+
+function TestMissionAbort(taskId)
+	Log:log("Task "..taskId.." with cash "..cell.cash.." aborted")
+end
+
+Log:log("Script task.lua initalization finished")

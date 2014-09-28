@@ -15,10 +15,9 @@ public:
 
 	/**
 	 * Отправить новое сообщение в мессенджер игрока
-	 * @param message сообщение
+	 * @param text сообщение
 	 */
-	void SendGameMessage(UserMessage::Ptr message);
-	void SendGameMessage(std::string text, float timeToShow = 5.0);
+	void SendGameMessage(std::string text);
 
 	void RemoveMessage(int key);
 
