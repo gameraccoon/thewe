@@ -35,7 +35,7 @@ bool WorldMapLayer::init(void)
 	}
 	
 	_networkVisualiser = cocos2d::DrawNode::create();
-	_UpdateNetwork();
+	//_UpdateNetwork();
 	addChild(_networkVisualiser, 2);
 
 	cocos2d::Sprite * spr = AddSpriteToProjector(_mapProjector, Vector2(0.0f, 0.0f), Vector2(0.0f, 0.0f), "WorldMap.png", false);
@@ -187,8 +187,6 @@ void WorldMapLayer::onTouchesEnded(const std::vector<cocos2d::Touch* > &touches,
 
 void WorldMapLayer::onTouchesMoved(const std::vector<cocos2d::Touch* > &touches, cocos2d::Event* event)
 {
-	_UpdateNetwork();
-
 	if (_isInputEnabled && touches.size() > 0)
 	{
 		if (!_isTouchesCountUpdated && (unsigned)_lastTouchesCount == touches.size())
@@ -200,6 +198,8 @@ void WorldMapLayer::onTouchesMoved(const std::vector<cocos2d::Touch* > &touches,
 			RecalculateTouches(touches, false);
 		}
 	}
+
+	_UpdateNetwork();
 }
 
 void WorldMapLayer::RecalculateTouches(const std::vector<cocos2d::Touch* > &touches, bool updateView)
@@ -346,6 +346,8 @@ void WorldMapLayer::_OnTownSelect(Town::WeakPtr town)
 
 		_nextCellParent.lock()->AddChild(cell);
 		_nextCellParent = Cell::WeakPtr();
+
+		_UpdateNetwork();
 	}
 }
 
