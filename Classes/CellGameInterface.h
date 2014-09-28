@@ -45,6 +45,7 @@ private:
 	void _MenuInputListener(cocos2d::Ref *sender);
 	bool _IsAnimationFinished(void);
 
+private:
 	WorldMapLayer *_worldMapLayer;
 	MapProjector *_projector;
 

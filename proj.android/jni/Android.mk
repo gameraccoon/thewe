@@ -36,12 +36,10 @@ LOCAL_SRC_FILES := hellocpp/main.cpp \
 				   	../../Classes/MapProjector.cpp \
 				   	../../Classes/ProgressBar.cpp \
 				   	../../Classes/Region.cpp \
-				   	../../Classes/RegionInfoLayer.cpp \
 				   	../../Classes/SplashScreenScene.cpp \
 				   	../../Classes/Task.cpp \
 				   	../../Classes/TaskManager.cpp \
 				   	../../Classes/Town.cpp \
-				   	../../Classes/TownInfoLayer.cpp \
 				   	../../Classes/TransitionZoomFade.cpp \
 				   	../../Classes/UserMessage.cpp \
 				   	../../Classes/Vector2.cpp \

@@ -71,6 +71,8 @@ bool CellTaskInfoMenu::init(void)
 	addChild(_taskProgressBar, 1);
 	addChild(_taskProgressLabel, 1);
 
+	setKeyboardEnabled(true);
+
 	return true;
 }
 
@@ -98,9 +100,22 @@ void CellTaskInfoMenu::update(float dt)
 
 void CellTaskInfoMenu::_OnCloseCallback(cocos2d::Ref *sender)
 {
+	_CloseMenu();
+}
+
+void CellTaskInfoMenu::_CloseMenu()
+{
 	cocos2d::ScaleTo *scale = cocos2d::ScaleTo::create(0.2f, 0.2f, 0.01f);
 	cocos2d::EaseElasticIn *elastic_scale = cocos2d::EaseElasticIn::create(scale, 5.0f);
 	cocos2d::CallFunc *func = cocos2d::CallFunc::create(CC_CALLBACK_0(CellMenuSelector::OnCellMenuClosed, _cellMenuSelector));
 
 	runAction(cocos2d::Sequence::create(elastic_scale, func, nullptr));
+}
+
+void CellTaskInfoMenu::onKeyReleased(cocos2d::EventKeyboard::KeyCode key, cocos2d::Event *event)
+{
+	if (key == cocos2d::EventKeyboard::KeyCode::KEY_ESCAPE)
+	{
+		_CloseMenu();
+	}
 }

@@ -116,6 +116,8 @@ bool CellSpinoffMenu::init(void)
 	addChild(_necessaryMembers, 1);
 	addChild(_necessaryCash, 1);
 
+	setKeyboardEnabled(true);
+
 	return true;
 }
 
@@ -141,4 +143,12 @@ void CellSpinoffMenu::_SelfClose(void)
 	cocos2d::CallFunc *func = cocos2d::CallFunc::create(CC_CALLBACK_0(CellMenuSelector::OnCellMenuClosed, _cellMenuSelector));
 
 	runAction(cocos2d::Sequence::create(elastic_scale, func, nullptr));
+}
+
+void CellSpinoffMenu::onKeyReleased(cocos2d::EventKeyboard::KeyCode key, cocos2d::Event *event)
+{
+	if (key == cocos2d::EventKeyboard::KeyCode::KEY_ESCAPE)
+	{
+		_SelfClose();
+	}
 }

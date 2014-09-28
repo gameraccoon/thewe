@@ -15,7 +15,10 @@ public:
 
 private:
 	void _OnCloseCallback(cocos2d::Ref *sender);
+	void _CloseMenu();
+	virtual void onKeyReleased(cocos2d::EventKeyboard::KeyCode key, cocos2d::Event *event) override;
 
+private:
 	SquareProgressBar *_taskProgressBar;
 
 	cocos2d::Label *_labelCachInfo;

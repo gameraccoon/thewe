@@ -137,6 +137,8 @@ bool CellTasksScreen::init(void)
 	addChild(labelTitle, 1);
 	addChild(_scrollTasksView, 2);
 
+	setKeypadEnabled(true);
+
 	return true;
 }
 
@@ -190,4 +192,12 @@ void CellTasksScreen::_CreateTasksScrollViewMenu(const TaskManager::TasksList &t
 	}
 
 	_scrollTasksView->setContentOffset(_scrollTasksView->minContainerOffset());
+}
+
+void CellTasksScreen::onKeyReleased(cocos2d::EventKeyboard::KeyCode key, cocos2d::Event *event)
+{
+	if (key == cocos2d::EventKeyboard::KeyCode::KEY_ESCAPE)
+	{
+		CloseMenu();
+	}
 }
