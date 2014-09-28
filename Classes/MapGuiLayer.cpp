@@ -42,29 +42,32 @@ bool MapGuiLayer::init(void)
 	_messagesMargin = Vector2(5.0f, 5.0f);
 	_messagesPosition = Vector2(origin + screen - _messagesMargin);
 
+	cocos2d::Vector<cocos2d::MenuItem*> menuItems;
+
 	Vector2 pos(0.0f, origin.y + screen.y);
-
-	_printTime = cocos2d::LabelTTF::create("Time: 0", "Arial", 32);
-	_printTime->setPosition(Vector2(pos.x, origin.y + screen.y - 50));
-	
-	_btnEditor->setScale(1.0f);
-	_btnEditor->setTag(MENU_ITEM_EDITOR);
-	_btnEditor->setPosition(pos);
-	_btnEditor->setAnchorPoint(cocos2d::Vec2(0.0f, 1.0f));
-
-	pos += Vector2(_btnEditor->getContentSize().width - 8.0f, 0.0f);
 
 	_btnSave->setScale(1.0f);
 	_btnSave->setTag(MENU_ITEM_SAVE);
 	_btnSave->setPosition(pos);
 	_btnSave->setAnchorPoint(cocos2d::Vec2(0.0f, 1.0f));
+	menuItems.pushBack(_btnSave);
 
-	pos += Vector2(_btnSave->getContentSize().width - 7.5f, 0.0f);
+#if CC_TARGET_PLATFORM != CC_PLATFORM_ANDROID && CC_TARGET_PLATFORM != CC_PLATFORM_IOS
+	pos += Vector2(_btnSave->getContentSize().width - 8.0f, 0.0f);
+
+	_btnEditor->setScale(1.0f);
+	_btnEditor->setTag(MENU_ITEM_EDITOR);
+	_btnEditor->setPosition(pos);
+	_btnEditor->setAnchorPoint(cocos2d::Vec2(0.0f, 1.0f));
+	menuItems.pushBack(_btnEditor);
+
+	pos += Vector2(_btnEditor->getContentSize().width - 7.5f, 0.0f);
 	
 	_btnZoomOut->setScale(1.0f);
 	_btnZoomOut->setTag(MENU_ITEM_ZOOM_OUT);
 	_btnZoomOut->setPosition(pos);
 	_btnZoomOut->setAnchorPoint(cocos2d::Vec2(0.0f, 1.0f));
+	menuItems.pushBack(_btnZoomOut);
 	
 	pos += Vector2(_btnZoomOut->getContentSize().width - 7.5f, 0.0f);
 	
@@ -72,13 +75,14 @@ bool MapGuiLayer::init(void)
 	_btnZoomIn->setTag(MENU_ITEM_ZOOM_IN);
 	_btnZoomIn->setPosition(pos);
 	_btnZoomIn->setAnchorPoint(cocos2d::Vec2(0.0f, 1.0f));
+	menuItems.pushBack(_btnZoomIn);
+#endif
 
-	cocos2d::Menu *menu = cocos2d::Menu::create(_btnZoomIn, _btnZoomOut, _btnEditor, _btnSave, NULL);
+	cocos2d::Menu *menu = cocos2d::Menu::createWithArray(menuItems);
 	menu->setPosition(0.0f, 0.0f);
 
 	addChild(menu);
-	addChild(_printTime);
-	
+
 	scheduleUpdate();
 
 	return true;

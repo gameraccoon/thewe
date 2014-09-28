@@ -38,8 +38,6 @@ private:
 	cocos2d::MenuItemImage *_btnEditor;
 	cocos2d::MenuItemImage *_btnSave;
 
-	cocos2d::LabelTTF *_printTime;
-
 	MapProjector *_mapProjector;
 
 	std::map<int, MessageWidget*> _userMessages;

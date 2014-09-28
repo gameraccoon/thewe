@@ -44,6 +44,8 @@ bool AppDelegate::applicationDidFinishLaunching()
 #if CC_TARGET_PLATFORM != CC_PLATFORM_ANDROID && CC_TARGET_PLATFORM != CC_PLATFORM_IOS
 	glview->setFrameZoomFactor(1.0f);
 	glview->setFrameSize(dr_w, dr_h);
+
+	director->setDisplayStats(true);
 #endif
 
 	glview->setDesignResolutionSize(dr_w, dr_h, ResolutionPolicy::FIXED_HEIGHT);
@@ -67,8 +69,6 @@ bool AppDelegate::applicationDidFinishLaunching()
 
 	// регистрируем сцены в сборщике мусора
 	mainMenuScene->autorelease();
-
-	director->setDisplayStats(true);
 
 	return true;
 }
