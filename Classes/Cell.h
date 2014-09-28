@@ -52,7 +52,7 @@ public:
 	/**
 	* Возвращает информацию о ячейке
 	*/
-	const Info& GetInfo(void) const;
+	Info& GetInfo(void);
 	
 	/** Обновляем состояние ячейки */
 	void Update(float deltatime);
