@@ -65,6 +65,14 @@ public:
 	/** Добавляем задание как выполненное */
 	void AddCompletedTask(const Task::CompletedTaskInfo& completedTask);
 
+	/** Вернуть уникальный идентификатор  */
+	unsigned int GetUid(void) const;
+
+	/** Устанавливает зону обработки нажатий  */
+	void SetHitArea(float beginX, float beginY, float endX, float endY);
+	/** Возвращает зону обработки нажатий  */
+	void GetHitArea(float &beginX, float &beginY, float &endX, float &endY) const;
+
 private:
 
 	/** Установить ячейке родителя */
@@ -83,6 +91,9 @@ private:
 	/** Вся важная информация о ячейке */
 	Info _info;
 
+	/**  уникальный идентификатор */
+	unsigned int _uid;
+
 	/** Дочерние ячейки */
 	std::vector<Cell::Ptr> _childCells;
 
@@ -94,6 +105,10 @@ private:
 
 	/** Географическое расположение ячейки на карте */
 	Vector2 _worldLocation;
+
+	/** зона по которой обрабатываются нажатия */
+	float _hitAreaBeginX, _hitAreaEndX;
+	float _hitAreaBeginY, _hitAreaEndY;
 };
 
 #endif // CELL_H

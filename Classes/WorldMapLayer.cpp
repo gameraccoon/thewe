@@ -41,11 +41,6 @@ bool WorldMapLayer::init(void)
 	cocos2d::Sprite * spr = AddSpriteToProjector(_mapProjector, Vector2(0.0f, 0.0f), Vector2(0.0f, 0.0f), "WorldMap.png", false);
 	addChild(spr);
 
-	_cellHull.PushPoint(Vector2(-20.0f, -20.0f));
-	_cellHull.PushPoint(Vector2(50.0f, -20.0f));
-	_cellHull.PushPoint(Vector2(50.0f, 50.0f));
-	_cellHull.PushPoint(Vector2(-20.0f, 50.0f));
-
 	Vector2 origin = cocos2d::Director::getInstance()->getVisibleOrigin();
 	Vector2 screen = cocos2d::Director::getInstance()->getVisibleSize();
 
@@ -53,13 +48,23 @@ bool WorldMapLayer::init(void)
 
 	for (const Cell::Ptr cell : World::Instance().GetCells())
 	{
-		addChild(AddSpriteToProjector(_mapProjector, cell->GetInfo().location, Vector2(-15.0f, -10.0f), "pin.png", true, 0.6f), 2, (int)E_MAP_OBJECT_TAG::MAP_OBJ_CELL);
+		_AddCellToRender(cell);	
 	}
 	
 	for (const Town::Ptr town : World::Instance().GetTowns())
 	{
-		addChild(AddSpriteToProjector(_mapProjector, town->GetLocation(), Vector2(-15.0f, -10.0f), "town.png",
-			false, town->GetSpriteScale()), 1, (int)E_MAP_OBJECT_TAG::MAP_OBJ_TOWN);
+		cocos2d::Sprite *sprite = AddSpriteToProjector(_mapProjector, town->GetLocation(), Vector2(0.0f, 0.0f), "town.png",
+			true, 0.17f);
+		
+		// обновляем проекцию чтобы узнать реальный размер элемента
+		_mapProjector->Update();
+
+		cocos2d::Rect tex = sprite->getTextureRect();
+		float w = tex.size.width * sprite->getScaleX();
+		float h = tex.size.height * sprite->getScaleY();
+		town->SetHitArea(-(w / 2.0f), -(h / 2.0f), w, h);
+
+		addChild(sprite, 1, town->GetUid());
 	}
 	
 	// сообщаем где находится центр окна вывода
@@ -258,7 +263,14 @@ Cell::WeakPtr WorldMapLayer::_GetCellUnderPoint(const Vector2& point) const
 	for (Cell::Ptr cell : World::Instance().GetCells())
 	{
 		Vector2 projectedPoint = point - _mapProjector->ProjectOnScreen(cell->GetInfo().location);
-		if (_cellHull.Contain(projectedPoint))
+		
+		float xbegin, xend, ybegin, yend;
+		cell->GetHitArea(xbegin, xend, ybegin, yend);
+
+		cocos2d::Rect rect;
+		rect.setRect(xbegin, ybegin, xend, yend);
+
+		if (rect.containsPoint(projectedPoint))
 		{
 			return cell;
 		}
@@ -272,20 +284,12 @@ Town::WeakPtr WorldMapLayer::_GetTownUnderPoint(const Vector2& point)
 	for (Town::Ptr town : World::Instance().GetTowns())
 	{
 		Vector2 projectedPoint = point - _mapProjector->ProjectOnScreen(town->GetLocation());
-
-		cocos2d::Sprite *town_sprite = dynamic_cast<cocos2d::Sprite *>(getChildByTag((int)E_MAP_OBJECT_TAG::MAP_OBJ_TOWN));
-		if (!town_sprite)
-		{
-			return Town::Ptr();
-		}
-
-		cocos2d::Rect tex_rect = town_sprite->getTextureRect();
-
-		float actual_w = tex_rect.size.width * town_sprite->getScaleX();
-		float actual_h = tex_rect.size.height * town_sprite->getScaleY();
+		
+		float xbegin, xend, ybegin, yend;
+		town->GetHitArea(xbegin, xend, ybegin, yend);
 
 		cocos2d::Rect rect;
-		rect.setRect(-(actual_w/2.0f), -(actual_h/2.0f), actual_w, actual_h);
+		rect.setRect(xbegin, ybegin, xend, yend);
 
 		if (rect.containsPoint(projectedPoint))
 		{
@@ -318,8 +322,7 @@ void WorldMapLayer::_OnTownSelect(Town::WeakPtr town)
 
 		Cell::Ptr cell = std::make_shared<Cell>(Cell(info));
 		World::Instance().AddCell(cell);
-		addChild(AddSpriteToProjector(_mapProjector, cell->GetInfo().location, Vector2(-15.0f, -10.0f), "pin.png", true), 2, (int)E_MAP_OBJECT_TAG::MAP_OBJ_CELL);
-
+		_AddCellToRender(cell);
 		_mapProjector->Update();
 
 		World::Instance().SetFirstLaunch(false);
@@ -337,7 +340,7 @@ void WorldMapLayer::_OnTownSelect(Town::WeakPtr town)
 
 		Cell::Ptr cell = Cell::Create(info);
 		World::Instance().AddCell(cell);
-		addChild(AddSpriteToProjector(_mapProjector, cell->GetInfo().location, Vector2(-15.0f, -10.0f), "pin.png", true), 2, (int)E_MAP_OBJECT_TAG::MAP_OBJ_CELL);
+		_AddCellToRender(cell);
 
 		_mapProjector->Update();
 
@@ -391,4 +394,21 @@ void WorldMapLayer::_RecursiveUpdateNetworkVisualiser(cocos2d::DrawNode *visuali
 		// рекурсивный вызов
 		_RecursiveUpdateNetworkVisualiser(visualiser, child);
 	}
+}
+
+void WorldMapLayer::_AddCellToRender(Cell::Ptr cell)
+{
+	cocos2d::Sprite *sprite = AddSpriteToProjector(_mapProjector, cell->GetInfo().location, Vector2(0.0f, 0.0f), "cell.png", true, 0.2f);
+	
+	// обновляем проекцию чтобы узнать реальный размер элемента
+	_mapProjector->Update();
+
+	cocos2d::Rect tex = sprite->getTextureRect();
+	float w = tex.size.width * sprite->getScaleX();
+	float h = tex.size.height * sprite->getScaleY();
+	cell->SetHitArea(-(w / 2.0f), -(h / 2.0f), w, h);
+
+	sprite->setTag(cell->GetUid());
+	sprite->setUserData(static_cast<void *>(cell.get()));
+	addChild(sprite, 2);
 }

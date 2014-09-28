@@ -1,6 +1,7 @@
 #include "Town.h"
 
 #include "Log.h"
+#include "World.h"
 
 Town::Town(const Info &info)
 	: _region(info.region)
@@ -10,6 +11,7 @@ Town::Town(const Info &info)
 	, _rank(info.rank)
 	, _location(info.location)
 	, _spriteScale(info.spriteScale)
+	, _uid(World::Instance().GetNewUid())
 {
 	_CheckValues();
 }
@@ -80,4 +82,25 @@ void Town::_CheckValues() const
 	{
 		Log::Instance().writeWarning("Negative sprite scale");
 	}
+}
+
+void Town::SetHitArea(float beginX, float beginY, float endX, float endY)
+{
+	_hitAreaBeginX = beginX;
+	_hitAreaEndX = endX;
+	_hitAreaBeginY = beginY;
+	_hitAreaEndY = endY;
+}
+
+void Town::GetHitArea(float &beginX, float &endX, float &beginY, float &endY) const
+{
+	beginX = _hitAreaBeginX;
+	endX = _hitAreaEndX;
+	beginY = _hitAreaBeginY;
+	endY = _hitAreaEndY;
+}
+
+unsigned int Town::GetUid(void) const
+{
+	return _uid;
 }

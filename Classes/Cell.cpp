@@ -6,6 +6,7 @@
 Cell::Cell(const Info &info)
 	: _info(info)
 	, _currentTask()
+	, _uid(World::Instance().GetNewUid())
 {
 	_CheckValues();
 }
@@ -98,6 +99,27 @@ bool Cell::IsCurrentTaskPresented(void) const
 void Cell::AddCompletedTask(const Task::CompletedTaskInfo& completedTask)
 {
 	_completedTasks.push_back(completedTask);
+}
+
+unsigned int Cell::GetUid(void) const
+{
+	return _uid;
+}
+
+void Cell::SetHitArea(float beginX, float beginY, float endX, float endY)
+{
+	_hitAreaBeginX = beginX;
+	_hitAreaEndX = endX;
+	_hitAreaBeginY = beginY;
+	_hitAreaEndY = endY;
+}
+
+void Cell::GetHitArea(float &beginX, float &endX, float &beginY, float &endY) const
+{
+	beginX = _hitAreaBeginX;
+	endX = _hitAreaEndX;
+	beginY = _hitAreaBeginY;
+	endY = _hitAreaEndY;
 }
 
 void Cell::_CheckValues() const

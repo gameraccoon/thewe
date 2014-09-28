@@ -33,15 +33,6 @@ public:
 	void SetNextCellParent(Cell::WeakPtr parent);
 
 private:
-	enum class E_MAP_OBJECT_TAG
-	{
-		MAP_OBJ_NONE
-		,MAP_OBJ_CELL
-		,MAP_OBJ_TOWN
-		,MAP_OBJ_REGION
-	};
-
-private:
 	GameScene *_gameScene;
 
 	Cell::WeakPtr _nextCellParent;
@@ -52,7 +43,7 @@ private:
 	
 	void _UpdateNetwork();
 	void _RecursiveUpdateNetworkVisualiser(cocos2d::DrawNode *visualiser, Cell::WeakPtr cell);
-	void _AddCellToRender(Cell::WeakPtr cell);
+	void _AddCellToRender(Cell::Ptr cell);
 	void _OnTownSelect(Town::WeakPtr town);
 	void _DrawCellsLinksRecurcively(Cell::WeakPtr cell);
 
@@ -73,8 +64,6 @@ private:
 	bool _isInputEnabled;
 
 	bool _isPlacingCell;
-
-	ArbitraryHull _cellHull;
 
 	Vector2 _touchesCenter;
 	int _lastTouchesCount;

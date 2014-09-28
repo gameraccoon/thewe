@@ -141,3 +141,9 @@ bool World::IsTownAvaliableToPlaceCell(Town::WeakPtr town) const
 
 	return true;
 }
+
+unsigned int World::GetNewUid(void) const
+{
+	static unsigned int uid = 0;
+	return uid++;
+}

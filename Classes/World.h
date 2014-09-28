@@ -45,6 +45,8 @@ public:
 	bool IsFirstLaunch(void) const;
 	bool IsTownAvaliableToPlaceCell(Town::WeakPtr town) const;
 
+	unsigned int GetNewUid(void) const;
+
 private:
 	Regions _regions;
 	Cells _cells;
