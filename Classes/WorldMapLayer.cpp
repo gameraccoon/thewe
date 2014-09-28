@@ -35,7 +35,6 @@ bool WorldMapLayer::init(void)
 	}
 	
 	_networkVisualiser = cocos2d::DrawNode::create();
-	//_UpdateNetwork();
 	addChild(_networkVisualiser, 2);
 
 	cocos2d::Sprite * spr = AddSpriteToProjector(_mapProjector, Vector2(0.0f, 0.0f), Vector2(0.0f, 0.0f), "WorldMap.png", false);
@@ -167,17 +166,9 @@ void WorldMapLayer::onTouchesEnded(const std::vector<cocos2d::Touch* > &touches,
 				}
 
 				Town::WeakPtr town = _GetTownUnderPoint(point);
-				_gameScene->ShowTownInfo(town);
 				if (!town.expired())
 				{
 					_OnTownSelect(town);
-					return;
-				}
-
-				Region::WeakPtr region = _GetRegionUnderPoint(point);
-				if (!region.expired())
-				{
-					dynamic_cast<GameScene*>(this->getParent())->ShowRegionInfo(region);
 					return;
 				}
 			}

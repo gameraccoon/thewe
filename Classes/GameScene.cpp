@@ -1,7 +1,6 @@
 #include "GameScene.h"
 
 #include "WorldMapLayer.h"
-#include "RegionInfoLayer.h"
 #include "EditorLayer.h"
 #include "World.h"
 #include "Log.h"
@@ -9,7 +8,6 @@
 GameScene::GameScene(void)
 	: _mapProjector(Vector2(1390.0f, 1003.0f))
 	, _RegionEditor(nullptr)
-	, _regionInfo(nullptr)
 	, _worldMap(nullptr)
 	, _cellScreen(nullptr)
 {
@@ -28,12 +26,8 @@ bool GameScene::init(void)
 	}
 
 	_worldMap = new WorldMapLayer(this, &_mapProjector);
-	_townInfo = new TownInfoLayer();
 	addChild(_worldMap);
-	addChild(_townInfo);
 	_worldMap->autorelease();
-	_townInfo->autorelease();
-	_townInfo->setVisible(false);
 
 	scheduleUpdate();
 
@@ -51,12 +45,6 @@ void GameScene::ShowMap()
 	{
 		removeChild(_RegionEditor);
 		_RegionEditor = nullptr;
-	}
-
-	if (_regionInfo)
-	{
-		removeChild(_regionInfo);
-		_regionInfo = nullptr;
 	}
 
 	if (_cellScreen)
@@ -85,16 +73,6 @@ void GameScene::ToggleEditor()
 	}
 }
 
-void GameScene::ShowRegionInfo(Region::WeakPtr region)
-{
-	ShowMap();
-	_regionInfo = new RegionInfoLayer(region.lock()->GetInfo());
-	addChild(_regionInfo);
-	_regionInfo->autorelease();
-	_worldMap->SetMapInputEnabled(false);
-	_worldMap->SetGuiEnabled(false);
-}
-
 void GameScene::ShowCellScreen(Cell::WeakPtr cell)
 {
 	/*
@@ -107,17 +85,4 @@ void GameScene::ShowCellScreen(Cell::WeakPtr cell)
 	*/
 
 
-}
-
-void GameScene::ShowTownInfo(Town::WeakPtr town)
-{
-	if (!town.expired())
-	{
-		dynamic_cast<TownInfoLayer *>(_townInfo)->SelectTown(town);
-		_townInfo->setVisible(true);
-	}
-	else
-	{
-		_townInfo->setVisible(false);
-	}
 }

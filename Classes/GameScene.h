@@ -22,18 +22,14 @@ public:
 	void ShowMap();
 
 	void ToggleEditor();
-	void ShowRegionInfo(Region::WeakPtr region);
 	void ShowCellScreen(Cell::WeakPtr cell);
-	void ShowTownInfo(Town::WeakPtr town);
 
 	MapProjector _mapProjector;
 
 private:
 	WorldMapLayer *_worldMap;
-	cocos2d::Layer *_regionInfo;
 	cocos2d::Layer *_RegionEditor;
 	cocos2d::Layer *_cellScreen;
-	cocos2d::Layer *_townInfo;
 };
 
 #endif

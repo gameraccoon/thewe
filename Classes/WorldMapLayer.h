@@ -8,7 +8,6 @@
 #include "Region.h"
 #include "Cell.h"
 #include "CellGameInterface.h"
-#include "TownInfoLayer.h"
 
 class GameScene;
 
