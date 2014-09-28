@@ -50,7 +50,7 @@ const std::vector<Cell::Ptr>& Cell::GetChildrens() const
 	return _childCells;
 }
 
-const Cell::Info& Cell::GetInfo(void) const
+Cell::Info& Cell::GetInfo(void)
 {
 	return _info;
 }

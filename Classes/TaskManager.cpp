@@ -10,7 +10,7 @@
 
 #include <cocos2d.h>
 
-#include <luabind/function.hpp>
+#include <luabind/luabind.hpp>
 
 TaskManager::TaskManager()
 	: _isTasksFilled(false)
@@ -20,11 +20,14 @@ TaskManager::TaskManager()
 
 	_luaScript->BindClass<Log>();
 	_luaScript->BindClass<MessageManager>();
-	_luaScript->BindClass<const Cell::Info>();
-	_luaScript->BindClass<Task>();
+	_luaScript->BindClass<Cell::Info>();
+	//_luaScript->BindClass<const Cell::Info>();
+	_luaScript->BindClass<const Task::Info>();
+	_luaScript->BindClass<Vector2>();
 
 	_luaScript->RegisterVariable("Log", &(Log::Instance()));
 	_luaScript->RegisterVariable("MessageManager", &(MessageManager::Instance()));
+
 	_luaScript->ExecScriptFromFile(fullPath.c_str());
 }
 
@@ -68,8 +71,6 @@ void TaskManager::UpdateToTime(float worldTime)
 	while (iterator != _runnedTasks.end())
 	{
 		Task* task = iterator->task.get();
-		Task test = Task(task->GetInfo(), 0);
-		Task& test2 = test;
 
 		bool isEnded = iterator->task->CheckCompleteness(worldTime);
 
@@ -94,11 +95,8 @@ void TaskManager::UpdateToTime(float worldTime)
 					// Вызываем луа функцию определения статуса задания
 					bool isSuccess = luabind::call_function<bool>(_luaScript->GetLuaState()
 																  , "CheckStatus"
-																  , cellInfo.membersCount
-																  , cellInfo.morale
-																  , cellInfo.contentment
-																  , taskInfo->moralLevel
-																  , taskInfo->severity
+																  , cellInfo
+																  , taskInfo
 																  , 0);
 
 					if (isSuccess)
@@ -119,12 +117,11 @@ void TaskManager::UpdateToTime(float worldTime)
 				}
 
 				// вызываем из луа нужную функцию
-				_luaScript->RegisterVariable("cell", &(cellInfo));
 				luabind::call_function<bool>(_luaScript->GetLuaState()
-															  , funcName.c_str()
-															  , taskInfo->id
-															  , 0);
-				_luaScript->UnregisterVariable("cell");
+											 , funcName.c_str()
+											 , cell->GetInfo()
+											 , taskInfo
+											 , 0);
 
 				// добавляем информацию о законченном задании в ячейку
 				cell->AddCompletedTask(info);
