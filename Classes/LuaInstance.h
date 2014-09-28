@@ -28,7 +28,6 @@ public:
 
 	template<typename T>
 	void RegisterVariable(const char* name, T* value);
-	void UnregisterVariable(const char* name);
 private:
 	lua_State *_luaState;
 	bool _isMainInstance;

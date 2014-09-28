@@ -146,8 +146,3 @@ void LuaInstance::SendToLua<void*>(void* value)
 {
 	lua_pushlightuserdata(_luaState, value);
 }
-
-void LuaInstance::UnregisterVariable(const char* name)
-{
-	luabind::globals(_luaState)[name] = nullptr;
-}
