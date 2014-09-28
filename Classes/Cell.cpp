@@ -56,7 +56,7 @@ const Cell::Info& Cell::GetInfo(void) const
 
 void Cell::Update(float deltatime)
 {
-	// пересчитать наличные
+	// РїРµСЂРµСЃС‡РёС‚Р°С‚СЊ РЅР°Р»РёС‡РЅС‹Рµ
 	_UpdateCash(deltatime);
 	_UpdateMorale(deltatime);
 	_UpdateContentment(deltatime);
@@ -98,6 +98,11 @@ bool Cell::IsCurrentTaskPresented(void) const
 void Cell::AddCompletedTask(const Task::CompletedTaskInfo& completedTask)
 {
 	_completedTasks.push_back(completedTask);
+}
+
+float Cell::GetCash()
+{
+	return _info.cash;
 }
 
 void Cell::_CheckValues() const

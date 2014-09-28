@@ -10,12 +10,21 @@
 
 #include <cocos2d.h>
 
+#include <luabind/function.hpp>
+
 TaskManager::TaskManager()
 	: _isTasksFilled(false)
 {
 	std::string fullPath = cocos2d::FileUtils::getInstance()->fullPathForFilename("tasks.lua");
 	_luaScript = new LuaInstance();
+
 	_luaScript->BindClass<Log>();
+	_luaScript->BindClass<MessageManager>();
+	_luaScript->BindClass<const Cell::Info>();
+	_luaScript->BindClass<Task>();
+
+	_luaScript->RegisterVariable("Log", &(Log::Instance()));
+	_luaScript->RegisterVariable("MessageManager", &(MessageManager::Instance()));
 	_luaScript->ExecScriptFromFile(fullPath.c_str());
 }
 
@@ -40,12 +49,27 @@ void TaskManager::RunTask(Cell::WeakPtr &cell, const Task::Info* info, float sta
 	_runnedTasks.push_back(runnedTaskInfo);
 }
 
+void TaskManager::RunTask(Cell::WeakPtr &cell, const std::string& id, float startTime)
+{
+	const Task::Info* taskInfo = GetTaskInfoById(id);
+	if (taskInfo)
+	{
+		RunTask(cell, taskInfo, startTime);
+	}
+	else
+	{
+		Log::Instance().writeWarning(std::string("Wrong task id ").append(id));
+	}
+}
+
 void TaskManager::UpdateToTime(float worldTime)
 {
 	std::vector<RunnedTaskInfo>::iterator iterator = _runnedTasks.begin();
 	while (iterator != _runnedTasks.end())
 	{
 		Task* task = iterator->task.get();
+		Task test = Task(task->GetInfo(), 0);
+		Task& test2 = test;
 
 		bool isEnded = iterator->task->CheckCompleteness(worldTime);
 
@@ -68,20 +92,24 @@ void TaskManager::UpdateToTime(float worldTime)
 				if (!task->IsAborted())
 				{
 					// Вызываем луа функцию определения статуса задания
-					// TODO: сделать нормальную реализацию
-					bool isSuccess = true;
+					bool isSuccess = luabind::call_function<bool>(_luaScript->GetLuaState()
+																  , "CheckStatus"
+																  , cellInfo.membersCount
+																  , cellInfo.morale
+																  , cellInfo.contentment
+																  , taskInfo->moralLevel
+																  , taskInfo->severity
+																  , 0);
 
 					if (isSuccess)
 					{
 						funcName = taskInfo->successFn;
 						info.status = Task::Status::Successed;
-						MessageManager::Instance().SendGameMessage("Task completed");
 					}
 					else
 					{
 						funcName = taskInfo->failFn;
 						info.status = Task::Status::Failed;
-						MessageManager::Instance().SendGameMessage("Task failed");
 					}
 				}
 				else
@@ -91,8 +119,13 @@ void TaskManager::UpdateToTime(float worldTime)
 				}
 
 				// вызываем из луа нужную функцию
-				// TODO: реализовать функцию в новой системе
-				
+				_luaScript->RegisterVariable("cell", &(cellInfo));
+				luabind::call_function<bool>(_luaScript->GetLuaState()
+															  , funcName.c_str()
+															  , taskInfo->id
+															  , 0);
+				_luaScript->UnregisterVariable("cell");
+
 				// добавляем информацию о законченном задании в ячейку
 				cell->AddCompletedTask(info);
 			}
@@ -176,5 +209,18 @@ void TaskManager::_CheckTask(const Task::Info& taskInfo) const
 	if (taskInfo.duration < 0.0f)
 	{
 		Log::Instance().writeWarning("Negative duration");
+	}
+}
+
+const Task::Info* TaskManager::GetTaskInfoById(const std::string& id)
+{
+	auto taskInfoIterator = _allTasks.find(id);
+	if (taskInfoIterator == _allTasks.end())
+	{
+		return &(taskInfoIterator->second);
+	}
+	else
+	{
+		return nullptr;
 	}
 }

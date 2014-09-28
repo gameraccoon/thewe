@@ -18,7 +18,7 @@ public:
 	};
 
 public:
-	UserMessage(std::string text, float time);
+	UserMessage(std::string text);
 
 	const std::string GetText() const;
 	const bool GetIsReaden() const;
