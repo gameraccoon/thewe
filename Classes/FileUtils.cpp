@@ -21,3 +21,7 @@ std::string Utils::GetDocumentsPath()
 #endif
 }
 
+std::string Utils::GetWritablePath()
+{
+	return cocos2d::FileUtils::getInstance()->getWritablePath();
+}

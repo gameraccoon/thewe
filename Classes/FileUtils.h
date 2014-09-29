@@ -7,6 +7,7 @@ namespace Utils
 {
 	std::string GetResourcesPath();
 	std::string GetDocumentsPath();
+	std::string GetWritablePath();
 }
 
 #endif // FILE_UTILS_H

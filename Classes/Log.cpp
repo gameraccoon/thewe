@@ -4,13 +4,15 @@
 #include <ctime>
 #include <assert.h>
 
+#include "FileUtils.h"
+
 Log* Log::singleInstance = nullptr;
 bool Log::isDestroyed = false;
 bool Log::isFirstLife = true;
 
 Log::Log()
 {
-	const std::string LOG_FILE = "./log.txt";
+	const std::string LOG_FILE = Utils::GetWritablePath() + "log.txt";
 
 	if (this->isFirstLife)
 	{
