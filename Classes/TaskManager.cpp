@@ -21,14 +21,14 @@ TaskManager::TaskManager()
 	_luaScript->BindClass<Log>();
 	_luaScript->BindClass<MessageManager>();
 	_luaScript->BindClass<Cell::Info>();
-	//_luaScript->BindClass<const Cell::Info>();
 	_luaScript->BindClass<const Task::Info>();
 	_luaScript->BindClass<Vector2>();
 
 	_luaScript->RegisterVariable("Log", &(Log::Instance()));
 	_luaScript->RegisterVariable("MessageManager", &(MessageManager::Instance()));
+	std::string script = cocos2d::FileUtils::getInstance()->getStringFromFile(fullPath);
 
-	_luaScript->ExecScriptFromFile(fullPath.c_str());
+	_luaScript->ExecScript(script.c_str());
 }
 
 TaskManager::~TaskManager()
