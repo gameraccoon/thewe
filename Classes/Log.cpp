@@ -12,7 +12,7 @@ bool Log::isFirstLife = true;
 
 Log::Log()
 {
-	const std::string LOG_FILE = Utils::GetWritablePath() + "log.txt";
+	const std::string LOG_FILE = Utils::GetWritablePath() + "log.htm";
 
 	if (this->isFirstLife)
 	{
@@ -78,7 +78,7 @@ void Log::killPhoenixSingletone()
 
 void Log::writeError(const std::string& text)
 {
-	this->writeLine(std::string(" Error: ").append(text));
+	this->writeLine(std::string("<font color=\"red\"><b>Error</b>: ").append(text).append("</font><br/>"));
 
 #ifdef _DEBUG
 	assert(false);
@@ -87,7 +87,7 @@ void Log::writeError(const std::string& text)
 
 void Log::writeWarning(const std::string& text)
 {
-	this->writeLine(std::string(" Warning: ").append(text));
+	this->writeLine(std::string("<font color=\"yellow\"><b>Warning</b>: ").append(text).append("</font><br/>"));
 
 #ifdef _DEBUG
 	assert(false);
@@ -96,12 +96,12 @@ void Log::writeWarning(const std::string& text)
 
 void Log::writeLog(const std::string& text)
 {
-	this->writeLine(std::string(" Log: ").append(text));
+	this->writeLine(std::string("<b>Log</b>: ").append(text).append("<br/>"));
 }
 
 void Log::writeInit(const std::string& text)
 {
-	this->writeLine(std::string(" Init: ").append(text));
+	this->writeLine(std::string("<font color=\"green\"><b>Init</b>: ").append(text).append("</font><br/>"));
 }
 
 void Log::writeLine(const std::string& text)
