@@ -78,9 +78,10 @@ bool SquareProgressBar::IsFinished(void)
 
 // RoundProgressBar implementation
 
-RoundProgressBar::RoundProgressBar(const std::string &roundTexture)
+RoundProgressBar::RoundProgressBar(const std::string &roundTexture, float scale, float alpha)
 	: _roundTexturName(roundTexture)
-	, _progressPercantage(100.0f)
+	, _scale(scale)
+	, _alpha(alpha)
 {
 	init();
 }
@@ -90,26 +91,33 @@ bool RoundProgressBar::init(void)
 	_roundTexture = cocos2d::Sprite::create(_roundTexturName);
 	_progressTimer = cocos2d::ProgressTimer::create(_roundTexture);
 	_progressTimer->setPosition(0.0f, 0.0f);
+	_progressTimer->setScale(1.0f);
+	_progressTimer->setOpacity((int)(255.0f * _alpha));
 	_progressTimer->setType(cocos2d::ProgressTimer::Type::RADIAL);
+	_progressTimer->setPercentage(0.0f);
 
 	addChild(_progressTimer, 0);
 
 	return true;
 }
 
-void RoundProgressBar::SetProgressPercentage(float progress, float duration)
+void RoundProgressBar::SetProgressAnimated(float progress, float duration)
 {
-	cocos2d::ProgressFromTo *p = cocos2d::ProgressFromTo::create(duration, _progressPercantage, progress);
-
+	cocos2d::ProgressFromTo *p = cocos2d::ProgressFromTo::create(duration, _progressTimer->getPercentage(), progress);
 	_progressTimer->runAction(p);
+}
+
+void RoundProgressBar::SetProgressImmediately(float progress)
+{
+	_progressTimer->setPercentage(progress);
 }
 
 float RoundProgressBar::GetCurrentProgress(void)
 {
-	return _progressPercantage;
+	return _progressTimer->getPercentage();
 }
 
 bool RoundProgressBar::IsFinished(void) const
 {
-	return _progressPercantage > 100.0f;
+	return _progressTimer->getPercentage() >= 100.0f;
 }

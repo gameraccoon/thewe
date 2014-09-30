@@ -6,6 +6,7 @@
 #include "MapGuiLayer.h"
 #include "TaskManager.h"
 #include "Log.h"
+#include "CellSpinoffCreator.h"
 
 WorldMapLayer::WorldMapLayer(GameScene *gameScene, MapProjector* projector)
 	: _mapProjector(projector)
@@ -109,6 +110,20 @@ void WorldMapLayer::SetGuiEnabled(bool isEnabled)
 void WorldMapLayer::SetNextCellParent(Cell::WeakPtr parent)
 {
 	_nextCellParent = parent;
+}
+
+void WorldMapLayer::CreateNewCell(const Cell::Info &info)
+{
+	Cell::Ptr cell = Cell::Create(info);
+	World::Instance().AddCell(cell);
+	_AddCellToRender(cell);
+
+	_mapProjector->Update();
+
+	_nextCellParent.lock()->AddChild(cell);
+	_nextCellParent = Cell::WeakPtr();
+
+	_UpdateNetwork();
 }
 
 void WorldMapLayer::menuCloseCallback(cocos2d::Ref *Sender)
@@ -329,6 +344,13 @@ void WorldMapLayer::_OnTownSelect(Town::WeakPtr town)
 		info.contentment = 0.1f;
 		info.membersCount = 5;
 
+		CellSpinoffCreator *spinoff = new CellSpinoffCreator(info, 30.0f, this);
+		spinoff->retain();
+		
+		addChild(spinoff, 10);
+		_mapProjector->AddMapPart(Drawable::CastFromCocos(spinoff), info.location, Vector2(0.0f, 0.0f), 0.17f, true);
+	
+		/*
 		Cell::Ptr cell = Cell::Create(info);
 		World::Instance().AddCell(cell);
 		_AddCellToRender(cell);
@@ -339,6 +361,7 @@ void WorldMapLayer::_OnTownSelect(Town::WeakPtr town)
 		_nextCellParent = Cell::WeakPtr();
 
 		_UpdateNetwork();
+		*/
 	}
 }
 

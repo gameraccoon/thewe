@@ -32,11 +32,12 @@ protected:
 class RoundProgressBar : public cocos2d::Node
 {
 public:
-	RoundProgressBar(const std::string &roundTexture);
+	RoundProgressBar(const std::string &roundTexture, float scale, float alpha = 1.0f);
 
 	virtual bool init(void) override;
 
-	void SetProgressPercentage(float progress, float duration = 0.0f);
+	void SetProgressAnimated(float progress, float duration);
+	void SetProgressImmediately(float progress);
 
 	float GetCurrentProgress(void);
 	bool IsFinished(void) const;
@@ -47,7 +48,7 @@ public:
 
 	std::string _roundTexturName;
 
-	float _progressPercantage;
+	float _scale, _alpha;
 };
 
 #endif

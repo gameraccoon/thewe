@@ -31,6 +31,8 @@ public:
 	void SetGuiEnabled(bool isEnabled);
 	void SetNextCellParent(Cell::WeakPtr parent);
 
+	void CreateNewCell(const Cell::Info &info);
+
 private:
 	GameScene *_gameScene;
 

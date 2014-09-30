@@ -264,17 +264,11 @@
     <ClCompile Include="..\Classes\Region.cpp">
       <Filter>Classes\GameMap</Filter>
     </ClCompile>
-    <ClCompile Include="..\Classes\RegionInfoLayer.cpp">
-      <Filter>Classes\GameMap</Filter>
-    </ClCompile>
     <ClCompile Include="..\Classes\TaskManager.cpp">
       <Filter>Classes\GameCell</Filter>
     </ClCompile>
     <ClCompile Include="..\Classes\Task.cpp">
       <Filter>Classes\GameCell</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Classes\TownInfoLayer.cpp">
-      <Filter>Classes\GameMap</Filter>
     </ClCompile>
     <ClCompile Include="..\Classes\Town.cpp">
       <Filter>Classes\GameMap</Filter>
@@ -287,6 +281,9 @@
     </ClCompile>
     <ClCompile Include="..\Classes\MessageManager.cpp">
       <Filter>Classes\GameInterface</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\CellSpinoffCreator.cpp">
+      <Filter>Classes\GameCell</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -449,17 +446,11 @@
     <ClInclude Include="..\Classes\Region.h">
       <Filter>Classes\GameMap</Filter>
     </ClInclude>
-    <ClInclude Include="..\Classes\RegionInfoLayer.h">
-      <Filter>Classes\GameMap</Filter>
-    </ClInclude>
     <ClInclude Include="..\Classes\TaskManager.h">
       <Filter>Classes\GameCell</Filter>
     </ClInclude>
     <ClInclude Include="..\Classes\Task.h">
       <Filter>Classes\GameCell</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Classes\TownInfoLayer.h">
-      <Filter>Classes\GameMap</Filter>
     </ClInclude>
     <ClInclude Include="..\Classes\Town.h">
       <Filter>Classes\GameMap</Filter>
@@ -472,6 +463,9 @@
     </ClInclude>
     <ClInclude Include="..\Classes\MessageManager.h">
       <Filter>Classes\GameInterface</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\CellSpinoffCreator.h">
+      <Filter>Classes\GameCell</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
