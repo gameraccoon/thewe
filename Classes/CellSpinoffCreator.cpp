@@ -2,10 +2,12 @@
 
 #include "WorldMapLayer.h"
 
-CellSpinoffCreator::CellSpinoffCreator(const Cell::Info &info, float time, WorldMapLayer *map)
+CellSpinoffCreator::CellSpinoffCreator(const Cell::Info &info, float time, WorldMapLayer *map, MapProjector *proj)
 	: _cellInfo(info)
 	, _timeTotal(time)
 	, _worldMapLayer(map)
+	, _projector(proj)
+	, _projUid(0)
 {
 	init();
 }
@@ -27,9 +29,14 @@ void CellSpinoffCreator::update(float dt)
 {
 	if (_progressBar->IsFinished())
 	{
-		// also you must delete this from projector
 		_worldMapLayer->removeChild(this);
+		_projector->RemoveMapPart(_projUid);
 
 		_worldMapLayer->CreateNewCell(_cellInfo);
 	}
+}
+
+void CellSpinoffCreator::SetProjectorUid(unsigned int uid)
+{
+	_projUid = uid;
 }

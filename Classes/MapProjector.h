@@ -39,10 +39,11 @@ public:
 	void SetScreenCenter(Vector2 centerPos);
 	
 	/** Добавить новый элемент, который будет проецироваться на карту */
-	void AddMapPart(Drawable::Ptr node, Vector2 location, Vector2 shift, float scale, bool dontScale = false);
+	int AddMapPart(Drawable::Ptr node, Vector2 location, Vector2 shift, float scale, bool dontScale = false);
 	
 	/** Удалить и разрушить элемент для проецирования */
 	void RemoveMapPart(const Drawable::Ptr node);
+	void RemoveMapPart(unsigned int uid);
 
 	/** Обновить положение всех элементов (например после добавления) */
 	void Update();
@@ -60,6 +61,8 @@ private:
 		bool isScalable;
 		/** Указатель на графический объект */
 		Drawable::Ptr node;
+		/** unique identifier */
+		unsigned int uid;
 	};
 
 	/** Проецируемые элементы */
@@ -68,6 +71,8 @@ private:
 private:
 	/** Проверить выход границ вида за границы карты и исправить положение вида при необходимости */
 	void _CheckBoundings();
+
+	unsigned int _GetNewPartUid(void) const;
 
 	/** Обновить положение и масштаб всех проецируемых элементов */
 	void _UpdateNodes();

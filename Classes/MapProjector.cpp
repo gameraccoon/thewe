@@ -70,6 +70,12 @@ void MapProjector::_CheckBoundings()
 	}
 }
 
+unsigned int MapProjector::_GetNewPartUid(void) const
+{
+	static unsigned int uid = 0;
+	return uid++;
+}
+
 Vector2 MapProjector::GetLocation() const
 {
 	return _viewLocation;
@@ -115,7 +121,7 @@ void MapProjector::SetScreenCenter(Vector2 centerPos)
 	_screenCenter = centerPos;	
 }
 
-void MapProjector::AddMapPart(Drawable::Ptr node, Vector2 location, Vector2 shift, float scale, bool dontScale)
+int MapProjector::AddMapPart(Drawable::Ptr node, Vector2 location, Vector2 shift, float scale, bool dontScale)
 {
 	MapPart locSprite;
 	locSprite.location = location;
@@ -123,7 +129,10 @@ void MapProjector::AddMapPart(Drawable::Ptr node, Vector2 location, Vector2 shif
 	locSprite.shift = shift;
 	locSprite.node = node;
 	locSprite.isScalable = !dontScale;
+	locSprite.uid = _GetNewPartUid();
 	_mapParts.push_back(locSprite);
+
+	return locSprite.uid;
 }
 
 void MapProjector::_UpdateNodes()
@@ -154,6 +163,23 @@ void MapProjector::RemoveMapPart(const Drawable::Ptr node)
 		const MapPart currentPart = (*iterator);	
 
 		if (currentPart.node == node)
+		{
+			_mapParts.erase(iterator);
+			return;
+		}
+
+		iterator++;
+	}
+}
+
+void MapProjector::RemoveMapPart(unsigned int uid)
+{
+	auto iterator = _mapParts.begin(), iEnd = _mapParts.end();
+	while (iterator != iEnd)
+	{
+		const MapPart currentPart = (*iterator);	
+
+		if (currentPart.uid == uid)
 		{
 			_mapParts.erase(iterator);
 			return;

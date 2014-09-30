@@ -344,24 +344,13 @@ void WorldMapLayer::_OnTownSelect(Town::WeakPtr town)
 		info.contentment = 0.1f;
 		info.membersCount = 5;
 
-		CellSpinoffCreator *spinoff = new CellSpinoffCreator(info, 30.0f, this);
+		CellSpinoffCreator *spinoff = new CellSpinoffCreator(info, 30.0f, this, _mapProjector);
 		spinoff->retain();
 		
 		addChild(spinoff, 10);
-		_mapProjector->AddMapPart(Drawable::CastFromCocos(spinoff), info.location, Vector2(0.0f, 0.0f), 0.17f, true);
-	
-		/*
-		Cell::Ptr cell = Cell::Create(info);
-		World::Instance().AddCell(cell);
-		_AddCellToRender(cell);
-
+		int uid = _mapProjector->AddMapPart(Drawable::CastFromCocos(spinoff), info.location, Vector2(0.0f, 0.0f), 0.17f, true);
+		spinoff->SetProjectorUid(uid);
 		_mapProjector->Update();
-
-		_nextCellParent.lock()->AddChild(cell);
-		_nextCellParent = Cell::WeakPtr();
-
-		_UpdateNetwork();
-		*/
 	}
 }
 
