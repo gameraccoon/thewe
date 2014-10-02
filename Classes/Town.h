@@ -35,6 +35,9 @@ public:
 
 	void SetHitArea(float beginX, float beginY, float endX, float endY);
 	void GetHitArea(float &beginX, float &beginY, float &endX, float &endY) const;
+	void SetCellPresented(bool presented);
+
+	bool IsCellPresented(void);
 
 	unsigned int GetUid(void) const;
 
@@ -54,6 +57,8 @@ private:
 
 	const float _spriteScale;
 	const Vector2 _location;
+
+	bool _isCellPresented;
 
 	float _hitAreaBeginX, _hitAreaEndX;
 	float _hitAreaBeginY, _hitAreaEndY;

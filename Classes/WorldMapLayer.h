@@ -34,6 +34,16 @@ public:
 	void CreateNewCell(const Cell::Info &info);
 
 private:
+	enum CONTENT_Z_ORDER
+	{
+		Z_MAP = 0,
+		Z_TOWN,
+		Z_CELL,
+		Z_CELL_DATA,
+		Z_CELL_MENU
+	};
+
+private:
 	GameScene *_gameScene;
 
 	Cell::WeakPtr _nextCellParent;
