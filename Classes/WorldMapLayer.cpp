@@ -64,7 +64,7 @@ bool WorldMapLayer::init(void)
 		float h = tex.size.height * sprite->getScaleY();
 		town->SetHitArea(-(w / 2.0f), -(h / 2.0f), w, h);
 
-		addChild(sprite, 1, town->GetUid());
+		addChild(sprite, Z_TOWN, town->GetUid());
 	}
 	
 	// сообщаем где находится центр окна вывода
@@ -76,7 +76,7 @@ bool WorldMapLayer::init(void)
 
 	_cellMenu = new CellMenuSelector(_mapProjector, this);
 	_cellMenu->autorelease();
-	addChild(_cellMenu, 3);
+	addChild(_cellMenu, Z_CELL_MENU);
 
 	this->setTouchEnabled(true);
 	this->setKeyboardEnabled(true);
@@ -120,8 +120,7 @@ void WorldMapLayer::CreateNewCell(const Cell::Info &info)
 
 	_mapProjector->Update();
 
-	_nextCellParent.lock()->AddChild(cell);
-	_nextCellParent = Cell::WeakPtr();
+	info.parent->AddChild(cell);
 
 	_UpdateNetwork();
 }
@@ -315,42 +314,50 @@ void WorldMapLayer::_OnTownSelect(Town::WeakPtr town)
 		return;
 	}
 
-	if (World::Instance().IsFirstLaunch())
+	Town::Ptr townptr = town.lock();
+
+	if (!townptr->IsCellPresented())
 	{
-		Cell::Info info;
-		info.parent = nullptr;
-		info.town = town;
-		info.location = town.lock()->GetLocation();
-		info.cash = 100;
-		info.morale = 1.0f;
-		info.contentment = 0.1f;
-		info.membersCount = 5;
+		if (World::Instance().IsFirstLaunch())
+		{
+			Cell::Info info;
+			info.parent = nullptr;
+			info.town = town;
+			info.location = town.lock()->GetLocation();
+			info.cash = 100;
+			info.morale = 1.0f;
+			info.contentment = 0.1f;
+			info.membersCount = 5;
 
-		Cell::Ptr cell = std::make_shared<Cell>(Cell(info));
-		World::Instance().AddCell(cell);
-		_AddCellToRender(cell);
-		_mapProjector->Update();
+			Cell::Ptr cell = std::make_shared<Cell>(Cell(info));
+			World::Instance().AddCell(cell);
+			_AddCellToRender(cell);
+			_mapProjector->Update();
 
-		World::Instance().SetFirstLaunch(false);
-	}
-	else if (!_nextCellParent.expired())
-	{
-		Cell::Info info;
-		info.parent = _nextCellParent.lock().get();
-		info.town = town;
-		info.location = town.lock()->GetLocation();
-		info.cash = 100;
-		info.morale = 1.0f;
-		info.contentment = 0.1f;
-		info.membersCount = 5;
+			World::Instance().SetFirstLaunch(false);
+		}
+		else if (!_nextCellParent.expired())
+		{
+			Cell::Info info;
+			info.parent = _nextCellParent.lock().get();
+			info.town = town;
+			info.location = town.lock()->GetLocation();
+			info.cash = 100;
+			info.morale = 1.0f;
+			info.contentment = 0.1f;
+			info.membersCount = 5;
 
-		CellSpinoffCreator *spinoff = new CellSpinoffCreator(info, 30.0f, this, _mapProjector);
-		spinoff->retain();
+			CellSpinoffCreator *spinoff = new CellSpinoffCreator(info, 30.0f, this, _mapProjector);
+			spinoff->retain();
 		
-		addChild(spinoff, 10);
-		int uid = _mapProjector->AddMapPart(Drawable::CastFromCocos(spinoff), info.location, Vector2(0.0f, 0.0f), 0.17f, true);
-		spinoff->SetProjectorUid(uid);
-		_mapProjector->Update();
+			addChild(spinoff, Z_CELL_DATA);
+			int uid = _mapProjector->AddMapPart(Drawable::CastFromCocos(spinoff), info.location, Vector2(0.0f, 0.0f), 0.17f, true);
+			spinoff->SetProjectorUid(uid);
+			_mapProjector->Update();
+
+			_nextCellParent = Cell::Ptr();
+			townptr->SetCellPresented(true);
+		}
 	}
 }
 
@@ -414,6 +421,5 @@ void WorldMapLayer::_AddCellToRender(Cell::Ptr cell)
 	cell->SetHitArea(-(w / 2.0f), -(h / 2.0f), w, h);
 
 	sprite->setTag(cell->GetUid());
-	sprite->setUserData(static_cast<void *>(cell.get()));
-	addChild(sprite, 2);
+	addChild(sprite, Z_CELL);
 }

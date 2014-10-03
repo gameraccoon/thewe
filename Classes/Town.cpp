@@ -11,6 +11,7 @@ Town::Town(const Info &info)
 	, _rank(info.rank)
 	, _location(info.location)
 	, _spriteScale(info.spriteScale)
+	, _isCellPresented(false)
 	, _uid(World::Instance().GetNewUid())
 {
 	_CheckValues();
@@ -98,6 +99,16 @@ void Town::GetHitArea(float &beginX, float &endX, float &beginY, float &endY) co
 	endX = _hitAreaEndX;
 	beginY = _hitAreaBeginY;
 	endY = _hitAreaEndY;
+}
+
+void Town::SetCellPresented(bool presented)
+{
+	_isCellPresented = presented;
+}
+
+bool Town::IsCellPresented(void)
+{
+	return _isCellPresented;
 }
 
 unsigned int Town::GetUid(void) const
