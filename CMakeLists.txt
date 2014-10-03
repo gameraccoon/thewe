@@ -64,8 +64,10 @@ set(GAME_SRC
 	Classes/CellGameInterface.cpp
 	Classes/CellInfoMenu.cpp
 	Classes/CellSpinoffMenu.cpp
+	Classes/CellSpinoffCreator.cpp
 	Classes/CellTasksMenu.cpp
 	Classes/CellTaskInfoMenu.cpp
+	Classes/CellsNetLayer.cpp
 	Classes/Color.cpp
 	Classes/Drawable.cpp
 	Classes/EditorLayer.cpp

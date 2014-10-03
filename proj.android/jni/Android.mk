@@ -19,6 +19,7 @@ LOCAL_SRC_FILES := hellocpp/main.cpp \
 				   	../../Classes/CellGameInterface.cpp \
 				   	../../Classes/CellInfoMenu.cpp \
 				   	../../Classes/CellSpinoffMenu.cpp \
+				   	../../Classes/CellSpinoffCreator.cpp \
 				   	../../Classes/CellTasksMenu.cpp \
 				   	../../Classes/CellTaskInfoMenu.cpp \
 				   	../../Classes/Color.cpp \
@@ -34,6 +35,7 @@ LOCAL_SRC_FILES := hellocpp/main.cpp \
 				   	../../Classes/MainMenuScene.cpp \
 				   	../../Classes/MapGuiLayer.cpp \
 				   	../../Classes/MapProjector.cpp \
+				   	../../Classes/NetworkLayer.cpp \
 				   	../../Classes/ProgressBar.cpp \
 				   	../../Classes/Region.cpp \
 				   	../../Classes/SplashScreenScene.cpp \
