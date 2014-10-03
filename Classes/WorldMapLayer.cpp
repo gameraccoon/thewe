@@ -120,8 +120,7 @@ void WorldMapLayer::CreateNewCell(const Cell::Info &info)
 
 	_mapProjector->Update();
 
-	_nextCellParent.lock()->AddChild(cell);
-	_nextCellParent = Cell::WeakPtr();
+	info.parent->AddChild(cell);
 
 	_UpdateNetwork();
 }
@@ -422,6 +421,5 @@ void WorldMapLayer::_AddCellToRender(Cell::Ptr cell)
 	cell->SetHitArea(-(w / 2.0f), -(h / 2.0f), w, h);
 
 	sprite->setTag(cell->GetUid());
-	sprite->setUserData(static_cast<void *>(cell.get()));
 	addChild(sprite, Z_CELL);
 }
