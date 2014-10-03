@@ -11,7 +11,7 @@ class World
 {
 public:
 	/**
-	 * Возвращает экземпляр карты
+	 * Returns the single instance of the class
 	 */
 	static World& Instance();
 	
@@ -20,7 +20,7 @@ public:
 	typedef std::vector<Town::Ptr> Towns;
 
 public:
-	// удаляет все регионы
+	/** Removes all the regions */
 	void CleanupMapContent(void);
 
 	const Regions& GetRegions() const;
@@ -57,7 +57,7 @@ private:
 	bool _isFirstLaunch;
 
 	/*
-	 * Отключаем ненужные операции
+	 * Turn off useless operations
 	 */
 	World();
 	~World();

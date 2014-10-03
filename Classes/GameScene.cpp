@@ -61,7 +61,7 @@ void GameScene::ToggleEditor()
 {
 	if (!_RegionEditor)
 	{
-		ShowMap(); // изменяет стостояние _editor
+		ShowMap(); // changes state of _editor
 		_RegionEditor = new EditorLayer(&_mapProjector);
 		addChild(_RegionEditor);
 		_RegionEditor->autorelease();

@@ -60,7 +60,7 @@ bool MainMenuScene::init(void)
 	_AddButton("btn-settings-normal.png", "btn-settings-selected.png", center + Vector2(300.0f, -270.0f),
 			  MenuItemTag::SETTINGS);
 
-	// переводим map в массив
+	// cast map to vector
 	cocos2d::Vector<cocos2d::MenuItem*> v;
 	v.reserve(_buttons.size());
 	std::for_each(_buttons.begin(),_buttons.end(),

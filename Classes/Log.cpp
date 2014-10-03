@@ -60,13 +60,13 @@ void Log::create()
 
 void Log::onDeadReference()
 {
-	// Получаем "пепел" (расположение старого синглтона)
+	// Get the "ash" (old location of the singlton)
 	Log::create();
-	// Создаём на его месте новый синглтон
+	// Create new singlton at this location
 	new (Log::singleInstance) Log;
-	// Помещаем его в очередь на удаление
+	// Add them to the queue to removing
 	atexit(killPhoenixSingletone);
-	// Убираем флаг уничтоженности
+	// Change destruction flag
 	Log::isDestroyed = false;
 }
 

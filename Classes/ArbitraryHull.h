@@ -5,7 +5,7 @@
 #include "Color.h"
 #include "Vector2.h"
 
-// избавляемся от необходимости включать все заголовки cocos2d
+// dispose of necessity of cocos2d include
 namespace cocos2d
 {
 	class CCpoint;

@@ -53,21 +53,21 @@ bool AppDelegate::applicationDidFinishLaunching()
 	MainMenuScene* mainMenuScene = new MainMenuScene(nullptr); // нет автоматического init()
 	SplashScreenScene* splashScreenScene = new SplashScreenScene();
 
-	// делаем основной сценой - меню
+	// make Menu as the main scene
 	director->runWithScene(mainMenuScene);
-	// ставим поверх всего SplashScreen
+	// put SplashScreen onto the stack
 	director->pushScene(splashScreenScene);
-	// готовимся выгрузить SplashScreen
+	// ready to unload the SplashScreen
 	splashScreenScene->autorelease();
 
-	// загружаем игровые данные
+	// load game data
 	WorldLoader::LoadGameInfo();
 	WorldLoader::LoadGameState();
 
-	// инициализируем графику уже после того как всё загрузилось
+	// initialize graphics after all data is loaded
 	mainMenuScene->init();
 
-	// регистрируем сцены в сборщике мусора
+	// register scenes in the garbage collector
 	mainMenuScene->autorelease();
 
 	return true;

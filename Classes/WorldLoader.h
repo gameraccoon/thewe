@@ -3,16 +3,16 @@
 
 namespace WorldLoader
 {
-	/* загружает не зависящие от сейвов данные карты*/
+	/* Load static data */
 	bool LoadGameInfo(void);
 	
-	/* восстанавливает состояние игры из файла */
+	/* Load save file */
 	bool LoadGameState(void);
 
-	/* сохраняет состояние игры в профиль текущего игрока, если такой существует */
+	/* Save current state of the game */
 	bool SaveGameState(void);
 
-	/* сбрасывает состояние игры (новая игры\первый запуск) */
+	/* Flush game state (relaunch) */
 	void FlushGameState(void);
 };
 

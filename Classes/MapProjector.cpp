@@ -13,18 +13,18 @@ void MapProjector::SetLocation(Vector2 worldLocation)
 {
 	_viewLocation = worldLocation;
 
-	// исправляем если нужно выходы за границы
+	// check and fix getting out of screen
 	_CheckBoundings();
-	// обновляем положения спрайтов
+	// update position of nodes
 	_UpdateNodes();
 }
 
 void MapProjector::SetScale(float scale)
 {
-	// если выд выходит за границы карты
+	// if view is out of screen borders
 	if (scale < (_screenCenter.y * 2) / _mapSize.y || scale < (_screenCenter.x * 2) / _mapSize.x)
 	{
-		// равняем его по самой узкой границе
+		// align view to smaller border
 		_viewScale = 2 * std::max(_screenCenter.y / _mapSize.y, _screenCenter.x / _mapSize.x);
 	}
 	else
@@ -32,9 +32,9 @@ void MapProjector::SetScale(float scale)
 		_viewScale = scale;
 	}
 	
-	// исправляем если нужно выходы за границы
+	// check and fix getting out of screen
 	_CheckBoundings();
-	// обновляем положения спрайтов
+	// update position of nodes
 	_UpdateNodes();
 }
 
@@ -45,25 +45,25 @@ void MapProjector::ShiftView(Vector2 delta)
 
 void MapProjector::_CheckBoundings()
 {
-	// выход за верхнюю границу
+	// out of the top border
 	if (_viewLocation.y < _screenCenter.y / _viewScale - _mapSize.y/2)
 	{
 		_viewLocation.y = _screenCenter.y / _viewScale - _mapSize.y/2;
 	}
 
-	// выход за нижнюю границу
+	// out of the bottom border
 	if (_viewLocation.y > -_screenCenter.y / _viewScale + _mapSize.y/2)
 	{
 		_viewLocation.y = -_screenCenter.y / _viewScale + _mapSize.y/2;
 	}
 
-	// выход за правую границу
+	// out of the right border
 	if (_viewLocation.x < _screenCenter.x / _viewScale - _mapSize.x/2)
 	{
 		_viewLocation.x = _screenCenter.x / _viewScale - _mapSize.x/2;
 	}
 
-	// выход за лувую границу
+	// out of the left border
 	if (_viewLocation.x > -_screenCenter.x / _viewScale + _mapSize.x/2)
 	{
 		_viewLocation.x = -_screenCenter.x / _viewScale + _mapSize.x/2;

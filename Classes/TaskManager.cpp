@@ -77,7 +77,7 @@ void TaskManager::UpdateToTime(float worldTime)
 		if (isEnded)
 		{
 			Cell::Ptr cell = iterator->cell.lock();
-			// если Cell ещё не удалена
+			// if Cell wasn't removed yet
 			if (cell)
 			{
 				const Cell::Info& cellInfo = cell->GetInfo();
@@ -92,7 +92,7 @@ void TaskManager::UpdateToTime(float worldTime)
 
 				if (!task->IsAborted())
 				{
-					// Вызываем луа функцию определения статуса задания
+					// call lua function that calculate status of the task
 					bool isSuccess = luabind::call_function<bool>(_luaScript->GetLuaState()
 																  , "CheckStatus"
 																  , cellInfo
@@ -116,18 +116,18 @@ void TaskManager::UpdateToTime(float worldTime)
 					info.status = Task::Status::Aborted;
 				}
 
-				// вызываем из луа нужную функцию
+				// call task end function (success, fail, abort)
 				luabind::call_function<bool>(_luaScript->GetLuaState()
 											 , funcName.c_str()
 											 , cell->GetInfo()
 											 , taskInfo
 											 , 0);
 
-				// добавляем информацию о законченном задании в ячейку
+				// adds information of the completed task to the cell
 				cell->AddCompletedTask(info);
 			}
 
-			// освобождаем умный указатель и удаляем Task
+			// release smart ptr
 			iterator = _runnedTasks.erase(iterator);
 		}
 		else
@@ -164,7 +164,7 @@ TaskManager::TasksList TaskManager::GetAvailableTasks(Cell::WeakPtr cell) const
 
 	for (const auto& pair : _allTasks)
 	{
-		// ToDo: тут надо добавить необходимые проверки
+		// ToDo: add some checks
 		availableTasks.push_back(&pair.second);
 	}
 

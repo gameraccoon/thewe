@@ -56,7 +56,7 @@ bool WorldMapLayer::init(void)
 		cocos2d::Sprite *sprite = AddSpriteToProjector(_mapProjector, town->GetLocation(), Vector2(0.0f, 0.0f), "town.png",
 			true, 0.17f);
 		
-		// обновляем проекцию чтобы узнать реальный размер элемента
+		// update projection to know real size of the object
 		_mapProjector->Update();
 
 		cocos2d::Rect tex = sprite->getTextureRect();
@@ -67,11 +67,11 @@ bool WorldMapLayer::init(void)
 		addChild(sprite, Z_TOWN, town->GetUid());
 	}
 	
-	// сообщаем где находится центр окна вывода
+	// say where is screen center
 	_mapProjector->SetScreenCenter(origin + screen / 2.0f);
-	// ставим спрайт карты ровно в центр экрана
+	// send map sprite to the center of world
 	_mapProjector->SetLocation(Vector2(0.0f, 0.0f));
-	// ставим скейл, чтобы экран правильно отмасштабировался
+	// set scale to first time
 	_mapProjector->SetScale(1.0f);
 
 	_cellMenu = new CellMenuSelector(_mapProjector, this);
@@ -211,7 +211,7 @@ void WorldMapLayer::RecalculateTouches(const std::vector<cocos2d::Touch* > &touc
 {
 	_lastTouchesCount = touches.size();
 
-	// положение средней точки между всеми тачами
+	// middle point of all touches
 	Vector2 newTouchPoint(0.0f, 0.0f);
 	for (const cocos2d::Touch* touch : touches)
 	{
@@ -403,7 +403,7 @@ void WorldMapLayer::_RecursiveUpdateNetworkVisualiser(cocos2d::DrawNode *visuali
 		Vector2 p2(_mapProjector->ProjectOnScreen(child->GetInfo().location));
 		visualiser->drawSegment(p1, p2, 4.0f, Color(1.0f, 0.0f, 0.0f, 1.0f));
 
-		// рекурсивный вызов
+		// recursive
 		_RecursiveUpdateNetworkVisualiser(visualiser, child);
 	}
 }
@@ -412,7 +412,7 @@ void WorldMapLayer::_AddCellToRender(Cell::Ptr cell)
 {
 	cocos2d::Sprite *sprite = AddSpriteToProjector(_mapProjector, cell->GetInfo().location, Vector2(0.0f, 0.0f), "cell.png", true, 0.2f);
 	
-	// обновляем проекцию чтобы узнать реальный размер элемента
+	// update projection to know real size of the object
 	_mapProjector->Update();
 
 	cocos2d::Rect tex = sprite->getTextureRect();

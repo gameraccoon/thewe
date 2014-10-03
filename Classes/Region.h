@@ -35,7 +35,7 @@ public:
 private:
 	void _Init(const Info &info);
 
-	/** Проверить значения и вывести в журнал все предупреждения */
+	/** Check all values and write all warnings to the log */
 	void _CheckValues() const;
 
 	HullsArray _hulls;
