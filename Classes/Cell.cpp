@@ -84,10 +84,12 @@ void Cell::SwitchState(Cell::State state)
 
 void Cell::Update(float deltatime)
 {
-	// пересчитать наличные
+	/*
 	_UpdateCash(deltatime);
 	_UpdateMorale(deltatime);
 	_UpdateContentment(deltatime);
+	*/
+
 	_CheckValues();
 }
 

@@ -24,6 +24,8 @@ public:
 	{
 		/** ID */
 		std::string id;
+		/** Title of the task */
+		std::string title;
 		/** Comlexity */
 		float severity;
 		/** Time needless to complete the task */

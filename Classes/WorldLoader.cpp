@@ -86,6 +86,7 @@ static bool LoadTasksInfo()
 		Task::Info info;
 
 		info.id = task_node.attribute("Id").as_string();
+		info.title = task_node.attribute("Title").as_string();
 		info.severity = task_node.attribute("Severity").as_float();
 		info.duration = task_node.attribute("Duration").as_float();
 		info.moralLevel = task_node.attribute("MoralLevel").as_float();
