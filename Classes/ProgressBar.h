@@ -42,6 +42,8 @@ public:
 	float GetCurrentProgress(void);
 	bool IsFinished(void) const;
 
+	void ToggleReverse(bool flag);
+
 public:
 	cocos2d::ProgressTimer *_progressTimer;
 	cocos2d::Sprite *_roundTexture;

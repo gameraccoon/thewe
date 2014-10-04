@@ -21,6 +21,13 @@ bool CellMapWidget::init(void)
 	_cellMapSprite->setPosition(0.0f, 0.0f);
 	_cellMapSprite->setScale(1.0f);
 
+	_cellMapTaskProgressBar = new RoundProgressBar("cell_overlay.png", 1.0f);
+	_cellMapTaskProgressBar->SetProgressImmediately(0.0f);
+	_cellMapTaskProgressBar->setPosition(0.0f, 0.0f);
+	_cellMapTaskProgressBar->setVisible(false);
+	_cellMapTaskProgressBar->ToggleReverse(true);
+	_cellMapTaskProgressBar->autorelease();
+
 	if (_cell->GetState() == Cell::CONSTRUCTION)
 	{
 		_cellMapSprite->setVisible(false);
@@ -33,6 +40,7 @@ bool CellMapWidget::init(void)
 	}
 
 	addChild(_cellMapSprite, DrawOrder::SPRITE);
+	addChild(_cellMapTaskProgressBar, DrawOrder::PROGRESS);
 	scheduleUpdate();
 
 	return true;
@@ -48,6 +56,20 @@ void CellMapWidget::update(float dt)
 		MessageManager::Instance().SendGameMessage("Cell created");
 
 		removeChild(_constructionProgress);
+	}
+	
+	if (_cell->IsCurrentTaskPresented())
+	{
+		Task::Ptr task = _cell->getCurrentTask().lock();
+		
+		float time = World::Instance().GetWorldTime();
+		float progress = task->CalculateProgress(time);
+		_cellMapTaskProgressBar->SetProgressImmediately(100.0f - progress * 100.0f);
+		_cellMapTaskProgressBar->setVisible(true);
+	}
+	else
+	{
+		_cellMapTaskProgressBar->setVisible(false);
 	}
 }
 
