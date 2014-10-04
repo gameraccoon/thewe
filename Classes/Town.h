@@ -33,8 +33,6 @@ public:
 	float GetSpriteScale(void) const;
 	Region::WeakPtr GetRegion(void) const;
 
-	void SetHitArea(float beginX, float beginY, float endX, float endY);
-	void GetHitArea(float &beginX, float &beginY, float &endX, float &endY) const;
 	void SetCellPresented(bool presented);
 
 	bool IsCellPresented(void);
@@ -59,9 +57,6 @@ private:
 	const Vector2 _location;
 
 	bool _isCellPresented;
-
-	float _hitAreaBeginX, _hitAreaEndX;
-	float _hitAreaBeginY, _hitAreaEndY;
 };
 
 #endif // TONW_H

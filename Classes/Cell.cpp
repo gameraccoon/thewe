@@ -5,7 +5,9 @@
 
 Cell::Cell(const Info &info)
 	: _info(info)
+	, _state(READY)
 	, _currentTask()
+	, _constructionTime(0.0f)
 	, _uid(World::Instance().GetNewUid())
 {
 	_CheckValues();
@@ -60,6 +62,26 @@ Cell::Info& Cell::GetInfo(void)
 	return _info;
 }
 
+Cell::State& Cell::GetState(void)
+{
+	return _state;
+}
+
+void Cell::SetConstructionTime(float seconds)
+{
+	_constructionTime = seconds;
+}
+
+float Cell::GetConstructionTime(void) const
+{
+	return _constructionTime;
+}
+
+void Cell::SwitchState(Cell::State state)
+{
+	_state = state;
+}
+
 void Cell::Update(float deltatime)
 {
 	// пересчитать наличные
@@ -109,22 +131,6 @@ void Cell::AddCompletedTask(const Task::CompletedTaskInfo& completedTask)
 unsigned int Cell::GetUid(void) const
 {
 	return _uid;
-}
-
-void Cell::SetHitArea(float beginX, float beginY, float endX, float endY)
-{
-	_hitAreaBeginX = beginX;
-	_hitAreaEndX = endX;
-	_hitAreaBeginY = beginY;
-	_hitAreaEndY = endY;
-}
-
-void Cell::GetHitArea(float &beginX, float &endX, float &beginY, float &endY) const
-{
-	beginX = _hitAreaBeginX;
-	endX = _hitAreaEndX;
-	beginY = _hitAreaBeginY;
-	endY = _hitAreaEndY;
 }
 
 float Cell::GetCash()

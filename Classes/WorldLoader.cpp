@@ -241,7 +241,6 @@ bool WorldLoader::LoadGameState(void)
 		// 1. find the root cell
 		// 2. recursively add childs
 
-
 		pugi::xml_node root = doc.first_child();
 		pugi::xml_node cells_network = root.first_child();
 		pugi::xml_node cell_root = cells_network.find_child_by_attribute("parent_id", "-1");

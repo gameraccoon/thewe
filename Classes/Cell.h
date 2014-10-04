@@ -23,6 +23,12 @@ public:
 		int membersCount;
 	};
 
+	enum State
+	{
+		CONSTRUCTION,
+		READY,
+	};
+
 	typedef std::shared_ptr<Cell> Ptr;
 	typedef std::weak_ptr<Cell> WeakPtr;
 
@@ -55,12 +61,20 @@ public:
 	* Returns information about the cell
 	*/
 	Info& GetInfo(void);
+
+	State& GetState(void);
+
+	void SetConstructionTime(float seconds);
+
+	float GetConstructionTime(void) const;
 	
 	/** Updated cell's state */
 	void Update(float deltatime);
 
 	void AddCurrentTask(Task::WeakPtr currentTask);
 	Task::WeakPtr getCurrentTask() const;
+
+	void SwitchState(State state);
 
 	bool IsCurrentTaskPresented(void) const;
 
@@ -69,10 +83,6 @@ public:
 
 	float GetCash();
 	unsigned int GetUid(void) const;
-
-	void SetHitArea(float beginX, float beginY, float endX, float endY);
-	void GetHitArea(float &beginX, float &beginY, float &endX, float &endY) const;
-
 
 private:
 
@@ -92,7 +102,11 @@ private:
 	/** All usual info about the cell */
 	Info _info;
 
-	/** Unical ID */
+	State _state;
+
+	float _constructionTime;
+
+	/**  уникальный идентификатор */
 	unsigned int _uid;
 
 	/** Child cells */
@@ -106,10 +120,6 @@ private:
 
 	/** Geographic position on the map */
 	Vector2 _worldLocation;
-
-	/** local tap area */
-	float _hitAreaBeginX, _hitAreaEndX;
-	float _hitAreaBeginY, _hitAreaEndY;
 };
 
 #endif // CELL_H

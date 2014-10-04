@@ -121,3 +121,8 @@ bool RoundProgressBar::IsFinished(void) const
 {
 	return _progressTimer->getPercentage() >= 100.0f;
 }
+
+void RoundProgressBar::ToggleReverse(bool flag)
+{
+	_progressTimer->setReverseDirection(flag);
+}

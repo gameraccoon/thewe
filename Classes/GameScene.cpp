@@ -25,6 +25,7 @@ bool GameScene::init(void)
 		return false;
 	}
 
+	GameInfo::Instance().ParseXml("gameInfo.xml");
 	_worldMap = new WorldMapLayer(this, &_mapProjector);
 	addChild(_worldMap);
 	_worldMap->autorelease();
@@ -75,14 +76,4 @@ void GameScene::ToggleEditor()
 
 void GameScene::ShowCellScreen(Cell::WeakPtr cell)
 {
-	/*
-	ShowMap();
-	_cellScreen = new CellScreenLayer(cell, _worldMap);
-	addChild(_cellScreen);
-	_cellScreen->autorelease();
-	_worldMap->SetMapInputEnabled(false);
-	_worldMap->SetGuiEnabled(false);
-	*/
-
-
 }

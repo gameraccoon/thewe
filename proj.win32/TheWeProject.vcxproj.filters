@@ -34,6 +34,9 @@
     <Filter Include="Classes\GameInterface">
       <UniqueIdentifier>{24112e01-a8b7-448a-8d27-f6c22026385b}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Classes\GameCell\Model">
+      <UniqueIdentifier>{178217b1-9fb0-47de-8475-6f91fb755872}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -198,24 +201,6 @@
     <ClCompile Include="..\dependencies\luabind-0.9.1\src\wrapper_base.cpp">
       <Filter>dependencies\luabind</Filter>
     </ClCompile>
-    <ClCompile Include="..\Classes\Cell.cpp">
-      <Filter>Classes\GameCell</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Classes\CellGameInterface.cpp">
-      <Filter>Classes\GameCell</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Classes\CellInfoMenu.cpp">
-      <Filter>Classes\GameCell</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Classes\CellSpinoffMenu.cpp">
-      <Filter>Classes\GameCell</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Classes\CellTaskInfoMenu.cpp">
-      <Filter>Classes\GameCell</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Classes\CellTasksMenu.cpp">
-      <Filter>Classes\GameCell</Filter>
-    </ClCompile>
     <ClCompile Include="..\Classes\WorldMapLayer.cpp">
       <Filter>Classes\GameMap</Filter>
     </ClCompile>
@@ -267,9 +252,6 @@
     <ClCompile Include="..\Classes\TaskManager.cpp">
       <Filter>Classes\GameCell</Filter>
     </ClCompile>
-    <ClCompile Include="..\Classes\Task.cpp">
-      <Filter>Classes\GameCell</Filter>
-    </ClCompile>
     <ClCompile Include="..\Classes\Town.cpp">
       <Filter>Classes\GameMap</Filter>
     </ClCompile>
@@ -282,8 +264,38 @@
     <ClCompile Include="..\Classes\MessageManager.cpp">
       <Filter>Classes\GameInterface</Filter>
     </ClCompile>
-    <ClCompile Include="..\Classes\CellSpinoffCreator.cpp">
+    <ClCompile Include="..\Classes\CellGameInterface.cpp">
       <Filter>Classes\GameCell</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\CellInfoMenu.cpp">
+      <Filter>Classes\GameCell</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\CellSpinoffMenu.cpp">
+      <Filter>Classes\GameCell</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\CellTaskInfoMenu.cpp">
+      <Filter>Classes\GameCell</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\CellTasksMenu.cpp">
+      <Filter>Classes\GameCell</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\Cell.cpp">
+      <Filter>Classes\GameCell\Model</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\Task.cpp">
+      <Filter>Classes\GameCell\Model</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\CellMapWidget.cpp">
+      <Filter>Classes\GameCell</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\TownMapWidget.cpp">
+      <Filter>Classes\GameMap</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\CellsNetLayer.cpp">
+      <Filter>Classes\GameInterface</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\GameInfo.cpp">
+      <Filter>Classes</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -380,24 +392,6 @@
     <ClInclude Include="..\dependencies\lua-5.1.5\lzio.h">
       <Filter>dependencies\lua</Filter>
     </ClInclude>
-    <ClInclude Include="..\Classes\Cell.h">
-      <Filter>Classes\GameCell</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Classes\CellGameInterface.h">
-      <Filter>Classes\GameCell</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Classes\CellInfoMenu.h">
-      <Filter>Classes\GameCell</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Classes\CellSpinoffMenu.h">
-      <Filter>Classes\GameCell</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Classes\CellTaskInfoMenu.h">
-      <Filter>Classes\GameCell</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Classes\CellTasksMenu.h">
-      <Filter>Classes\GameCell</Filter>
-    </ClInclude>
     <ClInclude Include="..\Classes\WorldMapLayer.h">
       <Filter>Classes\GameMap</Filter>
     </ClInclude>
@@ -449,9 +443,6 @@
     <ClInclude Include="..\Classes\TaskManager.h">
       <Filter>Classes\GameCell</Filter>
     </ClInclude>
-    <ClInclude Include="..\Classes\Task.h">
-      <Filter>Classes\GameCell</Filter>
-    </ClInclude>
     <ClInclude Include="..\Classes\Town.h">
       <Filter>Classes\GameMap</Filter>
     </ClInclude>
@@ -464,8 +455,38 @@
     <ClInclude Include="..\Classes\MessageManager.h">
       <Filter>Classes\GameInterface</Filter>
     </ClInclude>
-    <ClInclude Include="..\Classes\CellSpinoffCreator.h">
+    <ClInclude Include="..\Classes\CellGameInterface.h">
       <Filter>Classes\GameCell</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\CellInfoMenu.h">
+      <Filter>Classes\GameCell</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\CellSpinoffMenu.h">
+      <Filter>Classes\GameCell</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\CellTaskInfoMenu.h">
+      <Filter>Classes\GameCell</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\CellTasksMenu.h">
+      <Filter>Classes\GameCell</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Cell.h">
+      <Filter>Classes\GameCell\Model</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Task.h">
+      <Filter>Classes\GameCell\Model</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\CellMapWidget.h">
+      <Filter>Classes\GameCell</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\TownMapWidget.h">
+      <Filter>Classes\GameMap</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\CellsNetLayer.h">
+      <Filter>Classes\GameInterface</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\GameInfo.h">
+      <Filter>Classes</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

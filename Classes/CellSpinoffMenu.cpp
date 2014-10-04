@@ -1,9 +1,7 @@
 #include "CellSpinoffMenu.h"
 
 #include "WorldMapLayer.h"
-
-static const unsigned int NECESSARY_MEMBERS = 0;//10;
-static const unsigned int NECESSARY_CACH = 0;//10000;
+#include "GameInfo.h"
 
 CellSpinoffMenu::CellSpinoffMenu(Cell::WeakPtr cell, CellMenuSelector *selector, WorldMapLayer *worldMap)
 	: _cell(cell)
@@ -48,10 +46,13 @@ bool CellSpinoffMenu::init(void)
 
 	Cell::Info info = _cell.lock()->GetInfo();
 
-	_isCellCreationPossible = info.membersCount >= NECESSARY_MEMBERS && info.cash >= NECESSARY_CACH;
+	int m = GameInfo::Instance().GetInt("CELL_SPINOFF_MEMBERS_PRICE");
 
-	std::string strMembers = cocos2d::StringUtils::format("Members %d/%d", info.membersCount, NECESSARY_MEMBERS);
-	std::string strCach = cocos2d::StringUtils::format("Cach %.1f/%d $", info.cash, NECESSARY_CACH);
+	_isCellCreationPossible = info.membersCount >= GameInfo::Instance().GetInt("CELL_SPINOFF_MEMBERS_PRICE") &&
+		                      info.cash >= GameInfo::Instance().GetInt("CELL_SPINOFF_CASH_PRICE");
+
+	std::string strMembers = cocos2d::StringUtils::format("Members %d/%d", info.membersCount, GameInfo::Instance().GetInt("CELL_SPINOFF_MEMBERS_PRICE"));
+	std::string strCach = cocos2d::StringUtils::format("Cach %.1f/%d $", info.cash, GameInfo::Instance().GetInt("CELL_SPINOFF_CASH_PRICE"));
 	
 	cocos2d::TTFConfig ttfConfigBig("arial.ttf", 24);
 	_necessaryMembers = cocos2d::Label::createWithTTF(ttfConfigBig, strMembers, cocos2d::TextHAlignment::CENTER);
@@ -84,7 +85,7 @@ bool CellSpinoffMenu::init(void)
 		newCellButtonLabel->setTextColor(cocos2d::Color4B(125, 125, 125, 255));
 	}
 
-	if (info.membersCount >= NECESSARY_MEMBERS)
+	if (info.membersCount >= GameInfo::Instance().GetInt("CELL_SPINOFF_MEMBERS_PRICE"))
 	{
 		_necessaryMembers->setTextColor(cocos2d::Color4B(0, 255, 0, 255));
 	}
@@ -93,7 +94,7 @@ bool CellSpinoffMenu::init(void)
 		_necessaryMembers->setTextColor(cocos2d::Color4B(255, 0, 0, 255));
 	}
 
-	if (info.cash >= NECESSARY_CACH)
+	if (info.cash >= GameInfo::Instance().GetInt("CELL_SPINOFF_CASH_PRICE"))
 	{
 		_necessaryCash->setTextColor(cocos2d::Color4B(0, 255, 0, 255));
 	}

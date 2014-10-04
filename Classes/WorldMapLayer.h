@@ -8,6 +8,8 @@
 #include "Region.h"
 #include "Cell.h"
 #include "CellGameInterface.h"
+#include "CellMapWidget.h"
+#include "TownMapWidget.h"
 
 class GameScene;
 
@@ -15,6 +17,7 @@ class WorldMapLayer : public cocos2d::Layer
 {
 public:
 	WorldMapLayer(GameScene *gameScene, MapProjector* projector);
+	~WorldMapLayer(void);
 
 	virtual bool init(void) override;
 
@@ -31,17 +34,23 @@ public:
 	void SetGuiEnabled(bool isEnabled);
 	void SetNextCellParent(Cell::WeakPtr parent);
 
-	void CreateNewCell(const Cell::Info &info);
+	void CreateCell(const Cell::Info &info, Cell::State state, float constructionTime = 0.0f);
+	void DeleteCell(CellMapWidget *widget);
 
 private:
 	enum CONTENT_Z_ORDER
 	{
 		Z_MAP = 0,
+		Z_LINKS,
 		Z_TOWN,
 		Z_CELL,
-		Z_CELL_DATA,
 		Z_CELL_MENU
 	};
+
+	typedef std::vector<CellMapWidget *> CellWidgetsList;
+	typedef CellWidgetsList::iterator CellWidgetsIter;
+	typedef std::vector<TownMapWidget *> TownWidgetsList;
+	typedef TownWidgetsList::iterator TownWidgetsIter;
 
 private:
 	GameScene *_gameScene;
@@ -52,14 +61,17 @@ private:
 	Cell::WeakPtr _GetCellUnderPoint(const Vector2& point) const;
 	Town::WeakPtr _GetTownUnderPoint(const Vector2& point);
 	
+	CellMapWidget* _CreateCellWidget(Cell::Ptr cell);
+	TownMapWidget* _CreateTownWidget(Town::Ptr town);
+
 	void _UpdateNetwork();
 	void _RecursiveUpdateNetworkVisualiser(cocos2d::DrawNode *visualiser, Cell::WeakPtr cell);
-	void _AddCellToRender(Cell::Ptr cell);
 	void _OnTownSelect(Town::WeakPtr town);
-	void _DrawCellsLinksRecurcively(Cell::WeakPtr cell);
-
 	void RecalculateTouches(const std::vector<cocos2d::Touch* > &touches, bool updateView);
 	void ResetTouches();
+
+	CellWidgetsList _cellWidgetsList;
+	TownWidgetsList _townWidgetsList;
 
 	CellMenuSelector *_cellMenu;
 	cocos2d::Layer *_cellGameInterface;
@@ -73,8 +85,6 @@ private:
 	cocos2d::DrawNode *_networkVisualiser;
 
 	bool _isInputEnabled;
-
-	bool _isPlacingCell;
 
 	Vector2 _touchesCenter;
 	int _lastTouchesCount;
