@@ -5,6 +5,7 @@
 #include "Log.h"
 #include "GameScene.h"
 #include "TransitionZoomFade.h"
+#include "CellsNetLayer.h"
 
 MainMenuScene::MainMenuScene(cocos2d::Scene* gameScene)
 {
@@ -59,7 +60,7 @@ bool MainMenuScene::init(void)
 	_AddButton("btn-settings-normal.png", "btn-settings-selected.png", center + Vector2(300.0f, -270.0f),
 			  MenuItemTag::SETTINGS);
 
-	// переводим map в массив
+	// cast map to vector
 	cocos2d::Vector<cocos2d::MenuItem*> v;
 	v.reserve(_buttons.size());
 	std::for_each(_buttons.begin(),_buttons.end(),
@@ -98,7 +99,12 @@ void MainMenuScene::_MenuInputListener(cocos2d::Ref *sender)
 	case MainMenuScene::MenuItemTag::CHAT:
 		break;
 	case MainMenuScene::MenuItemTag::TEAM:
+	{
+		cocos2d::Layer* cellsNetLayer = new CellsNetLayer();
+		addChild(cellsNetLayer);
+		cellsNetLayer->autorelease();
 		break;
+	}
 	default: break;
 	}
 }

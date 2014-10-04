@@ -139,6 +139,7 @@ xcopy /Y /Q "$(EngineRoot)external\websockets\prebuilt\win32\*.*" "$(OutDir)"</C
     <ClCompile Include="..\Classes\CellGameInterface.cpp" />
     <ClCompile Include="..\Classes\CellInfoMenu.cpp" />
     <ClCompile Include="..\Classes\CellMapWidget.cpp" />
+    <ClCompile Include="..\Classes\CellsNetLayer.cpp" />
     <ClCompile Include="..\Classes\CellSpinoffMenu.cpp" />
     <ClCompile Include="..\Classes\CellTaskInfoMenu.cpp" />
     <ClCompile Include="..\Classes\CellTasksMenu.cpp" />
@@ -225,6 +226,7 @@ xcopy /Y /Q "$(EngineRoot)external\websockets\prebuilt\win32\*.*" "$(OutDir)"</C
     <ClInclude Include="..\Classes\CellGameInterface.h" />
     <ClInclude Include="..\Classes\CellInfoMenu.h" />
     <ClInclude Include="..\Classes\CellMapWidget.h" />
+    <ClInclude Include="..\Classes\CellsNetLayer.h" />
     <ClInclude Include="..\Classes\CellSpinoffMenu.h" />
     <ClInclude Include="..\Classes\CellTaskInfoMenu.h" />
     <ClInclude Include="..\Classes\CellTasksMenu.h" />

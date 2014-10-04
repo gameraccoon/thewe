@@ -9,13 +9,13 @@ class MessageManager
 {
 public:
 	/**
-	 * @return экземпляр класса
+	 * @return new exemplar of the class
 	 */
 	static MessageManager& Instance();
 
 	/**
-	 * Отправить новое сообщение в мессенджер игрока
-	 * @param text сообщение
+	 * Send new message to the player messages box
+	 * @param text message text
 	 */
 	void SendGameMessage(std::string text);
 
@@ -28,7 +28,7 @@ private:
 	int _maxSetKey;
 
 	/*
-	 * Отключаем ненужные операции
+	 * Turn off unusable operations
 	 */
 	MessageManager();
 	~MessageManager();

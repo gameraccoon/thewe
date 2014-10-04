@@ -10,7 +10,7 @@ public:
 	typedef std::shared_ptr<Task> Ptr;
 	typedef std::weak_ptr<Task> WeakPtr;
 	
-	/** Статус задачи */
+	/** Status of the task */
 	enum class Status
 	{
 		Runned
@@ -19,22 +19,22 @@ public:
 		, Aborted
 	};
 
-	/** Статическая информация о задаче */
+	/** Static information about the task */
 	struct Info
 	{
-		/** Идентификатор */
+		/** ID */
 		std::string id;
-		/** Сложность */
+		/** Comlexity */
 		float severity;
-		/** Продолжительность */
+		/** Time needless to complete the task */
 		float duration;
 		float moralLevel;
 
-		/** Имя Lua-функции, которая будет выполнена при успешном финале */
+		/** The name of the Lua-function, that will be run on successful end of the task */
 		std::string successFn;
-		/** Имя Lua-функции, которая будет выполнена при провале задания */
+		/** The name of the Lua-function, that will be run on fail of the task */
 		std::string failFn;
-		/** Имя Lua-функции, которая будет выполнена при прерывании задания */
+		/** The name of the Lua-function, that will be run on abort of the task */
 		std::string abortFn;
 	};
 
@@ -53,9 +53,9 @@ public:
 	static Ptr Create(const Info* info, float startTime);
 
 	/**
-	 * Проверяет, не выполнилось ли задание
+	 * Check task completeness
 	 *
-	 * @return true если задание уже выполнено
+	 * @return true if task is completed
 	 */
 	bool CheckCompleteness(float worldTime);
 
@@ -66,15 +66,15 @@ public:
 	float CalculateProgress(float worldTime) const;
 	bool IsAborted() const;
 	bool IsFastFinished() const;
-	/** Прервать выполнение задания */
+	/** Abort task */
 	void Abort();
-	/** Завершить задание сейчас (ускорить выполнение) */
+	/** Finish the task now (cheat) */
 	void FastFinish();
 
 private:
-	/** Время начала выполнения задания */
+	/** Start time of the task */
 	float _startTime;
-	/** Время окончания выполнения задания */
+	/** Time when task will be completed */
 	float _endTime;
 
 	bool _isAborted;

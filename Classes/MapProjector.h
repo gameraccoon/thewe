@@ -12,69 +12,69 @@ class MapProjector
 public:
 	MapProjector(Vector2 mapSize);
 
-	/** Спроецировать точку из координат экрана в координаты карты */
+	/** Project point from screen coordinates to map coordinates */
 	Vector2 ProjectOnMap(Vector2 screenPoint) const;
-	/** Спроецировать точку из координат карты в координаты экрана */
+	/** Project point from map coordinates to screen coordinates */
 	Vector2 ProjectOnScreen(Vector2 mapPoint) const;
 
-	/** Спроецировать полигон из координат экрана в координаты карты */
+	/** Project hull from screen coordinates to map coordinates */
 	ArbitraryHull ProjectOnMap(const ArbitraryHull& screenHull) const;
-	/** Спроецировать полигон из координат карты в координаты экрана */
+	/** Project hull from map coordinates to screen coordinates */
 	ArbitraryHull ProjectOnScreen(const ArbitraryHull& mapHull) const;
 
-	/** Установить новое положение камеры на карте */
+	/** Set new camera location on the map */
 	void SetLocation(Vector2 mapLocation);
-	/** Установить приближение вида */
+	/** Set new scale of the view */
 	void SetScale(float scale);
 
-	/** Сдвинуть вид в координатах экрана */
+	/** Shift view with screen coordinates */
 	void ShiftView(Vector2 screenDelta);
 
-	/** Получить положение камеры в мире */
+	/** Get camera location in the world */
 	Vector2 GetLocation() const;
-	/** Получить текущее значение приближения вида */
+	/** Get current view scale */
 	float GetScale() const;
 
-	/** Сказать в какой точке экрана находится центер области вывода */
+	/** Set screen center of camera view */
 	void SetScreenCenter(Vector2 centerPos);
 	
-	/** Добавить новый элемент, который будет проецироваться на карту */
+	/** Add new element that will be projected as map part */
 	int AddMapPart(Drawable::Ptr node, Vector2 location, Vector2 shift, float scale, bool dontScale = false);
 	
-	/** Удалить и разрушить элемент для проецирования */
+	/** Remove and destroy some element */
 	void RemoveMapPart(const Drawable::Ptr node);
 	void RemoveMapPart(unsigned int uid);
 
-	/** Обновить положение всех элементов (например после добавления) */
+	/** Update all elements position */
 	void Update();
 
 private:
 	struct MapPart
 	{
-		/** Положение объекта в мире */
+		/** World location */
 		Vector2 location;
-		/** Сдвиг центра объекта */
+		/** Objects center shift in screen coordinates */
 		Vector2 shift;
-		/** Масштаб объекта по умолчанию */
+		/** Initial scale of the object */
 		float initialScale;
-		/** Нужно ли масштабировать объект вместе с картой */
+		/** Are we need to scale object with map */
 		bool isScalable;
-		/** Указатель на графический объект */
+		/** Graphical object */
 		Drawable::Ptr node;
-		/** unique identifier */
+		/** Unique identifier */
 		unsigned int uid;
 	};
 
-	/** Проецируемые элементы */
+	/** Projected parts of map */
 	typedef std::vector<MapPart> MapParts;
 
 private:
-	/** Проверить выход границ вида за границы карты и исправить положение вида при необходимости */
+	/** Checking intersection of the screen borders and correct position if needed */
 	void _CheckBoundings();
 
 	unsigned int _GetNewPartUid(void) const;
 
-	/** Обновить положение и масштаб всех проецируемых элементов */
+	/** Update position of all projected elements */
 	void _UpdateNodes();
 
 	float _viewScale;

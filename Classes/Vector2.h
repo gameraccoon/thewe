@@ -15,29 +15,29 @@ struct Vector2
 	Vector2(const cocos2d::Size& size);
 	~Vector2(void);
 
-	/** Получить длину вектора */
+	/** Calculate vector length */
 	float Size() const;
 
-	/** Получить квадрат длины вектора (работает быстрее чем Size) */
+	/** Calculate quarter of the vector length (faster than Size) */
 	float QSize(void) const;
 
-	/** Получить вектор единичной длины, сонаправленный с данным */
+	/** Calculate normalized vector (length = 1 unit) */
 	Vector2 Ort(void) const;
-	/** Получить вектор отражённый от оси OY */
+	/** Calculate vector mirrored to OX axis */
 	Vector2 MirrorH() const;
-	/** Получить вектор отражённый от оси OX */
+	/** Calculate vector mirrored to OX axis */
 	Vector2 MirrorV() const;
-	/** Получить проекцию вектора */
+	/** Calculate vector normal */
 	//Vector2 Normal() const;
 
-	/** Получить проекцию вектора на вектор base */
+	/** Calculate projection to the vector "base" */
 	Vector2 Project(Vector2 base) const;
 	
-	/* Неявные преобразования в другие классы */
+	/* Implicit convertations to other classes */
 	operator cocos2d::Point() const;
 	operator cocos2d::Size() const;
 
-	/* Арифметические операции, доступные для двумерных векторов */
+	/* Ariphmetic operation for two-dimentioned vectors */
 
 	friend bool operator==(const Vector2& left, const Vector2& right);
 	friend bool operator!=(const Vector2& left, const Vector2& right);

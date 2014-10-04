@@ -18,7 +18,7 @@ struct Color
 	float b;
 	float a;
 	
-	/* Неявные преобразования в другие классы */
+	/* implicit conversation to other classes */
 	operator cocos2d::Color4F() const;
 	operator cocos2d::Color4B() const;
 };

@@ -4,7 +4,7 @@
 
 Drawable::Drawable(cocos2d::Node* node)
 {
-	// умный указатель вместо delete будет вызывать release
+	// smart pointer will use release instead of delete
 	std::function<void(cocos2d::Node*)> del = [](cocos2d::Node* nodeToDelete)
 	{
 		nodeToDelete->release();

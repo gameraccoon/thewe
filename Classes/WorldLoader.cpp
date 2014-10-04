@@ -238,8 +238,8 @@ bool WorldLoader::LoadGameState(void)
 	}
 	else
 	{
-		// 1. Находим корневую ячейку
-		// 2. рекурсивно добавляем детей
+		// 1. find the root cell
+		// 2. recursively add childs
 
 
 		pugi::xml_node root = doc.first_child();
@@ -279,11 +279,11 @@ bool WorldLoader::LoadGameState(void)
 bool WorldLoader::SaveGameState(void)
 {
 	// TODO
-	// 1. узнать какой по счету профиль
-	// 2. создать и сохранить xml файл с именем save-@имя профиля@-@какой по счету + 1@
-	// 3. если удалось сохранить удаляем предидущий.
+	// 1. get number of current profile
+	// 2. create and save xml-file whith name of save-@profile name@-@index + 1@
+	// 3. if saving complete delete the last
 
-	// Временный код без транзакционного сохранения.
+	// temporary code without transactional save
 
 	World &map = World::Instance();
 	const World::Cells &cells = map.GetCells();

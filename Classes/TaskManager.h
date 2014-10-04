@@ -13,59 +13,58 @@ public:
 
 public:
 	/**
-	 * Возвращает экземпляр класса
+	 * Return single instance of the class
 	 */
 	static TaskManager& Instance();
 	
 public:
 	/**
-	 * Запустить новое задание для ячейки
+	 * Run new task for the cell
 	 * 
-	 * @param cell ячейка для которой запускается задание
-	 * @param info информация о задании
-	 * @param startTime игровое время, которое нужно считать
-	 * временем начала выполнения задачи
+	 * @param cell cell that work on this task
+	 * @param info information about task
+	 * @param startTime start time of this task
 	 */
 	void RunTask(Cell::WeakPtr &cell, const Task::Info* info, float startTime);
 	void RunTask(Cell::WeakPtr &cell, const std::string& info, float startTime);
 
 	/**
-	 * Возвращает список задач, которые достпны для данной ячейки
+	 * Returns tasks that available for current cell for now
 	 */
 	TasksList GetAvailableTasks(Cell::WeakPtr cell) const;
 
-	/** Обновить информацию к текущему игровому времени */
+	/** Update information to the time */
 	void UpdateToTime(float worldTime);
 
 	void FillTasks(const std::vector<Task::Info>& tasks);
 private:
-	/** Информация о запущенной задаче */
+	/** Information about runned task */
 	struct RunnedTaskInfo
 	{
-		/** Задание */
+		/** Task */
 		Task::Ptr task;
-		/** Ячейка, которая выполняет задание */
+		/** Cell that work on the task */
 		Cell::WeakPtr cell;
 	};
 
 private:
-	/** Информация о всех возможных заданиях (заполняется один раз) */
+	/** Information about all tasks available in the game (updates only once) */
 	std::map<const std::string, const Task::Info> _allTasks;
-	/** Флаг, показывающий заполнен ли список всех возможных задач */
+	/** Flag that shows is tasks already filled */
 	bool _isTasksFilled;
 
-	/** Задания, которые сейчас выполняются */
+	/** Tasks that now in process */
 	std::vector<RunnedTaskInfo> _runnedTasks;
-	/** Контекст для выполнения Lua-скриптов */
+	/** Context for running lua-scripts */
 	LuaInstance* _luaScript;
 private:
-	/** Проверить информацию и вывести все предупреждения в журнал */
+	/** Check all values and write all warnings in the log */
 	void _CheckTask(const Task::Info& taskInfo) const;
 
 	const Task::Info* GetTaskInfoById(const std::string& id);
 
 	/*
-	 * Отключаем ненужные операции
+	 * Turn off unusual operations
 	 */
 	TaskManager();
 	~TaskManager();

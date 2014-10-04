@@ -36,27 +36,27 @@ public:
 	Cell(const Info &info);
 
 	/**
-	 * Создать Cell и вернуть умный указатель
+	 * Create Cell and return a smart ptr
 	 */
 	static Ptr Create(const Info &info);
 	
 	/**
-	 * Добавляет ячейке новую дочернюю ячейку
-	 * Ячейка сразу прописывается как родительская к дочерней ячейке
+	 * Adds new child to the cell
+	 * This cell automatically adds as parent
 	 */
 	void AddChild(Cell::Ptr cell);
 
 	/**
-	 * Удаляет дочернюю ячейку
-	 * Ставит в nullptr значение родительской ячейки у дочерней
+	 * Removes child cell
+	 * Set child's parent to null
 	 */
 	void RemoveChild(Cell::Ptr cell);
 
-	/** Возвращает все дочерние ячейки */
+	/** Returns all child cells */
 	const std::vector<Cell::Ptr>& GetChildrens() const;
 
 	/**
-	* Возвращает информацию о ячейке
+	* Returns information about the cell
 	*/
 	Info& GetInfo(void);
 
@@ -66,7 +66,7 @@ public:
 
 	float GetConstructionTime(void) const;
 	
-	/** Обновляем состояние ячейки */
+	/** Updated cell's state */
 	void Update(float deltatime);
 
 	void AddCurrentTask(Task::WeakPtr currentTask);
@@ -76,48 +76,47 @@ public:
 
 	bool IsCurrentTaskPresented(void) const;
 
-	/** Добавляем задание как выполненное */
+	/** Add completed task */
 	void AddCompletedTask(const Task::CompletedTaskInfo& completedTask);
 
-	/** Вернуть уникальный идентификатор  */
 	float GetCash();
 	unsigned int GetUid(void) const;
 
 private:
 
-	/** Установить ячейке родителя */
+	/** Set parent for the cell */
 	void _SetParent(Cell* cell);
 
-	/** Пересчитать наличные со временем */
+	/** Recalculate cash */
 	void _UpdateCash(float deltatime);
-	/** Пересчитать удовлетворённость со временем */
+	/** Recalculate morale value */
 	void _UpdateMorale(float deltatime);
-	/** Пересчитать удовлетворённость со временем */
+	/** Recalculate contentement level */
 	void _UpdateContentment(float deltatime);
 
-	/** Проверить значения и вывести в журнал все предупреждения */
+	/** Check all values and write warnings to the log */
 	void _CheckValues() const;
 
-	/** Вся важная информация о ячейке */
+	/** All usual info about the cell */
 	Info _info;
 
 	State _state;
 
 	float _constructionTime;
 
-	/**  уникальный идентификатор */
+	/**  ���������� ������������� */
 	unsigned int _uid;
 
-	/** Дочерние ячейки */
+	/** Child cells */
 	std::vector<Cell::Ptr> _childCells;
 
-	/** Задание, которое сейчас выполняется */
+	/** Task that runned now */
 	Task::WeakPtr _currentTask;
 
-	/** Список выполненных заданий */
+	/** List of recently completed task */
 	std::vector<Task::CompletedTaskInfo> _completedTasks;
 
-	/** Географическое расположение ячейки на карте */
+	/** Geographic position on the map */
 	Vector2 _worldLocation;
 };
 

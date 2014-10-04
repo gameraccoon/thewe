@@ -291,6 +291,9 @@
     <ClCompile Include="..\Classes\TownMapWidget.cpp">
       <Filter>Classes\GameMap</Filter>
     </ClCompile>
+    <ClCompile Include="..\Classes\CellsNetLayer.cpp">
+      <Filter>Classes\GameInterface</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="main.h">
@@ -475,6 +478,9 @@
     </ClInclude>
     <ClInclude Include="..\Classes\TownMapWidget.h">
       <Filter>Classes\GameMap</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\CellsNetLayer.h">
+      <Filter>Classes\GameInterface</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

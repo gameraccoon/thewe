@@ -1,4 +1,9 @@
 <?xml version="1.0"?>
 <Save>
-	<CellsNetwork />
+	<CellsNetwork>
+		<Cell id="1" parent_id="-1" town="Vologda" location_x="87" location_y="172" cash="0" morale="1" contentment="0.173519" members_num="5">
+			<Child id="2" />
+		</Cell>
+		<Cell id="2" parent_id="1" town="Norilsk" location_x="272" location_y="256" cash="0" morale="1" contentment="0.173519" members_num="5" />
+	</CellsNetwork>
 </Save>
