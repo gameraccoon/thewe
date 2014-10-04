@@ -18,14 +18,16 @@ LOCAL_SRC_FILES := hellocpp/main.cpp \
 				   	../../Classes/Cell.cpp \
 				   	../../Classes/CellGameInterface.cpp \
 				   	../../Classes/CellInfoMenu.cpp \
+				   	../../Classes/CellMapWidget.cpp \
+				   	../../Classes/CellsNetLayer.cpp \
 				   	../../Classes/CellSpinoffMenu.cpp \
-				   	../../Classes/CellSpinoffCreator.cpp \
 				   	../../Classes/CellTasksMenu.cpp \
 				   	../../Classes/CellTaskInfoMenu.cpp \
 				   	../../Classes/Color.cpp \
 				   	../../Classes/Drawable.cpp \
 				   	../../Classes/EditorLayer.cpp \
 				   	../../Classes/FileUtils.cpp \
+				   	../../Classes/GameInfo.cpp \
 				   	../../Classes/GameScene.cpp \
 				   	../../Classes/Log.cpp \
 				   	../../Classes/LuaBindings.cpp \
@@ -35,13 +37,14 @@ LOCAL_SRC_FILES := hellocpp/main.cpp \
 				   	../../Classes/MainMenuScene.cpp \
 				   	../../Classes/MapGuiLayer.cpp \
 				   	../../Classes/MapProjector.cpp \
-				   	../../Classes/NetworkLayer.cpp \
+				   	../../Classes/NetCellWidget.cpp \
 				   	../../Classes/ProgressBar.cpp \
 				   	../../Classes/Region.cpp \
 				   	../../Classes/SplashScreenScene.cpp \
 				   	../../Classes/Task.cpp \
 				   	../../Classes/TaskManager.cpp \
 				   	../../Classes/Town.cpp \
+				   	../../Classes/TownMapWidget.cpp \
 				   	../../Classes/TransitionZoomFade.cpp \
 				   	../../Classes/UserMessage.cpp \
 				   	../../Classes/Vector2.cpp \

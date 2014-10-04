@@ -63,8 +63,8 @@ set(GAME_SRC
 	Classes/Cell.cpp
 	Classes/CellGameInterface.cpp
 	Classes/CellInfoMenu.cpp
+	Classes/CellMapWidget.cpp
 	Classes/CellSpinoffMenu.cpp
-	Classes/CellSpinoffCreator.cpp
 	Classes/CellTasksMenu.cpp
 	Classes/CellTaskInfoMenu.cpp
 	Classes/CellsNetLayer.cpp
@@ -72,6 +72,7 @@ set(GAME_SRC
 	Classes/Drawable.cpp
 	Classes/EditorLayer.cpp
 	Classes/FileUtils.cpp
+	Classes/GameInfo.cpp
 	Classes/GameScene.cpp
 	Classes/Log.cpp
 	Classes/LuaBindings.cpp
@@ -88,6 +89,7 @@ set(GAME_SRC
 	Classes/Task.cpp
 	Classes/TaskManager.cpp
 	Classes/Town.cpp
+	Classes/TownMapWidget.cpp
 	Classes/TransitionZoomFade.cpp
 	Classes/UserMessage.cpp
 	Classes/Vector2.cpp
