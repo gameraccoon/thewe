@@ -365,7 +365,7 @@ void WorldMapLayer::_DrawCellsLinksRecurcively(Cell::WeakPtr cell)
 {
 	Vector2 p1(_mapProjector->ProjectOnScreen(cell.lock()->GetInfo().location));
 
-	for (Cell::Ptr child : cell.lock()->GetChildrens())
+	for (Cell::Ptr child : cell.lock()->GetChildren())
 	{
 		Vector2 p2(_mapProjector->ProjectOnScreen(child->GetInfo().location));
 		cocos2d::ccDrawLine(p1, p2);
@@ -398,7 +398,7 @@ void WorldMapLayer::_RecursiveUpdateNetworkVisualiser(cocos2d::DrawNode *visuali
 {
 	Vector2 p1(_mapProjector->ProjectOnScreen(cell.lock()->GetInfo().location));
 
-	for (Cell::Ptr child : cell.lock()->GetChildrens())
+	for (Cell::Ptr child : cell.lock()->GetChildren())
 	{
 		Vector2 p2(_mapProjector->ProjectOnScreen(child->GetInfo().location));
 		visualiser->drawSegment(p1, p2, 4.0f, Color(1.0f, 0.0f, 0.0f, 1.0f));

@@ -81,6 +81,7 @@ set(GAME_SRC
 	Classes/MapProjector.cpp
 	Classes/MessageManager.cpp
 	Classes/MessageWidget.cpp
+	Classes/NetCellWidget.cpp
 	Classes/ProgressBar.cpp
 	Classes/Region.cpp
 	Classes/SplashScreenScene.cpp

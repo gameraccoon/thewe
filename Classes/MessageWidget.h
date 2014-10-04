@@ -7,7 +7,7 @@
 class MessageWidget : public cocos2d::Node
 {
 public:
-	MessageWidget(UserMessage::Ptr message);
+	explicit MessageWidget(UserMessage::Ptr message);
 
 	static MessageWidget* create(UserMessage::Ptr message);
 
@@ -16,7 +16,7 @@ public:
 private:
 	virtual bool init() override;
 
-	virtual void update(float delta);
+	virtual void update(float delta) override;
 
 private:
 	UserMessage::Ptr _message;

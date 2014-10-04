@@ -45,9 +45,14 @@ void Cell::_SetParent(Cell* cell)
 	_info.parent = cell;
 }
 
-const std::vector<Cell::Ptr>& Cell::GetChildrens() const
+const std::vector<Cell::Ptr>& Cell::GetChildren() const
 {
 	return _childCells;
+}
+
+const Cell* Cell::GetParent() const
+{
+	return _info.parent;
 }
 
 Cell::Info& Cell::GetInfo(void)

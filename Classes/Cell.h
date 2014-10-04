@@ -47,7 +47,9 @@ public:
 	void RemoveChild(Cell::Ptr cell);
 
 	/** Returns all child cells */
-	const std::vector<Cell::Ptr>& GetChildrens() const;
+	const std::vector<Cell::Ptr>& GetChildren() const;
+
+	const Cell* GetParent() const;
 
 	/**
 	* Returns information about the cell
@@ -75,7 +77,7 @@ public:
 private:
 
 	/** Set parent for the cell */
-	void _SetParent(Cell* cell);
+	void _SetParent(Cell *cell);
 
 	/** Recalculate cash */
 	void _UpdateCash(float deltatime);
