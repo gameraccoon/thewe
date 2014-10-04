@@ -297,6 +297,9 @@
     <ClCompile Include="..\Classes\GameInfo.cpp">
       <Filter>Classes</Filter>
     </ClCompile>
+    <ClCompile Include="..\Classes\NetCellWidget.cpp">
+      <Filter>Classes\GameInterface</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="main.h">
@@ -487,6 +490,9 @@
     </ClInclude>
     <ClInclude Include="..\Classes\GameInfo.h">
       <Filter>Classes</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\NetCellWidget.h">
+      <Filter>Classes\GameInterface</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
