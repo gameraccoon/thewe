@@ -1,0 +1,8 @@
+<?xml version="1.0"?>
+<GameInfo>
+	<Const name="CELL_SPINOFF_MEMBERS_PRICE" type="int" value="5" />
+	<Const name="CELL_SPINOFF_CASH_PRICE" type="int" value="10000" />
+
+	<Const name="CELL_STARTUP_MEMBERS" type="int" value="5" />
+	<const name="CELL_STARTUP_MONEY" type="int" value="1000" />
+</GameInfo>

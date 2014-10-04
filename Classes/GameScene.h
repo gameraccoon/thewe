@@ -7,6 +7,7 @@
 
 #include "MapProjector.h"
 #include "WorldMapLayer.h"
+#include "GameInfo.h"
 #include "Cell.h"
 #include "Town.h"
 

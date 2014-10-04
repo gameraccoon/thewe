@@ -25,6 +25,7 @@ bool GameScene::init(void)
 		return false;
 	}
 
+	GameInfo::Instance().ParseXml("gameInfo.xml");
 	_worldMap = new WorldMapLayer(this, &_mapProjector);
 	addChild(_worldMap);
 	_worldMap->autorelease();

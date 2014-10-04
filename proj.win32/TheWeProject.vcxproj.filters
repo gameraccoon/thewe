@@ -294,6 +294,9 @@
     <ClCompile Include="..\Classes\CellsNetLayer.cpp">
       <Filter>Classes\GameInterface</Filter>
     </ClCompile>
+    <ClCompile Include="..\Classes\GameInfo.cpp">
+      <Filter>Classes</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="main.h">
@@ -481,6 +484,9 @@
     </ClInclude>
     <ClInclude Include="..\Classes\CellsNetLayer.h">
       <Filter>Classes\GameInterface</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\GameInfo.h">
+      <Filter>Classes</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
