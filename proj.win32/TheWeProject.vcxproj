@@ -138,7 +138,7 @@ xcopy /Y /Q "$(EngineRoot)external\websockets\prebuilt\win32\*.*" "$(OutDir)"</C
     <ClCompile Include="..\Classes\Cell.cpp" />
     <ClCompile Include="..\Classes\CellGameInterface.cpp" />
     <ClCompile Include="..\Classes\CellInfoMenu.cpp" />
-    <ClCompile Include="..\Classes\CellSpinoffCreator.cpp" />
+    <ClCompile Include="..\Classes\CellMapWidget.cpp" />
     <ClCompile Include="..\Classes\CellSpinoffMenu.cpp" />
     <ClCompile Include="..\Classes\CellTaskInfoMenu.cpp" />
     <ClCompile Include="..\Classes\CellTasksMenu.cpp" />
@@ -161,6 +161,7 @@ xcopy /Y /Q "$(EngineRoot)external\websockets\prebuilt\win32\*.*" "$(OutDir)"</C
     <ClCompile Include="..\Classes\Task.cpp" />
     <ClCompile Include="..\Classes\TaskManager.cpp" />
     <ClCompile Include="..\Classes\Town.cpp" />
+    <ClCompile Include="..\Classes\TownMapWidget.cpp" />
     <ClCompile Include="..\Classes\TransitionZoomFade.cpp" />
     <ClCompile Include="..\Classes\UserMessage.cpp" />
     <ClCompile Include="..\Classes\Vector2.cpp" />
@@ -223,7 +224,7 @@ xcopy /Y /Q "$(EngineRoot)external\websockets\prebuilt\win32\*.*" "$(OutDir)"</C
     <ClInclude Include="..\Classes\Cell.h" />
     <ClInclude Include="..\Classes\CellGameInterface.h" />
     <ClInclude Include="..\Classes\CellInfoMenu.h" />
-    <ClInclude Include="..\Classes\CellSpinoffCreator.h" />
+    <ClInclude Include="..\Classes\CellMapWidget.h" />
     <ClInclude Include="..\Classes\CellSpinoffMenu.h" />
     <ClInclude Include="..\Classes\CellTaskInfoMenu.h" />
     <ClInclude Include="..\Classes\CellTasksMenu.h" />
@@ -246,6 +247,7 @@ xcopy /Y /Q "$(EngineRoot)external\websockets\prebuilt\win32\*.*" "$(OutDir)"</C
     <ClInclude Include="..\Classes\Task.h" />
     <ClInclude Include="..\Classes\TaskManager.h" />
     <ClInclude Include="..\Classes\Town.h" />
+    <ClInclude Include="..\Classes\TownMapWidget.h" />
     <ClInclude Include="..\Classes\TransitionZoomFade.h" />
     <ClInclude Include="..\Classes\UserMessage.h" />
     <ClInclude Include="..\Classes\Vector2.h" />

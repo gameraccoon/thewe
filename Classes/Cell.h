@@ -23,6 +23,12 @@ public:
 		int membersCount;
 	};
 
+	enum State
+	{
+		CONSTRUCTION,
+		READY,
+	};
+
 	typedef std::shared_ptr<Cell> Ptr;
 	typedef std::weak_ptr<Cell> WeakPtr;
 
@@ -53,12 +59,20 @@ public:
 	* Возвращает информацию о ячейке
 	*/
 	Info& GetInfo(void);
+
+	State& GetState(void);
+
+	void SetConstructionTime(float seconds);
+
+	float GetConstructionTime(void) const;
 	
 	/** Обновляем состояние ячейки */
 	void Update(float deltatime);
 
 	void AddCurrentTask(Task::WeakPtr currentTask);
 	Task::WeakPtr getCurrentTask() const;
+
+	void SwitchState(State state);
 
 	bool IsCurrentTaskPresented(void) const;
 
@@ -68,12 +82,6 @@ public:
 	/** Вернуть уникальный идентификатор  */
 	float GetCash();
 	unsigned int GetUid(void) const;
-
-	/** Устанавливает зону обработки нажатий  */
-	void SetHitArea(float beginX, float beginY, float endX, float endY);
-	/** Возвращает зону обработки нажатий  */
-	void GetHitArea(float &beginX, float &beginY, float &endX, float &endY) const;
-
 
 private:
 
@@ -93,6 +101,10 @@ private:
 	/** Вся важная информация о ячейке */
 	Info _info;
 
+	State _state;
+
+	float _constructionTime;
+
 	/**  уникальный идентификатор */
 	unsigned int _uid;
 
@@ -107,10 +119,6 @@ private:
 
 	/** Географическое расположение ячейки на карте */
 	Vector2 _worldLocation;
-
-	/** зона по которой обрабатываются нажатия */
-	float _hitAreaBeginX, _hitAreaEndX;
-	float _hitAreaBeginY, _hitAreaEndY;
 };
 
 #endif // CELL_H

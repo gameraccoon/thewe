@@ -32,7 +32,7 @@ void CellSpinoffCreator::update(float dt)
 		_worldMapLayer->removeChild(this);
 		_projector->RemoveMapPart(_projUid);
 
-		_worldMapLayer->CreateNewCell(_cellInfo);
+		_worldMapLayer->CreateCell(_cellInfo);
 	}
 }
 

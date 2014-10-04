@@ -6,7 +6,6 @@
 #include "MapGuiLayer.h"
 #include "TaskManager.h"
 #include "Log.h"
-#include "CellSpinoffCreator.h"
 
 WorldMapLayer::WorldMapLayer(GameScene *gameScene, MapProjector* projector)
 	: _mapProjector(projector)
@@ -20,12 +19,27 @@ WorldMapLayer::WorldMapLayer(GameScene *gameScene, MapProjector* projector)
 	init();
 }
 
-cocos2d::Sprite* AddSpriteToProjector(MapProjector *projector, Vector2 location, Vector2 shift, std::string spriteName, bool dontScale, float scale = 1.0f)
+WorldMapLayer::~WorldMapLayer(void)
 {
-	cocos2d::Sprite *sprite = cocos2d::Sprite::create(spriteName.c_str());
-	sprite->retain();
-	projector->AddMapPart(Drawable::CastFromCocos(sprite), location, shift, scale, dontScale);
-	return sprite;
+	for (TownWidgetsIter it = _townWidgetsList.begin(); it != _townWidgetsList.end(); ++it)
+	{
+		TownMapWidget *widget = (*it);
+		/* Is this widget must be removed form projector ? How ?
+		_mapProjector->RemoveMapPart(widget->GetProjectorUid());
+		*/
+		removeChild(widget);
+		delete widget;
+	}
+
+	for (CellWidgetsIter it = _cellWidgetsList.begin(); it != _cellWidgetsList.end(); ++it)
+	{
+		CellMapWidget *widget = (*it);
+		/* Is this widget must be removed form projector ? How ?
+		_mapProjector->RemoveMapPart(widget->GetProjectorUid());
+		*/
+		removeChild(widget);
+		delete widget;
+	}
 }
 
 bool WorldMapLayer::init(void)
@@ -36,10 +50,12 @@ bool WorldMapLayer::init(void)
 	}
 	
 	_networkVisualiser = cocos2d::DrawNode::create();
-	addChild(_networkVisualiser, 2);
+	addChild(_networkVisualiser, Z_LINKS);
 
-	cocos2d::Sprite * spr = AddSpriteToProjector(_mapProjector, Vector2(0.0f, 0.0f), Vector2(0.0f, 0.0f), "WorldMap.png", false);
-	addChild(spr);
+	cocos2d::Sprite *mapSprite = cocos2d::Sprite::create("WorldMap.png");
+	mapSprite->retain();
+	_mapProjector->AddMapPart(Drawable::CastFromCocos(mapSprite), Vector2(0.0f, 0.0f), Vector2(0.0f, 0.0f), 1.0f, false);
+	addChild(mapSprite, Z_MAP);
 
 	Vector2 origin = cocos2d::Director::getInstance()->getVisibleOrigin();
 	Vector2 screen = cocos2d::Director::getInstance()->getVisibleSize();
@@ -48,23 +64,16 @@ bool WorldMapLayer::init(void)
 
 	for (const Cell::Ptr cell : World::Instance().GetCells())
 	{
-		_AddCellToRender(cell);	
+		CellMapWidget *widget = _CreateCellWidget(cell);
+		_cellWidgetsList.push_back(widget);
+		addChild(widget, Z_CELL);
 	}
 	
 	for (const Town::Ptr town : World::Instance().GetTowns())
 	{
-		cocos2d::Sprite *sprite = AddSpriteToProjector(_mapProjector, town->GetLocation(), Vector2(0.0f, 0.0f), "town.png",
-			true, 0.17f);
-		
-		// обновляем проекцию чтобы узнать реальный размер элемента
-		_mapProjector->Update();
-
-		cocos2d::Rect tex = sprite->getTextureRect();
-		float w = tex.size.width * sprite->getScaleX();
-		float h = tex.size.height * sprite->getScaleY();
-		town->SetHitArea(-(w / 2.0f), -(h / 2.0f), w, h);
-
-		addChild(sprite, Z_TOWN, town->GetUid());
+		TownMapWidget *widget = _CreateTownWidget(town);
+		_townWidgetsList.push_back(widget);
+		addChild(widget, Z_TOWN);
 	}
 	
 	// сообщаем где находится центр окна вывода
@@ -112,17 +121,35 @@ void WorldMapLayer::SetNextCellParent(Cell::WeakPtr parent)
 	_nextCellParent = parent;
 }
 
-void WorldMapLayer::CreateNewCell(const Cell::Info &info)
+void WorldMapLayer::CreateCell(const Cell::Info &info, Cell::State state, float constructionTime)
 {
 	Cell::Ptr cell = Cell::Create(info);
 	World::Instance().AddCell(cell);
-	_AddCellToRender(cell);
+	
+	if (info.parent)
+	{
+		info.parent->AddChild(cell);
+	}
 
-	_mapProjector->Update();
+	cell->SwitchState(state);
+	cell->SetConstructionTime(constructionTime);
 
-	info.parent->AddChild(cell);
+	CellMapWidget *widget = _CreateCellWidget(cell);
+	_cellWidgetsList.push_back(widget);
+	addChild(widget, Z_CELL);
 
 	_UpdateNetwork();
+}
+
+void WorldMapLayer::DeleteCell(CellMapWidget *widget)
+{
+	// we need to delete cell from the network
+	Cell::Ptr cell = widget->GetCell();
+
+	removeChild(widget);
+	_mapProjector->RemoveMapPart(widget->GetProjectorUid());
+
+	delete widget;
 }
 
 void WorldMapLayer::menuCloseCallback(cocos2d::Ref *Sender)
@@ -244,6 +271,44 @@ void WorldMapLayer::ResetTouches()
 	_isTouchesCountUpdated = true;
 }
 
+CellMapWidget* WorldMapLayer::_CreateCellWidget(Cell::Ptr cell)
+{
+	CellMapWidget *widget = new CellMapWidget(cell);
+	
+	int uid = _mapProjector->AddMapPart(Drawable::CastFromCocos(widget), cell->GetInfo().location, Vector2(0.0f, 0.0f), 0.2f, true);
+	_mapProjector->Update();
+
+	cocos2d::Rect tex = widget->GetCellRect();
+	float w = tex.size.width * widget->getScaleX();
+	float h = tex.size.height * widget->getScaleY();
+	
+	widget->SetHitArea(-(w / 2.0f), -(h / 2.0f), w, h);
+	widget->setTag(cell->GetUid());
+	widget->SetProjectorUid(uid);
+	widget->retain();
+
+	return widget;
+}
+
+TownMapWidget* WorldMapLayer::_CreateTownWidget(Town::Ptr town)
+{
+	TownMapWidget *widget = new TownMapWidget(town);
+	
+	int uid = _mapProjector->AddMapPart(Drawable::CastFromCocos(widget), town->GetInfo().location, Vector2(0.0f, 0.0f), 0.17f, true);
+	_mapProjector->Update();
+
+	cocos2d::Rect tex = widget->GetTownRect();
+	float w = tex.size.width * widget->getScaleX();
+	float h = tex.size.height * widget->getScaleY();
+	
+	widget->SetHitArea(-(w / 2.0f), -(h / 2.0f), w, h);
+	widget->setTag(town->GetUid());
+	widget->SetProjectorUid(uid);
+	widget->retain();
+
+	return widget;
+}
+
 Region::WeakPtr WorldMapLayer::_GetRegionUnderPoint(const Vector2& point) const
 {
 	Vector2 projectedClickPoint = _mapProjector->ProjectOnMap(point);
@@ -265,12 +330,18 @@ Region::WeakPtr WorldMapLayer::_GetRegionUnderPoint(const Vector2& point) const
 
 Cell::WeakPtr WorldMapLayer::_GetCellUnderPoint(const Vector2& point) const
 {
-	for (Cell::Ptr cell : World::Instance().GetCells())
+	for (CellMapWidget *widget : _cellWidgetsList)
 	{
+		Cell::Ptr cell = widget->GetCell();
+		if (cell->GetState() == Cell::CONSTRUCTION)
+		{
+			continue;
+		}
+
 		Vector2 projectedPoint = point - _mapProjector->ProjectOnScreen(cell->GetInfo().location);
 		
 		float xbegin, xend, ybegin, yend;
-		cell->GetHitArea(xbegin, xend, ybegin, yend);
+		widget->GetHitArea(xbegin, xend, ybegin, yend);
 
 		cocos2d::Rect rect;
 		rect.setRect(xbegin, ybegin, xend, yend);
@@ -286,12 +357,14 @@ Cell::WeakPtr WorldMapLayer::_GetCellUnderPoint(const Vector2& point) const
 
 Town::WeakPtr WorldMapLayer::_GetTownUnderPoint(const Vector2& point)
 {
-	for (Town::Ptr town : World::Instance().GetTowns())
+	for (TownMapWidget *widget : _townWidgetsList)
 	{
+		Town::Ptr town = widget->GetTown();
+
 		Vector2 projectedPoint = point - _mapProjector->ProjectOnScreen(town->GetLocation());
 		
 		float xbegin, xend, ybegin, yend;
-		town->GetHitArea(xbegin, xend, ybegin, yend);
+		widget->GetHitArea(xbegin, xend, ybegin, yend);
 
 		cocos2d::Rect rect;
 		rect.setRect(xbegin, ybegin, xend, yend);
@@ -329,10 +402,7 @@ void WorldMapLayer::_OnTownSelect(Town::WeakPtr town)
 			info.contentment = 0.1f;
 			info.membersCount = 5;
 
-			Cell::Ptr cell = std::make_shared<Cell>(Cell(info));
-			World::Instance().AddCell(cell);
-			_AddCellToRender(cell);
-			_mapProjector->Update();
+			CreateCell(info, Cell::READY, 0.0f);
 
 			World::Instance().SetFirstLaunch(false);
 		}
@@ -347,30 +417,11 @@ void WorldMapLayer::_OnTownSelect(Town::WeakPtr town)
 			info.contentment = 0.1f;
 			info.membersCount = 5;
 
-			CellSpinoffCreator *spinoff = new CellSpinoffCreator(info, 30.0f, this, _mapProjector);
-			spinoff->retain();
-		
-			addChild(spinoff, Z_CELL_DATA);
-			int uid = _mapProjector->AddMapPart(Drawable::CastFromCocos(spinoff), info.location, Vector2(0.0f, 0.0f), 0.17f, true);
-			spinoff->SetProjectorUid(uid);
-			_mapProjector->Update();
+			CreateCell(info, Cell::CONSTRUCTION, 15.0f);
 
 			_nextCellParent = Cell::Ptr();
 			townptr->SetCellPresented(true);
 		}
-	}
-}
-
-void WorldMapLayer::_DrawCellsLinksRecurcively(Cell::WeakPtr cell)
-{
-	Vector2 p1(_mapProjector->ProjectOnScreen(cell.lock()->GetInfo().location));
-
-	for (Cell::Ptr child : cell.lock()->GetChildrens())
-	{
-		Vector2 p2(_mapProjector->ProjectOnScreen(child->GetInfo().location));
-		cocos2d::ccDrawLine(p1, p2);
-
-		_DrawCellsLinksRecurcively(child);
 	}
 }
 
@@ -406,20 +457,4 @@ void WorldMapLayer::_RecursiveUpdateNetworkVisualiser(cocos2d::DrawNode *visuali
 		// рекурсивный вызов
 		_RecursiveUpdateNetworkVisualiser(visualiser, child);
 	}
-}
-
-void WorldMapLayer::_AddCellToRender(Cell::Ptr cell)
-{
-	cocos2d::Sprite *sprite = AddSpriteToProjector(_mapProjector, cell->GetInfo().location, Vector2(0.0f, 0.0f), "cell.png", true, 0.2f);
-	
-	// обновляем проекцию чтобы узнать реальный размер элемента
-	_mapProjector->Update();
-
-	cocos2d::Rect tex = sprite->getTextureRect();
-	float w = tex.size.width * sprite->getScaleX();
-	float h = tex.size.height * sprite->getScaleY();
-	cell->SetHitArea(-(w / 2.0f), -(h / 2.0f), w, h);
-
-	sprite->setTag(cell->GetUid());
-	addChild(sprite, Z_CELL);
 }

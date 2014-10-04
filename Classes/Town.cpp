@@ -85,22 +85,6 @@ void Town::_CheckValues() const
 	}
 }
 
-void Town::SetHitArea(float beginX, float beginY, float endX, float endY)
-{
-	_hitAreaBeginX = beginX;
-	_hitAreaEndX = endX;
-	_hitAreaBeginY = beginY;
-	_hitAreaEndY = endY;
-}
-
-void Town::GetHitArea(float &beginX, float &endX, float &beginY, float &endY) const
-{
-	beginX = _hitAreaBeginX;
-	endX = _hitAreaEndX;
-	beginY = _hitAreaBeginY;
-	endY = _hitAreaEndY;
-}
-
 void Town::SetCellPresented(bool presented)
 {
 	_isCellPresented = presented;
