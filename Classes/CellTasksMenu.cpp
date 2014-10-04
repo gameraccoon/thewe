@@ -34,7 +34,7 @@ public:
 		labelStart->setColor(cocos2d::Color3B(0, 0, 0));	
 		labelStart->setPosition(startBtn->getPosition());
 
-		cocos2d::Label *labelDesc = cocos2d::Label::createWithBMFont("futura-48.fnt", _taskInfo->id, cocos2d::TextHAlignment::LEFT);
+		cocos2d::Label *labelDesc = cocos2d::Label::createWithBMFont("futura-48.fnt", _taskInfo->title, cocos2d::TextHAlignment::LEFT);
 		labelDesc->setPosition(-60.0f, 0.0f);
 		labelDesc->setScale(0.35f);
 

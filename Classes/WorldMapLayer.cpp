@@ -397,10 +397,10 @@ void WorldMapLayer::_OnTownSelect(Town::WeakPtr town)
 			info.parent = nullptr;
 			info.town = town;
 			info.location = town.lock()->GetLocation();
-			info.cash = 100;
-			info.morale = 1.0f;
-			info.contentment = 0.1f;
-			info.membersCount = 5;
+			info.cash = GameInfo::Instance().GetInt("CELL_STARTUP_MONEY");
+			info.morale = GameInfo::Instance().GetFloat("CELL_STARTUP_MORALE");
+			info.contentment = GameInfo::Instance().GetFloat("CELL_STARTUP_CONTENTMENT");
+			info.membersCount = GameInfo::Instance().GetInt("CELL_STARTUP_MEMBERS");
 
 			CreateCell(info, Cell::READY, 0.0f);
 
@@ -412,10 +412,10 @@ void WorldMapLayer::_OnTownSelect(Town::WeakPtr town)
 			info.parent = _nextCellParent.lock().get();
 			info.town = town;
 			info.location = town.lock()->GetLocation();
-			info.cash = 100;
-			info.morale = 1.0f;
-			info.contentment = 0.1f;
-			info.membersCount = 5;
+			info.cash = GameInfo::Instance().GetInt("CELL_STARTUP_MONEY");
+			info.morale = GameInfo::Instance().GetFloat("CELL_STARTUP_MORALE");
+			info.contentment = GameInfo::Instance().GetFloat("CELL_STARTUP_CONTENTMENT");
+			info.membersCount = GameInfo::Instance().GetInt("CELL_STARTUP_MEMBERS");
 
 			CreateCell(info, Cell::CONSTRUCTION, 15.0f);
 
