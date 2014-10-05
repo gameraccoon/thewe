@@ -14,11 +14,7 @@ std::string Utils::GetResourcesPath()
 
 std::string Utils::GetDocumentsPath()
 {
-#if CC_TARGET_PLATFORM == CC_PLATFORM_WIN32
-	return "../../Resources/saves/";
-#else
 	return cocos2d::FileUtils::getInstance()->getWritablePath();
-#endif
 }
 
 std::string Utils::GetWritablePath()
