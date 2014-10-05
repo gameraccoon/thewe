@@ -135,7 +135,7 @@ unsigned int Cell::GetUid(void) const
 	return _uid;
 }
 
-float Cell::GetCash()
+int Cell::GetCash()
 {
 	return _info.cash;
 }

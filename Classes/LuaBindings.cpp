@@ -7,6 +7,7 @@
 #include "Vector2.h"
 #include "Cell.h"
 #include "Task.h"
+#include "GameInfo.h"
 
 template<>
 void LuaInstance::BindClass<Log>()
@@ -25,6 +26,18 @@ void LuaInstance::BindClass<MessageManager>()
 	luabind::module(_luaState) [
 	luabind::class_<MessageManager>("MessageManagerClass")
 		.def("sendMessage", &MessageManager::SendGameMessage)
+	];
+}
+
+template<>
+void LuaInstance::BindClass<GameInfo>()
+{
+	luabind::module(_luaState) [
+	luabind::class_<GameInfo>("GameInfoClass")
+		.def("getString", &GameInfo::GetString)
+		.def("getBool", &GameInfo::GetBool)
+		.def("getFloat", &GameInfo::GetFloat)
+		.def("getInt", &GameInfo::GetInt)
 	];
 }
 
@@ -70,6 +83,12 @@ void LuaInstance::RegisterVariable<Log>(const char* name, Log* value)
 
 template<>
 void LuaInstance::RegisterVariable<MessageManager>(const char* name, MessageManager* value)
+{
+	luabind::globals(_luaState)[name] = value;
+}
+
+template<>
+void LuaInstance::RegisterVariable<GameInfo>(const char* name, GameInfo* value)
 {
 	luabind::globals(_luaState)[name] = value;
 }

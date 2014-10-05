@@ -16,10 +16,10 @@ public:
 		Town::WeakPtr town;
 		Vector2 location;
 
-		float cash;
 		float morale;
 		float contentment;
-
+		
+		int cash;
 		int membersCount;
 	};
 
@@ -81,7 +81,7 @@ public:
 	/** Add completed task */
 	void AddCompletedTask(const Task::CompletedTaskInfo& completedTask);
 
-	float GetCash();
+	int GetCash();
 	unsigned int GetUid(void) const;
 
 private:

@@ -22,6 +22,8 @@ function TestMissionSuccess(cellInfo, taskInfo)
 
 	-- увеличивем довольство на 10% от текущего
 	cellInfo.contantement = cellInfo.contantement + (cellInfo.contantement * 0.1)
+	cellInfo.cash = cellInfo.cash + 200
+	cellInfo.membersCount = cellInfo.membersCount + 1
 
 	-- проверяем на предельное значение
 	if cellInfo.contantement > 1.0 then

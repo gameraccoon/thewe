@@ -46,13 +46,11 @@ bool CellSpinoffMenu::init(void)
 
 	Cell::Info info = _cell.lock()->GetInfo();
 
-	int m = GameInfo::Instance().GetInt("CELL_SPINOFF_MEMBERS_PRICE");
-
 	_isCellCreationPossible = info.membersCount >= GameInfo::Instance().GetInt("CELL_SPINOFF_MEMBERS_PRICE") &&
 		                      info.cash >= GameInfo::Instance().GetInt("CELL_SPINOFF_CASH_PRICE");
 
-	std::string strMembers = cocos2d::StringUtils::format("Members %d/%d", info.membersCount, GameInfo::Instance().GetInt("CELL_SPINOFF_MEMBERS_PRICE"));
-	std::string strCach = cocos2d::StringUtils::format("Cach %.1f/%d $", info.cash, GameInfo::Instance().GetInt("CELL_SPINOFF_CASH_PRICE"));
+	std::string strMembers = cocos2d::StringUtils::format("Members %d / %d", info.membersCount, GameInfo::Instance().GetInt("CELL_SPINOFF_MEMBERS_PRICE"));
+	std::string strCach = cocos2d::StringUtils::format("Cach %d / %d $", info.cash, GameInfo::Instance().GetInt("CELL_SPINOFF_CASH_PRICE"));
 	
 	cocos2d::TTFConfig ttfConfigBig("arial.ttf", 24);
 	_necessaryMembers = cocos2d::Label::createWithTTF(ttfConfigBig, strMembers, cocos2d::TextHAlignment::CENTER);

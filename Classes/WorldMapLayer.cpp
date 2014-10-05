@@ -407,7 +407,7 @@ void WorldMapLayer::_OnTownSelect(Town::WeakPtr town)
 			World::Instance().SetFirstLaunch(false);
 		}
 		else if (!_nextCellParent.expired())
-		{
+		{			
 			Cell::Info info;
 			info.parent = _nextCellParent.lock().get();
 			info.town = town;
@@ -417,7 +417,14 @@ void WorldMapLayer::_OnTownSelect(Town::WeakPtr town)
 			info.contentment = GameInfo::Instance().GetFloat("CELL_STARTUP_CONTENTMENT");
 			info.membersCount = GameInfo::Instance().GetInt("CELL_STARTUP_MEMBERS");
 
-			CreateCell(info, Cell::CONSTRUCTION, 15.0f);
+			if (info.parent->GetInfo().cash >= GameInfo::Instance().GetInt("CELL_SPINOFF_CASH_PRICE") &&
+				info.parent->GetInfo().membersCount >= GameInfo::Instance().GetInt("CELL_SPINOFF_MEMBERS_PRICE"))
+			{
+				CreateCell(info, Cell::CONSTRUCTION, 15.0f);
+
+				info.parent->GetInfo().cash -= GameInfo::Instance().GetInt("CELL_SPINOFF_CASH_PRICE");
+				info.parent->GetInfo().membersCount -= GameInfo::Instance().GetInt("CELL_SPINOFF_MEMBERS_PRICE");
+			}
 
 			_nextCellParent = Cell::Ptr();
 			townptr->SetCellPresented(true);

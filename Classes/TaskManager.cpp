@@ -2,11 +2,9 @@
 
 #include "MessageManager.h"
 
-#include <fstream>
-#include <iostream>
-
 #include "Log.h"
 #include "LuaInstance.h"
+#include "GameInfo.h"
 
 #include <cocos2d.h>
 
@@ -20,12 +18,14 @@ TaskManager::TaskManager()
 
 	_luaScript->BindClass<Log>();
 	_luaScript->BindClass<MessageManager>();
+	_luaScript->BindClass<GameInfo>();
 	_luaScript->BindClass<Cell::Info>();
 	_luaScript->BindClass<const Task::Info>();
 	_luaScript->BindClass<Vector2>();
 
 	_luaScript->RegisterVariable("Log", &(Log::Instance()));
 	_luaScript->RegisterVariable("MessageManager", &(MessageManager::Instance()));
+	_luaScript->RegisterVariable("GameInfo", &(GameInfo::Instance()));
 	std::string script = cocos2d::FileUtils::getInstance()->getStringFromFile(fullPath);
 
 	_luaScript->ExecScript(script.c_str());
@@ -119,7 +119,7 @@ void TaskManager::UpdateToTime(float worldTime)
 				// call task end function (success, fail, abort)
 				luabind::call_function<bool>(_luaScript->GetLuaState()
 											 , funcName.c_str()
-											 , cell->GetInfo()
+											 , &cell->GetInfo()
 											 , taskInfo
 											 , 0);
 
