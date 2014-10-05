@@ -25,10 +25,12 @@ bool EditorLayer::init(void)
 	Vector2 origin = director->getVisibleOrigin();
 
 	_printPos = cocos2d::LabelTTF::create("X: 0, Y: 0", "Arial", 32);
-	_printPos->setPosition(Vector2(origin.x + 200, origin.y + screen.y - 100));
+	_printPos->setPosition(Vector2(origin.x + 50, origin.y + screen.y - 150));
+	_printPos->setAnchorPoint(Vector2(0.0f, 0.0f));
 
 	_printNum = cocos2d::LabelTTF::create("Num Points: 0", "Arial", 32);
-	_printNum->setPosition(Vector2(origin.x + 200, origin.y + screen.y - 150));
+	_printNum->setPosition(Vector2(origin.x + 50, origin.y + screen.y - 190));
+	_printNum->setAnchorPoint(Vector2(0.0f, 0.0f));
 
 	_hullDrawer = cocos2d::DrawNode::create();
 	addChild(_hullDrawer, 1.0f);
@@ -49,18 +51,14 @@ bool EditorLayer::init(void)
 	pos.x = origin.x + screen.x / 2.0f;
 	pos.y = origin.y + screen.y - 100.0f;
 
-	_btnToggle->setScale(4.0f);
 	_btnToggle->setTag(MENU_ITEM_TOGGLE);
-	_btnToggle->setPosition(pos - Vector2(-700.0f, 100.0f));
-	_btnDelete->setScale(4.0f);
+	_btnToggle->setPosition(pos - Vector2(-300.0f, 100.0f));
 	_btnDelete->setTag(MENU_ITEM_DELETE);
-	_btnDelete->setPosition(pos - Vector2(-700.0f, 300.0f));
-	_btnSaveXml->setScale(4.0f);
+	_btnDelete->setPosition(pos - Vector2(-300.0f, 150.0f));
 	_btnSaveXml->setTag(MENU_ITEM_SAVE_XML);
-	_btnSaveXml->setPosition(pos - Vector2(-700.0f, 500.0f));
-	_btnReloadWorld->setScale(4.0f);
+	_btnSaveXml->setPosition(pos - Vector2(-300.0f, 200.0f));
 	_btnReloadWorld->setTag(MENU_ITEM_RELOAD_WORLD);
-	_btnReloadWorld->setPosition(pos - Vector2(-700.0f, 700.0f));
+	_btnReloadWorld->setPosition(pos - Vector2(-300.0f, 250.0f));
 
 	cocos2d::Menu *menu = cocos2d::Menu::create(_btnToggle, _btnDelete, _btnSaveXml, _btnReloadWorld, NULL);
 	menu->setPosition(0.0f, 0.0f);
@@ -105,6 +103,9 @@ void EditorLayer::onTouchesBegan(const std::vector<cocos2d::Touch* > &touches, c
 	sprintf_s(string, "Num Points: %d", _hull1.GetPointsNum());
 	_printNum->setString(string);
 	*/
+
+	Vector2 projected_point = _mapProjector->ProjectOnMap(touch->getLocation());
+	_printPos->setString(cocos2d::StringUtils::format("X: %f, Y: %f", projected_point.x, projected_point.y));
 }
 
 
@@ -112,6 +113,9 @@ void EditorLayer::onTouchesEnded(const std::vector<cocos2d::Touch* > &touches, c
 {
 	cocos2d::Touch *touch = touches.at(0);
 	_touchPos = touch->getLocation();
+
+	Vector2 projected_point = _mapProjector->ProjectOnMap(touch->getLocation());
+	_printPos->setString(cocos2d::StringUtils::format("X: %f, Y: %f", projected_point.x, projected_point.y));
 }
 
 void EditorLayer::onTouchesMoved(const std::vector<cocos2d::Touch* > &touches, cocos2d::Event* event)
@@ -126,12 +130,9 @@ void EditorLayer::onTouchesMoved(const std::vector<cocos2d::Touch* > &touches, c
 	}
 
 	//UpdateHullProjection();
-/*
-	char string[64];
+
 	Vector2 projected_point = _mapProjector->ProjectOnMap(point);
-	sprintf_s(string, "X: %d, Y: %d", (int)projected_point.x, (int)projected_point.y);
-	_printPos->setString(string);
-	*/
+	_printPos->setString(cocos2d::StringUtils::format("X: %f, Y: %f", projected_point.x, projected_point.y));
 }
 
 void EditorLayer::_MenuInputListener(cocos2d::Ref *sender)

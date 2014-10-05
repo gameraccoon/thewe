@@ -87,7 +87,7 @@ void Log::writeError(const std::string& text)
 
 void Log::writeWarning(const std::string& text)
 {
-	this->writeLine(std::string("<font color=\"yellow\"><b>Warning</b>: ").append(text).append("</font><br/>"));
+	this->writeLine(std::string("<font color=\"orange\"><b>Warning</b>: ").append(text).append("</font><br/>"));
 
 #ifdef _DEBUG
 	assert(false);
