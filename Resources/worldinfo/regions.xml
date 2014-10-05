@@ -1,43 +1,41 @@
 <?xml version="1.0"?>
 <RegionsMap>
-	<Region Name="Russia" Population="150.0" Desc="Russia, also officially known as the Russian Federation[9] (Russian: Российская Федерация, tr.),
-		is a country in northern Eurasia.[10] It is a federal semi-presidential republic. From northwest to southeast, Russia shares land borders with Norway, 
-		Finland, Estonia, Latvia, Lithuania and Poland (both with Kaliningrad Oblast), Belarus, Ukraine, Georgia, Azerbaijan,
-		Kazakhstan, China, Mongolia, and North Korea. It shares maritime borders with Japan by the Sea of Okhotsk, the US
-		state of Alaska across the Bering Strait and Canada's Arctic islands. At 17,075,400 square kilometres (6,592,800 sq mi)">
+	<Region Name="Russia" Population="150.0" Desc="Russia">
 		<Hulls>
 			<Hull Name="Russia_1" />
 			<Hull Name="Russia_2" />
 		</Hulls>
 		<Towns>
-			<Town name="Moscow" x="83" y="148" scale="0.03" population="14.0" rank="1.0" desc="Moscow is the capital city and the most populous federal subject of Russia" />
-			<Town name="Saint Petersburg" x="56" y="176" scale="0.03" population="5.131" rank="1.0" desc="Saint Petersburg (Russian: Санкт-Петербург) is the second largest
-				city in Russia, politically incorporated as a federal subject (a federal city)." />
-			<Town name="Vologda" x="87" y="172" scale="0.02" population="0.301" rank="1.0" desc="The city serves as a major transport hub of the Northwest of Russia.
-				Vologda has been classified by the Ministry of Culture of Russian Federation as a historical city." />
-			<Town name="Simferopol" x="71" y="87" scale="0.01" population="0.360" rank="1.0" desc="is a city on the Crimean peninsula,
-				the status of which is disputed between Ukraine and Russia." />
-			<Town name="Norilsk" x="272" y="256" scale="0.01" population="0.157" rank="1.0" desc="Norilsk is located between the West Siberian Plain and Central
-				Siberian Plateau at the foot of the 1,700-meter (5,600 ft) high Putoran Mountains, on some of the largest nickel deposits on Earth." />
+			<Town name="Moscow" x="83" y="148" scale="0.03" population="14.0" rank="1.0" desc=" " />
+			<Town name="Saint Petersburg" x="56" y="176" scale="0.03" population="5.131" rank="1.0" desc=" " />
+			<Town name="Vologda" x="87" y="172" scale="0.02" population="0.301" rank="1.0" desc="" />
+			<Town name="Simferopol" x="71" y="87" scale="0.01" population="0.360" rank="1.0" desc=" " />
+			<Town name="Norilsk" x="272" y="256" scale="0.01" population="0.157" rank="1.0" desc=" " />
+			<Town name="Murmansk" x="67" y="252" scale="0.01" population="0.157" rank="1.0" desc=" " />
+			<Town name="Arhangelsk" x="96" y="210" scale="0.01" population="0.157" rank="1.0" desc=" " />
+			<Town name="Petrozavodsk" x="74" y="197" scale="0.01" population="0.157" rank="1.0" desc=" " />
+			<Town name="Astrahan" x="121" y="95" scale="0.01" population="0.157" rank="1.0" desc=" " />
+			<Town name="Volgograd" x="108" y="107" scale="0.01" population="0.157" rank="1.0" desc=" " />
+			<Town name="Kazan" x="127" y="133" scale="0.01" population="0.157" rank="1.0" desc=" " />
+			<Town name="Yakaterinburg" x="165" y="155" scale="0.01" population="0.157" rank="1.0" desc=" " />
+			<Town name="Omsk" x="213" y="144" scale="0.01" population="0.157" rank="1.0" desc=" " />
+			<Town name="Novosoborsk" x="247" y="145" scale="0.01" population="0.157" rank="1.0" desc=" " />
+			<Town name="Krasnoyarsk" x="282" y="152" scale="0.01" population="0.157" rank="1.0" desc=" " />
+			<Town name="Irkutsk" x="324" y="127" scale="0.01" population="0.157" rank="1.0" desc=" " />
+			<Town name="Khabarovsk" x="435" y="107" scale="0.01" population="0.157" rank="1.0" desc=" " />
+			<Town name="Magadan" x="490" y="176" scale="0.01" population="0.157" rank="1.0" desc=" " />
+			<Town name="Kazan" x="127" y="133" scale="0.01" population="0.157" rank="1.0" desc=" " />
+			<Town name="Vladivistok" x="424" y="80" scale="0.01" population="0.157" rank="1.0" desc=" " />
+			<Town name="Petropavlovsk-Kamchatskiy" x="520" y="132" scale="0.01" population="0.157" rank="1.0" desc=" " />
+			<Town name="Anadur" x="601" y="227" scale="0.01" population="0.157" rank="1.0" desc=" " />
+			<Town name="Yakutsk" x="416" y="204" scale="0.01" population="0.157" rank="1.0" desc=" " />
+			<Town name="Provideniya" x="623" y="211" scale="0.01" population="0.157" rank="1.0" desc=" " />
 		</Towns>
 	</Region>
-	<Region Name="USA" Population="100.0" Desc="The United States of America (USA or U.S.A.), 
-		commonly referred to as the United States (US or U.S.), America, and sometimes the States,
-		is a federal republic[16][17] consisting of 50 states and a federal district. 
-		The 48 contiguous states and Washington, D.C., are in central North America between Canada and Mexico.
-		The state of Alaska is the northwestern part of North America and the state of Hawaii 
-		is an archipelago in the mid-Pacific. The country also has five populated and nine unpopulated
-		territories in the Pacific and the Caribbean">
+	<Region Name="USA" Population="100.0" Desc="The United States of America">
 		<Hulls>
 			<Hull Name="USA_1" />
 			<Hull Name="USA_2" />
-		</Hulls>
-		<Towns>
-		</Towns>
-	</Region>
-	<Region Name="Spain" Population="100.0" Desc="Work in progress">
-		<Hulls>
-			<Hull Name="Spain" />
 		</Hulls>
 		<Towns>
 		</Towns>
