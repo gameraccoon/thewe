@@ -420,7 +420,7 @@ void WorldMapLayer::_OnTownSelect(Town::WeakPtr town)
 			if (info.parent->GetInfo().cash >= GameInfo::Instance().GetInt("CELL_SPINOFF_CASH_PRICE") &&
 				info.parent->GetInfo().membersCount >= GameInfo::Instance().GetInt("CELL_SPINOFF_MEMBERS_PRICE"))
 			{
-				CreateCell(info, Cell::CONSTRUCTION, 15.0f);
+				CreateCell(info, Cell::CONSTRUCTION, GameInfo::Instance().GetFloat("CELL_CONSTRUCTION_TIME"));
 
 				info.parent->GetInfo().cash -= GameInfo::Instance().GetInt("CELL_SPINOFF_CASH_PRICE");
 				info.parent->GetInfo().membersCount -= GameInfo::Instance().GetInt("CELL_SPINOFF_MEMBERS_PRICE");

@@ -7,4 +7,6 @@
 	<Const name="CELL_STARTUP_MONEY" type="int" value="1000" />
 	<Const name="CELL_STARTUP_MORALE" type="float" value="0.5" />
 	<Const name="CELL_STARTUP_CONTENTMENT" type="float" value="1.0" />
+
+	<Const name="CELL_CONSTRUCTION_TIME" type="float" value="15.0" />
 </GameInfo>
