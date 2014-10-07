@@ -164,7 +164,7 @@ void WorldMapLayer::onTouchesBegan(const std::vector<cocos2d::Touch* > &touches,
 		_touchLastPoint = touch->getLocation();
 		_touchFirstPos = touch->getLocation();
 
-		if (_cellMenu->isVisible() && _GetCellUnderPoint(_touchLastPoint).expired())
+		if (_cellMenu->isVisible())
 		{
 			_cellMenu->DisappearWithAnimation();
 		}
@@ -182,8 +182,6 @@ void WorldMapLayer::onTouchesEnded(const std::vector<cocos2d::Touch* > &touches,
 			cocos2d::Touch *touch = touches.at(0);
 			Vector2 point = touch->getLocation();
 			Vector2 v = _touchFirstPos - point;
-
-			Cell::WeakPtr cell = _GetCellUnderPoint(point);
 
 			const float size = v.Size();
 			const float tolerance = 5.0f;
