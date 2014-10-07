@@ -10,23 +10,28 @@
 class Cell
 {
 public:
+	enum State
+	{
+		CONSTRUCTION,
+		READY,
+	};
+
 	struct Info
 	{
 		Cell *parent;
 		Town::WeakPtr town;
 		Vector2 location;
+		State state;
 
 		float morale;
 		float contentment;
+		float constructionProgress;
 		
 		int cash;
 		int membersCount;
-	};
 
-	enum State
-	{
-		CONSTRUCTION,
-		READY,
+		Info(void) : constructionProgress(0.0f)
+		{}
 	};
 
 	typedef std::shared_ptr<Cell> Ptr;
@@ -62,8 +67,6 @@ public:
 	*/
 	Info& GetInfo(void);
 
-	State& GetState(void);
-
 	void SetConstructionTime(float seconds);
 
 	float GetConstructionTime(void) const;
@@ -74,14 +77,11 @@ public:
 	void AddCurrentTask(Task::WeakPtr currentTask);
 	Task::WeakPtr getCurrentTask() const;
 
-	void SwitchState(State state);
-
 	bool IsCurrentTaskPresented(void) const;
 
 	/** Add completed task */
 	void AddCompletedTask(const Task::CompletedTaskInfo& completedTask);
 
-	int GetCash();
 	unsigned int GetUid(void) const;
 
 private:

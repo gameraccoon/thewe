@@ -62,11 +62,6 @@ Cell::Info& Cell::GetInfo(void)
 	return _info;
 }
 
-Cell::State& Cell::GetState(void)
-{
-	return _state;
-}
-
 void Cell::SetConstructionTime(float seconds)
 {
 	_constructionTime = seconds;
@@ -75,11 +70,6 @@ void Cell::SetConstructionTime(float seconds)
 float Cell::GetConstructionTime(void) const
 {
 	return _constructionTime;
-}
-
-void Cell::SwitchState(Cell::State state)
-{
-	_state = state;
 }
 
 void Cell::Update(float deltatime)
@@ -133,11 +123,6 @@ void Cell::AddCompletedTask(const Task::CompletedTaskInfo& completedTask)
 unsigned int Cell::GetUid(void) const
 {
 	return _uid;
-}
-
-int Cell::GetCash()
-{
-	return _info.cash;
 }
 
 void Cell::_CheckValues() const

@@ -28,19 +28,13 @@ bool CellMapWidget::init(void)
 	_cellMapTaskProgressBar->ToggleReverse(true);
 	_cellMapTaskProgressBar->autorelease();
 
-	if (_cell->GetState() == Cell::CONSTRUCTION)
-	{
-		_cellMapSprite->setVisible(false);
-
-		_constructionProgress = new RoundProgressBar("cell.png", 0.8f);
-		_constructionProgress->setPosition(0.0f, 0.0f);
-		_constructionProgress->SetProgressAnimated(100.0f, _cell->GetConstructionTime());
-
-		addChild(_constructionProgress, DrawOrder::PROGRESS);
-	}
-
+	_constructionProgress = new RoundProgressBar("cell.png", 0.8f);
+	_constructionProgress->setPosition(0.0f, 0.0f);
+	_constructionProgress->SetProgressImmediately(0.0f);
+	
 	addChild(_cellMapSprite, DrawOrder::SPRITE);
 	addChild(_cellMapTaskProgressBar, DrawOrder::PROGRESS);
+	addChild(_constructionProgress, DrawOrder::PROGRESS);
 	scheduleUpdate();
 
 	return true;
@@ -48,14 +42,27 @@ bool CellMapWidget::init(void)
 
 void CellMapWidget::update(float dt)
 {
-	if (_cell->GetState() == Cell::CONSTRUCTION && _constructionProgress->IsFinished())
+	if (_cell->GetInfo().state == Cell::CONSTRUCTION)
+	{
+		if (_cell->GetConstructionTime() > _cell->GetInfo().constructionProgress)
+		{
+			_cell->GetInfo().constructionProgress += dt;
+			float progress = (_cell->GetInfo().constructionProgress / _cell->GetConstructionTime()) * 100.0f;
+			_constructionProgress->SetProgressImmediately(progress);
+
+			_constructionProgress->setVisible(true);
+			_cellMapSprite->setVisible(false);
+		}
+		else
+		{
+			_cell->GetInfo().state = Cell::READY;
+			MessageManager::Instance().SendGameMessage("Cell created");
+			removeChild(_constructionProgress);
+		}
+	}
+	if (_cell->GetInfo().state == Cell::READY)
 	{
 		_cellMapSprite->setVisible(true);
-		_cell->SwitchState(Cell::READY);
-
-		MessageManager::Instance().SendGameMessage("Cell created");
-
-		removeChild(_constructionProgress);
 	}
 	
 	if (_cell->IsCurrentTaskPresented())

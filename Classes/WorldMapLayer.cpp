@@ -131,7 +131,7 @@ void WorldMapLayer::CreateCell(const Cell::Info &info, Cell::State state, float 
 		info.parent->AddChild(cell);
 	}
 
-	cell->SwitchState(state);
+	cell->GetInfo().state = state;
 	cell->SetConstructionTime(constructionTime);
 
 	CellMapWidget *widget = _CreateCellWidget(cell);
@@ -333,7 +333,7 @@ Cell::WeakPtr WorldMapLayer::_GetCellUnderPoint(const Vector2& point) const
 	for (CellMapWidget *widget : _cellWidgetsList)
 	{
 		Cell::Ptr cell = widget->GetCell();
-		if (cell->GetState() == Cell::CONSTRUCTION)
+		if (cell->GetInfo().state == Cell::CONSTRUCTION)
 		{
 			continue;
 		}

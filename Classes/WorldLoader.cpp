@@ -28,6 +28,7 @@ static void LoadCellsRecursively(pugi::xml_node root, pugi::xml_node parent_node
 
 		Cell::Info info;
 		info.parent = parent;
+		info.state = (Cell::State)child.attribute("state").as_int();
 		info.town = World::Instance().GetTownByName(child.attribute("town").as_string());
 		info.location.x = child.attribute("location_x").as_float();
 		info.location.y = child.attribute("location_y").as_float();
@@ -35,10 +36,13 @@ static void LoadCellsRecursively(pugi::xml_node root, pugi::xml_node parent_node
 		info.morale = child.attribute("morale").as_float();
 		info.contentment = child.attribute("contentment").as_float();
 		info.membersCount = child.attribute("members_num").as_int();
+		info.constructionProgress = child.attribute("construction_progress").as_float();
+		float constructionTime = child.attribute("construction_time").as_float();
 
 		Cell::Ptr cell = Cell::Create(info);
 		World::Instance().AddCell(cell);
 		parent->AddChild(cell);
+		cell->SetConstructionTime(constructionTime);
 
 		LoadCellsRecursively(root, child, cell.get());
 
@@ -252,6 +256,7 @@ bool WorldLoader::LoadGameState(void)
 
 			Cell::Info info;
 			info.parent = nullptr;
+			info.state = (Cell::State)cell_root.attribute("state").as_int();
 			info.town = World::Instance().GetTownByName(cell_root.attribute("town").as_string());
 			info.location.x = cell_root.attribute("location_x").as_float();
 			info.location.y = cell_root.attribute("location_y").as_float();
@@ -259,9 +264,12 @@ bool WorldLoader::LoadGameState(void)
 			info.morale = cell_root.attribute("morale").as_float();
 			info.contentment = cell_root.attribute("contentment").as_float();
 			info.membersCount = cell_root.attribute("members_num").as_int();
+			info.constructionProgress = cell_root.attribute("construction_progress").as_float();
+			float constructionTime = cell_root.attribute("construction_time").as_float();
 
 			Cell::Ptr cell = Cell::Create(info);
 			World::Instance().AddCell(cell);
+			cell->SetConstructionTime(constructionTime);
 
 			LoadCellsRecursively(cells_network, cell_root, cell.get());
 		}
@@ -310,6 +318,7 @@ bool WorldLoader::SaveGameState(void)
 
 		pugi::xml_node cell_node = cells_root.append_child("Cell");
 		cell_node.append_attribute("id").set_value(cells_indices.find(cell)->second);
+		cell_node.append_attribute("state").set_value((int)info.state);
 		cell_node.append_attribute("parent_id").set_value(parent_id);
 		cell_node.append_attribute("town").set_value(info.town.lock()->GetInfo().name.c_str());
 		cell_node.append_attribute("location_x").set_value(info.location.x);
@@ -318,6 +327,8 @@ bool WorldLoader::SaveGameState(void)
 		cell_node.append_attribute("morale").set_value(info.morale);
 		cell_node.append_attribute("contentment").set_value(info.contentment);
 		cell_node.append_attribute("members_num").set_value(info.membersCount);
+		cell_node.append_attribute("construction_progress").set_value(info.constructionProgress);
+		cell_node.append_attribute("construction_time").set_value(cell->GetConstructionTime());
 
 		for (Cell::Ptr child : cell->GetChildren())
 		{
