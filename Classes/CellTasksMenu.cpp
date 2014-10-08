@@ -62,7 +62,7 @@ public:
 private:
 	void _OnStartPressed(cocos2d::Ref *sender)
 	{
-		TaskManager::Instance().RunTask(_cell, _taskInfo, World::Instance().GetWorldTime());
+		TaskManager::Instance().RunTask(_cell, _taskInfo, Utils::GetGameTime());
 		_tasksScreen->CloseMenu();
 	}
 

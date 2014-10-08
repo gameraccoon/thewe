@@ -4,7 +4,7 @@
 #include "MainMenuScene.h"
 #include "SplashScreenScene.h"
 #include "Vector2.h"
-#include "FileUtils.h"
+#include "MiscUtils.h"
 #include "Log.h"
 #include "WorldLoader.h"
 

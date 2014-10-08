@@ -34,7 +34,7 @@ public:
 	void SetGuiEnabled(bool isEnabled);
 	void SetNextCellParent(Cell::WeakPtr parent);
 
-	void CreateCell(const Cell::Info &info, Cell::State state, float constructionTime = 0.0f);
+	void CreateCell(const Cell::Info &info, Cell::State state, Utils::GameTime constructionTime);
 	void DeleteCell(CellMapWidget *widget);
 
 private:

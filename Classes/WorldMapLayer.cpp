@@ -121,9 +121,9 @@ void WorldMapLayer::SetNextCellParent(Cell::WeakPtr parent)
 	_nextCellParent = parent;
 }
 
-void WorldMapLayer::CreateCell(const Cell::Info &info, Cell::State state, float constructionTime)
+void WorldMapLayer::CreateCell(const Cell::Info &info, Cell::State state, Utils::GameTime constructionTime)
 {
-	Cell::Ptr cell = Cell::Create(info);
+	Cell::Ptr cell = Cell::Create(info, constructionTime);
 	World::Instance().AddCell(cell);
 	
 	if (info.parent)
@@ -132,7 +132,6 @@ void WorldMapLayer::CreateCell(const Cell::Info &info, Cell::State state, float 
 	}
 
 	cell->GetInfo().state = state;
-	cell->SetConstructionTime(constructionTime);
 
 	CellMapWidget *widget = _CreateCellWidget(cell);
 	_cellWidgetsList.push_back(widget);
@@ -164,7 +163,7 @@ void WorldMapLayer::onTouchesBegan(const std::vector<cocos2d::Touch* > &touches,
 		_touchLastPoint = touch->getLocation();
 		_touchFirstPos = touch->getLocation();
 
-		if (_cellMenu->isVisible())
+        if (_cellMenu->isVisible())
 		{
 			_cellMenu->DisappearWithAnimation();
 		}

@@ -45,7 +45,7 @@ bool CellTaskInfoMenu::init(void)
 	float w = background->getContentSize().width - 50.0f;
 	float x = center.x - background->getContentSize().width / 2.0f + 25.0f;
 	float y = center.y;
-	float time = World::Instance().GetWorldTime();
+	Utils::GameTime time = Utils::GetGameTime();
 	float progress = _cellCurrentTask->CalculateProgress(time);
 
 	_taskProgressBar = new SquareProgressBar(w, 50.0f, cocos2d::Color4F(1.0f, 0.5f, 0, 1.0f));
@@ -88,7 +88,7 @@ void CellTaskInfoMenu::update(float dt)
 		}
 		else
 		{
-			float time = World::Instance().GetWorldTime();
+			Utils::GameTime time = Utils::GetGameTime();
 			float progress = _cellCurrentTask->CalculateProgress(time);
 			_taskProgressBar->SetProgressPercentage(progress * 100.0f);
 

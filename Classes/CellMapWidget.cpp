@@ -69,7 +69,7 @@ void CellMapWidget::update(float dt)
 	{
 		Task::Ptr task = _cell->getCurrentTask().lock();
 		
-		float time = World::Instance().GetWorldTime();
+		Utils::GameTime time = Utils::GetGameTime();
 		float progress = task->CalculateProgress(time);
 		_cellMapTaskProgressBar->SetProgressImmediately(100.0f - progress * 100.0f);
 		_cellMapTaskProgressBar->setVisible(true);

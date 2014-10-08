@@ -8,7 +8,7 @@
 #include "TaskManager.h"
 #include "Log.h"
 #include "Vector2.h"
-#include "FileUtils.h"
+#include "MiscUtils.h"
 
 #include <string>
 #include <strstream>
@@ -37,12 +37,18 @@ static void LoadCellsRecursively(pugi::xml_node root, pugi::xml_node parent_node
 		info.contentment = child.attribute("contentment").as_float();
 		info.membersCount = child.attribute("members_num").as_int();
 		info.constructionProgress = child.attribute("construction_progress").as_float();
-		float constructionTime = child.attribute("construction_time").as_float();
+		Utils::GameTime constructionTime = child.attribute("construction_time").as_float();
+		std::string currentTaskId = child.attribute("current_task_id").as_string();
 
-		Cell::Ptr cell = Cell::Create(info);
+		Cell::Ptr cell = Cell::Create(info, constructionTime);
 		World::Instance().AddCell(cell);
 		parent->AddChild(cell);
-		cell->SetConstructionTime(constructionTime);
+
+		if (currentTaskId != " ")
+		{
+			Utils::GameTime startTime = child.attribute("task_start_time").as_float();
+			TaskManager::Instance().RunTask((Cell::WeakPtr)cell, currentTaskId, startTime);
+		}
 
 		LoadCellsRecursively(root, child, cell.get());
 
@@ -237,18 +243,17 @@ bool WorldLoader::LoadGameState(void)
 		}
 	}
 
-	if (!result)
-	{
-		Log::Instance().writeError("Failed to read world .");
-	}
-	else
+	if (result)
 	{
 		// 1. find the root cell
 		// 2. recursively add childs
 
 		pugi::xml_node root = doc.first_child();
-		pugi::xml_node cells_network = root.first_child();
+		pugi::xml_node world_info = root.first_child();
+		pugi::xml_node cells_network = world_info.next_sibling();
 		pugi::xml_node cell_root = cells_network.find_child_by_attribute("parent_id", "-1");
+
+		World::Instance().InitWorldTime(world_info.attribute("world_time").as_float());
 
 		if (cell_root)
 		{ 
@@ -265,11 +270,17 @@ bool WorldLoader::LoadGameState(void)
 			info.contentment = cell_root.attribute("contentment").as_float();
 			info.membersCount = cell_root.attribute("members_num").as_int();
 			info.constructionProgress = cell_root.attribute("construction_progress").as_float();
-			float constructionTime = cell_root.attribute("construction_time").as_float();
+			Utils::GameTime constructionTime = cell_root.attribute("construction_time").as_float();
+			std::string currentTaskId = cell_root.attribute("current_task_id").as_string();
 
-			Cell::Ptr cell = Cell::Create(info);
+			Cell::Ptr cell = Cell::Create(info, constructionTime);
 			World::Instance().AddCell(cell);
-			cell->SetConstructionTime(constructionTime);
+
+			if (currentTaskId != " ")
+			{
+				Utils::GameTime startTime = cell_root.attribute("task_start_time").as_float();
+				TaskManager::Instance().RunTask((Cell::WeakPtr)cell, currentTaskId, startTime);
+			}
 
 			LoadCellsRecursively(cells_network, cell_root, cell.get());
 		}
@@ -279,6 +290,10 @@ bool WorldLoader::LoadGameState(void)
 		}
 
 		return true;
+	}
+	else
+	{
+		Log::Instance().writeError("Failed to read world .");
 	}
 
 	return false;
@@ -306,13 +321,25 @@ bool WorldLoader::SaveGameState(void)
 
 	pugi::xml_document doc;
 	pugi::xml_node root = doc.append_child("Save");
-
+	
+	pugi::xml_node world_info = root.append_child("WorldInfo");
 	pugi::xml_node cells_root = root.append_child("CellsNetwork");
+
+	world_info.append_attribute("world_time").set_value(Utils::GetGameTime());
 
 	for (World::Cells::const_iterator it = cells.begin(); it != cells.end(); ++it)
 	{
 		const Cell *cell = (*it).get();
 		const Cell::Info info = (*it)->GetInfo();
+		std::string currentTaskId = " ";
+		float taskStartTime = 0.0f;
+
+		if (cell->IsCurrentTaskPresented())
+		{
+			Task::Ptr task = cell->getCurrentTask().lock();
+			currentTaskId = task->GetInfo()->id;
+			taskStartTime = task->GetStartTime();
+		}
 	
 		int parent_id = info.parent != nullptr ? cells_indices.find(info.parent)->second : -1;
 
@@ -329,6 +356,8 @@ bool WorldLoader::SaveGameState(void)
 		cell_node.append_attribute("members_num").set_value(info.membersCount);
 		cell_node.append_attribute("construction_progress").set_value(info.constructionProgress);
 		cell_node.append_attribute("construction_time").set_value(cell->GetConstructionTime());
+		cell_node.append_attribute("current_task_id").set_value(currentTaskId.c_str());
+		cell_node.append_attribute("task_start_time").set_value(taskStartTime);
 
 		for (Cell::Ptr child : cell->GetChildren())
 		{

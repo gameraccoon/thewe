@@ -42,7 +42,7 @@ TaskManager& TaskManager::Instance()
 	return singleInstance;
 }
 
-void TaskManager::RunTask(Cell::WeakPtr &cell, const Task::Info* info, float startTime)
+void TaskManager::RunTask(Cell::WeakPtr &cell, const Task::Info* info, Utils::GameTime startTime)
 {
 	RunnedTaskInfo runnedTaskInfo;
 	runnedTaskInfo.cell = cell;
@@ -52,7 +52,7 @@ void TaskManager::RunTask(Cell::WeakPtr &cell, const Task::Info* info, float sta
 	_runnedTasks.push_back(runnedTaskInfo);
 }
 
-void TaskManager::RunTask(Cell::WeakPtr &cell, const std::string& id, float startTime)
+void TaskManager::RunTask(Cell::WeakPtr &cell, const std::string& id, Utils::GameTime startTime)
 {
 	const Task::Info* taskInfo = GetTaskInfoById(id);
 	if (taskInfo)
@@ -65,7 +65,7 @@ void TaskManager::RunTask(Cell::WeakPtr &cell, const std::string& id, float star
 	}
 }
 
-void TaskManager::UpdateToTime(float worldTime)
+void TaskManager::UpdateToTime(Utils::GameTime worldTime)
 {
 	std::vector<RunnedTaskInfo>::iterator iterator = _runnedTasks.begin();
 	while (iterator != _runnedTasks.end())
@@ -212,7 +212,7 @@ void TaskManager::_CheckTask(const Task::Info& taskInfo) const
 const Task::Info* TaskManager::GetTaskInfoById(const std::string& id)
 {
 	auto taskInfoIterator = _allTasks.find(id);
-	if (taskInfoIterator == _allTasks.end())
+	if (taskInfoIterator != _allTasks.end())
 	{
 		return &(taskInfoIterator->second);
 	}

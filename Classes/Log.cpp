@@ -4,7 +4,7 @@
 #include <ctime>
 #include <assert.h>
 
-#include "FileUtils.h"
+#include "MiscUtils.h"
 
 Log* Log::singleInstance = nullptr;
 bool Log::isDestroyed = false;

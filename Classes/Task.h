@@ -3,6 +3,7 @@
 
 #include <memory>
 #include <string>
+#include "MiscUtils.h"
 
 class Task
 {
@@ -42,30 +43,29 @@ public:
 
 	struct CompletedTaskInfo
 	{
-
 		const Info* taskInfo;
-		float startTime;
-		float endTime;
+		Utils::GameTime startTime;
+		Utils::GameTime endTime;
 		Status status;
 	};
 
 public:
-	Task(const Task::Info* info, float startTime);
+	Task(const Task::Info* info, Utils::GameTime startTime);
 	
-	static Ptr Create(const Info* info, float startTime);
+	static Ptr Create(const Info* info, Utils::GameTime startTime);
 
 	/**
 	 * Check task completeness
 	 *
 	 * @return true if task is completed
 	 */
-	bool CheckCompleteness(float worldTime);
+	bool CheckCompleteness(Utils::GameTime worldTime);
 
 	const Info* GetInfo() const;
 
-	float GetStartTime() const;
-	float GetEndTime() const;
-	float CalculateProgress(float worldTime) const;
+	Utils::GameTime GetStartTime() const;
+	Utils::GameTime GetEndTime() const;
+	float CalculateProgress(Utils::GameTime worldTime) const;
 	bool IsAborted() const;
 	bool IsFastFinished() const;
 	/** Abort task */
@@ -75,9 +75,9 @@ public:
 
 private:
 	/** Start time of the task */
-	float _startTime;
+	Utils::GameTime _startTime;
 	/** Time when task will be completed */
-	float _endTime;
+	Utils::GameTime _endTime;
 
 	bool _isAborted;
 	bool _isFastFinished;

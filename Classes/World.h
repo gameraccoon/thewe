@@ -6,6 +6,7 @@
 #include "Region.h"
 #include "Cell.h"
 #include "Town.h"
+#include "MiscUtils.h"
 
 class World
 {
@@ -27,7 +28,7 @@ public:
 	const Cells& GetCells() const;
 	const Towns& GetTowns() const;
 
-	float GetWorldTime() const;
+	Utils::GameTime GetWorldTime() const;
 
 	void AddRegion(Region::Ptr region);
 	void AddCell(Cell::Ptr cell);
@@ -41,6 +42,7 @@ public:
 
 	void SetPause(bool pause);
 	void SetFirstLaunch(bool newGame);
+	void InitWorldTime(Utils::GameTime worldTime);
 
 	bool IsFirstLaunch(void) const;
 	bool IsTownAvaliableToPlaceCell(Town::WeakPtr town) const;
@@ -52,7 +54,8 @@ private:
 	Cells _cells;
 	Towns _towns;
 
-	float _worldTime;
+	Utils::GameTime _worldTime;
+
 	bool _isGamePaused;
 	bool _isFirstLaunch;
 

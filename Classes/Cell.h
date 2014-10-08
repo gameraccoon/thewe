@@ -38,12 +38,12 @@ public:
 	typedef std::weak_ptr<Cell> WeakPtr;
 
 public:
-	Cell(const Info &info);
+	Cell(const Info &info, Utils::GameTime constructionTime);
 
 	/**
 	 * Create Cell and return a smart ptr
 	 */
-	static Ptr Create(const Info &info);
+	static Ptr Create(const Info &info, Utils::GameTime constructionTime);
 	
 	/**
 	 * Adds new child to the cell
@@ -67,9 +67,7 @@ public:
 	*/
 	Info& GetInfo(void);
 
-	void SetConstructionTime(float seconds);
-
-	float GetConstructionTime(void) const;
+	Utils::GameTime GetConstructionTime(void) const;
 	
 	/** Updated cell's state */
 	void Update(float deltatime);
@@ -104,7 +102,7 @@ private:
 
 	State _state;
 
-	float _constructionTime;
+	Utils::GameTime _constructionTime;
 
 	/**  уникальный идентификатор */
 	unsigned int _uid;

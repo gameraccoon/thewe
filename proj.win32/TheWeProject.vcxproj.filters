@@ -225,9 +225,6 @@
     <ClCompile Include="..\Classes\Drawable.cpp">
       <Filter>Classes\Utils</Filter>
     </ClCompile>
-    <ClCompile Include="..\Classes\FileUtils.cpp">
-      <Filter>Classes\Utils</Filter>
-    </ClCompile>
     <ClCompile Include="..\Classes\Log.cpp">
       <Filter>Classes\Utils</Filter>
     </ClCompile>
@@ -299,6 +296,9 @@
     </ClCompile>
     <ClCompile Include="..\Classes\NetCellWidget.cpp">
       <Filter>Classes\GameInterface</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\MiscUtils.cpp">
+      <Filter>Classes\Utils</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -419,9 +419,6 @@
     <ClInclude Include="..\Classes\Drawable.h">
       <Filter>Classes\Utils</Filter>
     </ClInclude>
-    <ClInclude Include="..\Classes\FileUtils.h">
-      <Filter>Classes\Utils</Filter>
-    </ClInclude>
     <ClInclude Include="..\Classes\Log.h">
       <Filter>Classes\Utils</Filter>
     </ClInclude>
@@ -493,6 +490,9 @@
     </ClInclude>
     <ClInclude Include="..\Classes\NetCellWidget.h">
       <Filter>Classes\GameInterface</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\MiscUtils.h">
+      <Filter>Classes\Utils</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -94,7 +94,7 @@ const World::Towns& World::GetTowns() const
 	return _towns;
 }
 
-float World::GetWorldTime() const
+Utils::GameTime World::GetWorldTime() const
 {
 	return _worldTime;
 }
@@ -122,6 +122,15 @@ void World::SetPause(bool pause)
 void World::SetFirstLaunch(bool newGame)
 {
 	_isFirstLaunch = newGame;
+}
+
+void World::InitWorldTime(Utils::GameTime worldTime)
+{
+	// we must initialize it only once
+	if (_worldTime <= 0.0f)
+	{
+		_worldTime = worldTime;
+	}
 }
 
 bool World::IsFirstLaunch(void) const

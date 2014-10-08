@@ -3,19 +3,19 @@
 #include "World.h"
 #include "Log.h"
 
-Cell::Cell(const Info &info)
+Cell::Cell(const Info &info, Utils::GameTime constructionTime)
 	: _info(info)
 	, _state(READY)
 	, _currentTask()
-	, _constructionTime(0.0f)
+	, _constructionTime(constructionTime)
 	, _uid(World::Instance().GetNewUid())
 {
 	_CheckValues();
 }
 
-Cell::Ptr Cell::Create(const Info &info)
+Cell::Ptr Cell::Create(const Info &info, Utils::GameTime constructionTime)
 {
-	return std::make_shared<Cell>(info);
+	return std::make_shared<Cell>(info, constructionTime);
 }
 
 void Cell::AddChild(Cell::Ptr cell)
@@ -62,12 +62,7 @@ Cell::Info& Cell::GetInfo(void)
 	return _info;
 }
 
-void Cell::SetConstructionTime(float seconds)
-{
-	_constructionTime = seconds;
-}
-
-float Cell::GetConstructionTime(void) const
+Utils::GameTime Cell::GetConstructionTime(void) const
 {
 	return _constructionTime;
 }

@@ -1,7 +1,8 @@
-#include "FileUtils.h"
+#include "MiscUtils.h"
 
 #include <cocos2d.h>
 #include "Log.h"
+#include "World.h"
 
 std::string Utils::GetResourcesPath()
 {
@@ -20,4 +21,9 @@ std::string Utils::GetDocumentsPath()
 std::string Utils::GetWritablePath()
 {
 	return cocos2d::FileUtils::getInstance()->getWritablePath();
+}
+
+Utils::GameTime Utils::GetGameTime(void)
+{
+	return World::Instance().GetWorldTime();
 }
