@@ -30,7 +30,7 @@ public:
 		int cash;
 		int membersCount;
 
-		Info(void) : constructionProgress(0.0f)
+		Info(void) : constructionProgress(0)
 		{}
 	};
 
@@ -104,7 +104,6 @@ private:
 
 	Utils::GameTime _constructionTime;
 
-	/**  уникальный идентификатор */
 	unsigned int _uid;
 
 	/** Child cells */

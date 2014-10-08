@@ -38,7 +38,7 @@ public:
 	const Town::WeakPtr GetTownByName(const std::string &name) const;
 	const Cell::WeakPtr GetRootCell(void) const;
 
-	void Update(float deltatime);
+	void Update();
 
 	void SetPause(bool pause);
 	void SetFirstLaunch(bool newGame);

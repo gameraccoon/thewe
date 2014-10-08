@@ -25,8 +25,8 @@ public:
 	 * @param info information about task
 	 * @param startTime start time of this task
 	 */
-	void RunTask(Cell::WeakPtr &cell, const Task::Info* info, Utils::GameTime startTime);
-	void RunTask(Cell::WeakPtr &cell, const std::string& info, Utils::GameTime startTime);
+	void RunTask(Cell::WeakPtr cell, const Task::Info* info, Utils::GameTime startTime);
+	void RunTask(Cell::WeakPtr cell, const std::string& info, Utils::GameTime startTime);
 
 	/**
 	 * Returns tasks that available for current cell for now

@@ -42,7 +42,7 @@ TaskManager& TaskManager::Instance()
 	return singleInstance;
 }
 
-void TaskManager::RunTask(Cell::WeakPtr &cell, const Task::Info* info, Utils::GameTime startTime)
+void TaskManager::RunTask(Cell::WeakPtr cell, const Task::Info* info, Utils::GameTime startTime)
 {
 	RunnedTaskInfo runnedTaskInfo;
 	runnedTaskInfo.cell = cell;
@@ -52,7 +52,7 @@ void TaskManager::RunTask(Cell::WeakPtr &cell, const Task::Info* info, Utils::Ga
 	_runnedTasks.push_back(runnedTaskInfo);
 }
 
-void TaskManager::RunTask(Cell::WeakPtr &cell, const std::string& id, Utils::GameTime startTime)
+void TaskManager::RunTask(Cell::WeakPtr cell, const std::string& id, Utils::GameTime startTime)
 {
 	const Task::Info* taskInfo = GetTaskInfoById(id);
 	if (taskInfo)

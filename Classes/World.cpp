@@ -99,19 +99,16 @@ Utils::GameTime World::GetWorldTime() const
 	return _worldTime;
 }
 
-void World::Update(float deltatime)
+void World::Update()
 {
-	if (!_isGamePaused)
+	Utils::GameTime time = Utils::GetGameTime();
+
+	for (Cell::Ptr cell : _cells)
 	{
-		_worldTime += deltatime;
-
-		for (Cell::Ptr cell : _cells)
-		{
-			cell->Update(deltatime);
-		}
-
-		TaskManager::Instance().UpdateToTime(_worldTime);
+		cell->Update(time);
 	}
+
+	TaskManager::Instance().UpdateToTime(time);
 }
 
 void World::SetPause(bool pause)

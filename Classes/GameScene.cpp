@@ -37,7 +37,8 @@ bool GameScene::init(void)
 
 void GameScene::update(float delta)
 {
-	World::Instance().Update(delta);
+	(void)delta;
+	World::Instance().Update();
 }
 
 void GameScene::ShowMap()
@@ -72,8 +73,4 @@ void GameScene::ToggleEditor()
 	{
 		ShowMap();
 	}
-}
-
-void GameScene::ShowCellScreen(Cell::WeakPtr cell)
-{
 }

@@ -99,12 +99,7 @@ void MainMenuScene::_MenuInputListener(cocos2d::Ref *sender)
 	case MainMenuScene::MenuItemTag::CHAT:
 		break;
 	case MainMenuScene::MenuItemTag::TEAM:
-	{
-		cocos2d::Layer* cellsNetLayer = new CellsNetLayer();
-		addChild(cellsNetLayer);
-		cellsNetLayer->autorelease();
 		break;
-	}
 	default: break;
 	}
 }

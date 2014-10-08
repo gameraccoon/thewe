@@ -71,7 +71,6 @@ set(GAME_SRC
 	Classes/Color.cpp
 	Classes/Drawable.cpp
 	Classes/EditorLayer.cpp
-	Classes/FileUtils.cpp
 	Classes/GameInfo.cpp
 	Classes/GameScene.cpp
 	Classes/Log.cpp
@@ -82,6 +81,7 @@ set(GAME_SRC
 	Classes/MapProjector.cpp
 	Classes/MessageManager.cpp
 	Classes/MessageWidget.cpp
+	Classes/MiscUtils.cpp
 	Classes/NetCellWidget.cpp
 	Classes/ProgressBar.cpp
 	Classes/Region.cpp

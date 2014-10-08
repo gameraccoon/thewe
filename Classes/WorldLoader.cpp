@@ -46,7 +46,7 @@ static void LoadCellsRecursively(pugi::xml_node root, pugi::xml_node parent_node
 
 		if (currentTaskId != " ")
 		{
-			Utils::GameTime startTime = child.attribute("task_start_time").as_float();
+			Utils::GameTime startTime = Utils::StringToTime(child.attribute("task_start_time").as_string());
 			TaskManager::Instance().RunTask((Cell::WeakPtr)cell, currentTaskId, startTime);
 		}
 
@@ -98,7 +98,7 @@ static bool LoadTasksInfo()
 		info.id = task_node.attribute("Id").as_string();
 		info.title = task_node.attribute("Title").as_string();
 		info.severity = task_node.attribute("Severity").as_float();
-		info.duration = task_node.attribute("Duration").as_float();
+		info.duration = Utils::StringToTime(task_node.attribute("Duration").as_string());
 		info.moralLevel = task_node.attribute("MoralLevel").as_float();
 		info.successFn = task_node.attribute("SuccessFn").as_string();
 		info.failFn = task_node.attribute("FailFn").as_string();
@@ -270,7 +270,7 @@ bool WorldLoader::LoadGameState(void)
 			info.contentment = cell_root.attribute("contentment").as_float();
 			info.membersCount = cell_root.attribute("members_num").as_int();
 			info.constructionProgress = cell_root.attribute("construction_progress").as_float();
-			Utils::GameTime constructionTime = cell_root.attribute("construction_time").as_float();
+			Utils::GameTime constructionTime = Utils::StringToTime(cell_root.attribute("construction_time").as_string());
 			std::string currentTaskId = cell_root.attribute("current_task_id").as_string();
 
 			Cell::Ptr cell = Cell::Create(info, constructionTime);
@@ -278,7 +278,7 @@ bool WorldLoader::LoadGameState(void)
 
 			if (currentTaskId != " ")
 			{
-				Utils::GameTime startTime = cell_root.attribute("task_start_time").as_float();
+				Utils::GameTime startTime = Utils::StringToTime(cell_root.attribute("task_start_time").as_string());
 				TaskManager::Instance().RunTask((Cell::WeakPtr)cell, currentTaskId, startTime);
 			}
 
@@ -325,20 +325,20 @@ bool WorldLoader::SaveGameState(void)
 	pugi::xml_node world_info = root.append_child("WorldInfo");
 	pugi::xml_node cells_root = root.append_child("CellsNetwork");
 
-	world_info.append_attribute("world_time").set_value(Utils::GetGameTime());
+	world_info.append_attribute("world_time").set_value(Utils::TimeToString(Utils::GetGameTime()).c_str());
 
 	for (World::Cells::const_iterator it = cells.begin(); it != cells.end(); ++it)
 	{
 		const Cell *cell = (*it).get();
 		const Cell::Info info = (*it)->GetInfo();
 		std::string currentTaskId = " ";
-		float taskStartTime = 0.0f;
+		std::string taskStartTime = "0.0";
 
 		if (cell->IsCurrentTaskPresented())
 		{
 			Task::Ptr task = cell->getCurrentTask().lock();
 			currentTaskId = task->GetInfo()->id;
-			taskStartTime = task->GetStartTime();
+			taskStartTime = Utils::TimeToString(task->GetStartTime());
 		}
 	
 		int parent_id = info.parent != nullptr ? cells_indices.find(info.parent)->second : -1;
@@ -355,9 +355,9 @@ bool WorldLoader::SaveGameState(void)
 		cell_node.append_attribute("contentment").set_value(info.contentment);
 		cell_node.append_attribute("members_num").set_value(info.membersCount);
 		cell_node.append_attribute("construction_progress").set_value(info.constructionProgress);
-		cell_node.append_attribute("construction_time").set_value(cell->GetConstructionTime());
+		cell_node.append_attribute("construction_time").set_value(Utils::TimeToString(cell->GetConstructionTime()).c_str());
 		cell_node.append_attribute("current_task_id").set_value(currentTaskId.c_str());
-		cell_node.append_attribute("task_start_time").set_value(taskStartTime);
+		cell_node.append_attribute("task_start_time").set_value(taskStartTime.c_str());
 
 		for (Cell::Ptr child : cell->GetChildren())
 		{

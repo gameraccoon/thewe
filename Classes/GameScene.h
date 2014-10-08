@@ -23,7 +23,6 @@ public:
 	void ShowMap();
 
 	void ToggleEditor();
-	void ShowCellScreen(Cell::WeakPtr cell);
 
 	MapProjector _mapProjector;
 

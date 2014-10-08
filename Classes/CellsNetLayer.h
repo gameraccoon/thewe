@@ -18,7 +18,9 @@ public:
 private:
 	virtual void onKeyReleased(cocos2d::EventKeyboard::KeyCode key, cocos2d::Event *event) override;
 	void ShowLevel(int level);
-	NetCellWidget* RecurcivelyCreateCellsNetwork(Cell::Ptr rootCell, int deepness);
+	void HideAllLevels();
+	NetCellWidget* RecursivelyCreateCellsNetwork(Cell::Ptr rootCell, cocos2d::Vector<cocos2d::MenuItem*>* menuItems, int deepness);
+	void _CellTouchInputListener(cocos2d::Ref *sender);
 
 private:
 	CellsTree _cells;

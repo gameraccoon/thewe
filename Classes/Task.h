@@ -30,7 +30,7 @@ public:
 		/** Comlexity */
 		float severity;
 		/** Time needless to complete the task */
-		float duration;
+		Utils::GameTime duration;
 		float moralLevel;
 
 		/** The name of the Lua-function, that will be run on successful end of the task */

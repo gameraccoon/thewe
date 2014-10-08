@@ -7,6 +7,7 @@
 #include "GameScene.h"
 #include "WorldMapLayer.h"
 #include "MessageManager.h"
+#include "CellsNetLayer.h"
 
 MapGuiLayer::MapGuiLayer(MapProjector *mapProjector)
 	: _mapProjector(mapProjector)
@@ -34,6 +35,8 @@ bool MapGuiLayer::init(void)
 			this, menu_selector(MapGuiLayer::_MenuInputListener));
 		_btnSave = cocos2d::CCMenuItemImage::create("Btn_S.png", "Btn_S_Pressed.png",
 			this, menu_selector(MapGuiLayer::_MenuInputListener));
+		_btnMenu = cocos2d::CCMenuItemImage::create("Btn_Menu.png", "Btn_Menu_Pressed.png",
+			this, menu_selector(MapGuiLayer::_MenuInputListener));
 	}
 	
 	cocos2d::Director *director = cocos2d::Director::getInstance();
@@ -45,6 +48,12 @@ bool MapGuiLayer::init(void)
 	cocos2d::Vector<cocos2d::MenuItem*> menuItems;
 
 	Vector2 pos(0.0f, origin.y + screen.y);
+
+	_btnMenu->setScale(1.0f);
+	_btnMenu->setTag(MENU_ITEM_MENU);
+	_btnMenu->setPosition(pos + Vector2(0.0f, -68.0f));
+	_btnMenu->setAnchorPoint(cocos2d::Vec2(0.0f, 1.0f));
+	menuItems.pushBack(_btnMenu);
 
 	_btnSave->setScale(1.0f);
 	_btnSave->setTag(MENU_ITEM_SAVE);
@@ -107,8 +116,13 @@ void MapGuiLayer::_MenuInputListener(cocos2d::Ref *sender)
 	case MENU_ITEM_EDITOR:
 		dynamic_cast<GameScene*>(getParent()->getParent())->ToggleEditor();
 		break;
-	case MENU_ITEM_PIN:
-		dynamic_cast<WorldMapLayer*>(getParent())->ModifyZoom(1.25f);
+	case MENU_ITEM_MENU:
+		{
+			cocos2d::Layer* cellsNetLayer = new CellsNetLayer();
+			addChild(cellsNetLayer);
+			cellsNetLayer->autorelease();
+			dynamic_cast<WorldMapLayer*>(getParent())->SetMapInputEnabled(false);
+		}
 		break;
 	case MENU_ITEM_SAVE:
 		WorldLoader::SaveGameState();

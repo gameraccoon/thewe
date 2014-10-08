@@ -36,7 +36,16 @@ Utils::GameTime Task::GetEndTime() const
 
 float Task::CalculateProgress(Utils::GameTime worldTime) const
 {
-	return  1.0f - ((_endTime - worldTime) / (_endTime - _startTime));
+	if (worldTime < _endTime)
+	{
+		float allTime = _endTime - _startTime;
+		float eta = _endTime - worldTime;
+		return  1.0f - eta / allTime;
+	}
+	else
+	{
+		return 1.0f;
+	}
 }
 
 bool Task::IsAborted() const

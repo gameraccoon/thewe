@@ -1,8 +1,8 @@
 #include "MiscUtils.h"
 
 #include <cocos2d.h>
-#include "Log.h"
-#include "World.h"
+#include <string>
+//#include <strstream>
 
 std::string Utils::GetResourcesPath()
 {
@@ -25,5 +25,15 @@ std::string Utils::GetWritablePath()
 
 Utils::GameTime Utils::GetGameTime(void)
 {
-	return World::Instance().GetWorldTime();
+	return std::time(0);
+}
+
+std::string Utils::TimeToString(Utils::GameTime time)
+{
+	return std::to_string(time);
+}
+
+Utils::GameTime Utils::StringToTime(const std::string& stringTime)
+{
+	return std::stoll(stringTime);
 }
