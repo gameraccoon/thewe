@@ -81,6 +81,7 @@ void CellMenuSelector::AppearImmediately(Cell::WeakPtr cell, const Vector2 &posi
 {
 	_cell = cell;
 	_position = position;
+	_isDisappearing = false;
 
 	setVisible(true);
 }
@@ -94,6 +95,7 @@ void CellMenuSelector::AppearWithAnimation(Cell::WeakPtr cell, const Vector2 &po
 
 	_cell = cell;
 	_position = position;
+	_isDisappearing = false;
 
 	_menu->setPosition(_position);
 
