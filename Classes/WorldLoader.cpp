@@ -9,6 +9,7 @@
 #include "Log.h"
 #include "Vector2.h"
 #include "MiscUtils.h"
+#include "GameInfo.h"
 
 #include <string>
 #include <strstream>
@@ -38,13 +39,14 @@ static void LoadCellsRecursively(pugi::xml_node root, pugi::xml_node parent_node
 		info.morale = child.attribute("morale").as_float();
 		info.contentment = child.attribute("contentment").as_float();
 		info.membersCount = child.attribute("members_num").as_int();
+		info.constructionBegin = Utils::GetGameTime();
+		info.constructionDuration = GameInfo::Instance().GetFloat("CELL_CONSTRUCTION_TIME");
 
-		Utils::GameTime constructionTime = 0;
 		pugi::xml_node construct = child.child("Construction");
 		if (construct)
 		{
-			//info.constructionBegin = construct.attribute("construction_begin").as_float();
-			constructionTime = Utils::StringToTime(construct.attribute("construction_time").as_string());
+			info.constructionBegin =  Utils::StringToTime(construct.attribute("construction_begin").as_string());
+			info.constructionDuration = Utils::StringToTime(construct.attribute("construction_duration").as_string());
 		}
 
 		Cell::Ptr cell = Cell::Create(info);
@@ -278,13 +280,14 @@ bool WorldLoader::LoadGameState(void)
 			info.morale = cell_root.attribute("morale").as_float();
 			info.contentment = cell_root.attribute("contentment").as_float();
 			info.membersCount = cell_root.attribute("members_num").as_int();
-			
-			Utils::GameTime constructionTime = 0;
+			info.constructionBegin = Utils::GetGameTime();
+			info.constructionDuration = GameInfo::Instance().GetFloat("CELL_CONSTRUCTION_TIME");
+
 			pugi::xml_node construct = cell_root.child("Construction");
 			if (construct)
 			{
-				//info.constructionProgress = construct.attribute("construction_progress").as_float();
-				constructionTime = Utils::StringToTime(construct.attribute("construction_time").as_string());
+				info.constructionBegin =  Utils::StringToTime(construct.attribute("construction_begin").as_string());
+				info.constructionDuration = Utils::StringToTime(construct.attribute("construction_duration").as_string());
 			}
 
 			Cell::Ptr cell = Cell::Create(info);
@@ -386,8 +389,8 @@ bool WorldLoader::SaveGameState(void)
 		if (info.state == Cell::State::CONSTRUCTION)
 		{
 			pugi::xml_node construct = cell_node.append_child("Construction");
-			//construct.append_attribute("construction_progress").set_value(info.constructionProgress);
-			//construct.append_attribute("construction_time").set_value(Utils::TimeToString(cell->GetConstructionTime()).c_str());
+			construct.append_attribute("construction_begin").set_value(Utils::TimeToString(info.constructionBegin).c_str());
+			construct.append_attribute("construction_duration").set_value(Utils::TimeToString(info.constructionDuration).c_str());
 		}
 	}
 

@@ -60,6 +60,9 @@ bool AppDelegate::applicationDidFinishLaunching()
 	// ready to unload the SplashScreen
 	splashScreenScene->autorelease();
 
+	// load game info
+	GameInfo::Instance().ParseXml("gameInfo.xml");
+
 	// load game data
 	WorldLoader::LoadGameInfo();
 	WorldLoader::LoadGameState();
