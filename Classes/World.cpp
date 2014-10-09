@@ -103,11 +103,6 @@ void World::Update()
 {
 	Utils::GameTime time = Utils::GetGameTime();
 
-	for (Cell::Ptr cell : _cells)
-	{
-		cell->Update(time);
-	}
-
 	TaskManager::Instance().UpdateToTime(time);
 }
 

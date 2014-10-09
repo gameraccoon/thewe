@@ -26,17 +26,17 @@ LOCAL_SRC_FILES := hellocpp/main.cpp \
 				   	../../Classes/Color.cpp \
 				   	../../Classes/Drawable.cpp \
 				   	../../Classes/EditorLayer.cpp \
-				   	../../Classes/FileUtils.cpp \
 				   	../../Classes/GameInfo.cpp \
 				   	../../Classes/GameScene.cpp \
 				   	../../Classes/Log.cpp \
 				   	../../Classes/LuaBindings.cpp \
 				   	../../Classes/LuaInstance.cpp \
-				   	../../Classes/MessageManager.cpp \
-				   	../../Classes/MessageWidget.cpp \
 				   	../../Classes/MainMenuScene.cpp \
 				   	../../Classes/MapGuiLayer.cpp \
 				   	../../Classes/MapProjector.cpp \
+				   	../../Classes/MessageManager.cpp \
+				   	../../Classes/MessageWidget.cpp \
+				   	../../Classes/MiscUtils.cpp \
 				   	../../Classes/NetCellWidget.cpp \
 				   	../../Classes/ProgressBar.cpp \
 				   	../../Classes/Region.cpp \

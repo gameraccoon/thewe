@@ -25,25 +25,23 @@ public:
 
 		float morale;
 		float contentment;
-		float constructionProgress;
+		Utils::GameTime constructionBegin;
+		Utils::GameTime constructionDuration;
 		
 		int cash;
 		int membersCount;
-
-		Info(void) : constructionProgress(0)
-		{}
 	};
 
 	typedef std::shared_ptr<Cell> Ptr;
 	typedef std::weak_ptr<Cell> WeakPtr;
 
 public:
-	Cell(const Info &info, Utils::GameTime constructionTime);
+	Cell(const Info &info);
 
 	/**
 	 * Create Cell and return a smart ptr
 	 */
-	static Ptr Create(const Info &info, Utils::GameTime constructionTime);
+	static Ptr Create(const Info &info);
 	
 	/**
 	 * Adds new child to the cell
@@ -67,20 +65,19 @@ public:
 	*/
 	Info& GetInfo(void);
 
-	Utils::GameTime GetConstructionTime(void) const;
-	
-	/** Updated cell's state */
-	void Update(float deltatime);
-
 	void AddCurrentTask(Task::WeakPtr currentTask);
 	Task::WeakPtr getCurrentTask() const;
 
-	bool IsCurrentTaskPresented(void) const;
+	bool IsCurrentTaskExists(void) const;
 
 	/** Add completed task */
 	void AddCompletedTask(const Task::CompletedTaskInfo& completedTask);
 
 	unsigned int GetUid(void) const;
+
+	void UpdateToTime(Utils::GameTime time);
+
+	float GetConstructionProgress(Utils::GameTime time) const;
 
 private:
 
@@ -101,8 +98,6 @@ private:
 	Info _info;
 
 	State _state;
-
-	Utils::GameTime _constructionTime;
 
 	unsigned int _uid;
 

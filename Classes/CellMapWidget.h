@@ -38,6 +38,8 @@ private:
 	cocos2d::Sprite *_cellMapSprite;
 	RoundProgressBar *_cellMapTaskProgressBar;
 	RoundProgressBar *_constructionProgress;
+
+	Cell::State _lastCellState;
 };
 
 #endif

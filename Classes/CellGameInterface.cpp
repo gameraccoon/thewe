@@ -218,7 +218,7 @@ void CellMenuSelector::_MenuInputListener(cocos2d::Ref *sender)
 	switch (tag)
 	{
 	case CELL_OPEN_TASKS:
-		if (_cell.lock()->IsCurrentTaskPresented())
+		if (_cell.lock()->IsCurrentTaskExists())
 			menu = new CellTaskInfoMenu(_cell, this);
 		else
 			menu = new CellTasksScreen(_cell, this);

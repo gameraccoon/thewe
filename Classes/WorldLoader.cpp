@@ -43,11 +43,11 @@ static void LoadCellsRecursively(pugi::xml_node root, pugi::xml_node parent_node
 		pugi::xml_node construct = child.child("Construction");
 		if (construct)
 		{
-			info.constructionProgress = construct.attribute("construction_progress").as_float();
+			//info.constructionBegin = construct.attribute("construction_begin").as_float();
 			constructionTime = Utils::StringToTime(construct.attribute("construction_time").as_string());
 		}
 
-		Cell::Ptr cell = Cell::Create(info, constructionTime);
+		Cell::Ptr cell = Cell::Create(info);
 		World::Instance().AddCell(cell);
 		parent->AddChild(cell);
 
@@ -283,11 +283,11 @@ bool WorldLoader::LoadGameState(void)
 			pugi::xml_node construct = cell_root.child("Construction");
 			if (construct)
 			{
-				info.constructionProgress = construct.attribute("construction_progress").as_float();
+				//info.constructionProgress = construct.attribute("construction_progress").as_float();
 				constructionTime = Utils::StringToTime(construct.attribute("construction_time").as_string());
 			}
 
-			Cell::Ptr cell = Cell::Create(info, constructionTime);
+			Cell::Ptr cell = Cell::Create(info);
 			World::Instance().AddCell(cell);
 
 			pugi::xml_node tasks = cell_root.child("Tasks");
@@ -372,7 +372,7 @@ bool WorldLoader::SaveGameState(void)
 			}
 		}
 
-		if (cell->IsCurrentTaskPresented())
+		if (cell->IsCurrentTaskExists())
 		{
 			Task::Ptr task = cell->getCurrentTask().lock();
 			std::string currentTaskId = task->GetInfo()->id;
@@ -386,8 +386,8 @@ bool WorldLoader::SaveGameState(void)
 		if (info.state == Cell::State::CONSTRUCTION)
 		{
 			pugi::xml_node construct = cell_node.append_child("Construction");
-			construct.append_attribute("construction_progress").set_value(info.constructionProgress);
-			construct.append_attribute("construction_time").set_value(Utils::TimeToString(cell->GetConstructionTime()).c_str());
+			//construct.append_attribute("construction_progress").set_value(info.constructionProgress);
+			//construct.append_attribute("construction_time").set_value(Utils::TimeToString(cell->GetConstructionTime()).c_str());
 		}
 	}
 

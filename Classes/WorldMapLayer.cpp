@@ -121,9 +121,9 @@ void WorldMapLayer::SetNextCellParent(Cell::WeakPtr parent)
 	_nextCellParent = parent;
 }
 
-void WorldMapLayer::CreateCell(const Cell::Info &info, Cell::State state, Utils::GameTime constructionTime)
+void WorldMapLayer::CreateCell(const Cell::Info &info, Cell::State state)
 {
-	Cell::Ptr cell = Cell::Create(info, constructionTime);
+	Cell::Ptr cell = Cell::Create(info);
 	World::Instance().AddCell(cell);
 	
 	if (info.parent)
@@ -398,26 +398,29 @@ void WorldMapLayer::_OnTownSelect(Town::WeakPtr town)
 			info.morale = GameInfo::Instance().GetFloat("CELL_STARTUP_MORALE");
 			info.contentment = GameInfo::Instance().GetFloat("CELL_STARTUP_CONTENTMENT");
 			info.membersCount = GameInfo::Instance().GetInt("CELL_STARTUP_MEMBERS");
-
-			CreateCell(info, Cell::READY, 0.0f);
+			info.constructionBegin = Utils::GetGameTime();
+			info.constructionDuration = GameInfo::Instance().GetFloat("CELL_CONSTRUCTION_TIME");
+			CreateCell(info, Cell::READY);
 
 			World::Instance().SetFirstLaunch(false);
 		}
 		else if (!_nextCellParent.expired())
-		{			
+		{
 			Cell::Info info;
 			info.parent = _nextCellParent.lock().get();
-			info.town = town;
-			info.location = town.lock()->GetLocation();
-			info.cash = GameInfo::Instance().GetInt("CELL_STARTUP_MONEY");
-			info.morale = GameInfo::Instance().GetFloat("CELL_STARTUP_MORALE");
-			info.contentment = GameInfo::Instance().GetFloat("CELL_STARTUP_CONTENTMENT");
-			info.membersCount = GameInfo::Instance().GetInt("CELL_STARTUP_MEMBERS");
 
 			if (info.parent->GetInfo().cash >= GameInfo::Instance().GetInt("CELL_SPINOFF_CASH_PRICE") &&
 				info.parent->GetInfo().membersCount >= GameInfo::Instance().GetInt("CELL_SPINOFF_MEMBERS_PRICE"))
 			{
-				CreateCell(info, Cell::CONSTRUCTION, GameInfo::Instance().GetFloat("CELL_CONSTRUCTION_TIME"));
+				info.town = town;
+				info.location = town.lock()->GetLocation();
+				info.cash = GameInfo::Instance().GetInt("CELL_STARTUP_MONEY");
+				info.morale = GameInfo::Instance().GetFloat("CELL_STARTUP_MORALE");
+				info.contentment = GameInfo::Instance().GetFloat("CELL_STARTUP_CONTENTMENT");
+				info.membersCount = GameInfo::Instance().GetInt("CELL_STARTUP_MEMBERS");
+				info.constructionBegin = Utils::GetGameTime();
+				info.constructionDuration = GameInfo::Instance().GetFloat("CELL_CONSTRUCTION_TIME");
+				CreateCell(info, Cell::CONSTRUCTION);
 
 				info.parent->GetInfo().cash -= GameInfo::Instance().GetInt("CELL_SPINOFF_CASH_PRICE");
 				info.parent->GetInfo().membersCount -= GameInfo::Instance().GetInt("CELL_SPINOFF_MEMBERS_PRICE");

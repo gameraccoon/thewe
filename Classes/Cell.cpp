@@ -3,19 +3,23 @@
 #include "World.h"
 #include "Log.h"
 
-Cell::Cell(const Info &info, Utils::GameTime constructionTime)
+Cell::Cell(const Info &info)
 	: _info(info)
 	, _state(READY)
 	, _currentTask()
-	, _constructionTime(constructionTime)
 	, _uid(World::Instance().GetNewUid())
 {
+	if (_info.constructionDuration <= 0)
+	{
+		Log::Instance().writeError("Construction duration less or equals than zero");
+	}
+
 	_CheckValues();
 }
 
-Cell::Ptr Cell::Create(const Info &info, Utils::GameTime constructionTime)
+Cell::Ptr Cell::Create(const Info &info)
 {
-	return std::make_shared<Cell>(info, constructionTime);
+	return std::make_shared<Cell>(info);
 }
 
 void Cell::AddChild(Cell::Ptr cell)
@@ -62,18 +66,12 @@ Cell::Info& Cell::GetInfo(void)
 	return _info;
 }
 
-Utils::GameTime Cell::GetConstructionTime(void) const
+void Cell::UpdateToTime(Utils::GameTime time)
 {
-	return _constructionTime;
-}
-
-void Cell::Update(float deltatime)
-{
-	/*
-	_UpdateCash(deltatime);
-	_UpdateMorale(deltatime);
-	_UpdateContentment(deltatime);
-	*/
+	if (_info.state == CONSTRUCTION && time > _info.constructionBegin + _info.constructionDuration)
+	{
+		_info.state = READY;
+	}
 
 	_CheckValues();
 }
@@ -105,7 +103,7 @@ Task::WeakPtr Cell::getCurrentTask() const
 	return _currentTask;
 }
 
-bool Cell::IsCurrentTaskPresented(void) const
+bool Cell::IsCurrentTaskExists(void) const
 {
 	return _currentTask.use_count() > 0;
 }
@@ -146,4 +144,9 @@ void Cell::_CheckValues() const
 	{
 		Log::Instance().writeWarning("Dead reference to town");
 	}
+}
+
+float Cell::GetConstructionProgress(Utils::GameTime time) const
+{
+	return 1.0f - ((float)((_info.constructionBegin + _info.constructionDuration) - time)) / ((float)_info.constructionDuration);
 }

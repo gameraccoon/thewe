@@ -42,30 +42,25 @@ bool CellMapWidget::init(void)
 
 void CellMapWidget::update(float dt)
 {
+	Utils::GameTime currentTime = Utils::GetGameTime();
+	_cell->UpdateToTime(currentTime);
 	if (_cell->GetInfo().state == Cell::CONSTRUCTION)
 	{
-		if (_cell->GetConstructionTime() > _cell->GetInfo().constructionProgress)
-		{
-			_cell->GetInfo().constructionProgress += dt;
-			float progress = (_cell->GetInfo().constructionProgress / _cell->GetConstructionTime()) * 100.0f;
-			_constructionProgress->SetProgressImmediately(progress);
-
-			_constructionProgress->setVisible(true);
-			_cellMapSprite->setVisible(false);
-		}
-		else
-		{
-			_cell->GetInfo().state = Cell::READY;
-			MessageManager::Instance().SendGameMessage("Cell created");
-			removeChild(_constructionProgress);
-		}
+		_constructionProgress->SetProgressImmediately(_cell->GetConstructionProgress(currentTime) * 100.0f);
+		_constructionProgress->setVisible(true);
+		_cellMapSprite->setVisible(false);
+		_lastCellState = Cell::CONSTRUCTION;
 	}
-	if (_cell->GetInfo().state == Cell::READY)
+	else if (_cell->GetInfo().state == Cell::READY && _lastCellState == Cell::CONSTRUCTION)
 	{
+		MessageManager::Instance().SendGameMessage("Cell created");
+		removeChild(_constructionProgress);
+		_constructionProgress->setVisible(false);
 		_cellMapSprite->setVisible(true);
+		_lastCellState = Cell::READY;
 	}
-	
-	if (_cell->IsCurrentTaskPresented())
+
+	if (_cell->IsCurrentTaskExists())
 	{
 		Task::Ptr task = _cell->getCurrentTask().lock();
 		
