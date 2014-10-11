@@ -3,6 +3,8 @@
 
 #include "CellGameInterface.h"
 
+class CellMapImage;
+
 class CellMapWidget : public cocos2d::Node
 {
 public:
@@ -35,7 +37,7 @@ private:
 
 	int _projectorUid;
 
-	cocos2d::Sprite *_cellMapSprite;
+	CellMapImage *_cellMapSprite;
 	RoundProgressBar *_cellMapTaskProgressBar;
 	RoundProgressBar *_constructionProgress;
 

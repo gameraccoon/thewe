@@ -35,10 +35,14 @@ public:
 	Cell::Ptr GetInvestigationRoot(void) const;
 	BrunchBundle GetRootBrunchBundle(void);
 
+	int GetUid(void) const;
+
 private:
 	Cell::WeakPtr _investigationRoot;
 
 	BrunchBundle _brunchRoot;
+
+	int _uid;
 };
 
 #endif

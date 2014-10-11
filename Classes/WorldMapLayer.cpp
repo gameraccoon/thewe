@@ -87,12 +87,49 @@ bool WorldMapLayer::init(void)
 	_cellMenu->autorelease();
 	addChild(_cellMenu, Z_CELL_MENU);
 
-	this->setTouchEnabled(true);
-	this->setKeyboardEnabled(true);
+	setTouchEnabled(true);
+	setKeyboardEnabled(true);
+	scheduleUpdate();
 
 	_UpdateNetwork();
 
 	return true;
+}
+
+void WorldMapLayer::update(float dt)
+{
+	// check for widgets existance and create new if needed
+	for (Investigator::Ptr investigator : World::Instance().GetInvestigators())
+	{
+		if (!getChildByTag(investigator->GetUid()))
+		{
+			InvestigatorMapWidget *widget = _CreateInvestigatorWidget(investigator);
+			addChild(widget);
+			_investigatorWidgetsList.push_back(widget);
+		}
+	}
+
+	// check for model existance and delete widget if needed
+	for (InvestigatorMapWidget *widget : _investigatorWidgetsList)
+	{
+		Investigator::Ptr existed = widget->GetInvestigator();
+		bool founded = false;
+
+		for (Investigator::Ptr investigator : World::Instance().GetInvestigators())
+		{
+			if (existed == investigator)
+			{
+				founded = true;
+				break;
+			}
+		}
+
+		if (!founded)
+		{
+			removeChild(widget);
+			delete widget;
+		}
+	}
 }
 
 void WorldMapLayer::SetMapInputEnabled(bool isEnabled)
@@ -306,6 +343,22 @@ TownMapWidget* WorldMapLayer::_CreateTownWidget(Town::Ptr town)
 	return widget;
 }
 
+InvestigatorMapWidget* WorldMapLayer::_CreateInvestigatorWidget(Investigator::Ptr investigator)
+{
+	InvestigatorMapWidget *widget = new InvestigatorMapWidget(investigator);
+
+	Cell::Ptr root = investigator->GetInvestigationRoot();
+
+	int uid = _mapProjector->AddMapPart(Drawable::CastFromCocos(widget), root->GetInfo().location, Vector2(0.0f, 0.0f), 1.0f, true);
+	_mapProjector->Update();
+
+	widget->retain();
+	widget->setTag(investigator->GetUid());
+	widget->SetProjectorUid(uid);
+
+	return widget;
+}
+
 Region::WeakPtr WorldMapLayer::_GetRegionUnderPoint(const Vector2& point) const
 {
 	Vector2 projectedClickPoint = _mapProjector->ProjectOnMap(point);
@@ -330,7 +383,7 @@ Cell::WeakPtr WorldMapLayer::_GetCellUnderPoint(const Vector2& point) const
 	for (CellMapWidget *widget : _cellWidgetsList)
 	{
 		Cell::Ptr cell = widget->GetCell();
-		if (cell->GetInfo().state == Cell::CONSTRUCTION)
+		if (cell->GetInfo().state != Cell::READY)
 		{
 			continue;
 		}

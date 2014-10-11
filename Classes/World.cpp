@@ -42,6 +42,10 @@ void World::AddTown(Town::Ptr cell)
 
 void World::AddInvestigatorByCell(Cell::Ptr investigationRoot)
 {
+	Investigator::Ptr investigator = Investigator::Create((Cell::WeakPtr)investigationRoot);
+	investigator->BeginInvestigation();
+
+	_investigators.push_back(investigator);
 }
 
 void World::AddInvestigatorByInfo(const Cell::Info &cellInfo)
@@ -123,6 +127,11 @@ const World::Towns& World::GetTowns() const
 	return _towns;
 }
 
+const World::Investigators& World::GetInvestigators(void) const
+{
+	return _investigators;
+}
+
 Utils::GameTime World::GetWorldTime() const
 {
 	return _worldTime;
@@ -131,6 +140,11 @@ Utils::GameTime World::GetWorldTime() const
 void World::Update()
 {
 	Utils::GameTime time = Utils::GetGameTime();
+
+	for (Investigator::Ptr investigator : _investigators)
+	{
+		investigator->UpdateToTime(time);
+	}
 
 	TaskManager::Instance().UpdateToTime(time);
 }

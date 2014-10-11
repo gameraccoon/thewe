@@ -1,6 +1,82 @@
 #include "CellMapWidget.h"
 
 #include "MessageManager.h"
+#include "Log.h"
+
+class CellMapImage : public cocos2d::Node
+{
+public:
+	CellMapImage(Cell::State state) : _state(state)
+	{
+		init();
+		SwitchState(_state);
+	}
+
+	virtual bool init(void) override
+	{
+		_stateNormal = cocos2d::Sprite::create("cell.png");
+		_stateNormal->setPosition(0.0f, 0.0f);
+		_stateNormal->setVisible(false);
+
+		_stateArrested = cocos2d::Sprite::create("cell_arrested.png");
+		_stateArrested->setPosition(0.0f, 0.0f);
+		_stateArrested->setVisible(false);
+
+		addChild(_stateNormal, 0);
+		addChild(_stateArrested, 1);
+
+		return true;
+	}
+
+	void SwitchState(Cell::State state)
+	{
+		_state = state;
+
+		switch (_state)
+		{
+		case Cell::CONSTRUCTION:
+		case Cell::READY:
+			_stateNormal->setVisible(true);
+			_stateArrested->setVisible(false);
+			break;
+
+		case Cell::ARRESTED:
+			_stateNormal->setVisible(false);
+			_stateArrested->setVisible(true);
+			break;
+
+		default:
+			Log::Instance().writeWarning("Unknown cell state");
+			break;
+		}
+	}
+
+	cocos2d::Sprite* GetCurrentStateImage(void) const
+	{
+		switch (_state)
+		{
+		case Cell::CONSTRUCTION:
+		case Cell::READY:
+			return _stateNormal;
+			break;
+
+		case Cell::ARRESTED:
+			return _stateArrested;
+			break;
+
+		default:
+			Log::Instance().writeWarning("Unknown cell state");
+			return nullptr;
+			break;
+		}
+	}
+
+private:
+	cocos2d::Sprite *_stateNormal;
+	cocos2d::Sprite *_stateArrested;
+
+	Cell::State _state;
+};
 
 CellMapWidget::CellMapWidget(Cell::Ptr cell)
 	: _cell(cell)
@@ -9,6 +85,7 @@ CellMapWidget::CellMapWidget(Cell::Ptr cell)
 	, _hitAreaEndX(1.0f)
 	, _hitAreaEndY(1.0f)
 	, _projectorUid(-1)
+	, _lastCellState(Cell::READY)
 	, _cellMapSprite(nullptr)
 	, _constructionProgress(nullptr)
 {
@@ -17,9 +94,10 @@ CellMapWidget::CellMapWidget(Cell::Ptr cell)
 
 bool CellMapWidget::init(void)
 {
-	_cellMapSprite = cocos2d::Sprite::create("cell.png");
+	_cellMapSprite = new CellMapImage(_cell->GetInfo().state);
 	_cellMapSprite->setPosition(0.0f, 0.0f);
 	_cellMapSprite->setScale(1.0f);
+	_cellMapSprite->autorelease();
 
 	_cellMapTaskProgressBar = new RoundProgressBar("cell_overlay.png", 1.0f);
 	_cellMapTaskProgressBar->SetProgressImmediately(0.0f);
@@ -58,6 +136,11 @@ void CellMapWidget::update(float dt)
 		_constructionProgress->setVisible(false);
 		_cellMapSprite->setVisible(true);
 		_lastCellState = Cell::READY;
+	}
+	else if (_cell->GetInfo().state == Cell::ARRESTED && _lastCellState == Cell::READY)
+	{
+		_cellMapSprite->SwitchState(Cell::ARRESTED);
+		_lastCellState = Cell::ARRESTED;
 	}
 
 	if (_cell->IsCurrentTaskExists())
@@ -103,7 +186,7 @@ int CellMapWidget::GetProjectorUid(void) const
 
 const cocos2d::Rect& CellMapWidget::GetCellRect(void) const
 {
-	return _cellMapSprite->getTextureRect();
+	return _cellMapSprite->GetCurrentStateImage()->getTextureRect();
 }
 
 Cell::Ptr CellMapWidget::GetCell(void) const

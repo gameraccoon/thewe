@@ -21,6 +21,7 @@ public:
 	~WorldMapLayer(void);
 
 	virtual bool init(void) override;
+	virtual void update(float dt) override;
 
 	void menuCloseCallback(cocos2d::Ref *Sender);
 
@@ -52,6 +53,8 @@ private:
 	typedef CellWidgetsList::iterator CellWidgetsIter;
 	typedef std::vector<TownMapWidget *> TownWidgetsList;
 	typedef TownWidgetsList::iterator TownWidgetsIter;
+	typedef std::vector<InvestigatorMapWidget *> InvestigatorWidgetsList;
+	typedef InvestigatorWidgetsList::iterator InvestigatorWidgetsIter;
 
 private:
 	GameScene *_gameScene;
@@ -64,6 +67,7 @@ private:
 	
 	CellMapWidget* _CreateCellWidget(Cell::Ptr cell);
 	TownMapWidget* _CreateTownWidget(Town::Ptr town);
+	InvestigatorMapWidget* _CreateInvestigatorWidget(Investigator::Ptr investigator);
 
 	void _UpdateNetwork();
 	void _RecursiveUpdateNetworkVisualiser(cocos2d::DrawNode *visualiser, Cell::WeakPtr cell);
@@ -73,6 +77,7 @@ private:
 
 	CellWidgetsList _cellWidgetsList;
 	TownWidgetsList _townWidgetsList;
+	InvestigatorWidgetsList _investigatorWidgetsList;
 
 	CellMenuSelector *_cellMenu;
 	cocos2d::Layer *_cellGameInterface;

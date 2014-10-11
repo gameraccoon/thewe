@@ -1,7 +1,10 @@
 #include "Investigator.h"
 
+#include "World.h"
+
 Investigator::Investigator(Cell::WeakPtr investigationRoot)
 	: _investigationRoot(investigationRoot)
+	, _uid(World::Instance().GetNewUid())
 {
 }
 
@@ -12,6 +15,9 @@ Investigator::Ptr Investigator::Create(Cell::WeakPtr investigationRoot)
 
 void Investigator::BeginInvestigation(void)
 {
+	_investigationRoot.lock()->GetInfo().state = Cell::ARRESTED;
+
+	// add investigation branches here
 }
 
 void Investigator::AbortInvestigation(void)
@@ -34,4 +40,9 @@ Cell::Ptr Investigator::GetInvestigationRoot(void) const
 Investigator::BrunchBundle Investigator::GetRootBrunchBundle(void)
 {
 	return _brunchRoot;
+}
+
+int Investigator::GetUid(void) const
+{
+	return _uid;
 }

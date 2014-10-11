@@ -14,8 +14,13 @@ public:
 
 	Investigator::Ptr GetInvestigator(void) const;
 
+	void SetProjectorUid(int uid);
+	int GetProjectorUid(void) const;
+
 public:
 	Investigator::Ptr _investigator;
+
+	int _projectorUid;
 };
 
 #endif

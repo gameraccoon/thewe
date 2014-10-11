@@ -20,6 +20,7 @@ public:
 	typedef std::vector<Region::Ptr> Regions;
 	typedef std::vector<Cell::Ptr> Cells;
 	typedef std::vector<Town::Ptr> Towns;
+	typedef std::vector<Investigator::Ptr> Investigators;
 
 public:
 	/** Removes all the regions */
@@ -28,6 +29,7 @@ public:
 	const Regions& GetRegions() const;
 	const Cells& GetCells() const;
 	const Towns& GetTowns() const;
+	const Investigators& GetInvestigators(void) const;
 
 	Utils::GameTime GetWorldTime() const;
 
@@ -57,6 +59,7 @@ private:
 	Regions _regions;
 	Cells _cells;
 	Towns _towns;
+	Investigators _investigators;
 
 	Utils::GameTime _worldTime;
 
