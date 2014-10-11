@@ -16,6 +16,7 @@ public:
 	virtual bool init(void) override;
 
 private:
+	virtual void update(float dt) override;
 	virtual void onKeyReleased(cocos2d::EventKeyboard::KeyCode key, cocos2d::Event *event) override;
 	void ShowLevel(int level);
 	void HideAllLevels();
@@ -23,7 +24,10 @@ private:
 	void _CellTouchInputListener(cocos2d::Ref *sender);
 
 private:
+	int _currentLevel;
 	CellsTree _cells;
+	cocos2d::DrawNode *_networkVisualiser;
+	bool _isInMooving;
 };
 
 #endif // CELLS_NET_LAYER_H

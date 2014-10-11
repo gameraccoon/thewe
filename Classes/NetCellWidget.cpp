@@ -88,3 +88,13 @@ int NetCellWidget::GetLevel()
 {
 	return _level;
 }
+
+void NetCellWidget::SetNextPosition(const Vector2& nextPos)
+{
+	_nextPosition = nextPos;
+}
+
+Vector2 NetCellWidget::GetNextPosition() const
+{
+	return _nextPosition;
+}

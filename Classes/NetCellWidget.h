@@ -19,6 +19,8 @@ public:
 	void RemoveChild(NetCellWidget* child);
 	void SetLevel(int level);
 	int GetLevel();
+	void SetNextPosition(const Vector2& nextPos);
+	Vector2 GetNextPosition() const;
 
 private:
 	virtual bool init() override;
@@ -29,5 +31,6 @@ private:
 	NetCellWidget* _parent;
 	std::vector<NetCellWidget*> _children;
 	int _level;
+	Vector2 _nextPosition;
 };
 #endif // NET_CELL_WIDGET_H

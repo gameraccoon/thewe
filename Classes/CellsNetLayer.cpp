@@ -2,8 +2,11 @@
 
 #include "World.h"
 #include "MessageManager.h"
+#include "MapGuiLayer.h"
+#include "WorldMapLayer.h"
 
 CellsNetLayer::CellsNetLayer()
+	: _currentLevel(-1)
 {
 	init();
 }
@@ -27,7 +30,7 @@ bool CellsNetLayer::init(void)
 		}
 	}
 
-	ShowLevel(2);
+	ShowLevel(1);
 
 	cocos2d::Menu *menu = cocos2d::Menu::createWithArray(menuItems);
 	menu->setPosition(0.0f, 0.0f);
@@ -36,19 +39,49 @@ bool CellsNetLayer::init(void)
 	setKeyboardEnabled(true);
 	setTouchEnabled(true);
 
+	scheduleUpdate();
+
+	_isInMooving = false;
+
 	return true;
+}
+
+void CellsNetLayer::update(float dt)
+{
+	// some updates
+	cocos2d::Layer::update(dt);
 }
 
 void CellsNetLayer::onKeyReleased(cocos2d::EventKeyboard::KeyCode key, cocos2d::Event *event)
 {
 	if (key == cocos2d::EventKeyboard::KeyCode::KEY_ESCAPE)
 	{
-		// Close self
+		// ToDo: improve this code
+		dynamic_cast<WorldMapLayer*>(getParent()->getParent())->SetMapInputEnabled(true);
+		this->removeFromParent();
+	}
+}
+
+void AddMovement(NetCellWidget *item, const cocos2d::Vec2& pos)
+{
+	float distance = (item->getPosition() - pos).length();
+	if (distance > 0)
+	{
+		cocos2d::MoveTo *move = cocos2d::MoveTo::create(1.0f, pos);
+		cocos2d::EaseElasticOut *ease_move = cocos2d::EaseElasticOut::create(move, distance);
+		item->stopAllActions();
+		item->runAction(ease_move);
+		item->SetNextPosition(pos);
 	}
 }
 
 void CellsNetLayer::ShowLevel(int level)
 {
+	if (level == _currentLevel)
+	{
+		return;
+	}
+
 	Vector2 screen = cocos2d::Director::getInstance()->getVisibleSize();
 	Vector2 origin = cocos2d::Director::getInstance()->getVisibleOrigin();
 
@@ -61,7 +94,7 @@ void CellsNetLayer::ShowLevel(int level)
 	for (auto cellIterator = levelIterators.first; cellIterator != levelIterators.second; ++cellIterator)
 	{
 		cellIterator->second->setVisible(true);
-		cellIterator->second->setPosition(basePoint);
+		AddMovement(cellIterator->second, basePoint);
 		basePoint.x += cellIterator->second->getBoundingBox().size.width + indentX;
 	}
 
@@ -70,23 +103,26 @@ void CellsNetLayer::ShowLevel(int level)
 	{
 		cellIterator->second->setVisible(true);
 		float xLocation = 0.0f;
-		for (auto child : cellIterator->second->GetChildren())
+		if (cellIterator->second->GetChildren().size() > 0)
 		{
-			xLocation += child->getPosition().x;
+			for (auto child : cellIterator->second->GetChildren())
+			{
+				xLocation += child->GetNextPosition().x;
+			}
+			xLocation /= cellIterator->second->GetChildren().size();
 		}
-		xLocation /= cellIterator->second->GetChildren().size();
 
-		cellIterator->second->setPosition(Vector2(xLocation, basePoint.y + 100.0f));
-		basePoint.x += cellIterator->second->getBoundingBox().size.width;
+		AddMovement(cellIterator->second, Vector2(xLocation, basePoint.y + 100.0f));
 	}
 
 	levelIterators = _cells.equal_range(level + 1);
 	for (auto cellIterator = levelIterators.first; cellIterator != levelIterators.second; ++cellIterator)
 	{
 		cellIterator->second->setVisible(true);
-		cellIterator->second->setPosition(Vector2(cellIterator->second->GetParent()->getPosition().x, basePoint.y - 100.0f));
-		basePoint.x += cellIterator->second->getBoundingBox().size.width;
+		AddMovement(cellIterator->second, Vector2(cellIterator->second->GetParent()->GetNextPosition().x, basePoint.y - 100.0f));
 	}
+
+	_currentLevel = level;
 }
 
 void CellsNetLayer::HideAllLevels()
@@ -100,7 +136,6 @@ void CellsNetLayer::HideAllLevels()
 NetCellWidget* CellsNetLayer::RecursivelyCreateCellsNetwork(Cell::Ptr rootCell, cocos2d::Vector<cocos2d::MenuItem*>* menuItems, int deepness)
 {
 	NetCellWidget* rootCellWidget = NetCellWidget::create(rootCell, CC_CALLBACK_1(CellsNetLayer::_CellTouchInputListener, this));
-	//addChild(rootCellWidget);
 	menuItems->pushBack(rootCellWidget);
 	rootCellWidget->setVisible(false);
 	rootCellWidget->SetLevel(deepness);
