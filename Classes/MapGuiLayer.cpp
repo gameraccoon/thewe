@@ -203,6 +203,7 @@ void MapGuiLayer::UpdateMessagesPos()
 	for (auto message : _userMessages)
 	{
 		cocos2d::MoveTo *move = cocos2d::MoveTo::create(0.3f, position);
+		message.second->stopAllActions();
 		message.second->runAction(move);
 		position.y += -message.second->getContentSize().height - _messagesMargin.y;
 	}
