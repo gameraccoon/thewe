@@ -73,6 +73,8 @@ set(GAME_SRC
 	Classes/EditorLayer.cpp
 	Classes/GameInfo.cpp
 	Classes/GameScene.cpp
+	Classes/Investigator.cpp
+	Classes/InvestigatorMapWidget.cpp
 	Classes/Log.cpp
 	Classes/LuaBindings.cpp
 	Classes/LuaInstance.cpp
