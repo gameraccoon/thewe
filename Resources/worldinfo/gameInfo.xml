@@ -9,4 +9,6 @@
 	<Const name="CELL_STARTUP_CONTENTMENT" type="float" value="1.0" />
 
 	<Const name="CELL_CONSTRUCTION_TIME" type="float" value="15.0" />
+
+	<Const name="INVESTIGATION_DURATION" type="float" value="30" />
 </GameInfo>

@@ -8,6 +8,7 @@
 #include "Cell.h"
 #include "Task.h"
 #include "GameInfo.h"
+#include "World.h"
 
 template<>
 void LuaInstance::BindClass<Log>()
@@ -38,6 +39,15 @@ void LuaInstance::BindClass<GameInfo>()
 		.def("getBool", &GameInfo::GetBool)
 		.def("getFloat", &GameInfo::GetFloat)
 		.def("getInt", &GameInfo::GetInt)
+	];
+}
+
+template<>
+void LuaInstance::BindClass<World>()
+{
+	luabind::module(_luaState) [
+	luabind::class_<World>("WorldClass")
+		.def("AddInvestigatorByInfo", &World::AddInvestigatorByInfo)
 	];
 }
 
@@ -89,6 +99,12 @@ void LuaInstance::RegisterVariable<MessageManager>(const char* name, MessageMana
 
 template<>
 void LuaInstance::RegisterVariable<GameInfo>(const char* name, GameInfo* value)
+{
+	luabind::globals(_luaState)[name] = value;
+}
+
+template<>
+void LuaInstance::RegisterVariable<World>(const char* name, World* value)
 {
 	luabind::globals(_luaState)[name] = value;
 }

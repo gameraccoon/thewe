@@ -6,6 +6,7 @@
 #include "Region.h"
 #include "Cell.h"
 #include "Town.h"
+#include "Investigator.h"
 #include "MiscUtils.h"
 
 class World
@@ -33,9 +34,12 @@ public:
 	void AddRegion(Region::Ptr region);
 	void AddCell(Cell::Ptr cell);
 	void AddTown(Town::Ptr town);
+	void AddInvestigatorByCell(Cell::Ptr investigationRoot);
+	void AddInvestigatorByInfo(const Cell::Info &cellInfo);
 
 	const Region::WeakPtr GetRegionByName(const std::string &name) const;
 	const Town::WeakPtr GetTownByName(const std::string &name) const;
+	const Cell::WeakPtr GetCellByInfo(const Cell::Info &info) const;
 	const Cell::WeakPtr GetRootCell(void) const;
 
 	void Update();

@@ -37,6 +37,9 @@
     <Filter Include="Classes\GameCell\Model">
       <UniqueIdentifier>{178217b1-9fb0-47de-8475-6f91fb755872}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Classes\GameMap\Model">
+      <UniqueIdentifier>{98697692-000d-4656-ad66-55f44742be61}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -207,9 +210,6 @@
     <ClCompile Include="..\Classes\WorldLoader.cpp">
       <Filter>Classes\GameMap</Filter>
     </ClCompile>
-    <ClCompile Include="..\Classes\World.cpp">
-      <Filter>Classes\GameMap</Filter>
-    </ClCompile>
     <ClCompile Include="..\Classes\MapProjector.cpp">
       <Filter>Classes\GameMap</Filter>
     </ClCompile>
@@ -228,12 +228,6 @@
     <ClCompile Include="..\Classes\Log.cpp">
       <Filter>Classes\Utils</Filter>
     </ClCompile>
-    <ClCompile Include="..\Classes\LuaBindings.cpp">
-      <Filter>Classes\Utils</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Classes\LuaInstance.cpp">
-      <Filter>Classes\Utils</Filter>
-    </ClCompile>
     <ClCompile Include="..\Classes\ProgressBar.cpp">
       <Filter>Classes\Utils</Filter>
     </ClCompile>
@@ -242,15 +236,6 @@
     </ClCompile>
     <ClCompile Include="..\Classes\TransitionZoomFade.cpp">
       <Filter>Classes\Utils</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Classes\Region.cpp">
-      <Filter>Classes\GameMap</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Classes\TaskManager.cpp">
-      <Filter>Classes\GameCell</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Classes\Town.cpp">
-      <Filter>Classes\GameMap</Filter>
     </ClCompile>
     <ClCompile Include="..\Classes\UserMessage.cpp">
       <Filter>Classes\GameInterface</Filter>
@@ -299,6 +284,30 @@
     </ClCompile>
     <ClCompile Include="..\Classes\MiscUtils.cpp">
       <Filter>Classes\Utils</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\Investigator.cpp">
+      <Filter>Classes\GameCell\Model</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\TaskManager.cpp">
+      <Filter>Classes\GameCell\Model</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\Region.cpp">
+      <Filter>Classes\GameMap\Model</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\Town.cpp">
+      <Filter>Classes\GameMap\Model</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\World.cpp">
+      <Filter>Classes\GameMap\Model</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\InvestigatorMapWidget.cpp">
+      <Filter>Classes\GameCell</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\LuaInstance.cpp">
+      <Filter>Classes</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\LuaBindings.cpp">
+      <Filter>Classes</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -401,9 +410,6 @@
     <ClInclude Include="..\Classes\WorldLoader.h">
       <Filter>Classes\GameMap</Filter>
     </ClInclude>
-    <ClInclude Include="..\Classes\World.h">
-      <Filter>Classes\GameMap</Filter>
-    </ClInclude>
     <ClInclude Include="..\Classes\MapProjector.h">
       <Filter>Classes\GameMap</Filter>
     </ClInclude>
@@ -422,9 +428,6 @@
     <ClInclude Include="..\Classes\Log.h">
       <Filter>Classes\Utils</Filter>
     </ClInclude>
-    <ClInclude Include="..\Classes\LuaInstance.h">
-      <Filter>Classes\Utils</Filter>
-    </ClInclude>
     <ClInclude Include="..\Classes\ProgressBar.h">
       <Filter>Classes\Utils</Filter>
     </ClInclude>
@@ -436,15 +439,6 @@
     </ClInclude>
     <ClInclude Include="..\Classes\TransitionZoomFade.h">
       <Filter>Classes\Utils</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Classes\Region.h">
-      <Filter>Classes\GameMap</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Classes\TaskManager.h">
-      <Filter>Classes\GameCell</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Classes\Town.h">
-      <Filter>Classes\GameMap</Filter>
     </ClInclude>
     <ClInclude Include="..\Classes\UserMessage.h">
       <Filter>Classes\GameInterface</Filter>
@@ -493,6 +487,27 @@
     </ClInclude>
     <ClInclude Include="..\Classes\MiscUtils.h">
       <Filter>Classes\Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Investigator.h">
+      <Filter>Classes\GameCell\Model</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\InvestigatorMapWidget.h">
+      <Filter>Classes\GameCell</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\TaskManager.h">
+      <Filter>Classes\GameCell\Model</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Region.h">
+      <Filter>Classes\GameMap\Model</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Town.h">
+      <Filter>Classes\GameMap\Model</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\World.h">
+      <Filter>Classes\GameMap\Model</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\LuaInstance.h">
+      <Filter>Classes</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

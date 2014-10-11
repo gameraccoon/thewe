@@ -5,6 +5,7 @@
 #include "Log.h"
 #include "LuaInstance.h"
 #include "GameInfo.h"
+#include "World.h"
 
 #include <cocos2d.h>
 
@@ -19,6 +20,7 @@ TaskManager::TaskManager()
 	_luaScript->BindClass<Log>();
 	_luaScript->BindClass<MessageManager>();
 	_luaScript->BindClass<GameInfo>();
+	_luaScript->BindClass<World>();
 	_luaScript->BindClass<Cell::Info>();
 	_luaScript->BindClass<const Task::Info>();
 	_luaScript->BindClass<Vector2>();
@@ -26,6 +28,7 @@ TaskManager::TaskManager()
 	_luaScript->RegisterVariable("Log", &(Log::Instance()));
 	_luaScript->RegisterVariable("MessageManager", &(MessageManager::Instance()));
 	_luaScript->RegisterVariable("GameInfo", &(GameInfo::Instance()));
+	_luaScript->RegisterVariable("World", &(World::Instance()));
 	std::string script = cocos2d::FileUtils::getInstance()->getStringFromFile(fullPath);
 
 	_luaScript->ExecScript(script.c_str());

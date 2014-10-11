@@ -40,6 +40,19 @@ void World::AddTown(Town::Ptr cell)
 	_towns.push_back(cell);
 }
 
+void World::AddInvestigatorByCell(Cell::Ptr investigationRoot)
+{
+}
+
+void World::AddInvestigatorByInfo(const Cell::Info &cellInfo)
+{
+	Cell::WeakPtr cell = GetCellByInfo(cellInfo);
+	if (!cell.expired())
+	{
+		AddInvestigatorByCell(cell.lock());
+	}
+}
+
 const Region::WeakPtr World::GetRegionByName(const std::string &name) const
 {
 	for (Region::Ptr region : _regions)
@@ -64,6 +77,22 @@ const Town::WeakPtr World::GetTownByName(const std::string &name) const
 	}
 
 	return Town::WeakPtr();
+}
+
+const Cell::WeakPtr World::GetCellByInfo(const Cell::Info &info) const
+{
+	Cell *parent = info.parent;
+	Town::Ptr town = info.town.lock();
+
+	for (Cell::Ptr cell : _cells)
+	{
+		if (cell->GetInfo().parent == parent && cell->GetInfo().town.lock() == town)
+		{
+			return cell;
+		}
+	}
+
+	return Cell::WeakPtr();
 }
 
 const Cell::WeakPtr World::GetRootCell(void) const

@@ -10,6 +10,7 @@
 #include "CellGameInterface.h"
 #include "CellMapWidget.h"
 #include "TownMapWidget.h"
+#include "InvestigatorMapWidget.h"
 
 class GameScene;
 

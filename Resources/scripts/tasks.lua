@@ -54,4 +54,10 @@ function TestMissionAbort(cellInfo, taskInfo)
 	cellInfo.contantement = cellInfo.contantement - (cellInfo.contantement * 0.2)
 end
 
+function  MissionFailInvestigatorTest(cellInfo, taskInfo)
+	SayFailed(taskInfo.id)
+	MessageManager:sendMessage("Investigation launched")
+	World:AddInvestigatorByInfo(cellInfo)
+end
+
 Log:log("Script task.lua initalization finished")

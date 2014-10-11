@@ -13,7 +13,8 @@ public:
 	enum State
 	{
 		CONSTRUCTION,
-		READY,
+		ARRESTED,
+		READY
 	};
 
 	struct Info
