@@ -66,7 +66,7 @@ void TaskManager::UpdateToTime(Utils::GameTime worldTime)
 				{
 					// call lua function that calculate status of the task
 					bool isSuccess = luabind::call_function<bool>(World::Instance().GetLuaInst()->GetLuaState()
-																  , "CheckStatus"
+																  , "CheckTaskStatus"
 																  , cellInfo
 																  , taskInfo
 																  , 0);
@@ -138,8 +138,15 @@ TaskManager::TasksList TaskManager::GetAvailableTasks(Cell::WeakPtr cell) const
 
 	for (const auto& pair : _allTasks)
 	{
-		// ToDo: add some checks
-		availableTasks.push_back(&pair.second);
+		bool add = luabind::call_function<bool>(World::Instance().GetLuaInst()->GetLuaState()
+													  , "IsShowTaskInList"
+													  , cell.lock()->GetInfo()
+													  , pair.second
+													  , 0);
+		if (add)
+		{
+			availableTasks.push_back(&pair.second);
+		}
 	}
 
 	return availableTasks;

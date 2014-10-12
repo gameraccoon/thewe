@@ -1,7 +1,7 @@
 Log:log("Script task.lua initalization started")
 
 -- Определяем, считать задание выполненным или провеленным
-function CheckStatus(cellInfo, taskInfo)
+function CheckTaskStatus(cellInfo, taskInfo)
 	local membersIsEnough = cellInfo.membersCount > taskInfo.severity * 10.0
 	local moraleIsNorm = math.abs(cellInfo.morale - taskInfo.moraleLevel) < 0.5
 	return membersIsEnough and moraleIsNorm
@@ -69,6 +69,11 @@ function CheatMissionSuccess(cellInfo, taskInfo)
 	SayCompleted("CheatMission")
 	cellInfo.membersCount = 100
 	cellInfo.cash = 100000
+end
+
+-- определяем будет ли показываться задание для данной ячейки
+function IsShowTaskInList(cellInfo, taskInfo)
+	return true
 end
 
 Log:log("Script task.lua initalization finished")
