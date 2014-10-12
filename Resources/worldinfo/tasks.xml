@@ -10,4 +10,5 @@
 	<Task Id="testTask8" Title="DefaultTask" Severity="0.4" Duration="30" MoralLevel="0.7" SuccessFn="TestMissionSuccess" FailFn="TestMissionFail" AbortFn="TestMissionAbort" />
 	<Task Id="testTask9" Title="DefaultTask" Severity="0.4" Duration="30" MoralLevel="0.7" SuccessFn="TestMissionSuccess" FailFn="TestMissionFail" AbortFn="TestMissionAbort" />
 	<Task Id="testTask10" Title="DefaultTask" Severity="0.4" Duration="30" MoralLevel="0.7" SuccessFn="TestMissionSuccess" FailFn="TestMissionFail" AbortFn="TestMissionAbort" />
+	<Task Id="cheatMission" Title="Cheat Mission" Severity="0.01" Duration="1" MoralLevel="0.5" SuccessFn="CheatMissionSuccess" FailFn="CheatMissionSuccess" AbortFn="TestMissionAbort" />
 </Tasks>

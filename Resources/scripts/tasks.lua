@@ -60,4 +60,10 @@ function  MissionFailInvestigatorTest(cellInfo, taskInfo)
 	World:AddInvestigatorByInfo(cellInfo)
 end
 
+function CheatMissionSuccess(cellInfo, taskInfo)
+	SayCompleted("CheatMission")
+	cellInfo.membersCount = 100
+	cellInfo.cash = 100000
+end
+
 Log:log("Script task.lua initalization finished")
