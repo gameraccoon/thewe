@@ -14,25 +14,9 @@ World::World()
 	: _worldTime(0.0f)
 	, _isGamePaused(false)
 	, _isFirstLaunch(true)
+	, _isLuaInited(false)
 {
-	std::string fullPath = cocos2d::FileUtils::getInstance()->fullPathForFilename("tasks.lua");
 	_luaScript = new LuaInstance();
-
-	_luaScript->BindClass<Log>();
-	_luaScript->BindClass<MessageManager>();
-	_luaScript->BindClass<GameInfo>();
-	_luaScript->BindClass<World>();
-	_luaScript->BindClass<Cell::Info>();
-	_luaScript->BindClass<const Task::Info>();
-	_luaScript->BindClass<Vector2>();
-
-	_luaScript->RegisterVariable("Log", &(Log::Instance()));
-	_luaScript->RegisterVariable("MessageManager", &(MessageManager::Instance()));
-	_luaScript->RegisterVariable("GameInfo", &(GameInfo::Instance()));
-	_luaScript->RegisterVariable("World", &(World::Instance()));
-	std::string script = cocos2d::FileUtils::getInstance()->getStringFromFile(fullPath);
-
-	_luaScript->ExecScript(script.c_str());
 }
 
 World::~World()
@@ -44,6 +28,35 @@ World& World::Instance()
 {
 	static World singleWorldMap;
 	return singleWorldMap;
+}
+
+void World::InitLuaContext()
+{
+	if (!_isLuaInited)
+	{
+		_isLuaInited = true;
+		std::string fullPath = cocos2d::FileUtils::getInstance()->fullPathForFilename("tasks.lua");
+
+		_luaScript->BindClass<Log>();
+		_luaScript->BindClass<MessageManager>();
+		_luaScript->BindClass<GameInfo>();
+		_luaScript->BindClass<World>();
+		_luaScript->BindClass<Cell::Info>();
+		_luaScript->BindClass<const Task::Info>();
+		_luaScript->BindClass<Vector2>();
+
+		_luaScript->RegisterVariable("Log", &(Log::Instance()));
+		_luaScript->RegisterVariable("MessageManager", &(MessageManager::Instance()));
+		_luaScript->RegisterVariable("GameInfo", &(GameInfo::Instance()));
+		_luaScript->RegisterVariable("World", &(World::Instance()));
+
+		std::string script = cocos2d::FileUtils::getInstance()->getStringFromFile(fullPath);
+		_luaScript->ExecScript(script.c_str());
+	}
+	else
+	{
+		Log::Instance().writeWarning("Trying to init Lua context twice");
+	}
 }
 
 void World::CleanupMapContent(void)

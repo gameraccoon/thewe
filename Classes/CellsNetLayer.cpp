@@ -19,7 +19,7 @@ bool CellsNetLayer::init(void)
 		return false;
 	}
 
-	// костылём добавляем клики объектам
+	// adding click events to cell widgets
 	cocos2d::Vector<cocos2d::MenuItem*> menuItems;
 
 	for (auto cell : World::Instance().GetCells())

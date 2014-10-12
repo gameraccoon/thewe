@@ -26,6 +26,7 @@ public:
 public:
 	/** Removes all the regions */
 	void CleanupMapContent(void);
+	void InitLuaContext();
 
 	const Regions& GetRegions() const;
 	const Cells& GetCells() const;
@@ -71,6 +72,7 @@ private:
 
 	bool _isGamePaused;
 	bool _isFirstLaunch;
+	bool _isLuaInited;
 
 	/*
 	 * Turn off useless operations

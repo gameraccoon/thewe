@@ -64,6 +64,7 @@ bool AppDelegate::applicationDidFinishLaunching()
 	GameInfo::Instance().ParseXml("gameInfo.xml");
 
 	// load game data
+	World::Instance().InitLuaContext();
 	WorldLoader::LoadGameInfo();
 	WorldLoader::LoadGameState();
 
