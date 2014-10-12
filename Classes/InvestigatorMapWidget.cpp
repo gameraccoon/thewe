@@ -22,12 +22,7 @@ void InvestigatorMapWidget::update(float dt)
 {
 	_investigationDrawer->clear();
 
-	UpdateInvestigationMap(_investigator->GetRootBranchBundle());
-}
-
-void InvestigatorMapWidget::UpdateInvestigationMap(const Investigator::BranchBundle &bundle)
-{
-	for (const Investigator::Branch &branch : bundle)
+	for (const Investigator::Branch &branch : _investigator->GetRootBranchBundle())
 	{
 		cocos2d::Vec2 from = branch.cellFrom->GetInfo().location;
 		cocos2d::Vec2 goal = branch.cellTo->GetInfo().location;
@@ -40,9 +35,11 @@ void InvestigatorMapWidget::UpdateInvestigationMap(const Investigator::BranchBun
 		end = _projector->ProjectOnScreen(end);
 
 		_investigationDrawer->drawSegment(from, end, 5.0f, cocos2d::Color4F(1.0f, 0.1f, 0.1f, 0.5f));
-
-		UpdateInvestigationMap(branch.childBrunches);
 	}
+}
+
+void InvestigatorMapWidget::UpdateInvestigationMap(const Investigator::BranchBundle &bundle)
+{
 }
 
 Investigator::Ptr InvestigatorMapWidget::GetInvestigator(void) const

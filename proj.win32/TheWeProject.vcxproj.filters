@@ -288,6 +288,9 @@
     <ClCompile Include="..\Classes\Investigator.cpp">
       <Filter>Classes\GameCell\Model</Filter>
     </ClCompile>
+    <ClCompile Include="..\Classes\TaskManager.cpp">
+      <Filter>Classes\GameCell\Model</Filter>
+    </ClCompile>
     <ClCompile Include="..\Classes\Region.cpp">
       <Filter>Classes\GameMap\Model</Filter>
     </ClCompile>
@@ -305,9 +308,6 @@
     </ClCompile>
     <ClCompile Include="..\Classes\LuaBindings.cpp">
       <Filter>Classes</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Classes\TaskManager.cpp">
-      <Filter>Classes\GameMap\Model</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -494,6 +494,9 @@
     <ClInclude Include="..\Classes\InvestigatorMapWidget.h">
       <Filter>Classes\GameCell</Filter>
     </ClInclude>
+    <ClInclude Include="..\Classes\TaskManager.h">
+      <Filter>Classes\GameCell\Model</Filter>
+    </ClInclude>
     <ClInclude Include="..\Classes\Region.h">
       <Filter>Classes\GameMap\Model</Filter>
     </ClInclude>
@@ -505,9 +508,6 @@
     </ClInclude>
     <ClInclude Include="..\Classes\LuaInstance.h">
       <Filter>Classes</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Classes\TaskManager.h">
-      <Filter>Classes\GameMap\Model</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

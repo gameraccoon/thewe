@@ -38,12 +38,12 @@ public:
 	void UpdateToTime(Utils::GameTime time);
 
 	Cell::Ptr GetInvestigationRoot(void) const;
-	const BranchBundle& GetRootBranchBundle(void);
+	BranchBundle GetRootBranchBundle(void);
 
 	int GetUid(void) const;
 
 private:
-	void UpdateBranchesRecurcively(BranchBundle &bundle, Utils::GameTime time);
+	void UpdateBranchRecurcively(BranchBundle &branch);
 
 	Cell::WeakPtr _investigationRoot;
 

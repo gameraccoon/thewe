@@ -3,7 +3,7 @@
 	<Task Id="testTask1" Title="DefaultTask" Severity="0.4" Duration="15" MoralLevel="0.3" SuccessFn="TestMissionSuccess" FailFn="TestMissionFail" AbortFn="TestMissionAbort" />
 	<Task Id="testTask2" Title="LongDefaultTask" Severity="0.4" Duration="300" MoralLevel="0.7" SuccessFn="TestMissionSuccess" FailFn="TestMissionFail" AbortFn="TestMissionAbort" />
 	<Task Id="testTask3" Title="LongestDefaultTask" Severity="0.4" Duration="3000" MoralLevel="0.7" SuccessFn="TestMissionSuccess" FailFn="TestMissionFail" AbortFn="TestMissionAbort" />
-	<Task Id="testTask4" Title="InvestigatorTestTask" Severity="0.4" Duration="5" MoralLevel="0.7" SuccessFn="MissionSuccessInvestigatorTest" FailFn="MissionFailInvestigatorTest" AbortFn="TestMissionAbort" />
+	<Task Id="testTask4" Title="InvestigatorTestTask" Severity="0.4" Duration="10" MoralLevel="0.7" SuccessFn="TestMissionSuccess" FailFn="MissionFailInvestigatorTest" AbortFn="TestMissionAbort" />
 	<Task Id="testTask5" Title="DefaultTask" Severity="0.4" Duration="30" MoralLevel="0.7" SuccessFn="TestMissionSuccess" FailFn="TestMissionFail" AbortFn="TestMissionAbort" />
 	<Task Id="testTask6" Title="DefaultTask" Severity="0.4" Duration="30" MoralLevel="0.7" SuccessFn="TestMissionSuccess" FailFn="TestMissionFail" AbortFn="TestMissionAbort" />
 	<Task Id="testTask7" Title="DefaultTask" Severity="0.4" Duration="30" MoralLevel="0.7" SuccessFn="TestMissionSuccess" FailFn="TestMissionFail" AbortFn="TestMissionAbort" />
