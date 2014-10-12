@@ -158,9 +158,6 @@ void EditorLayer::_MenuInputListener(cocos2d::Ref *sender)
 		//SaveHullToXml(_hull1, "../_gamedata/map/hulls.xml");
 		SaveHullToXml(_hull1, "map/hulls.xml");
 		break;
-	case MENU_ITEM_RELOAD_WORLD:
-		WorldLoader::LoadGameInfo();
-		break;
 	default: break;
 	}
 }

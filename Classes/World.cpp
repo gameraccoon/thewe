@@ -6,6 +6,7 @@
 #include "LuaInstance.h"
 #include "GameInfo.h"
 #include "World.h"
+#include "WorldLoader.h"
 
 #include <cocos2d.h>
 #include <luabind/luabind.hpp>
@@ -26,8 +27,8 @@ World::~World()
 
 World& World::Instance()
 {
-	static World singleWorldMap;
-	return singleWorldMap;
+	static World singleInstance;
+	return singleInstance;
 }
 
 void World::InitLuaContext()
@@ -74,6 +75,7 @@ void World::AddCell(Cell::Ptr cell)
 {
 	_cells.push_back(cell);
 	CalcWorldCapturingState();
+	WorldLoader::Instance().RequestToSave();
 }
 
 void World::AddTown(Town::Ptr cell)
@@ -87,6 +89,8 @@ void World::AddInvestigatorByCell(Cell::Ptr investigationRoot)
 	investigator->BeginInvestigation();
 
 	_investigators.push_back(investigator);
+
+	WorldLoader::Instance().RequestToSave();
 }
 
 void World::AddInvestigatorByInfo(const Cell::Info &cellInfo)
@@ -205,7 +209,7 @@ float World::GetWorldCapturingState()
 	return _worldCapturingState;
 }
 
-float World::CalcWorldCapturingState()
+void World::CalcWorldCapturingState()
 {
 	int capturedTownsCount = 0;
 	for (auto town : _towns)

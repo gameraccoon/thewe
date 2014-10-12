@@ -12,7 +12,20 @@
 #include "GameInfo.h"
 
 #include <string>
-#include <strstream>
+
+WorldLoader::WorldLoader()
+{
+}
+
+WorldLoader::~WorldLoader()
+{
+}
+
+WorldLoader& WorldLoader::Instance()
+{
+	static WorldLoader singleInstance;
+	return singleInstance;
+}
 
 static void LoadCellsRecursively(pugi::xml_node root, pugi::xml_node parent_node, Cell *parent)
 {
@@ -214,6 +227,7 @@ static bool CreateEmptyGameState(const std::string &filename)
 
 bool WorldLoader::LoadGameInfo()
 {
+	_state = State::Loading;
 	bool result = true;
 	result &= LoadWorld();
 	result &= LoadTasksInfo();
@@ -222,11 +236,14 @@ bool WorldLoader::LoadGameInfo()
 		Log::Instance().writeInit("World info load successfully");
 	}
 
+	_state = State::Ready;
 	return result;
 }
 
 bool WorldLoader::LoadGameState(void)
-{	
+{
+	_state = State::Loading;
+
 	cocos2d::FileUtils *fu = cocos2d::FileUtils::getInstance();
 	std::string fullPath;
 	unsigned char* pBuffer = NULL;
@@ -306,6 +323,7 @@ bool WorldLoader::LoadGameState(void)
 			World::Instance().SetFirstLaunch(true);
 		}
 
+		_state = State::Ready;
 		return true;
 	}
 	else
@@ -313,11 +331,13 @@ bool WorldLoader::LoadGameState(void)
 		Log::Instance().writeError("Failed to read world .");
 	}
 
+	_state = State::Ready;
 	return false;
 }
 
 bool WorldLoader::SaveGameState(void)
 {
+	_state = State::Saving;
 	// TODO
 	// 1. get number of current profile
 	// 2. create and save xml-file whith name of save-@profile name@-@index + 1@
@@ -390,9 +410,14 @@ bool WorldLoader::SaveGameState(void)
 		}
 	}
 
+	_state = State::Ready;
 	return doc.save_file(Utils::GetDocumentsPath().append("save.sav").c_str());
 }
 
-void WorldLoader::FlushGameState(void)
+void WorldLoader::RequestToSave()
 {
+	if (_state == State::Ready)
+	{
+		SaveGameState();
+	}
 }

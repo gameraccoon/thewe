@@ -133,9 +133,6 @@ void MapGuiLayer::_MenuInputListener(cocos2d::Ref *sender)
 			dynamic_cast<WorldMapLayer*>(getParent())->SetMapInputEnabled(false);
 		}
 		break;
-	case MENU_ITEM_SAVE:
-		WorldLoader::SaveGameState();
-		break;
 	default: break;
 	}
 }

@@ -166,7 +166,6 @@ void WorldMapLayer::SetNextCellParent(Cell::WeakPtr parent)
 void WorldMapLayer::CreateCell(const Cell::Info &info, Cell::State state)
 {
 	Cell::Ptr cell = Cell::Create(info);
-	World::Instance().AddCell(cell);
 	
 	if (info.parent)
 	{
@@ -174,6 +173,8 @@ void WorldMapLayer::CreateCell(const Cell::Info &info, Cell::State state)
 	}
 
 	cell->GetInfo().state = state;
+
+	World::Instance().AddCell(cell);
 
 	CellMapWidget *widget = _CreateCellWidget(cell);
 	_cellWidgetsList.push_back(widget);

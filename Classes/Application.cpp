@@ -65,8 +65,8 @@ bool AppDelegate::applicationDidFinishLaunching()
 
 	// load game data
 	World::Instance().InitLuaContext();
-	WorldLoader::LoadGameInfo();
-	WorldLoader::LoadGameState();
+	WorldLoader::Instance().LoadGameInfo();
+	WorldLoader::Instance().LoadGameState();
 
 	// initialize graphics after all data is loaded
 	mainMenuScene->init();

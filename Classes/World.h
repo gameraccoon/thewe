@@ -61,7 +61,7 @@ public:
 	LuaInstance* GetLuaInst(void) const;
 
 private:
-	float CalcWorldCapturingState();
+	void CalcWorldCapturingState();
 
 private:
 	Regions _regions;

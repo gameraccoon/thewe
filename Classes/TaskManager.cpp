@@ -3,6 +3,7 @@
 #include "Log.h"
 #include "World.h"
 #include "LuaInstance.h"
+#include "WorldLoader.h"
 
 #include <luabind/luabind.hpp>
 
@@ -29,6 +30,8 @@ void TaskManager::RunTask(Cell::WeakPtr cell, const Task::Info* info, Utils::Gam
 	cell.lock()->AddCurrentTask(runnedTaskInfo.task);
 
 	_runnedTasks.push_back(runnedTaskInfo);
+
+	WorldLoader::Instance().RequestToSave();
 }
 
 void TaskManager::RunTask(Cell::WeakPtr cell, const std::string& id, Utils::GameTime startTime)
@@ -108,6 +111,8 @@ void TaskManager::UpdateToTime(Utils::GameTime worldTime)
 
 			// release smart ptr
 			iterator = _runnedTasks.erase(iterator);
+
+			WorldLoader::Instance().RequestToSave();
 		}
 		else
 		{
