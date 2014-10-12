@@ -64,14 +64,18 @@ void CellsNetLayer::onKeyReleased(cocos2d::EventKeyboard::KeyCode key, cocos2d::
 
 void AddMovement(NetCellWidget *item, const cocos2d::Vec2& pos)
 {
-	float distance = (item->getPosition() - pos).length();
+	float realDistance = (item->getPosition() - pos).length();
+	float distance = (item->GetNextPosition() - pos).Size();
 	if (distance > 0)
 	{
-		cocos2d::MoveTo *move = cocos2d::MoveTo::create(1.0f, pos);
-		cocos2d::EaseElasticOut *ease_move = cocos2d::EaseElasticOut::create(move, distance);
 		item->stopAllActions();
-		item->runAction(ease_move);
-		item->SetNextPosition(pos);
+		if (realDistance > 0)
+		{
+			cocos2d::MoveTo *move = cocos2d::MoveTo::create(1.0f, pos);
+			cocos2d::EaseElasticOut *ease_move = cocos2d::EaseElasticOut::create(move, distance);
+			item->runAction(ease_move);
+			item->SetNextPosition(pos);
+		}
 	}
 }
 
@@ -90,6 +94,7 @@ void CellsNetLayer::ShowLevel(int level)
 
 	HideAllLevels();
 
+	// central part
 	auto levelIterators = _cells.equal_range(level);
 	for (auto cellIterator = levelIterators.first; cellIterator != levelIterators.second; ++cellIterator)
 	{
@@ -98,31 +103,84 @@ void CellsNetLayer::ShowLevel(int level)
 		basePoint.x += cellIterator->second->getBoundingBox().size.width + indentX;
 	}
 
+	// top part
+	std::list<NetCellWidget*> childless;
 	levelIterators = _cells.equal_range(level - 1);
+	float xLocation = 0.0f;
 	for (auto cellIterator = levelIterators.first; cellIterator != levelIterators.second; ++cellIterator)
 	{
 		cellIterator->second->setVisible(true);
-		float xLocation = 0.0f;
+		// if has children align to center of all his chldren
 		if (cellIterator->second->GetChildren().size() > 0)
 		{
+			xLocation = 0.0f;
 			for (auto child : cellIterator->second->GetChildren())
 			{
 				xLocation += child->GetNextPosition().x;
 			}
 			xLocation /= cellIterator->second->GetChildren().size();
+			AddMovement(cellIterator->second, Vector2(xLocation, basePoint.y + 100.0f));
 		}
-
-		AddMovement(cellIterator->second, Vector2(xLocation, basePoint.y + 100.0f));
+		else
+		{
+			childless.push_back(cellIterator->second);
+		}
+	}
+	for (auto cell : childless)
+	{
+		xLocation += cell->getBoundingBox().size.width + indentX;
+		AddMovement(cell, Vector2(xLocation, basePoint.y + 100.0f));
 	}
 
-	levelIterators = _cells.equal_range(level + 1);
+	// bottom part
+	levelIterators = _cells.equal_range(level);
 	for (auto cellIterator = levelIterators.first; cellIterator != levelIterators.second; ++cellIterator)
 	{
-		cellIterator->second->setVisible(true);
-		AddMovement(cellIterator->second, Vector2(cellIterator->second->GetParent()->GetNextPosition().x, basePoint.y - 100.0f));
+		float parentLocationX = cellIterator->second->GetNextPosition().x;
+		int childCount = cellIterator->second->GetChildren().size();
+		if (childCount > 1)
+		{
+			int childIndex = 0;
+			for (auto cell : cellIterator->second->GetChildren())
+			{
+				cell->setVisible(true);
+				AddMovement(cell, Vector2((parentLocationX - indentX / 4.0f + (indentX * 2.0f * childIndex / (2.0f * childCount))),
+														  basePoint.y - 100.0f));
+				childIndex++;
+			}
+		}
+		else if (childCount == 1)
+		{
+			for (auto cell : cellIterator->second->GetChildren())
+			{
+				cell->setVisible(true);
+				AddMovement(cell, Vector2(parentLocationX, basePoint.y - 100.0f));
+			}
+		}
 	}
 
 	_currentLevel = level;
+}
+
+void CellsNetLayer::ShowCell(NetCellWidget* cell)
+{
+	ShowLevel(cell->GetLevel());
+
+	Vector2 screen = cocos2d::Director::getInstance()->getVisibleSize();
+	Vector2 origin = cocos2d::Director::getInstance()->getVisibleOrigin();
+
+	Vector2 basePoint = origin + Vector2(200.0f, screen.y / 2.0f);
+
+	Vector2 shift = Vector2(cell->GetNextPosition().x - basePoint.x, 0.0f);
+
+	for (auto cellIterator : _cells)
+	{
+		if (cellIterator.second->isVisible())
+		{
+			Vector2 lastPos = cellIterator.second->GetNextPosition();
+			AddMovement(cellIterator.second, lastPos - shift);
+		}
+	}
 }
 
 void CellsNetLayer::HideAllLevels()
@@ -158,7 +216,6 @@ void CellsNetLayer::_CellTouchInputListener(cocos2d::Ref *sender)
 	NetCellWidget* netCellWidget = dynamic_cast<NetCellWidget*>(sender);
 	if (netCellWidget != nullptr)
 	{
-		int level = netCellWidget->GetLevel();
-		ShowLevel(level);
+		ShowCell(netCellWidget);
 	}
 }
