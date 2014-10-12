@@ -29,6 +29,7 @@ private:
 	CellsTree _cells;
 	cocos2d::DrawNode *_networkVisualiser;
 	bool _isInMooving;
+	float levelHeight;
 };
 
 #endif // CELLS_NET_LAYER_H

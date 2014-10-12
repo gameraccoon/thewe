@@ -7,6 +7,7 @@
 
 CellsNetLayer::CellsNetLayer()
 	: _currentLevel(-1)
+	, levelHeight(200.0f)
 {
 	init();
 }
@@ -69,12 +70,12 @@ void AddMovement(NetCellWidget *item, const cocos2d::Vec2& pos)
 	if (distance > 0)
 	{
 		item->stopAllActions();
+		item->SetNextPosition(pos);
 		if (realDistance > 0)
 		{
 			cocos2d::MoveTo *move = cocos2d::MoveTo::create(1.0f, pos);
 			cocos2d::EaseElasticOut *ease_move = cocos2d::EaseElasticOut::create(move, distance);
 			item->runAction(ease_move);
-			item->SetNextPosition(pos);
 		}
 	}
 }
@@ -89,7 +90,7 @@ void CellsNetLayer::ShowLevel(int level)
 	Vector2 screen = cocos2d::Director::getInstance()->getVisibleSize();
 	Vector2 origin = cocos2d::Director::getInstance()->getVisibleOrigin();
 
-	Vector2 basePoint = origin + Vector2(200.0f, screen.y / 2.0f);
+	Vector2 basePoint = origin + Vector2(screen.x / 2, screen.y / 2.0f);
 	float indentX = 50.0f;
 
 	HideAllLevels();
@@ -119,7 +120,7 @@ void CellsNetLayer::ShowLevel(int level)
 				xLocation += child->GetNextPosition().x;
 			}
 			xLocation /= cellIterator->second->GetChildren().size();
-			AddMovement(cellIterator->second, Vector2(xLocation, basePoint.y + 100.0f));
+			AddMovement(cellIterator->second, Vector2(xLocation, basePoint.y + levelHeight));
 		}
 		else
 		{
@@ -129,7 +130,7 @@ void CellsNetLayer::ShowLevel(int level)
 	for (auto cell : childless)
 	{
 		xLocation += cell->getBoundingBox().size.width + indentX;
-		AddMovement(cell, Vector2(xLocation, basePoint.y + 100.0f));
+		AddMovement(cell, Vector2(xLocation, basePoint.y + levelHeight));
 	}
 
 	// bottom part
@@ -145,7 +146,7 @@ void CellsNetLayer::ShowLevel(int level)
 			{
 				cell->setVisible(true);
 				AddMovement(cell, Vector2((parentLocationX - indentX / 4.0f + (indentX * 2.0f * childIndex / (2.0f * childCount))),
-														  basePoint.y - 100.0f));
+														  basePoint.y - levelHeight));
 				childIndex++;
 			}
 		}
@@ -154,7 +155,7 @@ void CellsNetLayer::ShowLevel(int level)
 			for (auto cell : cellIterator->second->GetChildren())
 			{
 				cell->setVisible(true);
-				AddMovement(cell, Vector2(parentLocationX, basePoint.y - 100.0f));
+				AddMovement(cell, Vector2(parentLocationX, basePoint.y - levelHeight));
 			}
 		}
 	}
@@ -169,7 +170,7 @@ void CellsNetLayer::ShowCell(NetCellWidget* cell)
 	Vector2 screen = cocos2d::Director::getInstance()->getVisibleSize();
 	Vector2 origin = cocos2d::Director::getInstance()->getVisibleOrigin();
 
-	Vector2 basePoint = origin + Vector2(200.0f, screen.y / 2.0f);
+	Vector2 basePoint = origin + Vector2(screen.x / 2, screen.y / 2.0f);
 
 	Vector2 shift = Vector2(cell->GetNextPosition().x - basePoint.x, 0.0f);
 
