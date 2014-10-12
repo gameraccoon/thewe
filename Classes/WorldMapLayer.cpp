@@ -104,7 +104,7 @@ void WorldMapLayer::update(float dt)
 		if (!getChildByTag(investigator->GetUid()))
 		{
 			InvestigatorMapWidget *widget = _CreateInvestigatorWidget(investigator);
-			addChild(widget);
+			addChild(widget, Z_INVESTIGATOR);
 			_investigatorWidgetsList.push_back(widget);
 		}
 	}
@@ -147,7 +147,7 @@ void WorldMapLayer::SetGuiEnabled(bool isEnabled)
 	else if (!_mapGui && isEnabled)
 	{
 		_mapGui = new MapGuiLayer(_mapProjector);
-		addChild(_mapGui, 4);
+		addChild(_mapGui, Z_MAP_GUI);
 		_mapGui->autorelease();
 		_mapProjector->SetScale(_mapProjector->GetScale());
 	}
@@ -345,17 +345,9 @@ TownMapWidget* WorldMapLayer::_CreateTownWidget(Town::Ptr town)
 
 InvestigatorMapWidget* WorldMapLayer::_CreateInvestigatorWidget(Investigator::Ptr investigator)
 {
-	InvestigatorMapWidget *widget = new InvestigatorMapWidget(investigator);
-
-	Cell::Ptr root = investigator->GetInvestigationRoot();
-
-	int uid = _mapProjector->AddMapPart(Drawable::CastFromCocos(widget), root->GetInfo().location, Vector2(0.0f, 0.0f), 1.0f, true);
-	_mapProjector->Update();
-
+	InvestigatorMapWidget *widget = new InvestigatorMapWidget(investigator, _mapProjector);
 	widget->retain();
 	widget->setTag(investigator->GetUid());
-	widget->SetProjectorUid(uid);
-
 	return widget;
 }
 
@@ -512,7 +504,7 @@ void WorldMapLayer::_RecursiveUpdateNetworkVisualiser(cocos2d::DrawNode *visuali
 	for (Cell::Ptr child : cell.lock()->GetChildren())
 	{
 		Vector2 p2(_mapProjector->ProjectOnScreen(child->GetInfo().location));
-		visualiser->drawSegment(p1, p2, 4.0f, Color(1.0f, 0.0f, 0.0f, 1.0f));
+		visualiser->drawSegment(p1, p2, 1.0f, Color(1.0f, 0.0f, 0.0f, 1.0f));
 
 		// recursive
 		_RecursiveUpdateNetworkVisualiser(visualiser, child);

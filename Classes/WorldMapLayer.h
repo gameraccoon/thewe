@@ -44,9 +44,11 @@ private:
 	{
 		Z_MAP = 0,
 		Z_LINKS,
+		Z_INVESTIGATOR,
 		Z_TOWN,
 		Z_CELL,
-		Z_CELL_MENU
+		Z_CELL_MENU,
+		Z_MAP_GUI
 	};
 
 	typedef std::vector<CellMapWidget *> CellWidgetsList;

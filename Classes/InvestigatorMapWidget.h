@@ -7,7 +7,7 @@
 class InvestigatorMapWidget : public cocos2d::Node
 {
 public:
-	InvestigatorMapWidget(Investigator::Ptr investigator);
+	InvestigatorMapWidget(Investigator::Ptr investigator, MapProjector *proj);
 
 	virtual bool init(void) override;
 	virtual void update(float dt) override;
@@ -18,9 +18,14 @@ public:
 	int GetProjectorUid(void) const;
 
 public:
+	void UpdateInvestigationMap(const Investigator::BranchBundle &bundle);
+
 	Investigator::Ptr _investigator;
+	MapProjector *_projector;
 
 	int _projectorUid;
+
+	cocos2d::DrawNode *_investigationDrawer;
 };
 
 #endif

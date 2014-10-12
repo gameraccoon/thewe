@@ -7,20 +7,25 @@
 class Investigator
 {
 public:
-	struct Brunch
+	struct Branch;
+	typedef std::vector<Branch> BranchBundle;
+	typedef std::shared_ptr<Investigator> Ptr;
+	typedef std::weak_ptr<Investigator> WeakPtr;
+
+	struct Branch
 	{
-		Brunch *parentBrunch;
+		Branch *parentBrunch;
 		Cell::Ptr cellFrom;
+		Cell::Ptr cellTo;
 		
 		Utils::GameTime timeBegin;
 		Utils::GameTime timeEnd;
+		Utils::GameTime timeDuration;
 
-		std::vector<Brunch> _childBrunches;
+		float progressPercentage;
+
+		BranchBundle childBrunches;
 	};
-
-	typedef std::vector<Brunch> BrunchBundle;
-	typedef std::shared_ptr<Investigator> Ptr;
-	typedef std::weak_ptr<Investigator> WeakPtr;
 
 public:
 	Investigator(Cell::WeakPtr investigationRoot);
@@ -33,14 +38,16 @@ public:
 	void UpdateToTime(Utils::GameTime time);
 
 	Cell::Ptr GetInvestigationRoot(void) const;
-	BrunchBundle GetRootBrunchBundle(void);
+	BranchBundle GetRootBranchBundle(void);
 
 	int GetUid(void) const;
 
 private:
+	void UpdateBranchRecurcively(BranchBundle &branch);
+
 	Cell::WeakPtr _investigationRoot;
 
-	BrunchBundle _brunchRoot;
+	BranchBundle _branchRoot;
 
 	int _uid;
 };
