@@ -477,7 +477,6 @@ void WorldMapLayer::_OnTownSelect(Town::WeakPtr town)
 			}
 
 			_nextCellParent = Cell::Ptr();
-			townptr->SetCellPresented(true);
 		}
 	}
 }

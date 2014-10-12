@@ -11,8 +11,7 @@
 #include <luabind/luabind.hpp>
 
 World::World()
-	: _worldTime(0.0f)
-	, _isGamePaused(false)
+	: _isGamePaused(false)
 	, _isFirstLaunch(true)
 	, _isLuaInited(false)
 	, _isGameOver(false)
@@ -74,6 +73,7 @@ void World::AddRegion(Region::Ptr region)
 void World::AddCell(Cell::Ptr cell)
 {
 	_cells.push_back(cell);
+	CalcWorldCapturingState();
 }
 
 void World::AddTown(Town::Ptr cell)
@@ -173,11 +173,6 @@ const World::Investigators& World::GetInvestigators(void) const
 	return _investigators;
 }
 
-Utils::GameTime World::GetWorldTime() const
-{
-	return _worldTime;
-}
-
 void World::Update()
 {
 	Utils::GameTime time = Utils::GetGameTime();
@@ -205,13 +200,22 @@ void World::SetGameOver(bool over)
 	_isGameOver = over;
 }
 
-void World::InitWorldTime(Utils::GameTime worldTime)
+float World::GetWorldCapturingState()
 {
-	// we must initialize it only once
-	if (_worldTime <= 0.0f)
+	return _worldCapturingState;
+}
+
+float World::CalcWorldCapturingState()
+{
+	int capturedTownsCount = 0;
+	for (auto town : _towns)
 	{
-		_worldTime = worldTime;
+		if (town->IsCellPresented())
+		{
+			capturedTownsCount++;
+		}
 	}
+	_worldCapturingState = (float)capturedTownsCount / _towns.size();
 }
 
 bool World::IsFirstLaunch(void) const

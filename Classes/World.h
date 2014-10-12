@@ -33,8 +33,6 @@ public:
 	const Towns& GetTowns() const;
 	const Investigators& GetInvestigators(void) const;
 
-	Utils::GameTime GetWorldTime() const;
-
 	void AddRegion(Region::Ptr region);
 	void AddCell(Cell::Ptr cell);
 	void AddTown(Town::Ptr town);
@@ -51,7 +49,8 @@ public:
 	void SetPause(bool pause);
 	void SetFirstLaunch(bool newGame);
 	void SetGameOver(bool over = true);
-	void InitWorldTime(Utils::GameTime worldTime);
+
+	float GetWorldCapturingState();
 
 	bool IsFirstLaunch(void) const;
 	bool IsGameOver(void) const;
@@ -62,6 +61,9 @@ public:
 	LuaInstance* GetLuaInst(void) const;
 
 private:
+	float CalcWorldCapturingState();
+
+private:
 	Regions _regions;
 	Cells _cells;
 	Towns _towns;
@@ -70,12 +72,11 @@ private:
 	/** Context for running lua-scripts */
 	LuaInstance* _luaScript;
 
-	Utils::GameTime _worldTime;
-
 	bool _isGamePaused;
 	bool _isFirstLaunch;
 	bool _isLuaInited;
 	bool _isGameOver;
+	float _worldCapturingState;
 
 	/*
 	 * Turn off useless operations

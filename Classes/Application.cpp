@@ -50,7 +50,7 @@ bool AppDelegate::applicationDidFinishLaunching()
 
 	glview->setDesignResolutionSize(dr_w, dr_h, ResolutionPolicy::FIXED_HEIGHT);
 
-	MainMenuScene* mainMenuScene = new MainMenuScene(nullptr); // нет автоматического init()
+	MainMenuScene* mainMenuScene = new MainMenuScene(nullptr); // there is no automatic init()
 	SplashScreenScene* splashScreenScene = new SplashScreenScene();
 
 	// make Menu as the main scene

@@ -264,8 +264,6 @@ bool WorldLoader::LoadGameState(void)
 		pugi::xml_node cells_network = root.child("CellsNetwork");
 		pugi::xml_node cell_root = cells_network.find_child_by_attribute("parent_id", "-1");
 
-		World::Instance().InitWorldTime(world_info.attribute("world_time").as_float());
-
 		if (cell_root)
 		{ 
 			World::Instance().SetFirstLaunch(false);
@@ -343,8 +341,6 @@ bool WorldLoader::SaveGameState(void)
 	
 	pugi::xml_node world_info = root.append_child("WorldInfo");
 	pugi::xml_node cells_root = root.append_child("CellsNetwork");
-
-	world_info.append_attribute("world_time").set_value(Utils::TimeToString(Utils::GetGameTime()).c_str());
 
 	for (World::Cells::const_iterator it = cells.begin(); it != cells.end(); ++it)
 	{

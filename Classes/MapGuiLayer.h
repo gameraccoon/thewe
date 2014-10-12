@@ -1,9 +1,10 @@
 #ifndef MAP_GUI_H
 #define MAP_GUI_H
 
-#include "cocos2d.h"
+#include <cocos2d.h>
 #include "MapProjector.h"
 #include "MessageWidget.h"
+#include "ProgressBar.h"
 
 class MapGuiLayer : public cocos2d::Layer
 {
@@ -45,6 +46,8 @@ private:
 
 	Vector2 _messagesMargin;
 	Vector2 _messagesPosition;
+
+	SquareProgressBar *_worldCaptureProgressBar;
 };
 
 #endif

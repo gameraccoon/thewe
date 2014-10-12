@@ -92,6 +92,15 @@ bool MapGuiLayer::init(void)
 
 	addChild(menu);
 
+	float indentX = 20.0f;
+	_worldCaptureProgressBar = new SquareProgressBar(origin.x + screen.x - indentX * 2,
+													 20.0f,
+													 cocos2d::Color4F(1.0f, 0.5f, 0, 1.0f));
+	_worldCaptureProgressBar->setPosition(indentX, 0);
+	_worldCaptureProgressBar->autorelease();
+	_worldCaptureProgressBar->SetProgressPercentage(World::Instance().GetWorldCapturingState() * 100.0f);
+	addChild(_worldCaptureProgressBar);
+
 	scheduleUpdate();
 
 	return true;
@@ -138,6 +147,8 @@ void MapGuiLayer::update(float delta)
 	{
 		UpdateMessagesPos();
 	}
+
+	_worldCaptureProgressBar->SetProgressPercentage(World::Instance().GetWorldCapturingState() * 100.0f);
 }
 
 int MapGuiLayer::UpdateMessages()
