@@ -210,6 +210,12 @@ void CellMenuSelector::_MenuInputListener(cocos2d::Ref *sender)
 		return;
 	}
 
+	if (_cell.lock()->GetInfo().state != Cell::READY)
+	{
+		DisappearWithAnimation();
+		return;
+	}
+
 	cocos2d::MenuItemImage *item = dynamic_cast<cocos2d::MenuItemImage *>(sender);
 	cocos2d::Layer *menu = nullptr;
 
@@ -232,7 +238,7 @@ void CellMenuSelector::_MenuInputListener(cocos2d::Ref *sender)
 		menu->setName(_menuNodeName);
 		addChild(menu);
 		break;
-		case CELL_OPEN_SPINOFF:
+	case CELL_OPEN_SPINOFF:
 		menu = new CellSpinoffMenu(_cell, this, _worldMapLayer);
 		menu->autorelease();
 		menu->setName(_menuNodeName);

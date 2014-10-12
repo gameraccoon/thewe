@@ -131,8 +131,11 @@ void CellSpinoffMenu::_OnCloseCallback(cocos2d::Ref *sender)
 
 void CellSpinoffMenu::_OnCreateNewCell(cocos2d::Ref *sender)
 {
-	_worldMapLayer->SetNextCellParent(_cell);
-	_SelfClose();
+	if (_cell.lock()->GetInfo().state == Cell::READY)
+	{
+		_worldMapLayer->SetNextCellParent(_cell);
+		_SelfClose();
+	}
 }
 
 void CellSpinoffMenu::_SelfClose(void)
