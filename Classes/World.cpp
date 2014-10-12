@@ -31,6 +31,16 @@ World& World::Instance()
 	return singleInstance;
 }
 
+TaskManager& World::GetTaskManager()
+{
+	return _taskManager;
+}
+
+MessageManager& World::GetMessageManager()
+{
+	return _messageManager;
+}
+
 void World::InitLuaContext()
 {
 	if (!_isLuaInited)
@@ -47,7 +57,7 @@ void World::InitLuaContext()
 		_luaScript->BindClass<Vector2>();
 
 		_luaScript->RegisterVariable("Log", &(Log::Instance()));
-		_luaScript->RegisterVariable("MessageManager", &(MessageManager::Instance()));
+		_luaScript->RegisterVariable("MessageManager", &(_messageManager));
 		_luaScript->RegisterVariable("GameInfo", &(GameInfo::Instance()));
 		_luaScript->RegisterVariable("World", &(World::Instance()));
 
@@ -186,7 +196,7 @@ void World::Update()
 		investigator->UpdateToTime(time);
 	}
 
-	TaskManager::Instance().UpdateToTime(time);
+	_taskManager.UpdateToTime(time);
 }
 
 void World::SetPause(bool pause)

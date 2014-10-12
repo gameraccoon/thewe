@@ -8,10 +8,7 @@
 class MessageManager
 {
 public:
-	/**
-	 * @return new exemplar of the class
-	 */
-	static MessageManager& Instance();
+	MessageManager();
 
 	/**
 	 * Send new message to the player messages box
@@ -22,18 +19,11 @@ public:
 	void RemoveMessage(int key);
 
 	const std::map<int, UserMessage::Ptr> GetMessages() const;
+
 private:
 	std::map<int, UserMessage::Ptr> _messages;
 
 	int _maxSetKey;
-
-	/*
-	 * Turn off unusable operations
-	 */
-	MessageManager();
-	~MessageManager();
-	MessageManager(const MessageManager&);
-	void operator=(const MessageManager&);
 };
 
 #endif // MESSAGE_MANAGER_H

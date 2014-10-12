@@ -159,11 +159,11 @@ int MapGuiLayer::UpdateMessages()
 
 		if (message.second->IsOutdated())
 		{
-			MessageManager::Instance().RemoveMessage(key);
+			World::Instance().GetMessageManager().RemoveMessage(key);
 		}
 	}
 
-	const std::map<int, UserMessage::Ptr> messages = MessageManager::Instance().GetMessages();
+	const std::map<int, UserMessage::Ptr> messages = World::Instance().GetMessageManager().GetMessages();
 	std::set<int> realKeys;
 	for (auto message : messages)
 	{

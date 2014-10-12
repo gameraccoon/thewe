@@ -12,16 +12,6 @@ TaskManager::TaskManager()
 {
 }
 
-TaskManager::~TaskManager()
-{
-}
-
-TaskManager& TaskManager::Instance()
-{
-	static TaskManager singleInstance;
-	return singleInstance;
-}
-
 void TaskManager::RunTask(Cell::WeakPtr cell, const Task::Info* info, Utils::GameTime startTime)
 {
 	RunnedTaskInfo runnedTaskInfo;

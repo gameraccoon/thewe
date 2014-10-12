@@ -71,7 +71,7 @@ static void LoadCellsRecursively(pugi::xml_node root, pugi::xml_node parent_node
 		{
 			std::string currentTaskId = tasks.attribute("current_task_id").as_string();
 			Utils::GameTime startTime = Utils::StringToTime(tasks.attribute("task_start_time").as_string());
-			TaskManager::Instance().RunTask((Cell::WeakPtr)cell, currentTaskId, startTime);
+			World::Instance().GetTaskManager().RunTask((Cell::WeakPtr)cell, currentTaskId, startTime);
 		}
 
 		LoadCellsRecursively(root, child, cell.get());
@@ -133,7 +133,7 @@ static bool LoadTasksInfo()
 		task_node = task_node.next_sibling();
 	}
 	
-	TaskManager::Instance().FillTasks(infos);
+	World::Instance().GetTaskManager().FillTasks(infos);
 
 	return true;
 }
@@ -313,7 +313,7 @@ bool WorldLoader::LoadGameState(void)
 			{
 				std::string currentTaskId = tasks.attribute("current_task_id").as_string();
 				Utils::GameTime startTime = Utils::StringToTime(tasks.attribute("task_start_time").as_string());
-				TaskManager::Instance().RunTask((Cell::WeakPtr)cell, currentTaskId, startTime);
+				World::Instance().GetTaskManager().RunTask((Cell::WeakPtr)cell, currentTaskId, startTime);
 			}
 
 			LoadCellsRecursively(cells_network, cell_root, cell.get());

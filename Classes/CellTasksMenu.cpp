@@ -64,7 +64,7 @@ private:
 	{
 		if (_cell.lock()->GetInfo().state == Cell::READY)
 		{
-			TaskManager::Instance().RunTask(_cell, _taskInfo, Utils::GetGameTime());
+			World::Instance().GetTaskManager().RunTask(_cell, _taskInfo, Utils::GetGameTime());
 			_tasksScreen->CloseMenu();
 		}
 	}
@@ -125,7 +125,7 @@ bool CellTasksScreen::init(void)
 	menu_pos.y += offset_btm;
 	menu_size.height -= offset_top;
 
-	_CreateTasksScrollViewMenu(TaskManager::Instance().GetAvailableTasks(_cell), menu_pos, menu_size);
+	_CreateTasksScrollViewMenu(World::Instance().GetTaskManager().GetAvailableTasks(_cell), menu_pos, menu_size);
 
 	cocos2d::ScaleTo *scale = cocos2d::ScaleTo::create(0.8f, 1.0f, 1.0f);
 	cocos2d::FadeIn *fade = cocos2d::FadeIn::create(0.5f);

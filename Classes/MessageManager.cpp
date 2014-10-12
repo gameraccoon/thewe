@@ -5,16 +5,6 @@ MessageManager::MessageManager()
 {
 }
 
-MessageManager::~MessageManager()
-{
-}
-
-MessageManager& MessageManager::Instance()
-{
-	static MessageManager singleInstance;
-	return singleInstance;
-}
-
 void MessageManager::SendGameMessage(std::string text)
 {
 	_messages.insert(std::pair<int, UserMessage::Ptr>(++_maxSetKey

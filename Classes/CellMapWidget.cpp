@@ -1,6 +1,6 @@
 #include "CellMapWidget.h"
 
-#include "MessageManager.h"
+#include "World.h"
 #include "Log.h"
 
 class CellMapImage : public cocos2d::Node
@@ -131,7 +131,7 @@ void CellMapWidget::update(float dt)
 	}
 	else if (_cell->GetInfo().state == Cell::READY && _lastCellState == Cell::CONSTRUCTION)
 	{
-		MessageManager::Instance().SendGameMessage("Cell created");
+		World::Instance().GetMessageManager().SendGameMessage("Cell created");
 		removeChild(_constructionProgress);
 		_constructionProgress->setVisible(false);
 		_cellMapSprite->setVisible(true);

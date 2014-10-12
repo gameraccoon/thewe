@@ -9,14 +9,12 @@
 #include "Investigator.h"
 #include "MiscUtils.h"
 #include "LuaInstance.h"
+#include "TaskManager.h"
+#include "MessageManager.h"
 
 class World
 {
 public:
-	/**
-	 * Returns the single instance of the class
-	 */
-	static World& Instance();
 	
 	typedef std::vector<Region::Ptr> Regions;
 	typedef std::vector<Cell::Ptr> Cells;
@@ -24,6 +22,14 @@ public:
 	typedef std::vector<Investigator::Ptr> Investigators;
 
 public:
+	/**
+	 * Returns the single instance of the class
+	 */
+	static World& Instance();
+
+	TaskManager& GetTaskManager();
+	MessageManager& GetMessageManager();
+
 	/** Removes all the regions */
 	void CleanupMapContent(void);
 	void InitLuaContext();
@@ -64,6 +70,9 @@ private:
 	void CalcWorldCapturingState();
 
 private:
+	TaskManager _taskManager;
+	MessageManager _messageManager;
+
 	Regions _regions;
 	Cells _cells;
 	Towns _towns;

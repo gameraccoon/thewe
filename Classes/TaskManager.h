@@ -11,12 +11,8 @@ public:
 	typedef std::vector<const Task::Info*> TasksList;
 
 public:
-	/**
-	 * Return single instance of the class
-	 */
-	static TaskManager& Instance();
-	
-public:
+	TaskManager();
+
 	/**
 	 * Run new task for the cell
 	 * 
@@ -60,14 +56,6 @@ private:
 	void _CheckTask(const Task::Info& taskInfo) const;
 
 	const Task::Info* GetTaskInfoById(const std::string& id);
-
-	/*
-	 * Turn off unusual operations
-	 */
-	TaskManager();
-	~TaskManager();
-	TaskManager(const TaskManager&);
-	void operator=(const TaskManager&);
 };
 
 #endif // TASK_MANAGER_H
