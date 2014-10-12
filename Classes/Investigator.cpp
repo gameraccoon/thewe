@@ -60,7 +60,12 @@ void Investigator::StayInvestigation(bool stay)
 
 void Investigator::UpdateToTime(Utils::GameTime time)
 {
-	for (Investigator::Branch &branch : _branchRoot)
+	UpdateBranchesRecurcively(_branchRoot, time);
+}
+
+void Investigator::UpdateBranchesRecurcively(Investigator::BranchBundle &bundle, Utils::GameTime time)
+{
+	for (Investigator::Branch &branch : bundle)
 	{
 		if (branch.progressPercentage < 100.0f)
 		{
@@ -71,15 +76,54 @@ void Investigator::UpdateToTime(Utils::GameTime time)
 		}
 		else if (branch.cellTo->GetInfo().state != Cell::ARRESTED)
 		{
-			branch.cellTo->GetInfo().state = Cell::ARRESTED;
+			if (branch.cellTo->GetInfo().parent == nullptr)
+			{
+				// We are in the root cell. This is GameOver condition
+			}
+			else
+			{
+				branch.cellTo->GetInfo().state = Cell::ARRESTED;
+
+				// trying to add bratch to parent cell
+				if (branch.cellTo->GetInfo().parent != branch.cellFrom.get())
+				{
+					Investigator::Branch childBranch;
+					childBranch.cellFrom = branch.cellTo;
+					childBranch.cellTo = (Cell::Ptr)branch.cellTo->GetInfo().parent;
+					childBranch.parentBrunch = nullptr;
+					childBranch.timeDuration = GameInfo::Instance().GetFloat("INVESTIGATION_DURATION");
+					childBranch.timeBegin = Utils::GetGameTime();
+					childBranch.timeEnd = childBranch.timeBegin + childBranch.timeDuration;
+					childBranch.progressPercentage = 0.0f;
+
+					branch.childBrunches.push_back(childBranch);
+				}
+
+				// add branches to all of the children cells
+				for (Cell::Ptr child : branch.cellTo->GetChildren())
+				{
+					// disallow to move in reverse direction
+					if (child == branch.cellFrom)
+					{
+						continue;
+					}
+
+					Investigator::Branch childBranch;
+					childBranch.cellFrom = branch.cellTo;
+					childBranch.cellTo = child;
+					childBranch.parentBrunch = nullptr;
+					childBranch.timeDuration = GameInfo::Instance().GetFloat("INVESTIGATION_DURATION");
+					childBranch.timeBegin = Utils::GetGameTime();
+					childBranch.timeEnd = childBranch.timeBegin + childBranch.timeDuration;
+					childBranch.progressPercentage = 0.0f;
+
+					branch.childBrunches.push_back(childBranch);
+				}
+			}
 		}
 
-		UpdateBranchRecurcively(branch.childBrunches);
+		UpdateBranchesRecurcively(branch.childBrunches, time);
 	}
-}
-
-void Investigator::UpdateBranchRecurcively(Investigator::BranchBundle &branch)
-{
 }
 
 Cell::Ptr Investigator::GetInvestigationRoot(void) const
@@ -87,7 +131,7 @@ Cell::Ptr Investigator::GetInvestigationRoot(void) const
 	return _investigationRoot.lock();
 }
 
-Investigator::BranchBundle Investigator::GetRootBranchBundle(void)
+const Investigator::BranchBundle& Investigator::GetRootBranchBundle(void)
 {
 	return _branchRoot;
 }
