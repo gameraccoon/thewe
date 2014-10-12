@@ -22,6 +22,7 @@ void Investigator::BeginInvestigation(void)
 	if (cell->GetInfo().parent == nullptr)
 	{
 		// set game over state to World
+		World::Instance().SetGameOver();
 		return;
 	}
 
@@ -79,6 +80,7 @@ void Investigator::UpdateBranchesRecurcively(Investigator::BranchBundle &bundle,
 			if (branch.cellTo->GetInfo().parent == nullptr)
 			{
 				// We are in the root cell. This is GameOver condition
+				World::Instance().SetGameOver();
 			}
 			else
 			{

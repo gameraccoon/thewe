@@ -15,6 +15,7 @@ World::World()
 	, _isGamePaused(false)
 	, _isFirstLaunch(true)
 	, _isLuaInited(false)
+	, _isGameOver(false)
 {
 	_luaScript = new LuaInstance();
 }
@@ -199,6 +200,11 @@ void World::SetFirstLaunch(bool newGame)
 	_isFirstLaunch = newGame;
 }
 
+void World::SetGameOver(bool over)
+{
+	_isGameOver = over;
+}
+
 void World::InitWorldTime(Utils::GameTime worldTime)
 {
 	// we must initialize it only once
@@ -211,6 +217,11 @@ void World::InitWorldTime(Utils::GameTime worldTime)
 bool World::IsFirstLaunch(void) const
 {
 	return _isFirstLaunch;
+}
+
+bool World::IsGameOver(void) const
+{
+	return _isGameOver;
 }
 
 bool World::IsTownAvaliableToPlaceCell(Town::WeakPtr town) const

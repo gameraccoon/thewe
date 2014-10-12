@@ -98,6 +98,11 @@ bool WorldMapLayer::init(void)
 
 void WorldMapLayer::update(float dt)
 {
+	if (World::Instance().IsGameOver())
+	{
+		// push game over screen
+	}
+
 	// check for widgets existance and create new if needed
 	for (Investigator::Ptr investigator : World::Instance().GetInvestigators())
 	{

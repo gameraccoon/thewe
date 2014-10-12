@@ -50,9 +50,11 @@ public:
 
 	void SetPause(bool pause);
 	void SetFirstLaunch(bool newGame);
+	void SetGameOver(bool over = true);
 	void InitWorldTime(Utils::GameTime worldTime);
 
 	bool IsFirstLaunch(void) const;
+	bool IsGameOver(void) const;
 	bool IsTownAvaliableToPlaceCell(Town::WeakPtr town) const;
 
 	unsigned int GetNewUid(void) const;
@@ -73,6 +75,7 @@ private:
 	bool _isGamePaused;
 	bool _isFirstLaunch;
 	bool _isLuaInited;
+	bool _isGameOver;
 
 	/*
 	 * Turn off useless operations
