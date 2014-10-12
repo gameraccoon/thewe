@@ -1,16 +1,43 @@
 #include "World.h"
 
 #include "TaskManager.h"
+#include "MessageManager.h"
+#include "Log.h"
+#include "LuaInstance.h"
+#include "GameInfo.h"
+#include "World.h"
+
+#include <cocos2d.h>
+#include <luabind/luabind.hpp>
 
 World::World()
 	: _worldTime(0.0f)
 	, _isGamePaused(false)
 	, _isFirstLaunch(true)
 {
+	std::string fullPath = cocos2d::FileUtils::getInstance()->fullPathForFilename("tasks.lua");
+	_luaScript = new LuaInstance();
+
+	_luaScript->BindClass<Log>();
+	_luaScript->BindClass<MessageManager>();
+	_luaScript->BindClass<GameInfo>();
+	_luaScript->BindClass<World>();
+	_luaScript->BindClass<Cell::Info>();
+	_luaScript->BindClass<const Task::Info>();
+	_luaScript->BindClass<Vector2>();
+
+	_luaScript->RegisterVariable("Log", &(Log::Instance()));
+	_luaScript->RegisterVariable("MessageManager", &(MessageManager::Instance()));
+	_luaScript->RegisterVariable("GameInfo", &(GameInfo::Instance()));
+	_luaScript->RegisterVariable("World", &(World::Instance()));
+	std::string script = cocos2d::FileUtils::getInstance()->getStringFromFile(fullPath);
+
+	_luaScript->ExecScript(script.c_str());
 }
 
 World::~World()
 {
+	delete _luaScript;
 }
 
 World& World::Instance()
@@ -190,4 +217,9 @@ unsigned int World::GetNewUid(void) const
 {
 	static unsigned int uid = 0;
 	return uid++;
+}
+
+LuaInstance* World::GetLuaInst(void) const
+{
+	return _luaScript;
 }

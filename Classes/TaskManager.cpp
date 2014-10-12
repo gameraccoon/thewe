@@ -1,42 +1,18 @@
 #include "TaskManager.h"
 
-#include "MessageManager.h"
-
 #include "Log.h"
-#include "LuaInstance.h"
-#include "GameInfo.h"
 #include "World.h"
-
-#include <cocos2d.h>
+#include "LuaInstance.h"
 
 #include <luabind/luabind.hpp>
 
 TaskManager::TaskManager()
 	: _isTasksFilled(false)
 {
-	std::string fullPath = cocos2d::FileUtils::getInstance()->fullPathForFilename("tasks.lua");
-	_luaScript = new LuaInstance();
-
-	_luaScript->BindClass<Log>();
-	_luaScript->BindClass<MessageManager>();
-	_luaScript->BindClass<GameInfo>();
-	_luaScript->BindClass<World>();
-	_luaScript->BindClass<Cell::Info>();
-	_luaScript->BindClass<const Task::Info>();
-	_luaScript->BindClass<Vector2>();
-
-	_luaScript->RegisterVariable("Log", &(Log::Instance()));
-	_luaScript->RegisterVariable("MessageManager", &(MessageManager::Instance()));
-	_luaScript->RegisterVariable("GameInfo", &(GameInfo::Instance()));
-	_luaScript->RegisterVariable("World", &(World::Instance()));
-	std::string script = cocos2d::FileUtils::getInstance()->getStringFromFile(fullPath);
-
-	_luaScript->ExecScript(script.c_str());
 }
 
 TaskManager::~TaskManager()
 {
-	delete _luaScript;
 }
 
 TaskManager& TaskManager::Instance()
@@ -96,7 +72,7 @@ void TaskManager::UpdateToTime(Utils::GameTime worldTime)
 				if (!task->IsAborted())
 				{
 					// call lua function that calculate status of the task
-					bool isSuccess = luabind::call_function<bool>(_luaScript->GetLuaState()
+					bool isSuccess = luabind::call_function<bool>(World::Instance().GetLuaInst()->GetLuaState()
 																  , "CheckStatus"
 																  , cellInfo
 																  , taskInfo
@@ -120,7 +96,7 @@ void TaskManager::UpdateToTime(Utils::GameTime worldTime)
 				}
 
 				// call task end function (success, fail, abort)
-				luabind::call_function<bool>(_luaScript->GetLuaState()
+				luabind::call_function<bool>(World::Instance().GetLuaInst()->GetLuaState()
 											 , funcName.c_str()
 											 , &cell->GetInfo()
 											 , taskInfo

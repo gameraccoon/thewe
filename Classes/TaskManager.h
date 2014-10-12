@@ -4,7 +4,6 @@
 #include <vector>
 #include "Cell.h"
 #include "Task.h"
-#include "LuaInstance.h"
 
 class TaskManager
 {
@@ -55,8 +54,7 @@ private:
 
 	/** Tasks that now in process */
 	std::vector<RunnedTaskInfo> _runnedTasks;
-	/** Context for running lua-scripts */
-	LuaInstance* _luaScript;
+
 private:
 	/** Check all values and write all warnings in the log */
 	void _CheckTask(const Task::Info& taskInfo) const;

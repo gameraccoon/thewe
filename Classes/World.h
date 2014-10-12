@@ -8,6 +8,7 @@
 #include "Town.h"
 #include "Investigator.h"
 #include "MiscUtils.h"
+#include "LuaInstance.h"
 
 class World
 {
@@ -55,11 +56,16 @@ public:
 
 	unsigned int GetNewUid(void) const;
 
+	LuaInstance* GetLuaInst(void) const;
+
 private:
 	Regions _regions;
 	Cells _cells;
 	Towns _towns;
 	Investigators _investigators;
+
+	/** Context for running lua-scripts */
+	LuaInstance* _luaScript;
 
 	Utils::GameTime _worldTime;
 
