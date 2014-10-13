@@ -10,7 +10,7 @@
 class MapProjector
 {
 public:
-	MapProjector(Vector2 mapSize);
+	MapProjector();
 
 	/** Project point from screen coordinates to map coordinates */
 	Vector2 ProjectOnMap(Vector2 screenPoint) const;
@@ -37,6 +37,7 @@ public:
 
 	/** Set screen center of camera view */
 	void SetScreenCenter(Vector2 centerPos);
+	void SetMapSize(const Vector2& mapSize);
 	
 	/** Add new element that will be projected as map part */
 	int AddMapPart(Drawable::Ptr node, Vector2 location, Vector2 shift, float scale, bool dontScale = false);

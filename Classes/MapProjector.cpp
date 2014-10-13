@@ -1,9 +1,7 @@
 #include "MapProjector.h"
 
-static const Vector2 MAP_INITIAL_SIZE = Vector2(1390.0f, 1003.0f);
-
-MapProjector::MapProjector(Vector2 mapSize)
-	: _mapSize(mapSize)
+MapProjector::MapProjector()
+	: _mapSize(0.0f, 0.0f)
 	, _viewScale(1.0f)
 	, _viewLocation(0.0f, 0.0f)
 {
@@ -119,6 +117,11 @@ ArbitraryHull MapProjector::ProjectOnScreen(const ArbitraryHull& mapHull) const
 void MapProjector::SetScreenCenter(Vector2 centerPos)
 {
 	_screenCenter = centerPos;	
+}
+
+void MapProjector::SetMapSize(const Vector2& mapSize)
+{
+	_mapSize = mapSize;
 }
 
 int MapProjector::AddMapPart(Drawable::Ptr node, Vector2 location, Vector2 shift, float scale, bool dontScale)

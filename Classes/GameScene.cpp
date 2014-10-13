@@ -6,7 +6,7 @@
 #include "Log.h"
 
 GameScene::GameScene(void)
-	: _mapProjector(Vector2(1390.0f, 1003.0f))
+	: _mapProjector()
 	, _RegionEditor(nullptr)
 	, _worldMap(nullptr)
 	, _cellScreen(nullptr)

@@ -55,6 +55,7 @@ bool WorldMapLayer::init(void)
 	cocos2d::Sprite *mapSprite = cocos2d::Sprite::create("WorldMap.png");
 	mapSprite->retain();
 	_mapProjector->AddMapPart(Drawable::CastFromCocos(mapSprite), Vector2(0.0f, 0.0f), Vector2(0.0f, 0.0f), 1.0f, false);
+	_mapProjector->SetMapSize(mapSprite->getTextureRect().size);
 	addChild(mapSprite, Z_MAP);
 
 	Vector2 origin = cocos2d::Director::getInstance()->getVisibleOrigin();
@@ -81,7 +82,7 @@ bool WorldMapLayer::init(void)
 	// send map sprite to the center of world
 	_mapProjector->SetLocation(Vector2(0.0f, 0.0f));
 	// set scale to first time
-	_mapProjector->SetScale(1.0f);
+	_mapProjector->SetScale(0.01f);
 
 	_cellMenu = new CellMenuSelector(_mapProjector, this);
 	_cellMenu->autorelease();
