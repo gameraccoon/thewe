@@ -33,8 +33,6 @@ bool MapGuiLayer::init(void)
 			this, menu_selector(MapGuiLayer::_MenuInputListener));
 		_btnEditor = cocos2d::CCMenuItemImage::create("Btn_Edit.png", "Btn_Edit_Pressed.png",
 			this, menu_selector(MapGuiLayer::_MenuInputListener));
-		_btnSave = cocos2d::CCMenuItemImage::create("Btn_S.png", "Btn_S_Pressed.png",
-			this, menu_selector(MapGuiLayer::_MenuInputListener));
 		_btnMenu = cocos2d::CCMenuItemImage::create("Btn_Menu.png", "Btn_Menu_Pressed.png",
 			this, menu_selector(MapGuiLayer::_MenuInputListener));
 	}
@@ -47,6 +45,7 @@ bool MapGuiLayer::init(void)
 
 	cocos2d::Vector<cocos2d::MenuItem*> menuItems;
 
+#if CC_TARGET_PLATFORM != CC_PLATFORM_ANDROID && CC_TARGET_PLATFORM != CC_PLATFORM_IOS
 	Vector2 pos(0.0f, origin.y + screen.y);
 
 	_btnMenu->setScale(1.0f);
@@ -54,15 +53,6 @@ bool MapGuiLayer::init(void)
 	_btnMenu->setPosition(pos + Vector2(0.0f, -68.0f));
 	_btnMenu->setAnchorPoint(cocos2d::Vec2(0.0f, 1.0f));
 	menuItems.pushBack(_btnMenu);
-
-	_btnSave->setScale(1.0f);
-	_btnSave->setTag(MENU_ITEM_SAVE);
-	_btnSave->setPosition(pos);
-	_btnSave->setAnchorPoint(cocos2d::Vec2(0.0f, 1.0f));
-	menuItems.pushBack(_btnSave);
-
-#if CC_TARGET_PLATFORM != CC_PLATFORM_ANDROID && CC_TARGET_PLATFORM != CC_PLATFORM_IOS
-	pos += Vector2(_btnSave->getContentSize().width - 8.0f, 0.0f);
 
 	_btnEditor->setScale(1.0f);
 	_btnEditor->setTag(MENU_ITEM_EDITOR);

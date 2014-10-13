@@ -22,7 +22,6 @@ private:
 		MENU_ITEM_ZOOM_IN
 		,MENU_ITEM_ZOOM_OUT
 		,MENU_ITEM_EDITOR
-		,MENU_ITEM_SAVE
 		,MENU_ITEM_MENU
 	};
 
@@ -37,7 +36,6 @@ private:
 	cocos2d::MenuItemImage *_btnZoomIn;
 	cocos2d::MenuItemImage *_btnZoomOut;
 	cocos2d::MenuItemImage *_btnEditor;
-	cocos2d::MenuItemImage *_btnSave;
 	cocos2d::MenuItemImage *_btnMenu;
 
 	MapProjector *_mapProjector;
