@@ -7,6 +7,8 @@
 #include "TaskManager.h"
 #include "Log.h"
 
+static const float MAX_MAP_SCALE = 1.5f;
+
 WorldMapLayer::WorldMapLayer(GameScene *gameScene, MapProjector* projector)
 	: _mapProjector(projector)
 	, _isInputEnabled(true)
@@ -298,7 +300,7 @@ void WorldMapLayer::RecalculateTouches(const std::vector<cocos2d::Touch* > &touc
 	{
 		_mapProjector->ShiftView(newTouchPoint - _touchesCenter);
 		if (_avgTouchDistance > 0.01 && newAvgDistance > 0.01)
-		_mapProjector->SetScale(_mapProjector->GetScale() * (newAvgDistance / _avgTouchDistance));
+		_mapProjector->SetScale(std::min(MAX_MAP_SCALE, _mapProjector->GetScale() * (newAvgDistance / _avgTouchDistance)));
 	}
 
 	_avgTouchDistance = newAvgDistance;
