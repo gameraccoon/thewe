@@ -6,29 +6,28 @@
 			<Hull Name="Russia_2" />
 		</Hulls>
 		<Towns>
-			<Town name="Moscow" x="83" y="148" scale="0.03" population="14.0" rank="1.0" desc=" " />
-			<Town name="Saint Petersburg" x="56" y="176" scale="0.03" population="5.131" rank="1.0" desc=" " />
-			<Town name="Vologda" x="87" y="172" scale="0.02" population="0.301" rank="1.0" desc="" />
-			<Town name="Simferopol" x="71" y="87" scale="0.01" population="0.360" rank="1.0" desc=" " />
-			<Town name="Norilsk" x="272" y="256" scale="0.01" population="0.157" rank="1.0" desc=" " />
-			<Town name="Murmansk" x="67" y="252" scale="0.01" population="0.157" rank="1.0" desc=" " />
-			<Town name="Arhangelsk" x="96" y="210" scale="0.01" population="0.157" rank="1.0" desc=" " />
-			<Town name="Petrozavodsk" x="74" y="197" scale="0.01" population="0.157" rank="1.0" desc=" " />
-			<Town name="Astrahan" x="121" y="95" scale="0.01" population="0.157" rank="1.0" desc=" " />
-			<Town name="Volgograd" x="108" y="107" scale="0.01" population="0.157" rank="1.0" desc=" " />
-			<Town name="Yakaterinburg" x="165" y="155" scale="0.01" population="0.157" rank="1.0" desc=" " />
-			<Town name="Omsk" x="213" y="144" scale="0.01" population="0.157" rank="1.0" desc=" " />
-			<Town name="Novosoborsk" x="247" y="145" scale="0.01" population="0.157" rank="1.0" desc=" " />
-			<Town name="Krasnoyarsk" x="282" y="152" scale="0.01" population="0.157" rank="1.0" desc=" " />
-			<Town name="Irkutsk" x="324" y="127" scale="0.01" population="0.157" rank="1.0" desc=" " />
-			<Town name="Khabarovsk" x="435" y="107" scale="0.01" population="0.157" rank="1.0" desc=" " />
-			<Town name="Magadan" x="490" y="176" scale="0.01" population="0.157" rank="1.0" desc=" " />
-			<Town name="Kazan" x="127" y="133" scale="0.01" population="0.157" rank="1.0" desc=" " />
-			<Town name="Vladivistok" x="424" y="80" scale="0.01" population="0.157" rank="1.0" desc=" " />
-			<Town name="Petropavlovsk-Kamchatskiy" x="520" y="132" scale="0.01" population="0.157" rank="1.0" desc=" " />
-			<Town name="Anadur" x="601" y="227" scale="0.01" population="0.157" rank="1.0" desc=" " />
-			<Town name="Yakutsk" x="416" y="204" scale="0.01" population="0.157" rank="1.0" desc=" " />
-			<Town name="Provideniya" x="623" y="211" scale="0.01" population="0.157" rank="1.0" desc=" " />
+			<Town name="Moscow" x="193" y="305" scale="0.03" population="14.0" rank="1.0" desc=" " />
+			<Town name="Saint Petersburg" x="148" y="323" scale="0.03" population="5.131" rank="1.0" desc=" " />
+			<Town name="Vologda" x="194" y="327" scale="0.02" population="0.301" rank="1.0" desc="" />
+			<Town name="Simferopol" x="175" y="253" scale="0.01" population="0.360" rank="1.0" desc=" " />
+			<Town name="Norilsk" x="451" y="372" scale="0.01" population="0.157" rank="1.0" desc=" " />
+			<Town name="Murmansk" x="161" y="378" scale="0.01" population="0.157" rank="1.0" desc=" " />
+			<Town name="Arhangelsk" x="212" y="356" scale="0.01" population="0.157" rank="1.0" desc=" " />
+			<Town name="Petrozavodsk" x="168" y="342" scale="0.01" population="0.157" rank="1.0" desc=" " />
+			<Town name="Astrahan" x="245" y="262" scale="0.01" population="0.157" rank="1.0" desc=" " />
+			<Town name="Volgograd" x="266" y="276" scale="0.01" population="0.157" rank="1.0" desc=" " />
+			<Town name="Yakaterinburg" x="314" y="310" scale="0.01" population="0.157" rank="1.0" desc=" " />
+			<Town name="Omsk" x="385" y="309" scale="0.01" population="0.157" rank="1.0" desc=" " />
+			<Town name="Novosoborsk" x="496" y="308" scale="0.01" population="0.157" rank="1.0" desc=" " />
+			<Town name="Krasnoyarsk" x="470" y="314" scale="0.01" population="0.157" rank="1.0" desc=" " />
+			<Town name="Irkutsk" x="553" y="292" scale="0.01" population="0.157" rank="1.0" desc=" " />
+			<Town name="Khabarovsk" x="719" y="270" scale="0.01" population="0.157" rank="1.0" desc=" " />
+			<Town name="Magadan" x="801" y="330" scale="0.01" population="0.157" rank="1.0" desc=" " />
+			<Town name="Kazan" x="248" y="305" scale="0.01" population="0.157" rank="1.0" desc=" " />
+			<Town name="Vladivistok" x="699" y="239" scale="0.01" population="0.157" rank="1.0" desc=" " />
+			<Town name="Petropavlovsk-Kamchatskiy" x="846" y="294" scale="0.01" population="0.157" rank="1.0" desc=" " />
+			<Town name="Anadнr" x="946" y="358" scale="0.01" population="0.157" rank="1.0" desc=" " />
+			<Town name="Yakutsk" x="709" y="342" scale="0.01" population="0.157" rank="1.0" desc=" " />
 		</Towns>
 	</Region>
 	<Region Name="USA" Population="100.0" Desc="The United States of America">
