@@ -93,6 +93,11 @@ void World::AddTown(Town::Ptr cell)
 	_towns.push_back(cell);
 }
 
+void World::AddInvestigator(Investigator::Ptr investigator)
+{
+	_investigators.push_back(investigator);
+}
+
 void World::AddInvestigatorByCell(Cell::Ptr investigationRoot)
 {
 	Investigator::Ptr investigator = Investigator::Create((Cell::WeakPtr)investigationRoot);

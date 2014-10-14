@@ -9,9 +9,26 @@ Investigator::Investigator(Cell::WeakPtr investigationRoot)
 {
 }
 
+Investigator::Investigator(const Investigator::BranchBundle &rootBranchBudle)
+	: _branchRoot(rootBranchBudle)
+	, _uid(World::Instance().GetNewUid())
+{
+	_investigationRoot = World::Instance().GetCellByInfo(_branchRoot.at(0).cellFrom->GetInfo());
+}
+
 Investigator::Ptr Investigator::Create(Cell::WeakPtr investigationRoot)
 {
 	return std::make_shared<Investigator>(investigationRoot);
+}
+
+Investigator::Ptr Investigator::Create(const Investigator::BranchBundle &rootBranchBudle)
+{
+	return std::make_shared<Investigator>(rootBranchBudle);
+}
+
+void Investigator::InitInvestigator(const Investigator::BranchBundle &rootBranchBudle)
+{
+	_branchRoot = rootBranchBudle;
 }
 
 void Investigator::BeginInvestigation(void)
@@ -27,8 +44,8 @@ void Investigator::BeginInvestigation(void)
 	}
 
 	Investigator::Branch branchToParent;
-	branchToParent.cellFrom = cell;
-	branchToParent.cellTo = (Cell::Ptr)cell->GetInfo().parent;
+	branchToParent.cellFrom = cell.get();
+	branchToParent.cellTo = cell->GetInfo().parent;
 	branchToParent.parentBrunch = nullptr;
 	branchToParent.timeDuration = GameInfo::Instance().GetFloat("INVESTIGATION_DURATION");
 	branchToParent.timeBegin = Utils::GetGameTime();
@@ -39,8 +56,8 @@ void Investigator::BeginInvestigation(void)
 	for (Cell::Ptr child : cell->GetChildren())
 	{
 		Investigator::Branch branch;
-		branch.cellFrom = cell;
-		branch.cellTo = child;
+		branch.cellFrom = cell.get();
+		branch.cellTo = child.get();
 		branch.parentBrunch = nullptr;
 		branch.timeDuration = GameInfo::Instance().GetFloat("INVESTIGATION_DURATION");
 		branch.timeBegin = Utils::GetGameTime();
@@ -74,6 +91,10 @@ void Investigator::UpdateBranchesRecurcively(Investigator::BranchBundle &bundle,
 			float eta = branch.timeEnd - time;
 			branch.progressPercentage = 1.0f - eta / allTime;
 			branch.progressPercentage *= 100.0f;
+
+			if (branch.progressPercentage > 100.0f) {
+				branch.progressPercentage = 100.0f;
+			}
 		}
 		else if (branch.cellTo->GetInfo().state != Cell::ARRESTED)
 		{
@@ -87,11 +108,11 @@ void Investigator::UpdateBranchesRecurcively(Investigator::BranchBundle &bundle,
 				branch.cellTo->GetInfo().state = Cell::ARRESTED;
 
 				// trying to add bratch to parent cell
-				if (branch.cellTo->GetInfo().parent != branch.cellFrom.get())
+				if (branch.cellTo->GetInfo().parent != branch.cellFrom)
 				{
 					Investigator::Branch childBranch;
 					childBranch.cellFrom = branch.cellTo;
-					childBranch.cellTo = (Cell::Ptr)branch.cellTo->GetInfo().parent;
+					childBranch.cellTo = branch.cellTo->GetInfo().parent;
 					childBranch.parentBrunch = nullptr;
 					childBranch.timeDuration = GameInfo::Instance().GetFloat("INVESTIGATION_DURATION");
 					childBranch.timeBegin = Utils::GetGameTime();
@@ -105,14 +126,14 @@ void Investigator::UpdateBranchesRecurcively(Investigator::BranchBundle &bundle,
 				for (Cell::Ptr child : branch.cellTo->GetChildren())
 				{
 					// disallow to move in reverse direction
-					if (child == branch.cellFrom)
+					if (child.get() == branch.cellFrom)
 					{
 						continue;
 					}
 
 					Investigator::Branch childBranch;
 					childBranch.cellFrom = branch.cellTo;
-					childBranch.cellTo = child;
+					childBranch.cellTo = child.get();
 					childBranch.parentBrunch = nullptr;
 					childBranch.timeDuration = GameInfo::Instance().GetFloat("INVESTIGATION_DURATION");
 					childBranch.timeBegin = Utils::GetGameTime();

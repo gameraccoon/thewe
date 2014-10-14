@@ -42,6 +42,7 @@ public:
 	void AddRegion(Region::Ptr region);
 	void AddCell(Cell::Ptr cell);
 	void AddTown(Town::Ptr town);
+	void AddInvestigator(Investigator::Ptr investigator);
 	void AddInvestigatorByCell(Cell::Ptr investigationRoot);
 	void AddInvestigatorByInfo(const Cell::Info &cellInfo);
 

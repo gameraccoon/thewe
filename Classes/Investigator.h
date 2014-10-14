@@ -15,8 +15,8 @@ public:
 	struct Branch
 	{
 		Branch *parentBrunch;
-		Cell::Ptr cellFrom;
-		Cell::Ptr cellTo;
+		Cell *cellFrom;
+		Cell *cellTo;
 		
 		Utils::GameTime timeBegin;
 		Utils::GameTime timeEnd;
@@ -29,9 +29,12 @@ public:
 
 public:
 	Investigator(Cell::WeakPtr investigationRoot);
+	Investigator(const Investigator::BranchBundle &rootBranchBudle);
 
 	static Ptr Create(Cell::WeakPtr investigationRoot);
+	static Ptr Create(const Investigator::BranchBundle &rootBranchBudle);
 
+	void InitInvestigator(const Investigator::BranchBundle &rootBranchBudle);
 	void BeginInvestigation(void);
 	void AbortInvestigation(void);
 	void StayInvestigation(bool stay);

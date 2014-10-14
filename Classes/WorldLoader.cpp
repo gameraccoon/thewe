@@ -27,7 +27,7 @@ WorldLoader& WorldLoader::Instance()
 	return singleInstance;
 }
 
-static void LoadCellsRecursively(pugi::xml_node root, pugi::xml_node parent_node, Cell *parent)
+static void LoadCellsRecursively(pugi::xml_node root, pugi::xml_node parent_node, Cell *parent, std::map<int, Cell *> &cast)
 {
 	pugi::xml_node childrens = parent_node.child("Childrens");
 	pugi::xml_node child_id_node;
@@ -65,6 +65,7 @@ static void LoadCellsRecursively(pugi::xml_node root, pugi::xml_node parent_node
 		Cell::Ptr cell = Cell::Create(info);
 		World::Instance().AddCell(cell);
 		parent->AddChild(cell);
+		cast.insert(std::pair<int, Cell *>(child.attribute("id").as_int(), cell.get()));
 
 		pugi::xml_node tasks = child.child("Tasks");
 		if (tasks)
@@ -74,9 +75,50 @@ static void LoadCellsRecursively(pugi::xml_node root, pugi::xml_node parent_node
 			World::Instance().GetTaskManager().RunTask((Cell::WeakPtr)cell, currentTaskId, startTime);
 		}
 
-		LoadCellsRecursively(root, child, cell.get());
+		LoadCellsRecursively(root, child, cell.get(), cast);
 
 		child_id_node = child_id_node.next_sibling();
+	}
+}
+
+static void LoadInvestigator(Investigator::BranchBundle &bundle, pugi::xml_node node, std::map<int, Cell *> &cast)
+{		
+	pugi::xml_node bundleNode = node.first_child();
+
+	while (bundleNode)
+	{
+		Investigator::Branch branch;
+
+		branch.cellTo = cast.find(bundleNode.attribute("cellToId").as_int())->second;
+		branch.cellFrom = cast.find(bundleNode.attribute("cellFromId").as_int())->second;
+		branch.timeBegin = Utils::StringToTime(bundleNode.attribute("timeBegin").as_string());
+		branch.timeEnd = Utils::StringToTime(bundleNode.attribute("timeEnd").as_string());
+		branch.timeDuration = Utils::StringToTime(bundleNode.attribute("timeDuration").as_string());
+		branch.progressPercentage = 0.0f;
+		LoadInvestigator(branch.childBrunches, bundleNode, cast);
+		
+		bundle.push_back(branch);
+		bundleNode = bundleNode.next_sibling();
+	}
+}
+
+static void SaveInvestigator(const Investigator::BranchBundle &bundle, pugi::xml_node parentBranchNode,
+							 std::map<const Cell *, int> &cast, bool first = false)
+{
+	if (!bundle.empty())
+	{	
+		for (const Investigator::Branch &branch : bundle)
+		{
+			pugi::xml_node branchNode = parentBranchNode.append_child("Branch");
+
+			branchNode.append_attribute("cellToId").set_value(cast.find(branch.cellTo)->second);
+			branchNode.append_attribute("cellFromId").set_value(cast.find(branch.cellFrom)->second);
+			branchNode.append_attribute("timeBegin").set_value(Utils::TimeToString(branch.timeBegin).c_str());
+			branchNode.append_attribute("timeEnd").set_value(Utils::TimeToString(branch.timeEnd).c_str());
+			branchNode.append_attribute("timeDuration").set_value(Utils::TimeToString(branch.timeDuration).c_str());
+
+			SaveInvestigator(branch.childBrunches, branchNode, cast);
+		}
 	}
 }
 
@@ -279,7 +321,10 @@ bool WorldLoader::LoadGameState(void)
 		pugi::xml_node root = doc.first_child();
 		pugi::xml_node world_info = root.child("WorldInfo");
 		pugi::xml_node cells_network = root.child("CellsNetwork");
+		pugi::xml_node inves_root = root.child("Investigators");
 		pugi::xml_node cell_root = cells_network.find_child_by_attribute("parent_id", "-1");
+
+		std::map<int, Cell *> cellsIndicesCast;
 
 		if (cell_root)
 		{ 
@@ -307,6 +352,7 @@ bool WorldLoader::LoadGameState(void)
 
 			Cell::Ptr cell = Cell::Create(info);
 			World::Instance().AddCell(cell);
+			cellsIndicesCast.insert(std::pair<int, Cell *>(cell_root.attribute("id").as_int(), cell.get()));
 
 			pugi::xml_node tasks = cell_root.child("Tasks");
 			if (tasks)
@@ -316,11 +362,25 @@ bool WorldLoader::LoadGameState(void)
 				World::Instance().GetTaskManager().RunTask((Cell::WeakPtr)cell, currentTaskId, startTime);
 			}
 
-			LoadCellsRecursively(cells_network, cell_root, cell.get());
+			LoadCellsRecursively(cells_network, cell_root, cell.get(), cellsIndicesCast);
 		}
 		else
 		{
 			World::Instance().SetFirstLaunch(true);
+		}
+
+		if (inves_root)
+		{
+			pugi::xml_node investigatorNode = inves_root.first_child();
+
+			while (investigatorNode)
+			{
+				Investigator::BranchBundle bundle;
+				LoadInvestigator(bundle, investigatorNode, cellsIndicesCast);
+				World::Instance().AddInvestigator(Investigator::Create(bundle));
+
+				investigatorNode = investigatorNode.next_sibling();
+			}
 		}
 
 		_state = State::Ready;
@@ -348,12 +408,12 @@ bool WorldLoader::SaveGameState(void)
 	World &map = World::Instance();
 	const World::Cells &cells = map.GetCells();
 
-	std::map<const Cell *, int> cells_indices;
+	std::map<const Cell *, int> cellsIndicesCast;
 	int index = 0;
 	for (World::Cells::const_iterator it = cells.begin(); it != cells.end(); ++it)
 	{
 		index = index + 1;
-		cells_indices.insert(std::pair<const Cell *, int>((*it).get(), index));
+		cellsIndicesCast.insert(std::pair<const Cell *, int>((*it).get(), index));
 	}
 
 	pugi::xml_document doc;
@@ -361,16 +421,18 @@ bool WorldLoader::SaveGameState(void)
 	
 	pugi::xml_node world_info = root.append_child("WorldInfo");
 	pugi::xml_node cells_root = root.append_child("CellsNetwork");
+	pugi::xml_node inves_root = root.append_child("Investigators");
 
+	// save cells network
 	for (World::Cells::const_iterator it = cells.begin(); it != cells.end(); ++it)
 	{
 		const Cell *cell = (*it).get();
 		const Cell::Info info = (*it)->GetInfo();
 	
-		int parent_id = info.parent != nullptr ? cells_indices.find(info.parent)->second : -1;
+		int parent_id = info.parent != nullptr ? cellsIndicesCast.find(info.parent)->second : -1;
 
 		pugi::xml_node cell_node = cells_root.append_child("Cell");
-		cell_node.append_attribute("id").set_value(cells_indices.find(cell)->second);
+		cell_node.append_attribute("id").set_value(cellsIndicesCast.find(cell)->second);
 		cell_node.append_attribute("state").set_value((int)info.state);
 		cell_node.append_attribute("parent_id").set_value(parent_id);
 		cell_node.append_attribute("town").set_value(info.town.lock()->GetInfo().name.c_str());
@@ -387,7 +449,7 @@ bool WorldLoader::SaveGameState(void)
 			for (Cell::Ptr child : cell->GetChildren())
 			{
 				pugi::xml_node cell_child_node = childrens.append_child("Child");
-				cell_child_node.append_attribute("id").set_value(cells_indices.find(child.get())->second);
+				cell_child_node.append_attribute("id").set_value(cellsIndicesCast.find(child.get())->second);
 			}
 		}
 
@@ -408,6 +470,13 @@ bool WorldLoader::SaveGameState(void)
 			construct.append_attribute("construction_begin").set_value(Utils::TimeToString(info.constructionBegin).c_str());
 			construct.append_attribute("construction_duration").set_value(Utils::TimeToString(info.constructionDuration).c_str());
 		}
+	}
+
+	// save investigator
+	for (Investigator::Ptr investigator : World::Instance().GetInvestigators())
+	{
+		pugi::xml_node investigatorNode = inves_root.append_child("Investigator");
+		SaveInvestigator(investigator->GetRootBranchBundle(), investigatorNode, cellsIndicesCast, true);
 	}
 
 	_state = State::Ready;
