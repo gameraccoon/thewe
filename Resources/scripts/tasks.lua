@@ -2,9 +2,23 @@ Log:log("Script task.lua initalization started")
 
 -- Определяем, считать задание выполненным или провеленным
 function CheckTaskStatus(cellInfo, taskInfo)
-	local membersIsEnough = cellInfo.membersCount > taskInfo.severity * 10.0
+	local membersIsEnough = cellInfo.membersCount >= taskInfo.severity * 10.0
 	local moraleIsNorm = math.abs(cellInfo.morale - taskInfo.moraleLevel) < 0.5
 	return membersIsEnough and moraleIsNorm
+end
+
+-- определяем будет ли показываться задание для данной ячейки
+function IsShowTaskInList(cellInfo, taskInfo)
+	-- для первой альфы делаем не очень хорошие проверки
+	if taskInfo.id == "alpha1_Recrutment1" then
+		return cellInfo.cash <= 50000
+	elseif taskInfo.id == "alpha1_Recrutment2" then
+		return cellInfo.cash > 50000 
+	elseif taskInfo.id == "alpha1_BankRobbery" then
+		return cellInfo.membersCount >= 10
+	end
+
+	return true
 end
 
 -- отправляем игроку сообщение, о том что задание выполнено
@@ -17,10 +31,10 @@ function SayFailed(taskName)
 	MessageManager:sendMessage("Task " .. taskName .. " failed")
 end
 
-function TestMissionSuccess(cellInfo, taskInfo)
-	Log:log("Task "..taskInfo.id.." successfully finished!"..cellInfo.morale)
+function MissionSuccess_Test(cellInfo, taskInfo)
+	Log:log("Task "..taskInfo.id.." successfully finished!")
 
-	-- увеличивем довольство на 10% от текущего
+	-- увеличивем преданность на 10% от текущего
 	cellInfo.contantement = cellInfo.contantement + (cellInfo.contantement * 0.1)
 	cellInfo.cash = cellInfo.cash + 200
 	cellInfo.membersCount = cellInfo.membersCount + 1
@@ -30,13 +44,13 @@ function TestMissionSuccess(cellInfo, taskInfo)
 		cellInfo.contantement = 1
 	end
 
-	SayCompleted(taskInfo.id)
+	SayCompleted(taskInfo.title)
 end
 
-function TestMissionFail(cellInfo, taskInfo)
-	Log:log("Task "..taskInfo.id.." failed."..cellInfo.morale)
+function MissionFail_Test(cellInfo, taskInfo)
+	Log:log("Task "..taskInfo.id.." failed.")
 
-	-- уменьшаем довольство на 10% от текущего
+	-- уменьшаем преданность на 10% от текущего
 	cellInfo.contantement = cellInfo.contantement - (cellInfo.contantement * 0.1)
 
 	-- убираем одного члена ячейки, если их болльше 2
@@ -44,36 +58,65 @@ function TestMissionFail(cellInfo, taskInfo)
 		cellInfo.membersCount = cellInfo.membersCount - 1
 	end
 	
-	SayFailed(taskInfo.id)
+	SayFailed(taskInfo.title)
 end
 
-function TestMissionAbort(cellInfo, taskInfo)
-	Log:log("Task "..taskInfo.id.." aborted")
+function MissionAbort_Test(cellInfo, taskInfo)
+	Log:log("Task "..taskInfo.title.." aborted")
 
 	-- уменьшаем довольство на 20% от текущего
 	cellInfo.contantement = cellInfo.contantement - (cellInfo.contantement * 0.2)
 end
 
-function  MissionSuccessInvestigatorTest(cellInfo, taskInfo)
+function MissionSuccess_InvestigatorTest(cellInfo, taskInfo)
 	MessageManager:sendMessage("Investigation launched")
 	World:AddInvestigatorByInfo(cellInfo)
 end
 
-function  MissionFailInvestigatorTest(cellInfo, taskInfo)
-	SayFailed(taskInfo.id)
+function MissionFail_InvestigatorTest(cellInfo, taskInfo)
+	SayFailed(taskInfo.title)
 	MessageManager:sendMessage("Investigation launched")
 	World:AddInvestigatorByInfo(cellInfo)
 end
 
-function CheatMissionSuccess(cellInfo, taskInfo)
+function MissionSuccess_CheatMission(cellInfo, taskInfo)
 	SayCompleted("CheatMission")
 	cellInfo.membersCount = 100
 	cellInfo.cash = 100000
 end
 
--- определяем будет ли показываться задание для данной ячейки
-function IsShowTaskInList(cellInfo, taskInfo)
-	return true
+function MissionSuccess_Alpha1Recrutment(cellInfo, taskInfo)
+	SayCompleted(taskInfo.title)
+
+	cellInfo.membersCount = cellInfo.membersCount + math.random(1, 3)
+end
+
+function MissionFail_Alpha1Recrutment(cellInfo, taskInfo)
+	SayFailed(taskInfo.title)
+end
+
+function MissionSuccess_Alpha1BankRobbery(cellInfo, taskInfo)
+	SayCompleted(taskInfo.title)
+
+	-- мораль ячейки приближается к морали задания
+	cellInfo.morale = cellInfo.morale + (taskInfo.moraleLevel - cellInfo.morale) * 0.3
+
+	-- увеличивем преданность на 10% от текущего
+	cellInfo.contantement = cellInfo.contantement + (cellInfo.contantement * 0.1)
+
+	cellInfo.cash = cellInfo.cash + math.random(150, 200) * 1000
+end
+
+function MissionFail_Alpha1BankRobbery(cellInfo, taskInfo)
+	SayFailed(taskInfo.title)
+
+	-- мораль ячейки приближается к морали задания
+	cellInfo.morale = cellInfo.morale + (taskInfo.moraleLevel - cellInfo.morale) * 0.3
+
+	-- уменьшаем преданность на 25-35% от текущего
+	cellInfo.contantement = cellInfo.contantement - (cellInfo.contantement * 0.01 * math.random(25, 35))
+
+	cellInfo.membersCount = cellInfo.membersCount - math.random(0, 3)
 end
 
 Log:log("Script task.lua initalization finished")

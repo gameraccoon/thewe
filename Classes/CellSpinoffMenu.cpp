@@ -46,10 +46,12 @@ bool CellSpinoffMenu::init(void)
 
 	Cell::Info info = _cell.lock()->GetInfo();
 
-	_isCellCreationPossible = info.membersCount >= GameInfo::Instance().GetInt("CELL_SPINOFF_MEMBERS_PRICE") &&
-		                      info.cash >= GameInfo::Instance().GetInt("CELL_SPINOFF_CASH_PRICE");
+	bool isMembersEnough = info.membersCount >= GameInfo::Instance().GetInt("CELL_SPINOFF_MEMBERS_PRICE") * 2;
+	bool isCashEnough = info.cash >= GameInfo::Instance().GetInt("CELL_SPINOFF_CASH_PRICE");
 
-	std::string strMembers = cocos2d::StringUtils::format("Members %d / %d", info.membersCount, GameInfo::Instance().GetInt("CELL_SPINOFF_MEMBERS_PRICE"));
+	_isCellCreationPossible = isMembersEnough && isCashEnough;
+
+	std::string strMembers = cocos2d::StringUtils::format("Members %d / %d", info.membersCount, GameInfo::Instance().GetInt("CELL_SPINOFF_MEMBERS_PRICE") * 2);
 	std::string strCach = cocos2d::StringUtils::format("Cach %d / %d $", info.cash, GameInfo::Instance().GetInt("CELL_SPINOFF_CASH_PRICE"));
 	
 	cocos2d::TTFConfig ttfConfigBig("arial.ttf", 24);
@@ -83,7 +85,7 @@ bool CellSpinoffMenu::init(void)
 		newCellButtonLabel->setTextColor(cocos2d::Color4B(125, 125, 125, 255));
 	}
 
-	if (info.membersCount >= GameInfo::Instance().GetInt("CELL_SPINOFF_MEMBERS_PRICE"))
+	if (isMembersEnough)
 	{
 		_necessaryMembers->setTextColor(cocos2d::Color4B(0, 255, 0, 255));
 	}
@@ -92,7 +94,7 @@ bool CellSpinoffMenu::init(void)
 		_necessaryMembers->setTextColor(cocos2d::Color4B(255, 0, 0, 255));
 	}
 
-	if (info.cash >= GameInfo::Instance().GetInt("CELL_SPINOFF_CASH_PRICE"))
+	if (isCashEnough)
 	{
 		_necessaryCash->setTextColor(cocos2d::Color4B(0, 255, 0, 255));
 	}

@@ -1,14 +1,14 @@
 <?xml version="1.0"?>
 <GameInfo>
 	<Const name="CELL_SPINOFF_MEMBERS_PRICE" type="int" value="5" />
-	<Const name="CELL_SPINOFF_CASH_PRICE" type="int" value="999" />
+	<Const name="CELL_SPINOFF_CASH_PRICE" type="int" value="20000" />
 
-	<Const name="CELL_STARTUP_MEMBERS" type="int" value="6" />
+	<Const name="CELL_STARTUP_MEMBERS" type="int" value="3" />
 	<Const name="CELL_STARTUP_MONEY" type="int" value="1000" />
 	<Const name="CELL_STARTUP_MORALE" type="float" value="0.5" />
 	<Const name="CELL_STARTUP_CONTENTMENT" type="float" value="1.0" />
 
-	<Const name="CELL_CONSTRUCTION_TIME" type="float" value="15.0" />
+	<Const name="CELL_CONSTRUCTION_TIME" type="float" value="60" />
 
-	<Const name="INVESTIGATION_DURATION" type="float" value="15" />
+	<Const name="INVESTIGATION_DURATION" type="float" value="600" />
 </GameInfo>

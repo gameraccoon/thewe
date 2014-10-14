@@ -80,6 +80,7 @@ void LuaInstance::BindClass<const Task::Info>()
 	luabind::module(_luaState) [
 	luabind::class_<const Task::Info>("TaskInfoClass")
 		.def_readonly("id", &Task::Info::id)
+		.def_readonly("title", &Task::Info::title)
 		.def_readonly("moraleLevel", &Task::Info::moralLevel)
 		.def_readonly("severity", &Task::Info::severity)
 	];
