@@ -23,7 +23,7 @@ bool AppDelegate::applicationDidFinishLaunching()
 	
 	if(!glview) 
 	{
-        glview = cocos2d::GLView::create("Samsung Galaxy S II");
+        glview = cocos2d::GLView::create("The We");
     }
 
 	// Take Samsung Galaxy S2 resolution as reference
