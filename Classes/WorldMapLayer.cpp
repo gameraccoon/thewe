@@ -51,6 +51,11 @@ bool WorldMapLayer::init(void)
 		return false;
 	}
 	
+	_townsDrawLayer = cocos2d::Layer::create();
+	_townsDrawLayer->setPosition(0.0f, 0.0f);
+	_townsDrawLayer->setVisible(true);
+	addChild(_townsDrawLayer, Z_TOWN);
+
 	_networkVisualiser = cocos2d::DrawNode::create();
 	addChild(_networkVisualiser, Z_LINKS);
 
@@ -76,7 +81,7 @@ bool WorldMapLayer::init(void)
 	{
 		TownMapWidget *widget = _CreateTownWidget(town);
 		_townWidgetsList.push_back(widget);
-		addChild(widget, Z_TOWN);
+		_townsDrawLayer->addChild(widget, 0);
 	}
 	
 	// say where is screen center
@@ -105,6 +110,9 @@ void WorldMapLayer::update(float dt)
 	{
 		// push game over screen
 	}
+
+	// allow to draw towns olny if cell spinoff creation enabled
+	_townsDrawLayer->setVisible(!_nextCellParent.expired());
 
 	// check for widgets existance and create new if needed
 	for (Investigator::Ptr investigator : World::Instance().GetInvestigators())

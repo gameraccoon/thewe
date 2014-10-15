@@ -83,6 +83,7 @@ private:
 
 	CellMenuSelector *_cellMenu;
 	cocos2d::Layer *_cellGameInterface;
+	cocos2d::Layer *_townsDrawLayer;
 
 	Vector2 _touchLastPoint;
 	Vector2 _touchFirstPos;
