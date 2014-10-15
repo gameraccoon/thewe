@@ -309,6 +309,9 @@
     <ClCompile Include="..\Classes\TaskManager.cpp">
       <Filter>Classes\GameMap\Model</Filter>
     </ClCompile>
+    <ClCompile Include="..\Classes\SessionEndScreen.cpp">
+      <Filter>Classes</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="main.h">
@@ -508,6 +511,9 @@
     </ClInclude>
     <ClInclude Include="..\Classes\TaskManager.h">
       <Filter>Classes\GameMap\Model</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\SessionEndScreen.h">
+      <Filter>Classes</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

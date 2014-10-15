@@ -85,7 +85,7 @@ void MainMenuScene::_MenuInputListener(cocos2d::Ref *sender)
 	{
 	case MainMenuScene::MenuItemTag::MAP:
 	{
-		GameScene* scene = new GameScene();
+		GameScene* scene = new GameScene(this);
 		scene->autorelease();
 		scene->init();
 		cocos2d::TransitionScene* transition = TransitionZoomFade::create(1, scene);

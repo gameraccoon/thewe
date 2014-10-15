@@ -39,6 +39,9 @@ public:
 	void CreateCell(const Cell::Info &info, Cell::State state);
 	void DeleteCell(CellMapWidget *widget);
 
+	void PushSessionFailScreen(void);
+	void PushSessionWinScreen(void);
+
 private:
 	enum CONTENT_Z_ORDER
 	{
@@ -76,6 +79,7 @@ private:
 	void _OnTownSelect(Town::WeakPtr town);
 	void RecalculateTouches(const std::vector<cocos2d::Touch* > &touches, bool updateView);
 	void ResetTouches();
+	void BackToMainMenuCallback(cocos2d::Ref *sender);
 
 	CellWidgetsList _cellWidgetsList;
 	TownWidgetsList _townWidgetsList;
@@ -94,6 +98,7 @@ private:
 	cocos2d::DrawNode *_networkVisualiser;
 
 	bool _isInputEnabled;
+	bool _isSessionScreenShowed;
 
 	Vector2 _touchesCenter;
 	int _lastTouchesCount;

@@ -4,9 +4,11 @@
 #include "EditorLayer.h"
 #include "World.h"
 #include "Log.h"
+#include "TransitionZoomFade.h"
 
-GameScene::GameScene(void)
+GameScene::GameScene(MainMenuScene *mainMenuScene)
 	: _mapProjector()
+	, _mainMenuScene(mainMenuScene)
 	, _RegionEditor(nullptr)
 	, _worldMap(nullptr)
 	, _cellScreen(nullptr)
@@ -56,6 +58,18 @@ void GameScene::ShowMap()
 
 	_worldMap->SetMapInputEnabled(true);
 	_worldMap->SetGuiEnabled(true);
+}
+
+void GameScene::GoToMainMenu(void)
+{
+	MainMenuScene* mainMenuScene = new MainMenuScene(nullptr);
+	mainMenuScene->init();
+	mainMenuScene->autorelease();
+
+	cocos2d::Scene *scene = dynamic_cast<cocos2d::Scene *>(mainMenuScene);
+	
+	cocos2d::TransitionScene* transition = cocos2d::TransitionSlideInL::create(0.5f, scene);
+	cocos2d::Director::getInstance()->replaceScene(transition);
 }
 
 void GameScene::ToggleEditor()

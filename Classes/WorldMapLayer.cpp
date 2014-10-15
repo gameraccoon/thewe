@@ -5,6 +5,7 @@
 #include "GameScene.h"
 #include "MapGuiLayer.h"
 #include "TaskManager.h"
+#include "SessionEndScreen.h"
 #include "Log.h"
 
 static const float MAX_MAP_SCALE = 1.5f;
@@ -12,6 +13,7 @@ static const float MAX_MAP_SCALE = 1.5f;
 WorldMapLayer::WorldMapLayer(GameScene *gameScene, MapProjector* projector)
 	: _mapProjector(projector)
 	, _isInputEnabled(true)
+	, _isSessionScreenShowed(false)
 	, _mapGui(nullptr)
 	, _gameScene(gameScene)
 	, _nextCellParent()
@@ -23,25 +25,6 @@ WorldMapLayer::WorldMapLayer(GameScene *gameScene, MapProjector* projector)
 
 WorldMapLayer::~WorldMapLayer(void)
 {
-	for (TownWidgetsIter it = _townWidgetsList.begin(); it != _townWidgetsList.end(); ++it)
-	{
-		TownMapWidget *widget = (*it);
-		/* Is this widget must be removed form projector ? How ?
-		_mapProjector->RemoveMapPart(widget->GetProjectorUid());
-		*/
-		removeChild(widget);
-		delete widget;
-	}
-
-	for (CellWidgetsIter it = _cellWidgetsList.begin(); it != _cellWidgetsList.end(); ++it)
-	{
-		CellMapWidget *widget = (*it);
-		/* Is this widget must be removed form projector ? How ?
-		_mapProjector->RemoveMapPart(widget->GetProjectorUid());
-		*/
-		removeChild(widget);
-		delete widget;
-	}
 }
 
 bool WorldMapLayer::init(void)
@@ -106,9 +89,18 @@ bool WorldMapLayer::init(void)
 
 void WorldMapLayer::update(float dt)
 {
-	if (World::Instance().IsGameOver())
+	if (!_isSessionScreenShowed)
 	{
-		// push game over screen
+		if (World::Instance().IsGameOver())
+		{
+			PushSessionFailScreen();
+			_isSessionScreenShowed = true;
+		}
+		else if (World::Instance().GetWorldCapturingState() >= 1.0f)
+		{
+			PushSessionWinScreen();
+			_isSessionScreenShowed = true;
+		}
 	}
 
 	// allow to draw towns olny if cell spinoff creation enabled
@@ -203,6 +195,46 @@ void WorldMapLayer::DeleteCell(CellMapWidget *widget)
 	_mapProjector->RemoveMapPart(widget->GetProjectorUid());
 
 	delete widget;
+}
+
+void WorldMapLayer::PushSessionFailScreen(void)
+{
+	CustomSessionEndScreen::ConstructionInfo desc;
+	desc.bigMessage = "Network Destroyed";
+	desc.shortDesc = "Your actions have led to the declassification of the network.";
+	desc.backgrndColor = cocos2d::Color3B(255, 0, 0);
+	desc.messageColor = cocos2d::Color3B(255, 36, 0);
+	desc.showStaticstics = true;
+	desc.callback = CC_CALLBACK_1(WorldMapLayer::BackToMainMenuCallback, this);
+
+	CustomSessionEndScreen *screen = new CustomSessionEndScreen(desc);
+	screen->setPosition(0.0f, 0.0f);
+	screen->autorelease();
+
+	SetMapInputEnabled(false);
+	SetGuiEnabled(false);
+
+	addChild(screen, Z_MAP_GUI);
+}
+
+void WorldMapLayer::PushSessionWinScreen(void)
+{
+	CustomSessionEndScreen::ConstructionInfo desc;
+	desc.bigMessage = "World Absorbed";
+	desc.shortDesc = "Your network keeps the whole world under control.";
+	desc.backgrndColor = cocos2d::Color3B(0, 200, 0);
+	desc.messageColor = cocos2d::Color3B(0, 200, 36);
+	desc.showStaticstics = true;
+	desc.callback = CC_CALLBACK_1(WorldMapLayer::BackToMainMenuCallback, this);
+
+	CustomSessionEndScreen *screen = new CustomSessionEndScreen(desc);
+	screen->setPosition(0.0f, 0.0f);
+	screen->autorelease();
+
+	SetMapInputEnabled(false);
+	SetGuiEnabled(false);
+
+	addChild(screen, Z_MAP_GUI);
 }
 
 void WorldMapLayer::menuCloseCallback(cocos2d::Ref *Sender)
@@ -320,6 +352,11 @@ void WorldMapLayer::RecalculateTouches(const std::vector<cocos2d::Touch* > &touc
 void WorldMapLayer::ResetTouches()
 {
 	_isTouchesCountUpdated = true;
+}
+
+void WorldMapLayer::BackToMainMenuCallback(cocos2d::Ref *sender)
+{
+	_gameScene->GoToMainMenu();
 }
 
 CellMapWidget* WorldMapLayer::_CreateCellWidget(Cell::Ptr cell)

@@ -164,6 +164,7 @@ xcopy /Y /Q "$(EngineRoot)external\websockets\prebuilt\win32\*.lib" "$(SolutionD
     <ClCompile Include="..\Classes\NetCellWidget.cpp" />
     <ClCompile Include="..\Classes\ProgressBar.cpp" />
     <ClCompile Include="..\Classes\Region.cpp" />
+    <ClCompile Include="..\Classes\SessionEndScreen.cpp" />
     <ClCompile Include="..\Classes\SplashScreenScene.cpp" />
     <ClCompile Include="..\Classes\Task.cpp" />
     <ClCompile Include="..\Classes\TaskManager.cpp" />
@@ -254,6 +255,7 @@ xcopy /Y /Q "$(EngineRoot)external\websockets\prebuilt\win32\*.lib" "$(SolutionD
     <ClInclude Include="..\Classes\NetCellWidget.h" />
     <ClInclude Include="..\Classes\ProgressBar.h" />
     <ClInclude Include="..\Classes\Region.h" />
+    <ClInclude Include="..\Classes\SessionEndScreen.h" />
     <ClInclude Include="..\Classes\SettingsManager.h" />
     <ClInclude Include="..\Classes\SplashScreenScene.h" />
     <ClInclude Include="..\Classes\Task.h" />
