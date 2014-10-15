@@ -112,7 +112,7 @@ void WorldMapLayer::update(float dt)
 	}
 
 	// allow to draw towns olny if cell spinoff creation enabled
-	_townsDrawLayer->setVisible(!_nextCellParent.expired());
+	_townsDrawLayer->setVisible(!_nextCellParent.expired() || World::Instance().IsFirstLaunch());
 
 	// check for widgets existance and create new if needed
 	for (Investigator::Ptr investigator : World::Instance().GetInvestigators())
