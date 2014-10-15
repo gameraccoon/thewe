@@ -140,7 +140,7 @@ TaskManager::TasksList TaskManager::GetAvailableTasks(Cell::WeakPtr cell) const
 	{
 		bool add = luabind::call_function<bool>(World::Instance().GetLuaInst()->GetLuaState()
 													  , "IsShowTaskInList"
-													  , cell.lock()->GetInfo()
+													  , cell.lock().get()
 													  , pair.second
 													  , 0);
 		if (add)

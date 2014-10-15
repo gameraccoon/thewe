@@ -47,7 +47,8 @@ void LuaInstance::BindClass<World>()
 {
 	luabind::module(_luaState) [
 	luabind::class_<World>("WorldClass")
-		.def("AddInvestigatorByInfo", &World::AddInvestigatorByInfo)
+		.def("addInvestigatorByInfo", &World::AddInvestigatorByInfo)
+		.def("getCellsCount", &World::GetCellsCount)
 	];
 }
 
@@ -73,6 +74,18 @@ void LuaInstance::BindClass<Cell::Info>()
 		.def_readwrite("morale", &Cell::Info::morale)
 	];
 }
+
+template<>
+void LuaInstance::BindClass<Cell>()
+{
+	luabind::module(_luaState) [
+	luabind::class_<Cell>("CellClass")
+		.def("getInfo", &Cell::GetInfo)
+		.def("calcConnectivity", &Cell::CalcConnectivity)
+		.def("calcDistanceToTheRootCell", &Cell::CalcDistanceToTheRootCell)
+	];
+}
+
 
 template<>
 void LuaInstance::BindClass<const Task::Info>()

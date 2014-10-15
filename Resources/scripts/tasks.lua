@@ -8,7 +8,8 @@ function CheckTaskStatus(cellInfo, taskInfo)
 end
 
 -- определяем будет ли показываться задание для данной ячейки
-function IsShowTaskInList(cellInfo, taskInfo)
+function IsShowTaskInList(cell, taskInfo)
+	local cellInfo = cell:getInfo()
 	-- для первой альфы делаем не очень хорошие проверки
 	if taskInfo.id == "alpha1_Recrutment1" then
 		return cellInfo.cash <= 50000
@@ -70,13 +71,13 @@ end
 
 function MissionSuccess_InvestigatorTest(cellInfo, taskInfo)
 	MessageManager:sendMessage("Investigation launched")
-	World:AddInvestigatorByInfo(cellInfo)
+	World:addInvestigatorByInfo(cellInfo)
 end
 
 function MissionFail_InvestigatorTest(cellInfo, taskInfo)
 	SayFailed(taskInfo.title)
 	MessageManager:sendMessage("Investigation launched")
-	World:AddInvestigatorByInfo(cellInfo)
+	World:addInvestigatorByInfo(cellInfo)
 end
 
 function MissionSuccess_CheatMission(cellInfo, taskInfo)

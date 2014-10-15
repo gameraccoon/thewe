@@ -53,6 +53,7 @@ void World::InitLuaContext()
 		_luaScript->BindClass<GameInfo>();
 		_luaScript->BindClass<World>();
 		_luaScript->BindClass<Cell::Info>();
+		_luaScript->BindClass<Cell>();
 		_luaScript->BindClass<const Task::Info>();
 		_luaScript->BindClass<Vector2>();
 
@@ -170,6 +171,11 @@ const Cell::WeakPtr World::GetRootCell(void) const
 	}
 
 	return Cell::WeakPtr();
+}
+
+int World::GetCellsCount() const
+{
+	return _cells.size();
 }
 
 const World::Regions& World::GetRegions() const

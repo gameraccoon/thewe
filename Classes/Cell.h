@@ -80,6 +80,9 @@ public:
 
 	float GetConstructionProgress(Utils::GameTime time) const;
 
+	float CalcConnectivity() const;
+	int CalcDistanceToTheRootCell() const;
+
 private:
 
 	/** Set parent for the cell */

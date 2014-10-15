@@ -50,6 +50,7 @@ public:
 	const Town::WeakPtr GetTownByName(const std::string &name) const;
 	const Cell::WeakPtr GetCellByInfo(const Cell::Info &info) const;
 	const Cell::WeakPtr GetRootCell(void) const;
+	int GetCellsCount() const;
 
 	void Update();
 

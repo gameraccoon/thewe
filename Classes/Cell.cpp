@@ -147,3 +147,27 @@ float Cell::GetConstructionProgress(Utils::GameTime time) const
 {
 	return 1.0f - ((float)((_info.constructionBegin + _info.constructionDuration) - time)) / ((float)_info.constructionDuration);
 }
+
+float Cell::CalcConnectivity() const
+{
+	if (_info.parent != nullptr)
+	{
+		return _info.parent->CalcConnectivity() / 2.0f + _childCells.size() + 1.0f;
+	}
+	else
+	{
+		return _childCells.size();
+	}
+}
+
+int Cell::CalcDistanceToTheRootCell() const
+{
+	if (_info.parent != nullptr)
+	{
+		return _info.parent->CalcDistanceToTheRootCell() + 1;
+	}
+	else
+	{
+		return 0;
+	}
+}
