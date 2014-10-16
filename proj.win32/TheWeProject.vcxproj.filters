@@ -279,9 +279,6 @@
     <ClCompile Include="..\Classes\GameInfo.cpp">
       <Filter>Classes</Filter>
     </ClCompile>
-    <ClCompile Include="..\Classes\NetCellWidget.cpp">
-      <Filter>Classes\GameInterface</Filter>
-    </ClCompile>
     <ClCompile Include="..\Classes\MiscUtils.cpp">
       <Filter>Classes\Utils</Filter>
     </ClCompile>
@@ -311,6 +308,9 @@
     </ClCompile>
     <ClCompile Include="..\Classes\SessionEndScreen.cpp">
       <Filter>Classes</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\CellNetWidget.cpp">
+      <Filter>Classes\GameInterface</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -485,9 +485,6 @@
     <ClInclude Include="..\Classes\GameInfo.h">
       <Filter>Classes</Filter>
     </ClInclude>
-    <ClInclude Include="..\Classes\NetCellWidget.h">
-      <Filter>Classes\GameInterface</Filter>
-    </ClInclude>
     <ClInclude Include="..\Classes\MiscUtils.h">
       <Filter>Classes\Utils</Filter>
     </ClInclude>
@@ -514,6 +511,9 @@
     </ClInclude>
     <ClInclude Include="..\Classes\SessionEndScreen.h">
       <Filter>Classes</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\CellNetWidget.h">
+      <Filter>Classes\GameInterface</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
