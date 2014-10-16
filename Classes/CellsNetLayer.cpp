@@ -63,7 +63,7 @@ void CellsNetLayer::onKeyReleased(cocos2d::EventKeyboard::KeyCode key, cocos2d::
 	}
 }
 
-void AddMovement(NetCellWidget *item, const cocos2d::Vec2& pos)
+void AddMovement(CellNetWidget *item, const cocos2d::Vec2& pos)
 {
 	float realDistance = (item->getPosition() - pos).length();
 	float distance = (item->GetNextPosition() - pos).Size();
@@ -105,7 +105,7 @@ void CellsNetLayer::ShowLevel(int level)
 	}
 
 	// top part
-	std::list<NetCellWidget*> childless;
+	std::list<CellNetWidget*> childless;
 	levelIterators = _cells.equal_range(level - 1);
 	float xLocation = 0.0f;
 	for (auto cellIterator = levelIterators.first; cellIterator != levelIterators.second; ++cellIterator)
@@ -163,7 +163,7 @@ void CellsNetLayer::ShowLevel(int level)
 	_currentLevel = level;
 }
 
-void CellsNetLayer::ShowCell(NetCellWidget* cell)
+void CellsNetLayer::ShowCell(CellNetWidget* cell)
 {
 	ShowLevel(cell->GetLevel());
 
@@ -192,19 +192,19 @@ void CellsNetLayer::HideAllLevels()
 	}
 }
 
-NetCellWidget* CellsNetLayer::RecursivelyCreateCellsNetwork(Cell::Ptr rootCell, cocos2d::Vector<cocos2d::MenuItem*>* menuItems, int deepness)
+CellNetWidget* CellsNetLayer::RecursivelyCreateCellsNetwork(Cell::Ptr rootCell, cocos2d::Vector<cocos2d::MenuItem*>* menuItems, int deepness)
 {
-	NetCellWidget* rootCellWidget = NetCellWidget::create(rootCell, CC_CALLBACK_1(CellsNetLayer::_CellTouchInputListener, this));
+	CellNetWidget* rootCellWidget = CellNetWidget::create(rootCell, CC_CALLBACK_1(CellsNetLayer::_CellTouchInputListener, this));
 	menuItems->pushBack(rootCellWidget);
 	rootCellWidget->setVisible(false);
 	rootCellWidget->SetLevel(deepness);
-	_cells.insert(std::pair<int, NetCellWidget*>(deepness, rootCellWidget));
+	_cells.insert(std::pair<int, CellNetWidget*>(deepness, rootCellWidget));
 
 	std::vector<Cell::Ptr> children = rootCell->GetChildren();
 	for (auto cell : children)
 	{
 		// recursive call
-		NetCellWidget* cellWidget = RecursivelyCreateCellsNetwork(cell, menuItems, deepness + 1);
+		CellNetWidget* cellWidget = RecursivelyCreateCellsNetwork(cell, menuItems, deepness + 1);
 
 		rootCellWidget->AddChild(cellWidget);
 	}
@@ -214,7 +214,7 @@ NetCellWidget* CellsNetLayer::RecursivelyCreateCellsNetwork(Cell::Ptr rootCell, 
 
 void CellsNetLayer::_CellTouchInputListener(cocos2d::Ref *sender)
 {
-	NetCellWidget* netCellWidget = dynamic_cast<NetCellWidget*>(sender);
+	CellNetWidget* netCellWidget = dynamic_cast<CellNetWidget*>(sender);
 	if (netCellWidget != nullptr)
 	{
 		ShowCell(netCellWidget);

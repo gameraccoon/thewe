@@ -19,6 +19,7 @@ LOCAL_SRC_FILES := hellocpp/main.cpp \
 				   	../../Classes/CellGameInterface.cpp \
 				   	../../Classes/CellInfoMenu.cpp \
 				   	../../Classes/CellMapWidget.cpp \
+				   	../../Classes/CellNetWidget.cpp \
 				   	../../Classes/CellsNetLayer.cpp \
 				   	../../Classes/CellSpinoffMenu.cpp \
 				   	../../Classes/CellTasksMenu.cpp \
@@ -39,7 +40,6 @@ LOCAL_SRC_FILES := hellocpp/main.cpp \
 				   	../../Classes/MessageManager.cpp \
 				   	../../Classes/MessageWidget.cpp \
 				   	../../Classes/MiscUtils.cpp \
-				   	../../Classes/NetCellWidget.cpp \
 				   	../../Classes/ProgressBar.cpp \
 				   	../../Classes/Region.cpp \
 				   	../../Classes/SplashScreenScene.cpp \

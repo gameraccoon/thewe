@@ -1,17 +1,17 @@
-#include "NetCellWidget.h"
+#include "CellNetWidget.h"
 
 #include "Vector2.h"
 #include <algorithm>
 
-NetCellWidget::NetCellWidget(Cell::WeakPtr cell, const cocos2d::ccMenuCallback& callback)
+CellNetWidget::CellNetWidget(Cell::WeakPtr cell, const cocos2d::ccMenuCallback& callback)
 	: _cell(cell)
 {
 	MenuItem::initWithCallback(callback);
 }
 
-NetCellWidget* NetCellWidget::create(Cell::WeakPtr cell, const cocos2d::ccMenuCallback& callback)
+CellNetWidget* CellNetWidget::create(Cell::WeakPtr cell, const cocos2d::ccMenuCallback& callback)
 {
-	NetCellWidget* ret = new NetCellWidget(cell, callback);
+	CellNetWidget* ret = new CellNetWidget(cell, callback);
 	if (ret && ret->init())
 	{
 		ret->autorelease();
@@ -23,7 +23,7 @@ NetCellWidget* NetCellWidget::create(Cell::WeakPtr cell, const cocos2d::ccMenuCa
 	return ret;
 }
 
-bool NetCellWidget::init()
+bool CellNetWidget::init()
 {
 	cocos2d::Sprite *background = cocos2d::Sprite::create("message_background.png");
 	background->setAnchorPoint(cocos2d::Vec2(0.0f, 0.0f));
@@ -47,54 +47,54 @@ bool NetCellWidget::init()
 	return true;
 }
 
-bool NetCellWidget::IsOutdated() const
+bool CellNetWidget::IsOutdated() const
 {
 	return _cell.expired();
 }
 
-NetCellWidget* NetCellWidget::GetParent()
+CellNetWidget* CellNetWidget::GetParent()
 {
 	return _parent;
 }
 
-void NetCellWidget::SetParent(NetCellWidget* parent)
+void CellNetWidget::SetParent(CellNetWidget* parent)
 {
 	_parent = parent;
 }
 
-std::vector<NetCellWidget*> NetCellWidget::GetChildren()
+std::vector<CellNetWidget*> CellNetWidget::GetChildren()
 {
 	return _children;
 }
 
-void NetCellWidget::AddChild(NetCellWidget* child)
+void CellNetWidget::AddChild(CellNetWidget* child)
 {
 	_children.push_back(child);
 	child->SetParent(this);
 }
 
-void NetCellWidget::RemoveChild(NetCellWidget* child)
+void CellNetWidget::RemoveChild(CellNetWidget* child)
 {
 	_children.erase(std::find(_children.begin(), _children.end(), child));
 	child->setParent(nullptr);
 }
 
-void NetCellWidget::SetLevel(int level)
+void CellNetWidget::SetLevel(int level)
 {
 	_level = level;
 }
 
-int NetCellWidget::GetLevel()
+int CellNetWidget::GetLevel()
 {
 	return _level;
 }
 
-void NetCellWidget::SetNextPosition(const Vector2& nextPos)
+void CellNetWidget::SetNextPosition(const Vector2& nextPos)
 {
 	_nextPosition = nextPos;
 }
 
-Vector2 NetCellWidget::GetNextPosition() const
+Vector2 CellNetWidget::GetNextPosition() const
 {
 	return _nextPosition;
 }

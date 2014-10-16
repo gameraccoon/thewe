@@ -64,6 +64,7 @@ set(GAME_SRC
 	Classes/CellGameInterface.cpp
 	Classes/CellInfoMenu.cpp
 	Classes/CellMapWidget.cpp
+	Classes/CellNetWidget.cpp
 	Classes/CellSpinoffMenu.cpp
 	Classes/CellTasksMenu.cpp
 	Classes/CellTaskInfoMenu.cpp
@@ -84,7 +85,6 @@ set(GAME_SRC
 	Classes/MessageManager.cpp
 	Classes/MessageWidget.cpp
 	Classes/MiscUtils.cpp
-	Classes/NetCellWidget.cpp
 	Classes/ProgressBar.cpp
 	Classes/Region.cpp
 	Classes/SplashScreenScene.cpp

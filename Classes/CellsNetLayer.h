@@ -3,12 +3,12 @@
 
 #include <map>
 #include <cocos2d.h>
-#include "NetCellWidget.h"
+#include "CellNetWidget.h"
 
 class CellsNetLayer : public cocos2d::Layer
 {
 public:
-	typedef std::multimap<int, NetCellWidget*> CellsTree;
+	typedef std::multimap<int, CellNetWidget*> CellsTree;
 
 public:
 	CellsNetLayer();
@@ -19,9 +19,9 @@ private:
 	virtual void update(float dt) override;
 	virtual void onKeyReleased(cocos2d::EventKeyboard::KeyCode key, cocos2d::Event *event) override;
 	void ShowLevel(int level);
-	void ShowCell(NetCellWidget* cell);
+	void ShowCell(CellNetWidget* cell);
 	void HideAllLevels();
-	NetCellWidget* RecursivelyCreateCellsNetwork(Cell::Ptr rootCell, cocos2d::Vector<cocos2d::MenuItem*>* menuItems, int deepness);
+	CellNetWidget* RecursivelyCreateCellsNetwork(Cell::Ptr rootCell, cocos2d::Vector<cocos2d::MenuItem*>* menuItems, int deepness);
 	void _CellTouchInputListener(cocos2d::Ref *sender);
 
 private:
