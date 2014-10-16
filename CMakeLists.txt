@@ -87,12 +87,14 @@ set(GAME_SRC
 	Classes/MiscUtils.cpp
 	Classes/ProgressBar.cpp
 	Classes/Region.cpp
+	Classes/SessionEndScreen.cpp
 	Classes/SplashScreenScene.cpp
 	Classes/Task.cpp
 	Classes/TaskManager.cpp
 	Classes/Town.cpp
 	Classes/TownMapWidget.cpp
 	Classes/TransitionZoomFade.cpp
+	Classes/TutorialWidget.cpp
 	Classes/UserMessage.cpp
 	Classes/Vector2.cpp
 	Classes/World.cpp
