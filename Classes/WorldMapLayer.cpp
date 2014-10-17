@@ -7,6 +7,7 @@
 #include "TaskManager.h"
 #include "SessionEndScreen.h"
 #include "Log.h"
+#include <luabind/luabind.hpp>
 
 static const float MAX_MAP_SCALE = 1.5f;
 
@@ -502,6 +503,11 @@ void WorldMapLayer::_OnTownSelect(Town::WeakPtr town)
 			CreateCell(info, Cell::READY);
 
 			World::Instance().SetFirstLaunch(false);
+
+			if (World::Instance().GetTutorialState() == "FirstCell")
+			{
+				World::Instance().RunTutorialState("AfterCreatingFirstCell");
+			}
 		}
 		else if (!_nextCellParent.expired())
 		{

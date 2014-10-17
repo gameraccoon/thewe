@@ -73,7 +73,11 @@ public:
 
 	void AddTutorial(Tutorial tutrorial);
 	bool IsHaveTutorial();
-	Tutorial GetNextTutorial();
+	Tutorial::WeakPtr GetCurrentTutorial();
+	void RemoveCurrentTutorial();
+	std::string GetTutorialState();
+	void SetTutorialState(const std::string& state);
+	void RunTutorialState(const std::string& state);
 
 private:
 	void CalcWorldCapturingState();
@@ -96,7 +100,8 @@ private:
 	bool _isGameOver;
 	float _worldCapturingState;
 
-	std::queue<Tutorial> _tutorials;
+	std::queue<Tutorial::Ptr> _tutorials;
+	std::string _tutorialState;
 
 	/*
 	 * Turn off useless operations

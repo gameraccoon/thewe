@@ -82,6 +82,7 @@ void LuaInstance::BindClass<Tutorial>()
 {
 	luabind::module(_luaState) [
 	luabind::class_<Tutorial>("Tutorial")
+		.def(luabind::constructor<std::string, std::string>())
 		.def(luabind::constructor<std::string, std::string, std::string>())
 	];
 }
@@ -105,7 +106,11 @@ void LuaInstance::BindClass<World>()
 		.def("addInvestigatorByInfo", &World::AddInvestigatorByInfo)
 		.def("getCellsCount", &World::GetCellsCount)
 		.def("addTutorial", &World::AddTutorial)
+		.def("getCurrentTutorial", &World::GetCurrentTutorial)
+		.def("removeCurrentTutorial", &World::RemoveCurrentTutorial)
 		.def("isFirstLaunch", &World::IsFirstLaunch)
+		.def("getTutorialState", &World::GetTutorialState)
+		.def("setTutorialState", &World::SetTutorialState)
 	];
 }
 

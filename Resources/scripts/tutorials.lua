@@ -1,16 +1,41 @@
+local ContinueText = "Продолжить"
+
 function RunTutorialWelcome()
 	-- ToDo: make localizations
-	local firstTutorialText1 =
-		"Hi there!\n"..
-		"Press the button below to continue"
+	local text1 =
+		"Добро пожаловать в игру!\n"..
+		"Нажмите клавишу внизу чтобы продолжить"
 
-	local firstTutorialText2 =
-		"This is an example of the tutorial"
+	local text2 =
+		"Для начала нажмите на любой город,\n"..
+		"чтобы основать там свою первую ячейку"
 
-	World:addTutorial(Tutorial(firstTutorialText1, "Continue", ""))
-	World:addTutorial(Tutorial(firstTutorialText2, "I've got it", "TutorialTestCallback"))
+	World:addTutorial(Tutorial(text1, ContinueText))
+	World:addTutorial(Tutorial(text2, ContinueText))
+
+	World:setTutorialState("FirstCell");
 end
 
-function TutorialTestCallback()
-	MessageManager:sendMessage("Tutorial test message")
+function RunTutorialAfterCreatingFirstCell()
+	local text1 =
+		"Отлично!\n\n"..
+		"Сейчас в ячейке совсем не много сотрудников.\n"..
+		"Для действительно великих дел нам\n"..
+		"понадобится больше людей.\n\n"..
+		"Нажмите на ячейку и зайдите в меню заданий"
+
+	World:addTutorial(Tutorial(text1, ContinueText))
+
+	World:setTutorialState("StartFirstTask");
+end
+
+function RunTutorialAfterStartFirstTask()
+	local text1 =
+		"Теперь выберите задачу вербовки"
+
+	World:addTutorial(Tutorial(text1, ContinueText, "TutorialsLastTutorial"))
+end
+
+function TutorialsLastTutorial()
+	World:setTutorialState("TutorialsEnd");
 end

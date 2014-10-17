@@ -294,7 +294,7 @@ LuaInstance* World::GetLuaInst(void) const
 
 void World::AddTutorial(Tutorial tutrorial)
 {
-	_tutorials.push(tutrorial);
+	_tutorials.push(std::make_shared<Tutorial>(tutrorial));
 }
 
 bool World::IsHaveTutorial()
@@ -302,9 +302,37 @@ bool World::IsHaveTutorial()
 	return _tutorials.size() > 0;
 }
 
-Tutorial World::GetNextTutorial()
+Tutorial::WeakPtr World::GetCurrentTutorial()
 {
-	Tutorial tutorial = _tutorials.front();
+	return _tutorials.front();
+}
+
+void World::RemoveCurrentTutorial()
+{
+	if (!_tutorials.front()->luaCallback.empty())
+	{
+		luabind::call_function<void>(World::Instance().GetLuaInst()->GetLuaState()
+			, _tutorials.front()->luaCallback.c_str()
+			, 0);
+	}
+
 	_tutorials.pop();
-	return tutorial;
+}
+
+std::string World::GetTutorialState()
+{
+	return _tutorialState;
+}
+
+void World::SetTutorialState(const std::string& state)
+{
+	_tutorialState = state;
+}
+
+void World::RunTutorialState(const std::string &state)
+{
+	_tutorialState = state;
+	luabind::call_function<void>(World::Instance().GetLuaInst()->GetLuaState()
+		, std::string("RunTutorial" + state).c_str()
+		, 0);
 }

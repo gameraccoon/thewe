@@ -56,6 +56,11 @@ public:
 		addChild(labelMorale, 1);
 		addChild(labelSeverity, 1);
 
+		if (World::Instance().GetTutorialState() == "StartFirstTask")
+		{
+			World::Instance().RunTutorialState("AfterStartFirstTask");
+		}
+
 		return true;
 	}
 

@@ -7,9 +7,9 @@
 class TutorialWidget : public cocos2d::Node
 {
 public:
-	explicit TutorialWidget(Tutorial tutorial);
+	explicit TutorialWidget(Tutorial::WeakPtr tutorial);
 
-	static TutorialWidget* create(Tutorial tutorial);
+	static TutorialWidget* create(Tutorial::WeakPtr tutorial);
 
 	bool IsReadyToClose() const;
 
@@ -18,8 +18,7 @@ private:
 	void _OnCloseCallback(cocos2d::Ref *sender);
 
 private:
-	Tutorial _tutorial;
-	bool _isReadyToClose;
+	Tutorial::WeakPtr _tutorial;
 };
 
 #endif // TUTORIAL_WIDGET_H

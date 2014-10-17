@@ -5,14 +5,14 @@
 #include "Vector2.h"
 #include "Color.h"
 #include "World.h"
+#include "Log.h"
 
-TutorialWidget::TutorialWidget(Tutorial tutorial)
+TutorialWidget::TutorialWidget(Tutorial::WeakPtr tutorial)
 	: _tutorial(tutorial)
-	, _isReadyToClose(false)
 {
 }
 
-TutorialWidget* TutorialWidget::create(Tutorial tutorial)
+TutorialWidget* TutorialWidget::create(Tutorial::WeakPtr tutorial)
 {
 	TutorialWidget* ret = new TutorialWidget(tutorial);
 	if (ret && ret->init())
@@ -33,6 +33,13 @@ bool TutorialWidget::init()
 		return false;
 	}
 
+	Tutorial::Ptr tutorial = _tutorial.lock();
+	if (!tutorial)
+	{
+		Log::Instance().writeWarning("Tutorial was removed before use");
+		return true;
+	}
+
 	cocos2d::Sprite *background = cocos2d::Sprite::create("custom-white-menu.png");
 	background->setPosition(0.0f, 0.0f);
 	background->setAnchorPoint(cocos2d::Vec2(0.5f, 0.5f));
@@ -40,7 +47,7 @@ bool TutorialWidget::init()
 	addChild(background);
 
 	cocos2d::TTFConfig ttfConfig("arial.ttf", 18);
-	cocos2d::Label *text = cocos2d::Label::createWithTTF(ttfConfig, _tutorial.text, cocos2d::TextHAlignment::CENTER);
+	cocos2d::Label *text = cocos2d::Label::createWithTTF(ttfConfig, tutorial->text, cocos2d::TextHAlignment::CENTER);
 	Vector2 center = Vector2(0.0f, 15.0f);
 	text->setPosition(center);
 	addChild(text);
@@ -61,7 +68,7 @@ bool TutorialWidget::init()
 	addChild(menu);
 
 	cocos2d::TTFConfig ttfBtnConfig("arial.ttf", 12);
-	cocos2d::Label *buttonLabel = cocos2d::Label::createWithTTF(ttfBtnConfig, _tutorial.buttonText, cocos2d::TextHAlignment::CENTER);
+	cocos2d::Label *buttonLabel = cocos2d::Label::createWithTTF(ttfBtnConfig, tutorial->buttonText, cocos2d::TextHAlignment::CENTER);
 	buttonLabel->setPosition(closeButton->getPosition());
 	buttonLabel->setScale(1.2f);
 	addChild(buttonLabel);
@@ -73,17 +80,10 @@ bool TutorialWidget::init()
 
 bool TutorialWidget::IsReadyToClose() const
 {
-	return _isReadyToClose;
+	return _tutorial.expired();
 }
 
 void TutorialWidget::_OnCloseCallback(cocos2d::Ref *sender)
 {
-	_isReadyToClose = true;
-
-	if (!_tutorial.luaCallback.empty())
-	{
-		luabind::call_function<void>(World::Instance().GetLuaInst()->GetLuaState()
-			, _tutorial.luaCallback.c_str()
-			, 0);
-	}
+	World::Instance().RemoveCurrentTutorial();
 }
