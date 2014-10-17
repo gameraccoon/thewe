@@ -11,6 +11,7 @@
 
 MapGuiLayer::MapGuiLayer(MapProjector *mapProjector)
 	: _mapProjector(mapProjector)
+	, _currentTutorial(nullptr)
 {
 	init();
 }
@@ -136,6 +137,12 @@ void MapGuiLayer::update(float delta)
 	}
 
 	_worldCaptureProgressBar->SetProgressPercentage(World::Instance().GetWorldCapturingState() * 100.0f);
+
+	if (World::Instance().IsHaveTutorial())
+	{
+		_currentTutorial = TutorialWidget::create(World::Instance().GetNextTutorial());
+		addChild(_currentTutorial);
+	}
 }
 
 int MapGuiLayer::UpdateMessages()

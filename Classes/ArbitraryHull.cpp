@@ -2,28 +2,47 @@
 
 #include <cocos2d.h>
 
+struct ArbitaryHullImp
+{
+	std::vector<cocos2d::Vec2> pointsArray;
+};
+
+ArbitraryHull::ArbitraryHull()
+{
+}
+
+ArbitraryHull::~ArbitraryHull()
+{
+}
+
 void ArbitraryHull::PushPoint(const Vector2 &point)
 {
-	_pointsArray.push_back(point);
+	_points.push_back(point);
 }
 
 void ArbitraryHull::PopPoint(void)
 {
-	if (!_pointsArray.empty())
+	if (!_points.empty())
 	{
-		_pointsArray.erase(_pointsArray.end() - 1);
+		_points.erase(_points.end() - 1);
 	}
 }
 
 void ArbitraryHull::Draw(const Color &color) const
 {
-	if (_pointsArray.empty())
+	std::vector<cocos2d::Vec2> points;
+	for (auto& point : _points)
+	{
+		points.push_back(point);
+	}
+
+	if (_points.empty())
 	{
 		return;
 	}
 
 	cocos2d::ccDrawColor4F(color.r, color.g, color.b, color.a);
-	cocos2d::ccDrawPoly(&(*_pointsArray.begin()), _pointsArray.size(), true);
+	cocos2d::ccDrawPoly(&(*points.begin()), points.size(), true);
 }
 
 void ArbitraryHull::Draw(void) const
@@ -34,17 +53,17 @@ void ArbitraryHull::Draw(void) const
 
 void ArbitraryHull::Clear(void)
 {
-	_pointsArray.clear();
+	_points.clear();
 }
 
 int ArbitraryHull::GetPointsNum(void) const
 {
-	return _pointsArray.size();
+	return _points.size();
 }
 
-const std::vector<cocos2d::Point>& ArbitraryHull::GetPointsArray(void) const
+const std::vector<Vector2>& ArbitraryHull::GetPoints(void) const
 {
-	return _pointsArray;
+	return _points;
 }
 
 bool ArbitraryHull::Contain(const Vector2 &point) const
@@ -52,11 +71,11 @@ bool ArbitraryHull::Contain(const Vector2 &point) const
 	unsigned int i, j;
 	bool result = false;
 
-	for (i = 0, j = _pointsArray.size() - 1; i < _pointsArray.size(); j = i++)
+	for (i = 0, j = _points.size() - 1; i < _points.size(); j = i++)
 	{
-		if ((_pointsArray[i].y > point.y) != (_pointsArray[j].y > point.y) &&
-			(point.x < (_pointsArray[j].x - _pointsArray[i].x) * (point.y - _pointsArray[i].y) 
-			/ (_pointsArray[j].y-_pointsArray[i].y) + _pointsArray[i].x))
+		if ((_points[i].y > point.y) != (_points[j].y > point.y) &&
+			(point.x < (_points[j].x - _points[i].x) * (point.y - _points[i].y)
+			/ (_points[j].y-_points[i].y) + _points[i].x))
 		{
 			result = !result;
 		}

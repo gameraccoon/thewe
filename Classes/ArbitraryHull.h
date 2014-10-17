@@ -5,15 +5,12 @@
 #include "Color.h"
 #include "Vector2.h"
 
-// dispose of necessity of cocos2d include
-namespace cocos2d
-{
-	class CCpoint;
-}
-
 class ArbitraryHull
 {
 public:
+	ArbitraryHull();
+	~ArbitraryHull();
+
 	void PushPoint(const Vector2 &point);
 	void PopPoint(void);
 	void Draw(const Color &color) const;
@@ -21,15 +18,12 @@ public:
 	void Clear(void);
 	
 	int GetPointsNum(void) const;
-	const std::vector<cocos2d::Point>& GetPointsArray(void) const;
+	const std::vector<Vector2>& GetPoints(void) const;
 
 	bool Contain(const Vector2 &point) const;
 
 private:
-	std::vector<cocos2d::CCPoint> _pointsArray;
-
-	friend class MapProjector;
-	friend class EditorLayer;
+	std::vector<Vector2> _points;
 };
 
 #endif

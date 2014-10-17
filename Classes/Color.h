@@ -1,11 +1,10 @@
 #ifndef COLOR_H
 #define COLOR_H
 
-#include <cocos2d.h>
-
 namespace cocos2d
 {
 	struct Color4F;
+	struct Color4B;
 }
 
 struct Color

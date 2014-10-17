@@ -2,6 +2,7 @@
 #define WORLD_H
 
 #include <string>
+#include <queue>
 
 #include "Region.h"
 #include "Cell.h"
@@ -68,6 +69,10 @@ public:
 
 	LuaInstance* GetLuaInst(void) const;
 
+	void AddTutorial(std::string text);
+	bool IsHaveTutorial();
+	std::string GetNextTutorial();
+
 private:
 	void CalcWorldCapturingState();
 
@@ -88,6 +93,8 @@ private:
 	bool _isLuaInited;
 	bool _isGameOver;
 	float _worldCapturingState;
+
+	std::queue<std::string> _tutorials;
 
 	/*
 	 * Turn off useless operations

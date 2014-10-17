@@ -6,22 +6,15 @@
 class TutorialWidget : public cocos2d::Node
 {
 public:
-	/*explicit TutorialWidget(UserMessage::Ptr message);
+	explicit TutorialWidget(std::string text);
 
-	static TutorialWidget* create(UserMessage::Ptr message);
-
-	bool IsOutdated();
+	static TutorialWidget* create(std::string text);
 
 private:
 	virtual bool init() override;
 
-	virtual void update(float delta) override;
-
 private:
-	UserMessage::Ptr _message;
-
-	cocos2d::MenuItemSprite _acceptBtn;
-	float _showedTime;
-	bool _isOutdated;*/
+	std::string _text;
 };
+
 #endif // TUTORIAL_WIDGET_H

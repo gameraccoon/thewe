@@ -1,5 +1,7 @@
 #include "WorldLoader.h"
 
+#include <cocos2d.h>
+
 #include <pugixml.hpp>
 
 #include "World.h"

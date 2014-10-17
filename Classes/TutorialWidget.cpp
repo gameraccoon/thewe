@@ -1,18 +1,15 @@
 #include "TutorialWidget.h"
 
 #include "Vector2.h"
-/*
-TutorialWidget::TutorialWidget(UserMessage::Ptr message)
-	: _message(message)
-	, _timeToShow(message->GetTimeToShow())
-	, _showedTime(0.0f)
-	, _isOutdated(false)
+
+TutorialWidget::TutorialWidget(std::string text)
+	: _text(text)
 {
 }
 
-TutorialWidget* TutorialWidget::create(UserMessage::Ptr message)
+TutorialWidget* TutorialWidget::create(std::string text)
 {
-	TutorialWidget* ret = new TutorialWidget(message);
+	TutorialWidget* ret = new TutorialWidget(text);
 	if (ret && ret->init())
 	{
 		ret->autorelease();
@@ -36,15 +33,12 @@ bool TutorialWidget::init()
 	background->setAnchorPoint(cocos2d::Vec2(1.0f, 1.0f));
 	addChild(background);
 
-	if (_message)
-	{
-		cocos2d::TTFConfig ttfConfig("arial.ttf", 18);
-		cocos2d::Label *text = cocos2d::Label::createWithTTF(ttfConfig, _message->GetText(), cocos2d::TextHAlignment::CENTER);
-		cocos2d::Rect rect = background->getBoundingBox();
-		Vector2 center = Vector2(rect.getMinX(), rect.getMinY()) / 2;
-		text->setPosition(center);
-		addChild(text);
-	}
+	cocos2d::TTFConfig ttfConfig("arial.ttf", 18);
+	cocos2d::Label *text = cocos2d::Label::createWithTTF(ttfConfig, _text, cocos2d::TextHAlignment::CENTER);
+	cocos2d::Rect rect = background->getBoundingBox();
+	Vector2 center = Vector2(rect.getMinX(), rect.getMinY()) / 2;
+	text->setPosition(center);
+	addChild(text);
 
 	setContentSize(background->getContentSize());
 
@@ -52,19 +46,3 @@ bool TutorialWidget::init()
 
 	return true;
 }
-
-void TutorialWidget::update(float delta)
-{
-	_showedTime += delta;
-
-	if (!_isOutdated && _showedTime > _timeToShow)
-	{
-		_isOutdated = true;
-	}
-}
-
-bool TutorialWidget::IsOutdated()
-{
-	return _isOutdated;
-}
-*/

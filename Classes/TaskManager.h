@@ -2,6 +2,7 @@
 #define TASK_MANAGER_H
 
 #include <vector>
+#include <map>
 #include "Cell.h"
 #include "Task.h"
 

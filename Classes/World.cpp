@@ -276,3 +276,18 @@ LuaInstance* World::GetLuaInst(void) const
 {
 	return _luaScript;
 }
+
+void World::AddTutorial(std::string text)
+{
+	_tutorials.push(text);
+}
+
+bool World::IsHaveTutorial()
+{
+	return _tutorials.size() > 0;
+}
+
+std::string World::GetNextTutorial()
+{
+	return _tutorials.front();
+}

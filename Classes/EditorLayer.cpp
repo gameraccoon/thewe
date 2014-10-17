@@ -76,12 +76,7 @@ bool EditorLayer::init(void)
 void EditorLayer::update(float dt)
 {
 	ArbitraryHull hull = _mapProjector->ProjectOnScreen(_hull1);
-	std::vector<cocos2d::Point> &ps = const_cast<std::vector<cocos2d::Point> &>(hull.GetPointsArray());
-	if (!ps.empty())
-	{
-		_hullDrawer->clear();
-		_hullDrawer->drawPolygon(&(*ps.begin()), ps.size(), cocos2d::Color4F(0,0,0,0), 3.5f, cocos2d::Color4F(0.0f, 0.0f, 1.0f, 1.0f));
-	}
+	hull.Draw(Color(0.0f, 0.0f, 1.0f, 1.0f));
 }
 
 void EditorLayer::onTouchesBegan(const std::vector<cocos2d::Touch* > &touches, cocos2d::Event* event)
@@ -149,9 +144,7 @@ void EditorLayer::_MenuInputListener(cocos2d::Ref *sender)
 	case MENU_ITEM_DELETE:
 		{
 		_hull1.PopPoint();
-		std::vector<cocos2d::Point> &ps = const_cast<std::vector<cocos2d::Point> &>(_hull1.GetPointsArray());
-		_hullDrawer->clear();
-		_hullDrawer->drawPolygon(&(*ps.begin()), ps.size(), cocos2d::Color4F(0,0,0,0), 1.5f, cocos2d::Color4F(0.0f, 0.0f, 1.0f, 1.0f));
+		_hull1.Draw(Color(0.0f, 0.0f, 1.0f, 1.0f));
 		break;
 		}
 	case MENU_ITEM_SAVE_XML:
@@ -170,7 +163,8 @@ void EditorLayer::SaveHullToXml(const ArbitraryHull& hull, pugi::xml_document &d
 	node = root.append_child("Region");
 	node.append_attribute("Name").set_value("Unnamed");
 
-	for (std::vector<cocos2d::CCPoint>::const_iterator it = hull._pointsArray.begin(); it != hull._pointsArray.end(); ++it)
+	std::vector<Vector2> pointsArray(hull.GetPoints());
+	for (std::vector<Vector2>::const_iterator it = pointsArray.begin(); it != pointsArray.end(); ++it)
 	{
 		Vector2 p = (*it);
 

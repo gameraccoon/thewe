@@ -97,7 +97,7 @@ Vector2 MapProjector::ProjectOnScreen(Vector2 mapPoint) const
 ArbitraryHull MapProjector::ProjectOnMap(const ArbitraryHull& screenHull) const
 {
 	ArbitraryHull projectedHull;
-	for (auto &point : screenHull._pointsArray)
+	for (auto &point : screenHull.GetPoints())
 	{
 		projectedHull.PushPoint(ProjectOnMap(point));
 	}
@@ -107,7 +107,7 @@ ArbitraryHull MapProjector::ProjectOnMap(const ArbitraryHull& screenHull) const
 ArbitraryHull MapProjector::ProjectOnScreen(const ArbitraryHull& mapHull) const
 {
 	ArbitraryHull projectedHull;
-	for (auto &point : mapHull._pointsArray)
+	for (auto &point : mapHull.GetPoints())
 	{
 		projectedHull.PushPoint(ProjectOnScreen(point));
 	}

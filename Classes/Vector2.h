@@ -1,7 +1,11 @@
 #ifndef POINT_H
 #define POINT_H
 
-#include <cocos2d.h>
+namespace cocos2d
+{
+	class Vec2;
+	class Size;
+}
 
 struct Vector2
 {
@@ -11,7 +15,7 @@ struct Vector2
 	Vector2();
 	Vector2(float x, float y);
 	Vector2(const Vector2& point);
-	Vector2(const cocos2d::Point& p);
+	Vector2(const cocos2d::Vec2& p);
 	Vector2(const cocos2d::Size& size);
 	~Vector2(void);
 
@@ -34,7 +38,7 @@ struct Vector2
 	Vector2 Project(Vector2 base) const;
 	
 	/* Implicit convertations to other classes */
-	operator cocos2d::Point() const;
+	operator cocos2d::Vec2() const;
 	operator cocos2d::Size() const;
 
 	/* Ariphmetic operation for two-dimentioned vectors */

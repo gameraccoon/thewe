@@ -5,6 +5,7 @@
 #include "MapProjector.h"
 #include "MessageWidget.h"
 #include "ProgressBar.h"
+#include "TutorialWidget.h"
 
 class MapGuiLayer : public cocos2d::Layer
 {
@@ -46,6 +47,8 @@ private:
 	Vector2 _messagesPosition;
 
 	SquareProgressBar *_worldCaptureProgressBar;
+
+	TutorialWidget *_currentTutorial;
 };
 
 #endif
