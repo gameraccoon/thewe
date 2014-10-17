@@ -140,6 +140,7 @@ xcopy /Y /Q "$(EngineRoot)external\websockets\prebuilt\win32\*.lib" "$(SolutionD
     <ClCompile Include="..\Classes\Cell.cpp" />
     <ClCompile Include="..\Classes\CellGameInterface.cpp" />
     <ClCompile Include="..\Classes\CellInfoMenu.cpp" />
+    <ClCompile Include="..\Classes\CellMapPopupButton.cpp" />
     <ClCompile Include="..\Classes\CellMapWidget.cpp" />
     <ClCompile Include="..\Classes\CellNetWidget.cpp" />
     <ClCompile Include="..\Classes\CellsNetLayer.cpp" />
@@ -171,6 +172,8 @@ xcopy /Y /Q "$(EngineRoot)external\websockets\prebuilt\win32\*.lib" "$(SolutionD
     <ClCompile Include="..\Classes\Town.cpp" />
     <ClCompile Include="..\Classes\TownMapWidget.cpp" />
     <ClCompile Include="..\Classes\TransitionZoomFade.cpp" />
+    <ClCompile Include="..\Classes\Tutorial.cpp" />
+    <ClCompile Include="..\Classes\TutorialWidget.cpp" />
     <ClCompile Include="..\Classes\UserMessage.cpp" />
     <ClCompile Include="..\Classes\Vector2.cpp" />
     <ClCompile Include="..\Classes\World.cpp" />
@@ -232,6 +235,7 @@ xcopy /Y /Q "$(EngineRoot)external\websockets\prebuilt\win32\*.lib" "$(SolutionD
     <ClInclude Include="..\Classes\Cell.h" />
     <ClInclude Include="..\Classes\CellGameInterface.h" />
     <ClInclude Include="..\Classes\CellInfoMenu.h" />
+    <ClInclude Include="..\Classes\CellMapPopupButton.h" />
     <ClInclude Include="..\Classes\CellMapWidget.h" />
     <ClInclude Include="..\Classes\CellNetWidget.h" />
     <ClInclude Include="..\Classes\CellsNetLayer.h" />
@@ -263,6 +267,8 @@ xcopy /Y /Q "$(EngineRoot)external\websockets\prebuilt\win32\*.lib" "$(SolutionD
     <ClInclude Include="..\Classes\Town.h" />
     <ClInclude Include="..\Classes\TownMapWidget.h" />
     <ClInclude Include="..\Classes\TransitionZoomFade.h" />
+    <ClInclude Include="..\Classes\Tutorial.h" />
+    <ClInclude Include="..\Classes\TutorialWidget.h" />
     <ClInclude Include="..\Classes\UserMessage.h" />
     <ClInclude Include="..\Classes\Vector2.h" />
     <ClInclude Include="..\Classes\World.h" />

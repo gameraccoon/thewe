@@ -117,7 +117,7 @@ void World::AddInvestigator(Investigator::Ptr investigator)
 void World::AddInvestigatorByCell(Cell::Ptr investigationRoot)
 {
 	Investigator::Ptr investigator = Investigator::Create((Cell::WeakPtr)investigationRoot);
-	investigator->BeginInvestigation();
+	investigator->BeginCatchTime(GameInfo::Instance().GetFloat("INVESTIGATOR_CATCH_TIME", 1.0f));
 
 	_investigators.push_back(investigator);
 
@@ -131,6 +131,20 @@ void World::AddInvestigatorByInfo(const Cell::Info &cellInfo)
 	{
 		AddInvestigatorByCell(cell.lock());
 	}
+}
+
+bool World::RemoveInvestigator(Investigator::Ptr investigator)
+{
+	for (Investigators::iterator it = _investigators.begin(); it != _investigators.end(); ++it)
+	{
+		if ((*it) == investigator)
+		{
+			it = _investigators.erase(it);
+			return true;
+		}
+	}
+
+	return false;
 }
 
 const Region::WeakPtr World::GetRegionByName(const std::string &name) const

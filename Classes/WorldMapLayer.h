@@ -42,6 +42,8 @@ public:
 	void PushSessionFailScreen(void);
 	void PushSessionWinScreen(void);
 
+	CellMapWidget* GetCellMapWidget(Cell::Ptr cell) const;
+
 private:
 	enum CONTENT_Z_ORDER
 	{

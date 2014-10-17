@@ -1,32 +1,62 @@
 #include "InvestigatorMapWidget.h"
 
-InvestigatorMapWidget::InvestigatorMapWidget(Investigator::Ptr investigator, MapProjector *proj)
+#include "CellMapWidget.h"
+#include "WorldMapLayer.h"
+
+InvestigatorMapWidget::InvestigatorMapWidget(Investigator::Ptr investigator, MapProjector *proj, WorldMapLayer *worldMapLayer)
 	: _investigator(investigator)
+	, _worldMapLayer(worldMapLayer)
 	, _projector(proj)
+	, _invesRootCellWidget(nullptr)
 	, _projectorUid(-1)
 {
 	init();
 }
 
 bool InvestigatorMapWidget::init(void)
-{
+{	
+	if (!_investigator) {
+		return false;
+	}
+
+	Cell::WeakPtr cell = World::Instance().GetCellByInfo(_investigator->GetInvestigationRoot()->GetInfo());
+	_invesRootCellWidget = _worldMapLayer->GetCellMapWidget(cell.lock());
+	_lastState = _investigator->GetState();
+
 	_investigationDrawer = cocos2d::DrawNode::create();
 
 	addChild(_investigationDrawer, 0);
 	scheduleUpdate();
+
+	// pop up investigator catch button in the cell map widget
+	if (_investigator->IsStateType(Investigator::START_CATCH_DELAY))
+	{
+		Cell::WeakPtr cell = World::Instance().GetCellByInfo(_investigator->GetInvestigationRoot()->GetInfo());
+		_invesRootCellWidget = _worldMapLayer->GetCellMapWidget(cell.lock());
+		_invesRootCellWidget->ShowInvestigatorLaunchButton(CC_CALLBACK_1(InvestigatorMapWidget::OnCatchInFirstCell, this));
+	}
 
 	return true;
 }
 
 void InvestigatorMapWidget::update(float dt)
 {
-	_investigationDrawer->clear();
-
-	UpdateInvestigationMap(_investigator->GetRootBranchBundle());
+	if (_investigator)
+	{
+		_investigationDrawer->clear();
+		UpdateInvestigationMap(_investigator->GetRootBranchBundle());
+	}
 }
 
 void InvestigatorMapWidget::UpdateInvestigationMap(const Investigator::BranchBundle &bundle)
 {
+	if (_investigator->IsStateType(Investigator::INVESTIGATION) && _lastState == Investigator::START_CATCH_DELAY)
+	{
+		// player don't catch investigator in first cell, so investigation will be continued
+		_invesRootCellWidget->HideInvestigatorLaunchButton(true);
+		_lastState = _investigator->GetState();
+	}
+
 	for (const Investigator::Branch &branch : bundle)
 	{
 		cocos2d::Vec2 from = branch.cellFrom->GetInfo().location;
@@ -43,6 +73,14 @@ void InvestigatorMapWidget::UpdateInvestigationMap(const Investigator::BranchBun
 
 		UpdateInvestigationMap(branch.childBrunches);
 	}
+}
+
+void InvestigatorMapWidget::OnCatchInFirstCell(cocos2d::Ref *sender)
+{
+	_invesRootCellWidget->HideInvestigatorLaunchButton(false);
+	_investigator->AbortInvestigation();
+
+	World::Instance().RemoveInvestigator(_investigator);
 }
 
 Investigator::Ptr InvestigatorMapWidget::GetInvestigator(void) const

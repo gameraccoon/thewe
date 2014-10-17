@@ -312,6 +312,15 @@
     <ClCompile Include="..\Classes\CellNetWidget.cpp">
       <Filter>Classes\GameInterface</Filter>
     </ClCompile>
+    <ClCompile Include="..\Classes\TutorialWidget.cpp">
+      <Filter>Classes\GameInterface</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\CellMapPopupButton.cpp">
+      <Filter>Classes\GameCell</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\Tutorial.cpp">
+      <Filter>Classes\GameMap\Model</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="main.h">
@@ -514,6 +523,15 @@
     </ClInclude>
     <ClInclude Include="..\Classes\CellNetWidget.h">
       <Filter>Classes\GameInterface</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\TutorialWidget.h">
+      <Filter>Classes\GameInterface</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\CellMapPopupButton.h">
+      <Filter>Classes\GameCell</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Tutorial.h">
+      <Filter>Classes\GameMap\Model</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

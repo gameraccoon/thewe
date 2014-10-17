@@ -27,6 +27,14 @@ public:
 		BranchBundle childBrunches;
 	};
 
+	enum State
+	{
+		START_CATCH_DELAY,
+		INVESTIGATION,
+		STAYING,
+		ABORTED
+	};
+
 public:
 	Investigator(Cell::WeakPtr investigationRoot);
 	Investigator(const Investigator::BranchBundle &rootBranchBudle);
@@ -35,13 +43,17 @@ public:
 	static Ptr Create(const Investigator::BranchBundle &rootBranchBudle);
 
 	void InitInvestigator(const Investigator::BranchBundle &rootBranchBudle);
+	void BeginCatchTime(float time);
 	void BeginInvestigation(void);
 	void AbortInvestigation(void);
 	void StayInvestigation(bool stay);
 	void UpdateToTime(Utils::GameTime time);
-
+	
+	bool IsStateType(Investigator::State state) const;
+	
 	Cell::Ptr GetInvestigationRoot(void) const;
 	const BranchBundle& GetRootBranchBundle(void);
+	Investigator::State GetState(void) const;
 
 	int GetUid(void) const;
 
@@ -52,6 +64,10 @@ private:
 
 	BranchBundle _branchRoot;
 
+	Utils::GameTime _catchTimeBegin;
+	Utils::GameTime _catchTimeEnd;
+	Investigator::State _state;
+	
 	int _uid;
 };
 

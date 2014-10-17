@@ -8,7 +8,8 @@
 	<Const name="CELL_STARTUP_MORALE" type="float" value="0.5" />
 	<Const name="CELL_STARTUP_CONTENTMENT" type="float" value="1.0" />
 
-	<Const name="CELL_CONSTRUCTION_TIME" type="float" value="60" />
+	<Const name="CELL_CONSTRUCTION_TIME" type="float" value="60.0" />
 
-	<Const name="INVESTIGATION_DURATION" type="float" value="600" />
+	<Const name="INVESTIGATION_DURATION" type="float" value="600.0" />
+	<Const name="INVESTIGATOR_CATCH_TIME" type="float" value="5.0" />
 </GameInfo>

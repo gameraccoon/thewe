@@ -119,8 +119,9 @@ void WorldMapLayer::update(float dt)
 	}
 
 	// check for model existance and delete widget if needed
-	for (InvestigatorMapWidget *widget : _investigatorWidgetsList)
+	for (InvestigatorWidgetsIter it = _investigatorWidgetsList.begin(); it != _investigatorWidgetsList.end() ;)//(InvestigatorMapWidget *widget : _investigatorWidgetsList)
 	{
+		InvestigatorMapWidget *widget = (*it);
 		Investigator::Ptr existed = widget->GetInvestigator();
 		bool founded = false;
 
@@ -136,8 +137,10 @@ void WorldMapLayer::update(float dt)
 		if (!founded)
 		{
 			removeChild(widget);
-			delete widget;
+			it = _investigatorWidgetsList.erase(it);
 		}
+		else
+			it++;
 	}
 }
 
@@ -236,6 +239,19 @@ void WorldMapLayer::PushSessionWinScreen(void)
 	SetGuiEnabled(false);
 
 	addChild(screen, Z_MAP_GUI);
+}
+
+CellMapWidget* WorldMapLayer::GetCellMapWidget(Cell::Ptr cell) const
+{
+	for (CellMapWidget *widget : _cellWidgetsList)
+	{
+		if (widget->GetCell() == cell)
+		{
+			return widget;
+		}
+	}
+
+	return nullptr;
 }
 
 void WorldMapLayer::menuCloseCallback(cocos2d::Ref *Sender)
@@ -400,8 +416,8 @@ TownMapWidget* WorldMapLayer::_CreateTownWidget(Town::Ptr town)
 
 InvestigatorMapWidget* WorldMapLayer::_CreateInvestigatorWidget(Investigator::Ptr investigator)
 {
-	InvestigatorMapWidget *widget = new InvestigatorMapWidget(investigator, _mapProjector);
-	widget->retain();
+	InvestigatorMapWidget *widget = new InvestigatorMapWidget(investigator, _mapProjector, this);
+	widget->autorelease();
 	widget->setTag(investigator->GetUid());
 	return widget;
 }

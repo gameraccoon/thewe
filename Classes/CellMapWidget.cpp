@@ -109,10 +109,18 @@ bool CellMapWidget::init(void)
 	_constructionProgress = new RoundProgressBar("cell.png", 0.8f);
 	_constructionProgress->setPosition(0.0f, 0.0f);
 	_constructionProgress->SetProgressImmediately(0.0f);
+
+	CellMapPopupButton::Settings s;
+	s.normalStateImage = "marker_crosshair.png";
+	s.pressedStateImage = "marker_crosshair_pressed.png";
+	_popupCatchInvestigator = new CellMapPopupButton(s);
+	_popupCatchInvestigator->setPosition(0.0f, 0.0f);
+	_popupCatchInvestigator->setScale(6.0f);
 	
 	addChild(_cellMapSprite, DrawOrder::SPRITE);
 	addChild(_cellMapTaskProgressBar, DrawOrder::PROGRESS);
 	addChild(_constructionProgress, DrawOrder::PROGRESS);
+	addChild(_popupCatchInvestigator, DrawOrder::BUTTON);
 	scheduleUpdate();
 
 	return true;
@@ -156,6 +164,17 @@ void CellMapWidget::update(float dt)
 	{
 		_cellMapTaskProgressBar->setVisible(false);
 	}
+}
+
+void CellMapWidget::ShowInvestigatorLaunchButton(cocos2d::ccMenuCallback onCatchCallback)
+{
+	_popupCatchInvestigator->SetOnPressCallback(onCatchCallback);
+	_popupCatchInvestigator->Appear(20.0f);
+}
+
+void CellMapWidget::HideInvestigatorLaunchButton(bool hideWithWarning)
+{
+	_popupCatchInvestigator->Disappear(hideWithWarning);
 }
 
 void CellMapWidget::SetHitArea(float beginX, float beginY, float endX, float endY)

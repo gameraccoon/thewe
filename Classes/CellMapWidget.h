@@ -2,6 +2,8 @@
 #define CELL_MAP_WIDGET_H
 
 #include "CellGameInterface.h"
+#include "CellMapPopupButton.h"
+#include "InvestigatorMapWidget.h"
 
 class CellMapImage;
 
@@ -12,6 +14,9 @@ public:
 
 	virtual bool init(void) override;
 	virtual void update(float dt) override;
+	
+	void ShowInvestigatorLaunchButton(cocos2d::ccMenuCallback onCatchCallback);
+	void HideInvestigatorLaunchButton(bool hideWithWarning);
 
 	void SetHitArea(float beginX, float beginY, float endX, float endY);
 	void GetHitArea(float &beginX, float &beginY, float &endX, float &endY) const;
@@ -25,8 +30,9 @@ public:
 private:
 	enum DrawOrder
 	{
-		SPRITE = 0,
-		PROGRESS,
+		SPRITE = 0
+		,PROGRESS
+		,BUTTON
 	};
 
 private:
@@ -40,6 +46,8 @@ private:
 	CellMapImage *_cellMapSprite;
 	RoundProgressBar *_cellMapTaskProgressBar;
 	RoundProgressBar *_constructionProgress;
+
+	CellMapPopupButton *_popupCatchInvestigator;
 
 	Cell::State _lastCellState;
 };

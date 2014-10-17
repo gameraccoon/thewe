@@ -4,10 +4,12 @@
 #include "CellGameInterface.h"
 #include "Investigator.h"
 
+class CellMapWidget;
+
 class InvestigatorMapWidget : public cocos2d::Node
 {
 public:
-	InvestigatorMapWidget(Investigator::Ptr investigator, MapProjector *proj);
+	InvestigatorMapWidget(Investigator::Ptr investigator, MapProjector *proj, WorldMapLayer *worldMapLayer);
 
 	virtual bool init(void) override;
 	virtual void update(float dt) override;
@@ -19,8 +21,12 @@ public:
 
 public:
 	void UpdateInvestigationMap(const Investigator::BranchBundle &bundle);
+	void OnCatchInFirstCell(cocos2d::Ref *sender);
 
 	Investigator::Ptr _investigator;
+	Investigator::State _lastState;
+	CellMapWidget *_invesRootCellWidget;
+	WorldMapLayer *_worldMapLayer;
 	MapProjector *_projector;
 
 	int _projectorUid;

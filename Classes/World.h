@@ -49,6 +49,8 @@ public:
 	void AddInvestigatorByCell(Cell::Ptr investigationRoot);
 	void AddInvestigatorByInfo(const Cell::Info &cellInfo);
 
+	bool RemoveInvestigator(Investigator::Ptr investigator);
+
 	const Region::WeakPtr GetRegionByName(const std::string &name) const;
 	const Town::WeakPtr GetTownByName(const std::string &name) const;
 	const Cell::WeakPtr GetCellByInfo(const Cell::Info &info) const;
