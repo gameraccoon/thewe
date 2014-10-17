@@ -1,7 +1,10 @@
 #include "TutorialWidget.h"
 
+#include <luabind/luabind.hpp>
+
 #include "Vector2.h"
 #include "Color.h"
+#include "World.h"
 
 TutorialWidget::TutorialWidget(Tutorial tutorial)
 	: _tutorial(tutorial)
@@ -76,4 +79,11 @@ bool TutorialWidget::IsReadyToClose() const
 void TutorialWidget::_OnCloseCallback(cocos2d::Ref *sender)
 {
 	_isReadyToClose = true;
+
+	if (!_tutorial.luaCallback.empty())
+	{
+		luabind::call_function<void>(World::Instance().GetLuaInst()->GetLuaState()
+			, _tutorial.luaCallback.c_str()
+			, 0);
+	}
 }

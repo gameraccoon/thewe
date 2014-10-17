@@ -71,6 +71,7 @@ void World::InitLuaContext()
 
 		ExecScript(_luaScript, "mainLogic.lua");
 		ExecScript(_luaScript, "tasks.lua");
+		ExecScript(_luaScript, "tutorials.lua");
 	}
 	else
 	{

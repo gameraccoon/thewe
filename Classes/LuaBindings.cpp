@@ -82,7 +82,7 @@ void LuaInstance::BindClass<Tutorial>()
 {
 	luabind::module(_luaState) [
 	luabind::class_<Tutorial>("Tutorial")
-		.def(luabind::constructor<std::string, std::string>())
+		.def(luabind::constructor<std::string, std::string, std::string>())
 	];
 }
 
