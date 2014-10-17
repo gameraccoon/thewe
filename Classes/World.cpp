@@ -41,12 +41,18 @@ MessageManager& World::GetMessageManager()
 	return _messageManager;
 }
 
+void ExecScript(LuaInstance* instance, std::string filename)
+{
+	std::string fullPath = cocos2d::FileUtils::getInstance()->fullPathForFilename(filename);
+	std::string script = cocos2d::FileUtils::getInstance()->getStringFromFile(fullPath);
+	instance->ExecScript(script.c_str());
+}
+
 void World::InitLuaContext()
 {
 	if (!_isLuaInited)
 	{
 		_isLuaInited = true;
-		std::string fullPath = cocos2d::FileUtils::getInstance()->fullPathForFilename("tasks.lua");
 
 		_luaScript->BindClass<Log>();
 		_luaScript->BindClass<MessageManager>();
@@ -56,19 +62,27 @@ void World::InitLuaContext()
 		_luaScript->BindClass<Cell>();
 		_luaScript->BindClass<const Task::Info>();
 		_luaScript->BindClass<Vector2>();
+		_luaScript->BindClass<Tutorial>();
 
 		_luaScript->RegisterVariable("Log", &(Log::Instance()));
 		_luaScript->RegisterVariable("MessageManager", &(_messageManager));
 		_luaScript->RegisterVariable("GameInfo", &(GameInfo::Instance()));
 		_luaScript->RegisterVariable("World", &(World::Instance()));
 
-		std::string script = cocos2d::FileUtils::getInstance()->getStringFromFile(fullPath);
-		_luaScript->ExecScript(script.c_str());
+		ExecScript(_luaScript, "mainLogic.lua");
+		ExecScript(_luaScript, "tasks.lua");
 	}
 	else
 	{
 		Log::Instance().writeWarning("Trying to init Lua context twice");
 	}
+}
+
+void World::StartLogic()
+{
+	luabind::call_function<void>(World::Instance().GetLuaInst()->GetLuaState()
+		, "StartGame"
+		, 0);
 }
 
 void World::CleanupMapContent(void)
@@ -277,9 +291,9 @@ LuaInstance* World::GetLuaInst(void) const
 	return _luaScript;
 }
 
-void World::AddTutorial(std::string text)
+void World::AddTutorial(Tutorial tutrorial)
 {
-	_tutorials.push(text);
+	_tutorials.push(tutrorial);
 }
 
 bool World::IsHaveTutorial()
@@ -287,7 +301,9 @@ bool World::IsHaveTutorial()
 	return _tutorials.size() > 0;
 }
 
-std::string World::GetNextTutorial()
+Tutorial World::GetNextTutorial()
 {
-	return _tutorials.front();
+	Tutorial tutorial = _tutorials.front();
+	_tutorials.pop();
+	return tutorial;
 }

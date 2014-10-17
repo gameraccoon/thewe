@@ -74,6 +74,9 @@ bool AppDelegate::applicationDidFinishLaunching()
 	// register scenes in the garbage collector
 	mainMenuScene->autorelease();
 
+	// start calculation of game logic
+	World::Instance().StartLogic();
+
 	return true;
 }
 

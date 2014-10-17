@@ -12,9 +12,9 @@ Color::Color(float r, float g, float b, float a)
 
 Color::Color(unsigned long color)
 {
-	this->a = (color & 0xFF000000) * 0.00390625f; // 0xFF
-	this->r = (color & 0x00FF0000) * 0.00390625f;
-	this->g = (color & 0x0000FF00) * 0.00390625f;
+	this->a = ((color & 0xFF000000) >> 24) * 0.00390625f; // * 1.0f / 0xFF
+	this->r = ((color & 0x00FF0000) >> 16) * 0.00390625f;
+	this->g = ((color & 0x0000FF00) >> 4) * 0.00390625f;
 	this->b = (color & 0x000000FF) * 0.00390625f;
 }
 
@@ -25,5 +25,10 @@ Color::operator cocos2d::Color4F() const
 
 Color::operator cocos2d::Color4B() const
 {
-	return cocos2d::Color4B(r, g, b, a);
+	return cocos2d::Color4B(r * 255.0f, g * 255.0f, b * 255.0f, a * 255.0f);
+}
+
+Color::operator cocos2d::Color3B() const
+{
+	return cocos2d::Color3B(r * 255.0f, g * 255.0f, b * 255.0f);
 }

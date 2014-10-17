@@ -12,6 +12,7 @@
 MapGuiLayer::MapGuiLayer(MapProjector *mapProjector)
 	: _mapProjector(mapProjector)
 	, _currentTutorial(nullptr)
+	, _cellsNetLayer(nullptr)
 {
 	init();
 }
@@ -40,7 +41,7 @@ bool MapGuiLayer::init(void)
 	
 	cocos2d::Director *director = cocos2d::Director::getInstance();
 	Vector2 screen = director->getVisibleSize();
-	Vector2 origin = director->getVisibleOrigin();\
+	Vector2 origin = director->getVisibleOrigin();
 	_messagesMargin = Vector2(5.0f, 5.0f);
 	_messagesPosition = Vector2(origin + screen - _messagesMargin);
 
@@ -117,14 +118,26 @@ void MapGuiLayer::_MenuInputListener(cocos2d::Ref *sender)
 		dynamic_cast<GameScene*>(getParent()->getParent())->ToggleEditor();
 		break;
 	case MENU_ITEM_MENU:
-		{
-			cocos2d::Layer* cellsNetLayer = new CellsNetLayer();
-			addChild(cellsNetLayer);
-			cellsNetLayer->autorelease();
-			dynamic_cast<WorldMapLayer*>(getParent())->SetMapInputEnabled(false);
-		}
+		ToggleCellsNetMenu();
 		break;
 	default: break;
+	}
+}
+
+void MapGuiLayer::ToggleCellsNetMenu()
+{
+	if (!_cellsNetLayer)
+	{
+		_cellsNetLayer = new CellsNetLayer();
+		addChild(_cellsNetLayer);
+		_cellsNetLayer->autorelease();
+		dynamic_cast<WorldMapLayer*>(getParent())->SetMapInputEnabled(false);
+	}
+	else
+	{
+		removeChild(_cellsNetLayer);
+		dynamic_cast<WorldMapLayer*>(getParent())->SetMapInputEnabled(true);
+		_cellsNetLayer = nullptr;
 	}
 }
 
@@ -138,10 +151,30 @@ void MapGuiLayer::update(float delta)
 
 	_worldCaptureProgressBar->SetProgressPercentage(World::Instance().GetWorldCapturingState() * 100.0f);
 
-	if (World::Instance().IsHaveTutorial())
+	if (_currentTutorial == nullptr)
 	{
-		_currentTutorial = TutorialWidget::create(World::Instance().GetNextTutorial());
-		addChild(_currentTutorial);
+		if (World::Instance().IsHaveTutorial())
+		{
+			cocos2d::Director *director = cocos2d::Director::getInstance();
+			Vector2 screen = director->getVisibleSize();
+			Vector2 origin = director->getVisibleOrigin();
+
+			_currentTutorial = TutorialWidget::create(World::Instance().GetNextTutorial());
+			addChild(_currentTutorial);
+			_currentTutorial->setPosition(origin + screen/2);
+
+			dynamic_cast<WorldMapLayer*>(getParent())->SetMapInputEnabled(false);
+		}
+	}
+	else
+	{
+		if (_currentTutorial->IsReadyToClose())
+		{
+			removeChild(_currentTutorial);
+			_currentTutorial = nullptr;
+
+			dynamic_cast<WorldMapLayer*>(getParent())->SetMapInputEnabled(true);
+		}
 	}
 }
 

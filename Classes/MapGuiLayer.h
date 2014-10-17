@@ -6,6 +6,7 @@
 #include "MessageWidget.h"
 #include "ProgressBar.h"
 #include "TutorialWidget.h"
+#include "CellsNetLayer.h"
 
 class MapGuiLayer : public cocos2d::Layer
 {
@@ -32,6 +33,7 @@ private:
 	int UpdateMessages();
 	void UpdateMessagesPos();
 	void AddNewMessage(int key, const std::map<int, UserMessage::Ptr>& messages);
+	void ToggleCellsNetMenu();
 
 private:
 	cocos2d::MenuItemImage *_btnZoomIn;
@@ -49,6 +51,8 @@ private:
 	SquareProgressBar *_worldCaptureProgressBar;
 
 	TutorialWidget *_currentTutorial;
+
+	CellsNetLayer* _cellsNetLayer;
 };
 
 #endif

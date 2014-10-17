@@ -12,6 +12,7 @@
 #include "LuaInstance.h"
 #include "TaskManager.h"
 #include "MessageManager.h"
+#include "Tutorial.h"
 
 class World
 {
@@ -34,6 +35,7 @@ public:
 	/** Removes all the regions */
 	void CleanupMapContent(void);
 	void InitLuaContext();
+	void StartLogic();
 
 	const Regions& GetRegions() const;
 	const Cells& GetCells() const;
@@ -69,9 +71,9 @@ public:
 
 	LuaInstance* GetLuaInst(void) const;
 
-	void AddTutorial(std::string text);
+	void AddTutorial(Tutorial tutrorial);
 	bool IsHaveTutorial();
-	std::string GetNextTutorial();
+	Tutorial GetNextTutorial();
 
 private:
 	void CalcWorldCapturingState();
@@ -94,7 +96,7 @@ private:
 	bool _isGameOver;
 	float _worldCapturingState;
 
-	std::queue<std::string> _tutorials;
+	std::queue<Tutorial> _tutorials;
 
 	/*
 	 * Turn off useless operations

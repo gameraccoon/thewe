@@ -33,7 +33,7 @@ bool WorldMapLayer::init(void)
 	{
 		return false;
 	}
-	
+
 	_townsDrawLayer = cocos2d::Layer::create();
 	_townsDrawLayer->setPosition(0.0f, 0.0f);
 	_townsDrawLayer->setVisible(true);

@@ -94,6 +94,7 @@ set(GAME_SRC
 	Classes/Town.cpp
 	Classes/TownMapWidget.cpp
 	Classes/TransitionZoomFade.cpp
+	Classes/Tutorial.cpp
 	Classes/TutorialWidget.cpp
 	Classes/UserMessage.cpp
 	Classes/Vector2.cpp
