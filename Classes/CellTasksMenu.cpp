@@ -34,18 +34,18 @@ public:
 		labelStart->setColor(cocos2d::Color3B(0, 0, 0));	
 		labelStart->setPosition(startBtn->getPosition());
 
-		cocos2d::Label *labelDesc = cocos2d::Label::createWithBMFont("futura-48.fnt", _taskInfo->title, cocos2d::TextHAlignment::LEFT);
-		labelDesc->setPosition(-60.0f, 0.0f);
+		cocos2d::Label *labelDesc = cocos2d::Label::createWithBMFont("futura-48.fnt", _taskInfo->title, cocos2d::TextHAlignment::CENTER);
+		labelDesc->setPosition(50.0f, 15.0f);
 		labelDesc->setScale(0.35f);
 
 		std::string stringMorale = cocos2d::StringUtils::format("Morale: %.1f", _taskInfo->moralLevel);
-		cocos2d::Label *labelMorale = cocos2d::Label::createWithBMFont("futura-48.fnt", stringMorale, cocos2d::TextHAlignment::CENTER);
-		labelMorale->setPosition(45.0f, 0.0f);
+		cocos2d::Label *labelMorale = cocos2d::Label::createWithBMFont("futura-48.fnt", stringMorale, cocos2d::TextHAlignment::LEFT);
+		labelMorale->setPosition(-30.0f, -15.0f);
 		labelMorale->setScale(0.35f);
 
 		std::string stringDifficult = cocos2d::StringUtils::format("Severity: %.1f", _taskInfo->severity);
 		cocos2d::Label *labelSeverity = cocos2d::Label::createWithBMFont("futura-48.fnt", stringDifficult, cocos2d::TextHAlignment::RIGHT);
-		labelSeverity->setPosition(150.0f, 0.0f);
+		labelSeverity->setPosition(130.0f, -15.0f);
 		labelSeverity->setScale(0.35f);
 
 		setContentSize(size);
