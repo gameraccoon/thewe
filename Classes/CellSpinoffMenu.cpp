@@ -52,16 +52,14 @@ bool CellSpinoffMenu::init(void)
 	_isCellCreationPossible = isMembersEnough && isCashEnough;
 
 	std::string strMembers = cocos2d::StringUtils::format("Members %d / %d", info.membersCount, GameInfo::Instance().GetInt("CELL_SPINOFF_MEMBERS_PRICE") * 2);
-	std::string strCach = cocos2d::StringUtils::format("Cach %d / %d $", info.cash, GameInfo::Instance().GetInt("CELL_SPINOFF_CASH_PRICE"));
+	std::string strCach = cocos2d::StringUtils::format("Cash %d / %d $", info.cash, GameInfo::Instance().GetInt("CELL_SPINOFF_CASH_PRICE"));
 	
 	cocos2d::TTFConfig ttfConfigBig("arial.ttf", 24);
 	_necessaryMembers = cocos2d::Label::createWithTTF(ttfConfigBig, strMembers, cocos2d::TextHAlignment::CENTER);
 	_necessaryCash = cocos2d::Label::createWithTTF(ttfConfigBig, strCach, cocos2d::TextHAlignment::CENTER);
 
-	float x1 = center.x - background->getContentSize().width / 2.0f + _necessaryMembers->getContentSize().width / 2.0f + 10.f;
-	float x2 = center.x + background->getContentSize().width / 2.0f - _necessaryCash->getContentSize().width / 2.0f - 5.0f;
-	_necessaryMembers->setPosition(x1, center.y + 50.0f);
-	_necessaryCash->setPosition(x2, center.y + 50.0f);
+	_necessaryMembers->setPosition(center.x, center.y + 35.0f);
+	_necessaryCash->setPosition(center.x, center.y + 65.0f);
 
 	{
 		using namespace cocos2d;
