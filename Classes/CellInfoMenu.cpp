@@ -97,7 +97,7 @@ bool CellInfoMenu::init(void)
 		_taskProgressBar->autorelease();
 		_taskProgressBar->SetProgressPercentage(progress);
 
-		std::string strTaskLabel = cocos2d::StringUtils::format("Cell is now performing %s task", _cellCurrentTask->GetInfo()->id.c_str());
+		std::string strTaskLabel = cocos2d::StringUtils::format("Current task: %s", _cellCurrentTask->GetInfo()->title.c_str());
 		_currentTaskLabel = cocos2d::Label::createWithTTF(ttfConfig, strTaskLabel, cocos2d::TextHAlignment::CENTER);
 		_currentTaskLabel->setPosition(center.x, y+25.0f);
 
