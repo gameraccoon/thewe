@@ -111,6 +111,7 @@ void LuaInstance::BindClass<World>()
 		.def("isFirstLaunch", &World::IsFirstLaunch)
 		.def("getTutorialState", &World::GetTutorialState)
 		.def("setTutorialState", &World::SetTutorialState)
+		.def("runTutorialState", &World::RunTutorialState)
 	];
 }
 

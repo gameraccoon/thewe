@@ -309,14 +309,17 @@ Tutorial::WeakPtr World::GetCurrentTutorial()
 
 void World::RemoveCurrentTutorial()
 {
-	if (!_tutorials.front()->luaCallback.empty())
+	if (_tutorials.size() > 0)
 	{
-		luabind::call_function<void>(World::Instance().GetLuaInst()->GetLuaState()
-			, _tutorials.front()->luaCallback.c_str()
-			, 0);
-	}
+		if (!_tutorials.front()->luaCallback.empty())
+		{
+			luabind::call_function<void>(World::Instance().GetLuaInst()->GetLuaState()
+				, _tutorials.front()->luaCallback.c_str()
+				, 0);
+		}
 
-	_tutorials.pop();
+		_tutorials.pop();
+	}
 }
 
 std::string World::GetTutorialState()
@@ -333,6 +336,6 @@ void World::RunTutorialState(const std::string &state)
 {
 	_tutorialState = state;
 	luabind::call_function<void>(World::Instance().GetLuaInst()->GetLuaState()
-		, std::string("RunTutorial" + state).c_str()
+		, std::string("RunTutorial_" + state).c_str()
 		, 0);
 }

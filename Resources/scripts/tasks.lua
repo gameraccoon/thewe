@@ -1,5 +1,3 @@
-Log:log("Script task.lua initalization started")
-
 -- Определяем, считать задание выполненным или провеленным
 function CheckTaskStatus(cellInfo, taskInfo)
 	local membersIsEnough = cellInfo.membersCount >= taskInfo.severity * 10.0
@@ -10,6 +8,28 @@ end
 -- определяем будет ли показываться задание для данной ячейки
 function IsShowTaskInList(cell, taskInfo)
 	local cellInfo = cell:getInfo()
+
+	-- задачи для туториала
+	if World:getTutorialState() == "StartFirstTask" then
+		if taskInfo.id == "tutorial_Recrutment" then
+			return true
+		else
+			return false
+		end
+	elseif taskInfo.id == "tutorial_Recrutment" then
+		return false
+	end
+
+	if World:getTutorialState() == "ReadyToFirstRealWork" then
+		if taskInfo.id == "tutorial_RealWork" then
+			return true
+		else
+			return false
+		end
+	elseif taskInfo.id == "tutorial_RealWork" then
+		return false
+	end
+
 	-- для первой альфы делаем не очень хорошие проверки
 	if taskInfo.id == "alpha1_Recrutment1" then
 		return cellInfo.cash <= 50000
@@ -86,10 +106,33 @@ function MissionSuccess_CheatMission(cellInfo, taskInfo)
 	cellInfo.cash = 100000
 end
 
+function MissionSuccess_TutorialRecrutment(cellInfo, taskInfo)
+	SayCompleted(taskInfo.title)
+
+	cellInfo.membersCount = cellInfo.membersCount + 6
+
+	World:runTutorialState("AfterFirstTaskFinished")
+end
+
+function MissionSuccess_TutorialFirstRealWork(cellInfo, taskInfo)
+	SayCompleted(taskInfo.title)
+
+	-- мораль ячейки приближается к морали задания
+	cellInfo.morale = cellInfo.morale + (taskInfo.moraleLevel - cellInfo.morale) * 0.3
+
+	-- увеличивем преданность на 10% от текущего
+	cellInfo.contantement = cellInfo.contantement + (cellInfo.contantement * 0.1)
+	if (cellInfo.contantement > 1.0) then cellInfo.contantement = 1.0 end
+
+	cellInfo.cash = cellInfo.cash + math.random(150, 200) * 1000
+
+	World:runTutorialState("AfterRealWorkDone")
+end
+
 function MissionSuccess_Alpha1Recrutment(cellInfo, taskInfo)
 	SayCompleted(taskInfo.title)
 
-	cellInfo.membersCount = cellInfo.membersCount + math.random(1, 3)
+	cellInfo.membersCount = cellInfo.membersCount + math.random(2, 5)
 end
 
 function MissionFail_Alpha1Recrutment(cellInfo, taskInfo)
@@ -104,6 +147,7 @@ function MissionSuccess_Alpha1BankRobbery(cellInfo, taskInfo)
 
 	-- увеличивем преданность на 10% от текущего
 	cellInfo.contantement = cellInfo.contantement + (cellInfo.contantement * 0.1)
+	if (cellInfo.contantement > 1.0) then cellInfo.contantement = 1.0 end
 
 	cellInfo.cash = cellInfo.cash + math.random(150, 200) * 1000
 end
@@ -119,5 +163,3 @@ function MissionFail_Alpha1BankRobbery(cellInfo, taskInfo)
 
 	cellInfo.membersCount = cellInfo.membersCount - math.random(0, 3)
 end
-
-Log:log("Script task.lua initalization finished")

@@ -58,7 +58,7 @@ public:
 
 		if (World::Instance().GetTutorialState() == "StartFirstTask")
 		{
-			World::Instance().RunTutorialState("AfterStartFirstTask");
+			World::Instance().RunTutorialState("BeforeStartFirstTask");
 		}
 
 		return true;
@@ -68,9 +68,20 @@ private:
 	void _OnStartPressed(cocos2d::Ref *sender)
 	{
 		if (_cell.lock()->GetInfo().state == Cell::READY)
-		{
+		{			
 			World::Instance().GetTaskManager().RunTask(_cell, _taskInfo, Utils::GetGameTime());
 			_tasksScreen->CloseMenu();
+
+			if (World::Instance().GetTutorialState() == "WaitForRunningFirstTask")
+			{
+				World::Instance().RemoveCurrentTutorial();
+				World::Instance().RunTutorialState("StartingFirstTask");
+			}
+			else if (World::Instance().GetTutorialState() == "ReadyToFirstRealWork")
+			{
+				World::Instance().RemoveCurrentTutorial();
+				World::Instance().RunTutorialState("StartingFirstRealWork");
+			}
 		}
 	}
 

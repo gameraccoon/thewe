@@ -1,3 +1,5 @@
+local StartWithoutTutorial = false
+
 function StartGame()
 	if World:isFirstLaunch() then
 		FirstLaunch()
@@ -5,5 +7,7 @@ function StartGame()
 end
 
 function FirstLaunch()
-	RunTutorialWelcome()
+	if not StartWithoutTutorial then
+		RunTutorial_Welcome()
+	end
 end
