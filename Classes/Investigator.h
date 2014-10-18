@@ -37,10 +37,10 @@ public:
 
 public:
 	Investigator(Cell::WeakPtr investigationRoot);
-	Investigator(const Investigator::BranchBundle &rootBranchBudle);
+	Investigator(Cell::WeakPtr investigationRoot, const Investigator::BranchBundle &rootBranchBudle);
 
 	static Ptr Create(Cell::WeakPtr investigationRoot);
-	static Ptr Create(const Investigator::BranchBundle &rootBranchBudle);
+	static Ptr Create(Cell::WeakPtr investigationRoot, const Investigator::BranchBundle &rootBranchBudle);
 
 	void InitInvestigator(const Investigator::BranchBundle &rootBranchBudle);
 	void BeginCatchTime(float time);

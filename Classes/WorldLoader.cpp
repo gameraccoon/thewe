@@ -377,9 +377,13 @@ bool WorldLoader::LoadGameState(void)
 
 			while (investigatorNode)
 			{
+				int investigation_root_id = investigatorNode.attribute("investigation_root_cell").as_int();
+				Cell* ptr = cellsIndicesCast.find(investigation_root_id)->second;
+				Cell::WeakPtr cell = World::Instance().GetCellByInfo(ptr->GetInfo());
+
 				Investigator::BranchBundle bundle;
 				LoadInvestigator(bundle, investigatorNode, cellsIndicesCast);
-				World::Instance().AddInvestigator(Investigator::Create(bundle));
+				World::Instance().AddInvestigator(Investigator::Create(cell, bundle));
 
 				investigatorNode = investigatorNode.next_sibling();
 			}
@@ -484,6 +488,9 @@ bool WorldLoader::SaveGameState(void)
 	for (Investigator::Ptr investigator : World::Instance().GetInvestigators())
 	{
 		pugi::xml_node investigatorNode = inves_root.append_child("Investigator");
+		int investigation_root_cell = cellsIndicesCast.find(investigator->GetInvestigationRoot().get())->second;
+		investigatorNode.append_attribute("investigation_root_cell").set_value(investigation_root_cell);
+		
 		SaveInvestigator(investigator->GetRootBranchBundle(), investigatorNode, cellsIndicesCast, true);
 	}
 

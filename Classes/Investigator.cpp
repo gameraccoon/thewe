@@ -12,11 +12,14 @@ Investigator::Investigator(Cell::WeakPtr investigationRoot)
 {
 }
 
-Investigator::Investigator(const Investigator::BranchBundle &rootBranchBudle)
+Investigator::Investigator(Cell::WeakPtr investigationRoot, const Investigator::BranchBundle &rootBranchBudle)
 	: _branchRoot(rootBranchBudle)
+	, _investigationRoot(investigationRoot)
+	, _catchTimeBegin(1)
+	, _catchTimeEnd(1)
+	, _state(START_CATCH_DELAY)
 	, _uid(World::Instance().GetNewUid())
 {
-	_investigationRoot = World::Instance().GetCellByInfo(_branchRoot.at(0).cellFrom->GetInfo());
 }
 
 Investigator::Ptr Investigator::Create(Cell::WeakPtr investigationRoot)
@@ -24,9 +27,9 @@ Investigator::Ptr Investigator::Create(Cell::WeakPtr investigationRoot)
 	return std::make_shared<Investigator>(investigationRoot);
 }
 
-Investigator::Ptr Investigator::Create(const Investigator::BranchBundle &rootBranchBudle)
+Investigator::Ptr Investigator::Create(Cell::WeakPtr investigationRoot, const Investigator::BranchBundle &rootBranchBudle)
 {
-	return std::make_shared<Investigator>(rootBranchBudle);
+	return std::make_shared<Investigator>(investigationRoot, rootBranchBudle);
 }
 
 void Investigator::InitInvestigator(const Investigator::BranchBundle &rootBranchBudle)
@@ -45,6 +48,7 @@ void Investigator::BeginInvestigation(void)
 {
 	Cell::Ptr cell = _investigationRoot.lock();
 	cell->GetInfo().state = Cell::ARRESTED;
+	_state = State::INVESTIGATION;
 
 	if (cell->GetInfo().parent == nullptr)
 	{
@@ -76,8 +80,6 @@ void Investigator::BeginInvestigation(void)
 
 		_branchRoot.push_back(branch);
 	}
-
-	_state = State::INVESTIGATION;
 }
 
 void Investigator::AbortInvestigation(void)
