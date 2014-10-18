@@ -67,7 +67,7 @@ private:
 			World::Instance().GetTaskManager().RunTask(_cell, _taskInfo, Utils::GetGameTime());
 			_tasksScreen->CloseMenu();
 
-			if (World::Instance().GetTutorialState() == "WaitForRunningFirstTask")
+			if (World::Instance().GetTutorialState() == "WaitingForStartFirstTask")
 			{
 				World::Instance().RemoveCurrentTutorial();
 				World::Instance().RunTutorialFunction("StartingFirstTask");
