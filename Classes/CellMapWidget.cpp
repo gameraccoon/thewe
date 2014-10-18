@@ -169,7 +169,7 @@ void CellMapWidget::update(float dt)
 void CellMapWidget::ShowInvestigatorLaunchButton(cocos2d::ccMenuCallback onCatchCallback)
 {
 	_popupCatchInvestigator->SetOnPressCallback(onCatchCallback);
-	_popupCatchInvestigator->Appear(20.0f);
+	_popupCatchInvestigator->Appear(10.0f);
 }
 
 void CellMapWidget::HideInvestigatorLaunchButton(bool hideWithWarning)

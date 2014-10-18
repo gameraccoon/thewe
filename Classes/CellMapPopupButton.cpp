@@ -139,8 +139,8 @@ void CellMapPopupButton::AddStayAnimation(cocos2d::Node *target)
 		return;
 	}
 	
-	cocos2d::ScaleTo *scaleIn = cocos2d::ScaleTo::create(0.25f, 1.0f, 0.9f, 1.0f);
-	cocos2d::ScaleTo *scaleOut = cocos2d::ScaleTo::create(0.40f, 1.0f, 1.1f, 1.0f);
+	cocos2d::ScaleTo *scaleIn = cocos2d::ScaleTo::create(0.25f, 0.92f, 0.95f, 1.0f);
+	cocos2d::ScaleTo *scaleOut = cocos2d::ScaleTo::create(0.40f, 1.08f, 1.05f, 1.0f);
 
 	cocos2d::EaseCircleActionOut *scaleOutEase = cocos2d::EaseCircleActionOut::create(scaleOut);
 

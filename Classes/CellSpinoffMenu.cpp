@@ -137,6 +137,11 @@ void CellSpinoffMenu::_OnCreateNewCell(cocos2d::Ref *sender)
 	{
 		_worldMapLayer->SetNextCellParent(_cell);
 		_SelfClose();
+
+		if (World::Instance().GetTutorialState() == "ReadyToCreateSpinoff")
+		{
+			World::Instance().RunTutorialFunction("OnReadyToCreateFirstSpinoff");
+		}
 	}
 }
 

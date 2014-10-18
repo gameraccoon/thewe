@@ -46,6 +46,11 @@ void Investigator::BeginCatchTime(float time)
 
 void Investigator::BeginInvestigation(void)
 {
+	if (World::Instance().GetTutorialState() == "WaitForUncatchedInvestigator")
+	{
+		World::Instance().RunTutorialFunction("FirstUncatchedInvestigator");
+	}
+
 	Cell::Ptr cell = _investigationRoot.lock();
 	cell->GetInfo().state = Cell::ARRESTED;
 	_state = State::INVESTIGATION;

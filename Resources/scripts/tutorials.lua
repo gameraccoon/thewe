@@ -75,8 +75,59 @@ end
 
 function RunTutorial_AfterRealWorkDone()
 	local text =
-		"Теперь всё хорошо, нужно дописать туториал\n"..
-		"с этого места"
+		"Спинофф"
+
+	World:addTutorial(Tutorial(text, ContinueText))
+
+	World:setTutorialState("ReadyToCreateSpinoff");
+end
+
+function RunTutorial_OnReadyToCreateFirstSpinoff()
+	local text =
+		"Выберите город"
+
+	World:addTutorial(Tutorial(text, ContinueText))
+end
+
+function RunTutorial_OnCreateFirstSpinoff()
+	local text =
+		"Создали новую ячейку"
+
+	World:addTutorial(Tutorial(text, ContinueText))
+
+	World:setTutorialState("WaitForFirstInvestigator");
+end
+
+function RunTutorial_FirstInvestigationStarted()
+	local text =
+		"Запущен инвестигейтор"
+
+	World:addTutorial(Tutorial(text, ContinueText))
+
+	World:setTutorialState("WaitForCatchingFirstInvestigator");
+end
+
+function RunTutorial_FirstInvestigationCatched()
+	local text =
+		"Закрыли инвестигейтора"
+
+	World:addTutorial(Tutorial(text, ContinueText))
+
+	World:setTutorialState("WaitForUncatchedInvestigator");
+end
+
+function RunTutorial_FirstUncatchedInvestigator()
+	local text =
+		"Профукали инвестигейтора"
+
+	World:addTutorial(Tutorial(text, ContinueText))
+
+	World:setTutorialState("WaitForCatchUncatchedInvestigator");
+end
+
+function RunTutorial_FirstUncatchedInvestigatorCatched()
+	local text =
+		"Говорим о том что нужно перелинковать сеть"
 
 	World:addTutorial(Tutorial(text, ContinueText, "TutorialsLastTutorial"))
 end

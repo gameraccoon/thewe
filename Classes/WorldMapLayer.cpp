@@ -533,6 +533,11 @@ void WorldMapLayer::_OnTownSelect(Town::WeakPtr town)
 			if (info.parent->GetInfo().cash >= GameInfo::Instance().GetInt("CELL_SPINOFF_CASH_PRICE") &&
 				info.parent->GetInfo().membersCount >= GameInfo::Instance().GetInt("CELL_SPINOFF_MEMBERS_PRICE"))
 			{
+				if (World::Instance().GetTutorialState() == "ReadyToCreateSpinoff")
+				{
+					World::Instance().RunTutorialFunction("OnCreateFirstSpinoff");
+				}
+
 				info.town = town;
 				info.location = town.lock()->GetLocation();
 				info.cash = GameInfo::Instance().GetInt("CELL_STARTUP_MONEY");

@@ -112,6 +112,12 @@ void World::AddTown(Town::Ptr cell)
 
 void World::AddInvestigator(Investigator::Ptr investigator)
 {
+	if (World::Instance().GetTutorialState() == "WaitForFirstInvestigator")
+	{
+		investigator->BeginCatchTime(GameInfo::Instance().GetFloat("INVESTIGATOR_TUTORIAL_CATCH_TIME"));
+		World::Instance().RunTutorialFunction("FirstInvestigationStarted");
+	}
+
 	_investigators.push_back(investigator);
 }
 
@@ -120,7 +126,7 @@ void World::AddInvestigatorByCell(Cell::Ptr investigationRoot)
 	Investigator::Ptr investigator = Investigator::Create((Cell::WeakPtr)investigationRoot);
 	investigator->BeginCatchTime(GameInfo::Instance().GetFloat("INVESTIGATOR_CATCH_TIME", 1.0f));
 
-	_investigators.push_back(investigator);
+	AddInvestigator(investigator);
 
 	WorldLoader::Instance().RequestToSave();
 }
