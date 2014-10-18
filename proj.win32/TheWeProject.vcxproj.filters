@@ -240,9 +240,6 @@
     <ClCompile Include="..\Classes\UserMessage.cpp">
       <Filter>Classes\GameInterface</Filter>
     </ClCompile>
-    <ClCompile Include="..\Classes\MessageWidget.cpp">
-      <Filter>Classes\GameInterface</Filter>
-    </ClCompile>
     <ClCompile Include="..\Classes\MessageManager.cpp">
       <Filter>Classes\GameInterface</Filter>
     </ClCompile>
@@ -320,6 +317,15 @@
     </ClCompile>
     <ClCompile Include="..\Classes\Tutorial.cpp">
       <Filter>Classes\GameMap\Model</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\NotificationMessageLayer.cpp">
+      <Filter>Classes\GameInterface</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\NotificationMessageWidget.cpp">
+      <Filter>Classes\GameInterface</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\TutorialLayer.cpp">
+      <Filter>Classes\GameInterface</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -455,9 +461,6 @@
     <ClInclude Include="..\Classes\UserMessage.h">
       <Filter>Classes\GameInterface</Filter>
     </ClInclude>
-    <ClInclude Include="..\Classes\MessageWidget.h">
-      <Filter>Classes\GameInterface</Filter>
-    </ClInclude>
     <ClInclude Include="..\Classes\MessageManager.h">
       <Filter>Classes\GameInterface</Filter>
     </ClInclude>
@@ -532,6 +535,15 @@
     </ClInclude>
     <ClInclude Include="..\Classes\Tutorial.h">
       <Filter>Classes\GameMap\Model</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\NotificationMessageLayer.h">
+      <Filter>Classes\GameInterface</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\NotificationMessageWidget.h">
+      <Filter>Classes\GameInterface</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\TutorialLayer.h">
+      <Filter>Classes\GameInterface</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

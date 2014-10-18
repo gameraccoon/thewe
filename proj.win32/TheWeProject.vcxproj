@@ -162,7 +162,8 @@ xcopy /Y /Q "$(EngineRoot)external\websockets\prebuilt\win32\*.lib" "$(SolutionD
     <ClCompile Include="..\Classes\MapGuiLayer.cpp" />
     <ClCompile Include="..\Classes\MapProjector.cpp" />
     <ClCompile Include="..\Classes\MessageManager.cpp" />
-    <ClCompile Include="..\Classes\MessageWidget.cpp" />
+    <ClCompile Include="..\Classes\NotificationMessageLayer.cpp" />
+    <ClCompile Include="..\Classes\NotificationMessageWidget.cpp" />
     <ClCompile Include="..\Classes\ProgressBar.cpp" />
     <ClCompile Include="..\Classes\Region.cpp" />
     <ClCompile Include="..\Classes\SessionEndScreen.cpp" />
@@ -173,6 +174,7 @@ xcopy /Y /Q "$(EngineRoot)external\websockets\prebuilt\win32\*.lib" "$(SolutionD
     <ClCompile Include="..\Classes\TownMapWidget.cpp" />
     <ClCompile Include="..\Classes\TransitionZoomFade.cpp" />
     <ClCompile Include="..\Classes\Tutorial.cpp" />
+    <ClCompile Include="..\Classes\TutorialLayer.cpp" />
     <ClCompile Include="..\Classes\TutorialWidget.cpp" />
     <ClCompile Include="..\Classes\UserMessage.cpp" />
     <ClCompile Include="..\Classes\Vector2.cpp" />
@@ -256,7 +258,8 @@ xcopy /Y /Q "$(EngineRoot)external\websockets\prebuilt\win32\*.lib" "$(SolutionD
     <ClInclude Include="..\Classes\MapGuiLayer.h" />
     <ClInclude Include="..\Classes\MapProjector.h" />
     <ClInclude Include="..\Classes\MessageManager.h" />
-    <ClInclude Include="..\Classes\MessageWidget.h" />
+    <ClInclude Include="..\Classes\NotificationMessageLayer.h" />
+    <ClInclude Include="..\Classes\NotificationMessageWidget.h" />
     <ClInclude Include="..\Classes\ProgressBar.h" />
     <ClInclude Include="..\Classes\Region.h" />
     <ClInclude Include="..\Classes\SessionEndScreen.h" />
@@ -268,6 +271,7 @@ xcopy /Y /Q "$(EngineRoot)external\websockets\prebuilt\win32\*.lib" "$(SolutionD
     <ClInclude Include="..\Classes\TownMapWidget.h" />
     <ClInclude Include="..\Classes\TransitionZoomFade.h" />
     <ClInclude Include="..\Classes\Tutorial.h" />
+    <ClInclude Include="..\Classes\TutorialLayer.h" />
     <ClInclude Include="..\Classes\TutorialWidget.h" />
     <ClInclude Include="..\Classes\UserMessage.h" />
     <ClInclude Include="..\Classes\Vector2.h" />
