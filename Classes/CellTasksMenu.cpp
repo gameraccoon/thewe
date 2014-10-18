@@ -56,11 +56,6 @@ public:
 		addChild(labelMorale, 1);
 		addChild(labelSeverity, 1);
 
-		if (World::Instance().GetTutorialState() == "StartFirstTask")
-		{
-			World::Instance().RunTutorialState("BeforeStartFirstTask");
-		}
-
 		return true;
 	}
 
@@ -68,19 +63,19 @@ private:
 	void _OnStartPressed(cocos2d::Ref *sender)
 	{
 		if (_cell.lock()->GetInfo().state == Cell::READY)
-		{			
+		{
 			World::Instance().GetTaskManager().RunTask(_cell, _taskInfo, Utils::GetGameTime());
 			_tasksScreen->CloseMenu();
 
 			if (World::Instance().GetTutorialState() == "WaitForRunningFirstTask")
 			{
 				World::Instance().RemoveCurrentTutorial();
-				World::Instance().RunTutorialState("StartingFirstTask");
+				World::Instance().RunTutorialFunction("StartingFirstTask");
 			}
 			else if (World::Instance().GetTutorialState() == "ReadyToFirstRealWork")
 			{
 				World::Instance().RemoveCurrentTutorial();
-				World::Instance().RunTutorialState("StartingFirstRealWork");
+				World::Instance().RunTutorialFunction("StartingFirstRealWork");
 			}
 		}
 	}
@@ -140,6 +135,11 @@ bool CellTasksScreen::init(void)
 
 	menu_pos.y += offset_btm;
 	menu_size.height -= offset_top;
+
+	if (World::Instance().GetTutorialState() == "StartFirstTask")
+	{
+		World::Instance().RunTutorialFunction("BeforeStartFirstTask");
+	}
 
 	_CreateTasksScrollViewMenu(World::Instance().GetTaskManager().GetAvailableTasks(_cell), menu_pos, menu_size);
 

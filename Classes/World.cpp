@@ -332,10 +332,9 @@ void World::SetTutorialState(const std::string& state)
 	_tutorialState = state;
 }
 
-void World::RunTutorialState(const std::string &state)
+void World::RunTutorialFunction(const std::string& function)
 {
-	_tutorialState = state;
 	luabind::call_function<void>(World::Instance().GetLuaInst()->GetLuaState()
-		, std::string("RunTutorial_" + state).c_str()
+		, std::string("RunTutorial_" + function).c_str()
 		, 0);
 }

@@ -506,7 +506,7 @@ void WorldMapLayer::_OnTownSelect(Town::WeakPtr town)
 
 			if (World::Instance().GetTutorialState() == "FirstCell")
 			{
-				World::Instance().RunTutorialState("AfterCreatingFirstCell");
+				World::Instance().RunTutorialFunction("AfterCreatingFirstCell");
 			}
 		}
 		else if (!_nextCellParent.expired())

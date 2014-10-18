@@ -35,7 +35,7 @@ function RunTutorial_BeforeStartFirstTask()
 
 	World:addTutorial(Tutorial(text, ContinueText))
 
-	World:setTutorialState("WaitForRunningFirstTask");
+	World:setTutorialState("WaitingForStartFirstTask");
 end
 
 function RunTutorial_StartingFirstTask()

@@ -77,7 +77,7 @@ public:
 	void RemoveCurrentTutorial();
 	std::string GetTutorialState();
 	void SetTutorialState(const std::string& state);
-	void RunTutorialState(const std::string& state);
+	void RunTutorialFunction(const std::string& function);
 
 private:
 	void CalcWorldCapturingState();
