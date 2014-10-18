@@ -16,6 +16,7 @@ World::World()
 	, _isFirstLaunch(true)
 	, _isLuaInited(false)
 	, _isGameOver(false)
+	, _tutorialState("NotInitialized")
 {
 	_luaScript = new LuaInstance();
 }

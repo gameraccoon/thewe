@@ -4,7 +4,7 @@ function RunTutorial_Welcome()
 	-- ToDo: make localizations
 	local text1 =
 		"Добро пожаловать в игру!\n"..
-		"Нажмите клавишу внизу чтобы продолжить"
+		"Это альфа-версия игры \"The We\""
 
 	local text2 =
 		"Для начала нажмите на любой город,\n"..
@@ -13,7 +13,7 @@ function RunTutorial_Welcome()
 	World:addTutorial(Tutorial(text1, ContinueText))
 	World:addTutorial(Tutorial(text2, ContinueText))
 
-	World:setTutorialState("FirstCell");
+	World:setTutorialState("FirstCell")
 end
 
 function RunTutorial_AfterCreatingFirstCell()
@@ -79,6 +79,14 @@ function RunTutorial_AfterRealWorkDone()
 		"с этого места"
 
 	World:addTutorial(Tutorial(text, ContinueText, "TutorialsLastTutorial"))
+end
+
+-- продолжить туториал после перезапуска игры (для особых случаев, которые не разрешатся простой загрузкой состояния)
+function ContinueTutorial()
+	local tutorialState = World:getTutorialState()
+	if tutorialState == "FirstCell" then
+		RunTutorial_AfterCreatingFirstCell()
+	end
 end
 
 function TutorialsLastTutorial()

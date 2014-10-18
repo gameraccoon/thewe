@@ -3,6 +3,10 @@ local StartWithoutTutorial = false
 function StartGame()
 	if World:isFirstLaunch() then
 		FirstLaunch()
+	elseif World:getTutorialState() ~= "TutorialsEnd" then
+		if not StartWithoutTutorial then
+			ContinueTutorial()
+		end
 	end
 end
 

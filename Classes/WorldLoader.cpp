@@ -321,7 +321,7 @@ bool WorldLoader::LoadGameState(void)
 		// 2. recursively add childs
 
 		pugi::xml_node root = doc.first_child();
-		pugi::xml_node world_info = root.child("WorldInfo");
+		pugi::xml_node player_info = root.child("PlayerInfo");
 		pugi::xml_node cells_network = root.child("CellsNetwork");
 		pugi::xml_node inves_root = root.child("Investigators");
 		pugi::xml_node cell_root = cells_network.find_child_by_attribute("parent_id", "-1");
@@ -385,6 +385,12 @@ bool WorldLoader::LoadGameState(void)
 			}
 		}
 
+		if (player_info)
+		{
+			pugi::xml_attribute tutorialState = player_info.attribute("tutorial_state");
+			World::Instance().SetTutorialState(tutorialState.as_string());
+		}
+
 		_state = State::Ready;
 		return true;
 	}
@@ -421,7 +427,7 @@ bool WorldLoader::SaveGameState(void)
 	pugi::xml_document doc;
 	pugi::xml_node root = doc.append_child("Save");
 	
-	pugi::xml_node world_info = root.append_child("WorldInfo");
+	pugi::xml_node player_info = root.append_child("PlayerInfo");
 	pugi::xml_node cells_root = root.append_child("CellsNetwork");
 	pugi::xml_node inves_root = root.append_child("Investigators");
 
@@ -480,6 +486,8 @@ bool WorldLoader::SaveGameState(void)
 		pugi::xml_node investigatorNode = inves_root.append_child("Investigator");
 		SaveInvestigator(investigator->GetRootBranchBundle(), investigatorNode, cellsIndicesCast, true);
 	}
+
+	player_info.append_attribute("tutorial_state").set_value(World::Instance().GetTutorialState().c_str());
 
 	_state = State::Ready;
 	return doc.save_file(Utils::GetDocumentsPath().append("save.sav").c_str());
