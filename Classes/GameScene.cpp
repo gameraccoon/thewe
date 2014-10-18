@@ -97,3 +97,9 @@ void GameScene::SetInputEnabled(bool enabled)
 {
 	_worldMap->SetMapInputEnabled(enabled);
 }
+
+
+void GameScene::MoveViewToPoint(const Vector2& worldPoint)
+{
+	_mapProjector.SetLocation(worldPoint);
+}

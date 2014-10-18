@@ -38,7 +38,7 @@ void MapProjector::SetScale(float scale)
 
 void MapProjector::ShiftView(Vector2 delta)
 {
-	SetLocation(_viewLocation + delta / _viewScale);
+	SetLocation(_viewLocation - delta / _viewScale);
 }
 
 void MapProjector::_CheckBoundings()
@@ -86,12 +86,12 @@ float MapProjector::GetScale() const
 
 Vector2 MapProjector::ProjectOnMap(Vector2 screenPoint) const
 {
-	return (screenPoint - _screenCenter) / _viewScale - _viewLocation;
+	return (screenPoint - _screenCenter) / _viewScale + _viewLocation;
 }
 
 Vector2 MapProjector::ProjectOnScreen(Vector2 mapPoint) const
 {
-	return _screenCenter + (mapPoint + _viewLocation) * _viewScale;
+	return _screenCenter + (mapPoint - _viewLocation) * _viewScale;
 }
 
 ArbitraryHull MapProjector::ProjectOnMap(const ArbitraryHull& screenHull) const
@@ -153,7 +153,7 @@ void MapProjector::_UpdateNodes()
 			screenScale = node.initialScale;
 		}
 
-		node.node->SetPosition(_screenCenter + (node.location + _viewLocation) * _viewScale + node.shift * screenScale);
+		node.node->SetPosition(_screenCenter + (node.location - _viewLocation) * _viewScale + node.shift * screenScale);
 		node.node->SetScale(screenScale);
 	}
 }

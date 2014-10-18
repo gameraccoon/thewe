@@ -115,6 +115,9 @@ void WorldMapLayer::update(float dt)
 			InvestigatorMapWidget *widget = _CreateInvestigatorWidget(investigator);
 			addChild(widget, Z_INVESTIGATOR);
 			_investigatorWidgetsList.push_back(widget);
+
+			dynamic_cast<GameScene*>(getParent())->MoveViewToPoint(
+						investigator->GetInvestigationRoot()->GetInfo().town.lock()->GetLocation());
 		}
 	}
 

@@ -26,9 +26,11 @@ public:
 	void ToggleEditor();
 	void SetInputEnabled(bool enabled);
 
-	MapProjector _mapProjector;
+	void MoveViewToPoint(const Vector2& worldPoint);
 
 private:
+	MapProjector _mapProjector;
+
 	WorldMapLayer *_worldMap;
 	MainMenuScene *_mainMenuScene;
 	cocos2d::Layer *_RegionEditor;
