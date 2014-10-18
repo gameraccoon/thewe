@@ -63,6 +63,7 @@ set(GAME_SRC
 	Classes/Cell.cpp
 	Classes/CellGameInterface.cpp
 	Classes/CellInfoMenu.cpp
+	Classes/CellMapPopupButton.cpp
 	Classes/CellMapWidget.cpp
 	Classes/CellNetWidget.cpp
 	Classes/CellSpinoffMenu.cpp
