@@ -1,8 +1,8 @@
-#include "MessageWidget.h"
+#include "NotificationMessageWidget.h"
 
 #include "Vector2.h"
 
-MessageWidget::MessageWidget(UserMessage::Ptr message)
+NotificationMessageWidget::NotificationMessageWidget(UserMessage::Ptr message)
 	: _message(message)
 	, _timeToShow(message->GetTimeToShow())
 	, _showedTime(0.0f)
@@ -10,9 +10,9 @@ MessageWidget::MessageWidget(UserMessage::Ptr message)
 {
 }
 
-MessageWidget* MessageWidget::create(UserMessage::Ptr message)
+NotificationMessageWidget* NotificationMessageWidget::create(UserMessage::Ptr message)
 {
-	MessageWidget* ret = new MessageWidget(message);
+	NotificationMessageWidget* ret = new NotificationMessageWidget(message);
 	if (ret && ret->init())
 	{
 		ret->autorelease();
@@ -24,7 +24,7 @@ MessageWidget* MessageWidget::create(UserMessage::Ptr message)
 	return ret;
 }
 
-bool MessageWidget::init()
+bool NotificationMessageWidget::init()
 {
 	if (!cocos2d::Node::init())
 	{
@@ -53,7 +53,7 @@ bool MessageWidget::init()
 	return true;
 }
 
-void MessageWidget::update(float delta)
+void NotificationMessageWidget::update(float delta)
 {
 	_showedTime += delta;
 
@@ -63,7 +63,7 @@ void MessageWidget::update(float delta)
 	}
 }
 
-bool MessageWidget::IsOutdated()
+bool NotificationMessageWidget::IsOutdated()
 {
 	return _isOutdated;
 }

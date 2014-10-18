@@ -5,6 +5,8 @@
 #include "World.h"
 #include "Log.h"
 #include "TransitionZoomFade.h"
+#include "TutorialLayer.h"
+#include "NotificationMessageLayer.h"
 
 GameScene::GameScene(MainMenuScene *mainMenuScene)
 	: _mapProjector()
@@ -32,6 +34,9 @@ bool GameScene::init(void)
 	_worldMap->autorelease();
 
 	scheduleUpdate();
+
+	addChild(TutorialLayer::create());
+	addChild(NotificationMessageLayer::create());
 
 	return true;
 }
@@ -86,4 +91,9 @@ void GameScene::ToggleEditor()
 	{
 		ShowMap();
 	}
+}
+
+void GameScene::SetInputEnabled(bool enabled)
+{
+	_worldMap->SetMapInputEnabled(enabled);
 }

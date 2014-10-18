@@ -1,17 +1,13 @@
 #include "MapGuiLayer.h"
 
-#include <math.h>
-
 #include "World.h"
 #include "WorldLoader.h"
 #include "GameScene.h"
 #include "WorldMapLayer.h"
-#include "MessageManager.h"
 #include "CellsNetLayer.h"
 
 MapGuiLayer::MapGuiLayer(MapProjector *mapProjector)
 	: _mapProjector(mapProjector)
-	, _currentTutorial(nullptr)
 	, _cellsNetLayer(nullptr)
 {
 	init();
@@ -42,8 +38,6 @@ bool MapGuiLayer::init(void)
 	cocos2d::Director *director = cocos2d::Director::getInstance();
 	Vector2 screen = director->getVisibleSize();
 	Vector2 origin = director->getVisibleOrigin();
-	_messagesMargin = Vector2(5.0f, 5.0f);
-	_messagesPosition = Vector2(origin + screen - _messagesMargin);
 
 	cocos2d::Vector<cocos2d::MenuItem*> menuItems;
 
@@ -143,120 +137,5 @@ void MapGuiLayer::ToggleCellsNetMenu()
 
 void MapGuiLayer::update(float delta)
 {
-	int changed = UpdateMessages();
-	if (changed > 0)
-	{
-		UpdateMessagesPos();
-	}
-
 	_worldCaptureProgressBar->SetProgressPercentage(World::Instance().GetWorldCapturingState() * 100.0f);
-
-	if (_currentTutorial == nullptr)
-	{
-		if (World::Instance().IsHaveTutorial())
-		{
-			cocos2d::Director *director = cocos2d::Director::getInstance();
-			Vector2 screen = director->getVisibleSize();
-			Vector2 origin = director->getVisibleOrigin();
-
-			_currentTutorial = TutorialWidget::create(World::Instance().GetCurrentTutorial());
-			addChild(_currentTutorial);
-			_currentTutorial->setPosition(origin + screen/2);
-
-			dynamic_cast<WorldMapLayer*>(getParent())->SetMapInputEnabled(false);
-		}
-	}
-	else
-	{
-		if (_currentTutorial->IsReadyToClose())
-		{
-			removeChild(_currentTutorial);
-			_currentTutorial = nullptr;
-
-			dynamic_cast<WorldMapLayer*>(getParent())->SetMapInputEnabled(true);
-		}
-	}
-}
-
-int MapGuiLayer::UpdateMessages()
-{
-	std::set<int> visibleKeys;
-	for (auto message : _userMessages)
-	{
-		int key = message.first;
-
-		visibleKeys.insert(key);
-
-		if (message.second->IsOutdated())
-		{
-			World::Instance().GetMessageManager().RemoveMessage(key);
-		}
-	}
-
-	const std::map<int, UserMessage::Ptr> messages = World::Instance().GetMessageManager().GetMessages();
-	std::set<int> realKeys;
-	for (auto message : messages)
-	{
-		realKeys.insert(message.first);
-	}
-
-	int changed = 0;
-	std::set<int> newKeys;
-	set_difference(realKeys.begin(), realKeys.end(),
-				   visibleKeys.begin(), visibleKeys.end(),
-				   inserter(newKeys, newKeys.begin()));
-
-	if (newKeys.size() > 0)
-	{
-		for (int key : newKeys)
-		{
-			AddNewMessage(key, messages);
-			changed++;
-		}
-	}
-
-	std::set<int> keysToRemove;
-	set_difference(visibleKeys.begin(), visibleKeys.end(),
-				   realKeys.begin(), realKeys.end(),
-				   inserter(keysToRemove, keysToRemove.begin()));
-
-	if (keysToRemove.size() > 0)
-	{
-		for (int key : keysToRemove)
-		{
-			removeChild(_userMessages.at(key));
-			_userMessages.erase(key);
-
-			changed++;
-		}
-	}
-
-	return changed;
-}
-
-void MapGuiLayer::UpdateMessagesPos()
-{
-	Vector2 position = _messagesPosition;
-
-	for (auto message : _userMessages)
-	{
-		cocos2d::MoveTo *move = cocos2d::MoveTo::create(0.3f, position);
-		message.second->stopAllActions();
-		message.second->runAction(move);
-		position.y += -message.second->getContentSize().height - _messagesMargin.y;
-	}
-}
-
-void MapGuiLayer::AddNewMessage(int key, const std::map<int, UserMessage::Ptr>& messages)
-{
-	UserMessage::Ptr message = messages.at(key);
-	MessageWidget* messageWidget = MessageWidget::create(message);
-
-	Vector2 position = _messagesPosition;
-
-	position.y += _userMessages.size() * (-messageWidget->getContentSize().height - _messagesMargin.y);
-
-	messageWidget->setPosition(position);
-	addChild(messageWidget);
-	_userMessages.insert(std::pair<int, MessageWidget*>(key, messageWidget));
 }

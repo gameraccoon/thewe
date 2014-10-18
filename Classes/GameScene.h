@@ -24,6 +24,7 @@ public:
 	void ShowMap();
 	void GoToMainMenu(void);
 	void ToggleEditor();
+	void SetInputEnabled(bool enabled);
 
 	MapProjector _mapProjector;
 

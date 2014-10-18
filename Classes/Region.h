@@ -4,6 +4,8 @@
 #include "ArbitraryHull.h"
 
 #include <memory>
+#include <string>
+#include <vector>
 
 class Region
 {

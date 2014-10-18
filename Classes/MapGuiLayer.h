@@ -3,9 +3,7 @@
 
 #include <cocos2d.h>
 #include "MapProjector.h"
-#include "MessageWidget.h"
 #include "ProgressBar.h"
-#include "TutorialWidget.h"
 #include "CellsNetLayer.h"
 
 class MapGuiLayer : public cocos2d::Layer
@@ -30,9 +28,6 @@ private:
 private:
 	void _MenuInputListener(cocos2d::Ref *sender);
 
-	int UpdateMessages();
-	void UpdateMessagesPos();
-	void AddNewMessage(int key, const std::map<int, UserMessage::Ptr>& messages);
 	void ToggleCellsNetMenu();
 
 private:
@@ -43,14 +38,7 @@ private:
 
 	MapProjector *_mapProjector;
 
-	std::map<int, MessageWidget*> _userMessages;
-
-	Vector2 _messagesMargin;
-	Vector2 _messagesPosition;
-
 	SquareProgressBar *_worldCaptureProgressBar;
-
-	TutorialWidget *_currentTutorial;
 
 	CellsNetLayer* _cellsNetLayer;
 };

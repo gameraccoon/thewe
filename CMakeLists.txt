@@ -83,7 +83,8 @@ set(GAME_SRC
 	Classes/MapGuiLayer.cpp
 	Classes/MapProjector.cpp
 	Classes/MessageManager.cpp
-	Classes/MessageWidget.cpp
+	Classes/NotificationMessageLayer.cpp
+	Classes/NotificationMessageWidget.cpp
 	Classes/MiscUtils.cpp
 	Classes/ProgressBar.cpp
 	Classes/Region.cpp
@@ -95,6 +96,7 @@ set(GAME_SRC
 	Classes/TownMapWidget.cpp
 	Classes/TransitionZoomFade.cpp
 	Classes/Tutorial.cpp
+	Classes/TutorialLayer.cpp
 	Classes/TutorialWidget.cpp
 	Classes/UserMessage.cpp
 	Classes/Vector2.cpp
