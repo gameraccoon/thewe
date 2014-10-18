@@ -38,8 +38,9 @@ LOCAL_SRC_FILES := hellocpp/main.cpp \
 				   	../../Classes/MapGuiLayer.cpp \
 				   	../../Classes/MapProjector.cpp \
 				   	../../Classes/MessageManager.cpp \
-				   	../../Classes/MessageWidget.cpp \
 				   	../../Classes/MiscUtils.cpp \
+				   	../../Classes/NotificationMessageLayer.cpp \
+				   	../../Classes/NotificationMessageWidget.cpp \
 				   	../../Classes/ProgressBar.cpp \
 				   	../../Classes/Region.cpp \
 				   	../../Classes/SessionEndScreen.cpp \
@@ -50,6 +51,7 @@ LOCAL_SRC_FILES := hellocpp/main.cpp \
 				   	../../Classes/TownMapWidget.cpp \
 				   	../../Classes/TransitionZoomFade.cpp \
 				   	../../Classes/Tutorial.cpp \
+				   	../../Classes/TutorialLayer.cpp \
 				   	../../Classes/TutorialWidget.cpp \
 				   	../../Classes/UserMessage.cpp \
 				   	../../Classes/Vector2.cpp \
