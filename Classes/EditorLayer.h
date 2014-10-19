@@ -37,8 +37,8 @@ private:
 	
 	cocos2d::DrawNode *_hullDrawer;
 
-	cocos2d::LabelTTF *_printPos;
-	cocos2d::LabelTTF *_printNum;
+	cocos2d::Label *_printPos;
+	cocos2d::Label *_printNum;
 	
 	cocos2d::MenuItemImage *_btnToggle;
 	cocos2d::MenuItemImage *_btnDelete;

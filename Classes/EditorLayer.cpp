@@ -30,11 +30,13 @@ bool EditorLayer::init(void)
 	Vector2 screen = director->getVisibleSize();
 	Vector2 origin = director->getVisibleOrigin();
 
-	_printPos = cocos2d::LabelTTF::create("X: 0, Y: 0", "Arial", 32);
+	cocos2d::TTFConfig ttfConfig("arial.ttf", 18);
+
+	_printPos = cocos2d::Label::createWithTTF(ttfConfig, "X: 0, Y: 0", cocos2d::TextHAlignment::CENTER);
 	_printPos->setPosition(Vector2(origin.x + 50, origin.y + screen.y - 150));
 	_printPos->setAnchorPoint(Vector2(0.0f, 0.0f));
 
-	_printNum = cocos2d::LabelTTF::create("Num Points: 0", "Arial", 32);
+	_printNum = cocos2d::Label::createWithTTF(ttfConfig, "Num Points: 0", cocos2d::TextHAlignment::CENTER);
 	_printNum->setPosition(Vector2(origin.x + 50, origin.y + screen.y - 190));
 	_printNum->setAnchorPoint(Vector2(0.0f, 0.0f));
 
