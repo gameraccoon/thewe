@@ -10,7 +10,6 @@ SqliteValue::SqliteValue(sqlite3_stmt* ppStmt, int columnIndex)
 
 SqliteValue::~SqliteValue()
 {
-	Log::Instance().writeLog("Value destroyed");
 }
 
 bool SqliteValue::asBool()
@@ -38,14 +37,13 @@ const void* SqliteValue::asVariant()
 	return sqlite3_column_blob(this->ppStmt, this->columnIndex);
 }
 
-
 SqliteDataReader::SqliteDataReader(const std::string& query, sqlite3* db)
 {
 	int rc = sqlite3_prepare(db, query.c_str(), query.length(), &this->ppStmt, 0);
 
 	if (rc != 0)
 	{
-		Log::Instance().writeError(std::string("Unable to execute SQLite statement \"").append(query)
+		Log::Instance().writeError(std::string("Unable to execute SQL query \"").append(query)
 			.append("\" ").append(sqlite3_errmsg(db)));
 	}
 }
@@ -53,7 +51,6 @@ SqliteDataReader::SqliteDataReader(const std::string& query, sqlite3* db)
 SqliteDataReader::~SqliteDataReader()
 {
 	sqlite3_finalize(this->ppStmt);
-	Log::Instance().writeLog("Reader destroyed");
 }
 
 bool SqliteDataReader::next()
@@ -77,7 +74,7 @@ DbValue::Ptr SqliteDataReader::getValueByName(const std::string& columnName)
 		}
 	}
 
-	Log::Instance().writeError("Column not found: " + columnName);
+	Log::Instance().writeError("SqliteDataReader error: Column not found: " + columnName);
 	return nullptr;
 }
 
@@ -85,7 +82,7 @@ DbValue::Ptr SqliteDataReader::getValueByIndex(int columnIndex)
 {	
 	if (columnIndex >= sqlite3_column_count(this->ppStmt))
 	{
-		Log::Instance().writeError("Column not found: " + std::to_string(columnIndex));
+		Log::Instance().writeError("SqliteDataReader error: Column not found: " + std::to_string(columnIndex));
 	}
 
 	return DbValue::Ptr(new SqliteValue(this->ppStmt, columnIndex));

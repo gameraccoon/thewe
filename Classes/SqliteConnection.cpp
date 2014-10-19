@@ -37,7 +37,8 @@ void SqliteConnection::execSql(const std::string& statement)
 {
 	if (sqlite3_exec(_database, statement.c_str(), nullptr, nullptr, nullptr) != 0)
 	{
-		Log::Instance().writeWarning(GetSqliteErrMessage());
+		Log::Instance().writeError(std::string("Unable to execute SQL statement \"").append(statement)
+			.append("\" ").append(sqlite3_errmsg(_database)));
 	}
 }
 

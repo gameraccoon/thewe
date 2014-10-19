@@ -9,11 +9,6 @@ Cell::Cell(const Info &info)
 	, _currentTask()
 	, _uid(World::Instance().GetNewUid())
 {
-	if (_info.constructionDuration <= 0)
-	{
-		Log::Instance().writeError("Construction duration less or equals than zero");
-	}
-
 	info.town.lock()->SetCellPresented(true);
 
 	_CheckValues();
@@ -140,6 +135,11 @@ void Cell::_CheckValues() const
 	if (_info.town.expired())
 	{
 		Log::Instance().writeWarning("Dead reference to town");
+	}
+
+	if (_info.constructionDuration <= 0)
+	{
+		Log::Instance().writeError("Construction duration less or equals than zero");
 	}
 }
 
