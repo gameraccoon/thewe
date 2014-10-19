@@ -5,10 +5,10 @@
 	<Task Id="debug_testLongTask" Title="Long Default Task" Severity="0.4" Duration="300" MoralLevel="0.7" SuccessFn="MissionSuccess_Test" FailFn="MissionFail_Test" AbortFn="MissionAbort_Test" />
 	<!-- -->
 	<!-- Tutorail -->
-	<Task Id="tutorial_Recrutment" Title="Verbovka" Severity="0.1" Duration="10" MoralLevel="0.5" SuccessFn="MissionSuccess_TutorialRecrutment" FailFn="MissionSuccess_TutorialRecrutment" AbortFn="MissionAbort_Test" />
-	<Task Id="tutorial_RealWork" Title="Ogrableniye banka" Severity="1.0" Duration="20" MoralLevel="0.3" SuccessFn="MissionSuccess_TutorialFirstRealWork" FailFn="MissionSuccess_TutorialFirstRealWork" AbortFn="MissionAbort_Test" />
+	<Task Id="tutorial_Recrutment" Title="Вербовка" Severity="0.1" Duration="10" MoralLevel="0.5" SuccessFn="MissionSuccess_TutorialRecrutment" FailFn="MissionSuccess_TutorialRecrutment" AbortFn="MissionAbort_Test" />
+	<Task Id="tutorial_RealWork" Title="Ограбление банка" Severity="1.0" Duration="20" MoralLevel="0.3" SuccessFn="MissionSuccess_TutorialFirstRealWork" FailFn="MissionSuccess_TutorialFirstRealWork" AbortFn="MissionAbort_Test" />
 	<!-- Main missions -->
-	<Task Id="alpha1_Recrutment1" Title="Verbovka" Severity="0.1" Duration="15" MoralLevel="0.5" SuccessFn="MissionSuccess_Alpha1Recrutment" FailFn="MissionFail_Alpha1Recrutment" AbortFn="MissionAbort_Test" />
-	<Task Id="alpha1_Recrutment2" Title="Verbovka" Severity="0.1" Duration="60" MoralLevel="0.5" SuccessFn="MissionSuccess_Alpha1Recrutment" FailFn="MissionFail_Alpha1Recrutment" AbortFn="MissionAbort_Test" />
-	<Task Id="alpha1_BankRobbery" Title="Ogrableniye banka" Severity="1.0" Duration="300" MoralLevel="0.3" SuccessFn="MissionSuccess_Alpha1BankRobbery" FailFn="MissionFail_Alpha1BankRobbery" AbortFn="MissionAbort_Test" />
+	<Task Id="alpha1_Recrutment1" Title="Вербовка" Severity="0.1" Duration="15" MoralLevel="0.5" SuccessFn="MissionSuccess_Alpha1Recrutment" FailFn="MissionFail_Alpha1Recrutment" AbortFn="MissionAbort_Test" />
+	<Task Id="alpha1_Recrutment2" Title="Вербовка" Severity="0.1" Duration="60" MoralLevel="0.5" SuccessFn="MissionSuccess_Alpha1Recrutment" FailFn="MissionFail_Alpha1Recrutment" AbortFn="MissionAbort_Test" />
+	<Task Id="alpha1_BankRobbery" Title="Ограбление банка" Severity="1.0" Duration="300" MoralLevel="0.3" SuccessFn="MissionSuccess_Alpha1BankRobbery" FailFn="MissionFail_Alpha1BankRobbery" AbortFn="MissionAbort_Test" />
 </Tasks>

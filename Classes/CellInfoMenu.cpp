@@ -47,40 +47,35 @@ bool CellInfoMenu::init(void)
 	labelTitle->setColor(cocos2d::Color3B(255, 255, 255));
 	
 	float info_x = center.x - background->getContentSize().width  / 2.0f + 10.0f;
-	float info_y = center.y + background->getContentSize().height / 2.0f - 60.0f;
+	float info_y = center.y + background->getContentSize().height / 2.0f - 70.0f;
 
-	_labelCachInfo = cocos2d::Label::createWithBMFont("futura-48.fnt", "", cocos2d::TextHAlignment::LEFT);
+	_labelCachInfo = cocos2d::Label::createWithBMFont("arial-26-en-ru.fnt", "", cocos2d::TextHAlignment::LEFT);
 	_labelCachInfo->setAnchorPoint(cocos2d::Vec2(0.0f, 0.0f));
 	_labelCachInfo->setPosition(info_x, info_y);
-	_labelCachInfo->setScale(0.35f);
 	
-	info_y -= 20.0f;
+	info_y -= 30.0f;
 	
-	_labelMembersInfo = cocos2d::Label::createWithBMFont("futura-48.fnt", "", cocos2d::TextHAlignment::LEFT);
+	_labelMembersInfo = cocos2d::Label::createWithBMFont("arial-26-en-ru.fnt", "", cocos2d::TextHAlignment::LEFT);
 	_labelMembersInfo->setAnchorPoint(cocos2d::Vec2(0.0f, 0.0f));
 	_labelMembersInfo->setPosition(info_x, info_y);
-	_labelMembersInfo->setScale(0.35f);
 		
-	info_y -= 20.0f;
+	info_y -= 30.0f;
 	
-	_labelContentmentInfo = cocos2d::Label::createWithBMFont("futura-48.fnt", "", cocos2d::TextHAlignment::LEFT);
+	_labelContentmentInfo = cocos2d::Label::createWithBMFont("arial-26-en-ru.fnt", "", cocos2d::TextHAlignment::LEFT);
 	_labelContentmentInfo->setAnchorPoint(cocos2d::Vec2(0.0f, 0.0f));
 	_labelContentmentInfo->setPosition(info_x, info_y);
-	_labelContentmentInfo->setScale(0.35f);
 
-	info_y -= 20.0f;
+	info_y -= 30.0f;
 	
-	_labelMoraleInfo = cocos2d::Label::createWithBMFont("futura-48.fnt", "", cocos2d::TextHAlignment::LEFT);
+	_labelMoraleInfo = cocos2d::Label::createWithBMFont("arial-26-en-ru.fnt", "", cocos2d::TextHAlignment::LEFT);
 	_labelMoraleInfo->setAnchorPoint(cocos2d::Vec2(0.0f, 0.0f));
 	_labelMoraleInfo->setPosition(info_x, info_y);
-	_labelMoraleInfo->setScale(0.35f);
 
-	info_y -= 20.0f;
+	info_y -= 30.0f;
 	
-	_labelChildrensInfo = cocos2d::Label::createWithBMFont("futura-48.fnt", "", cocos2d::TextHAlignment::LEFT);
+	_labelChildrensInfo = cocos2d::Label::createWithBMFont("arial-26-en-ru.fnt", "", cocos2d::TextHAlignment::LEFT);
 	_labelChildrensInfo->setAnchorPoint(cocos2d::Vec2(0.0f, 0.0f));
 	_labelChildrensInfo->setPosition(info_x, info_y);
-	_labelChildrensInfo->setScale(0.35f);
 
 	Cell::Ptr cell = _cell.lock();
 	_cellCurrentTask = cell->getCurrentTask().lock();
