@@ -28,29 +28,6 @@ void ArbitraryHull::PopPoint(void)
 	}
 }
 
-void ArbitraryHull::Draw(const Color &color) const
-{
-	std::vector<cocos2d::Vec2> points;
-	for (auto& point : _points)
-	{
-		points.push_back(point);
-	}
-
-	if (_points.empty())
-	{
-		return;
-	}
-
-	cocos2d::ccDrawColor4F(color.r, color.g, color.b, color.a);
-	cocos2d::ccDrawPoly(&(*points.begin()), points.size(), true);
-}
-
-void ArbitraryHull::Draw(void) const
-{
-	Color white(0xFFFFFFFF);
-	Draw(white);
-}
-
 void ArbitraryHull::Clear(void)
 {
 	_points.clear();

@@ -16,9 +16,9 @@ public:
 
 	void update(float dt) override;
 	
-	void onTouchesBegan(const std::vector<cocos2d::Touch* > &touches, cocos2d::Event* event) override;
-	void onTouchesEnded(const std::vector<cocos2d::Touch* > &touches, cocos2d::Event* event) override;
-	void onTouchesMoved(const std::vector<cocos2d::Touch* > &touches, cocos2d::Event* event) override;
+	void TouchesBegan(const std::vector<cocos2d::Touch* > &touches, cocos2d::Event* event);
+	void TouchesEnded(const std::vector<cocos2d::Touch* > &touches, cocos2d::Event* event);
+	void TouchesMoved(const std::vector<cocos2d::Touch* > &touches, cocos2d::Event* event);
 
 private:
 	enum E_MENU_TEMS_TAG

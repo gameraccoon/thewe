@@ -99,6 +99,10 @@ bool CellTasksScreen::init(void)
 	{
 		return false;
 	}
+
+	cocos2d::EventListenerKeyboard *keyboard = cocos2d::EventListenerKeyboard::create();
+	keyboard->onKeyReleased = CC_CALLBACK_2(CellTasksScreen::KeyReleased, this);
+	cocos2d::Director::getInstance()->getEventDispatcher()->addEventListenerWithSceneGraphPriority(keyboard, this);
 	
 	cocos2d::Point screen = cocos2d::Director::getInstance()->getVisibleSize();
 	cocos2d::Point origin = cocos2d::Director::getInstance()->getVisibleOrigin();
@@ -156,8 +160,6 @@ bool CellTasksScreen::init(void)
 	addChild(labelTitle, 1);
 	addChild(_scrollTasksView, 2);
 
-	setKeypadEnabled(true);
-
 	return true;
 }
 
@@ -213,7 +215,7 @@ void CellTasksScreen::_CreateTasksScrollViewMenu(const TaskManager::TasksList &t
 	_scrollTasksView->setContentOffset(_scrollTasksView->minContainerOffset());
 }
 
-void CellTasksScreen::onKeyReleased(cocos2d::EventKeyboard::KeyCode key, cocos2d::Event *event)
+void CellTasksScreen::KeyReleased(cocos2d::EventKeyboard::KeyCode key, cocos2d::Event *event)
 {
 	if (key == cocos2d::EventKeyboard::KeyCode::KEY_ESCAPE)
 	{

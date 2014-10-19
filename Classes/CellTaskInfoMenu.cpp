@@ -14,6 +14,10 @@ bool CellTaskInfoMenu::init(void)
 		return false;
 	}
 	
+	cocos2d::EventListenerKeyboard *keyboard = cocos2d::EventListenerKeyboard::create();
+	keyboard->onKeyReleased = CC_CALLBACK_2(CellTaskInfoMenu::KeyReleased, this);
+	cocos2d::Director::getInstance()->getEventDispatcher()->addEventListenerWithSceneGraphPriority(keyboard, this);
+
 	cocos2d::Point screen = cocos2d::Director::getInstance()->getVisibleSize();
 	cocos2d::Point origin = cocos2d::Director::getInstance()->getVisibleOrigin();
 	cocos2d::Point center = origin + screen / 2.0f;
@@ -71,8 +75,6 @@ bool CellTaskInfoMenu::init(void)
 	addChild(_taskProgressBar, 1);
 	addChild(_taskProgressLabel, 1);
 
-	setKeyboardEnabled(true);
-
 	return true;
 }
 
@@ -112,7 +114,7 @@ void CellTaskInfoMenu::_CloseMenu()
 	runAction(cocos2d::Sequence::create(elastic_scale, func, nullptr));
 }
 
-void CellTaskInfoMenu::onKeyReleased(cocos2d::EventKeyboard::KeyCode key, cocos2d::Event *event)
+void CellTaskInfoMenu::KeyReleased(cocos2d::EventKeyboard::KeyCode key, cocos2d::Event *event)
 {
 	if (key == cocos2d::EventKeyboard::KeyCode::KEY_ESCAPE)
 	{

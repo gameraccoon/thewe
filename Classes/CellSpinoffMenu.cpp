@@ -18,6 +18,10 @@ bool CellSpinoffMenu::init(void)
 	{
 		return false;
 	}
+
+	cocos2d::EventListenerKeyboard *keyboard = cocos2d::EventListenerKeyboard::create();
+	keyboard->onKeyReleased = CC_CALLBACK_2(CellSpinoffMenu::KeyReleased, this);
+	cocos2d::Director::getInstance()->getEventDispatcher()->addEventListenerWithSceneGraphPriority(keyboard, this);
 	
 	cocos2d::Point screen = cocos2d::Director::getInstance()->getVisibleSize();
 	cocos2d::Point origin = cocos2d::Director::getInstance()->getVisibleOrigin();
@@ -115,8 +119,6 @@ bool CellSpinoffMenu::init(void)
 	addChild(_necessaryMembers, 1);
 	addChild(_necessaryCash, 1);
 
-	setKeyboardEnabled(true);
-
 	return true;
 }
 
@@ -152,7 +154,7 @@ void CellSpinoffMenu::_SelfClose(void)
 	runAction(cocos2d::Sequence::create(elastic_scale, func, nullptr));
 }
 
-void CellSpinoffMenu::onKeyReleased(cocos2d::EventKeyboard::KeyCode key, cocos2d::Event *event)
+void CellSpinoffMenu::KeyReleased(cocos2d::EventKeyboard::KeyCode key, cocos2d::Event *event)
 {
 	if (key == cocos2d::EventKeyboard::KeyCode::KEY_ESCAPE)
 	{

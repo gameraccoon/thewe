@@ -149,10 +149,9 @@ static bool LoadTasksInfo()
 {
 	pugi::xml_document tasks_xml_doc;
 	std::string fullPath = cocos2d::FileUtils::getInstance()->fullPathForFilename("tasks.xml");
-	unsigned char* pBuffer = NULL;
-	ssize_t bufferSize = 0;
-	pBuffer = cocos2d::FileUtils::getInstance()->getFileData(fullPath.c_str(), "r", &bufferSize);
-	pugi::xml_parse_result result = tasks_xml_doc.load_buffer(pBuffer, bufferSize);
+	std::string buffer;
+	buffer = cocos2d::FileUtils::getInstance()->getStringFromFile(fullPath);
+	pugi::xml_parse_result result = tasks_xml_doc.load_buffer((const void *)buffer.c_str(), buffer.size());
 
 	std::vector<Task::Info> infos;
 	
@@ -188,14 +187,13 @@ static bool LoadWorld(void)
 	pugi::xml_document regions_xml_doc;
 
 	std::string fullPath = cocos2d::FileUtils::getInstance()->fullPathForFilename("hulls.xml");
-	unsigned char* pBuffer = NULL;
-	ssize_t bufferSize = 0;
-	pBuffer = cocos2d::FileUtils::getInstance()->getFileData(fullPath.c_str(), "r", &bufferSize);
-	pugi::xml_parse_result result = hulls_xml_doc.load_buffer(pBuffer,bufferSize);
+	std::string buffer;
+	buffer = cocos2d::FileUtils::getInstance()->getStringFromFile(fullPath);
+	pugi::xml_parse_result result = hulls_xml_doc.load_buffer((const void *)buffer.c_str(), buffer.size());
 	
 	fullPath = cocos2d::FileUtils::getInstance()->fullPathForFilename("regions.xml");
-	pBuffer = cocos2d::FileUtils::getInstance()->getFileData(fullPath.c_str(), "r", &bufferSize);
-	result = regions_xml_doc.load_buffer(pBuffer,bufferSize);
+	buffer = cocos2d::FileUtils::getInstance()->getStringFromFile(fullPath);
+	result = regions_xml_doc.load_buffer(buffer.c_str(), buffer.size());
 
 	World &map = World::Instance();
 	map.CleanupMapContent();
@@ -290,24 +288,23 @@ bool WorldLoader::LoadGameState(void)
 
 	cocos2d::FileUtils *fu = cocos2d::FileUtils::getInstance();
 	std::string fullPath;
-	unsigned char* pBuffer = NULL;
-	ssize_t bufferSize = 0;
+	std::string buffer;
 	std::string filename = "save.sav";
 
 	pugi::xml_document doc;
 	pugi::xml_parse_result result;
 
 	fullPath = fu->fullPathForFilename(Utils::GetDocumentsPath().append(filename).c_str());
-	pBuffer = fu->getFileData(fullPath.c_str(), "r", &bufferSize);
-	result = doc.load_buffer(pBuffer, bufferSize);
+	buffer = fu->getStringFromFile(fullPath);
+	result = doc.load_buffer(buffer.c_str(), buffer.size());
 
 	if (!result)
 	{
 		if (CreateEmptyGameState(filename))
 		{
 			fullPath = fu->fullPathForFilename(Utils::GetDocumentsPath().append(filename).c_str());
-			pBuffer = fu->getFileData(fullPath.c_str(), "r", &bufferSize);
-			result = doc.load_buffer(pBuffer, bufferSize);
+			buffer = fu->getStringFromFile(fullPath);
+			result = doc.load_buffer(buffer.c_str(), buffer.size());
 		}
 		else
 		{

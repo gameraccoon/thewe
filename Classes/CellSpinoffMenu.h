@@ -16,7 +16,7 @@ private:
 	void _OnCloseCallback(cocos2d::Ref *sender);
 	void _OnCreateNewCell(cocos2d::Ref *sender);
 	void _SelfClose(void);
-	virtual void onKeyReleased(cocos2d::EventKeyboard::KeyCode key, cocos2d::Event *event) override;
+	void KeyReleased(cocos2d::EventKeyboard::KeyCode key, cocos2d::Event *event);
 
 private:
 	bool _isCellCreationPossible;

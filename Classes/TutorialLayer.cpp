@@ -31,8 +31,6 @@ bool TutorialLayer::init(void)
 		return false;
 	}
 
-	setTouchEnabled(true);
-
 	scheduleUpdate();
 
 	return true;

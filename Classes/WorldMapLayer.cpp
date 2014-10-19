@@ -26,6 +26,7 @@ WorldMapLayer::WorldMapLayer(GameScene *gameScene, MapProjector* projector)
 
 WorldMapLayer::~WorldMapLayer(void)
 {
+
 }
 
 bool WorldMapLayer::init(void)
@@ -34,6 +35,12 @@ bool WorldMapLayer::init(void)
 	{
 		return false;
 	}
+
+	cocos2d::EventListenerTouchAllAtOnce *touches = cocos2d::EventListenerTouchAllAtOnce::create();
+	touches->onTouchesBegan = CC_CALLBACK_2(WorldMapLayer::TouchesBegan, this);
+	touches->onTouchesMoved = CC_CALLBACK_2(WorldMapLayer::TouchesMoved, this);
+	touches->onTouchesEnded = CC_CALLBACK_2(WorldMapLayer::TouchesEnded, this);
+	cocos2d::Director::getInstance()->getEventDispatcher()->addEventListenerWithSceneGraphPriority(touches, this);
 
 	_townsDrawLayer = cocos2d::Layer::create();
 	_townsDrawLayer->setPosition(0.0f, 0.0f);
@@ -79,8 +86,6 @@ bool WorldMapLayer::init(void)
 	_cellMenu->autorelease();
 	addChild(_cellMenu, Z_CELL_MENU);
 
-	setTouchEnabled(true);
-	setKeyboardEnabled(true);
 	scheduleUpdate();
 
 	_UpdateNetwork();
@@ -261,7 +266,7 @@ void WorldMapLayer::menuCloseCallback(cocos2d::Ref *Sender)
 {
 }
 
-void WorldMapLayer::onTouchesBegan(const std::vector<cocos2d::Touch* > &touches, cocos2d::Event* event)
+void WorldMapLayer::TouchesBegan(const std::vector<cocos2d::Touch* > &touches, cocos2d::Event* event)
 {
 	if (_isInputEnabled)
 	{
@@ -278,7 +283,7 @@ void WorldMapLayer::onTouchesBegan(const std::vector<cocos2d::Touch* > &touches,
 	}
 }
 
-void WorldMapLayer::onTouchesEnded(const std::vector<cocos2d::Touch* > &touches, cocos2d::Event* event)
+void WorldMapLayer::TouchesEnded(const std::vector<cocos2d::Touch* > &touches, cocos2d::Event* event)
 {
 	if (_isInputEnabled)
 	{
@@ -320,7 +325,7 @@ void WorldMapLayer::onTouchesEnded(const std::vector<cocos2d::Touch* > &touches,
 	}
 }
 
-void WorldMapLayer::onTouchesMoved(const std::vector<cocos2d::Touch* > &touches, cocos2d::Event* event)
+void WorldMapLayer::TouchesMoved(const std::vector<cocos2d::Touch* > &touches, cocos2d::Event* event)
 {
 	if (_isInputEnabled && touches.size() > 0)
 	{

@@ -17,6 +17,12 @@ bool EditorLayer::init(void)
 		return false;
 	}
 	
+	cocos2d::EventListenerTouchAllAtOnce *touches = cocos2d::EventListenerTouchAllAtOnce::create();
+	touches->onTouchesBegan = CC_CALLBACK_2(EditorLayer::TouchesBegan, this);
+	touches->onTouchesMoved = CC_CALLBACK_2(EditorLayer::TouchesMoved, this);
+	touches->onTouchesEnded = CC_CALLBACK_2(EditorLayer::TouchesEnded, this);
+	cocos2d::Director::getInstance()->getEventDispatcher()->addEventListenerWithSceneGraphPriority(touches, this);
+
 	_touchPos.x = 0.0f;
 	_touchPos.y = 0.0f;
 
@@ -38,13 +44,13 @@ bool EditorLayer::init(void)
 	{
 		using namespace cocos2d;
 		_btnToggle = cocos2d::MenuItemImage::create("btn-toggle-normal.png", "btn-toggle-selected.png",
-			this, menu_selector(EditorLayer::_MenuInputListener));
+			CC_CALLBACK_1(EditorLayer::_MenuInputListener, this));
 		_btnDelete = cocos2d::MenuItemImage::create("btn-delete-normal.png", "btn-delete-selected.png",
-			this, menu_selector(EditorLayer::_MenuInputListener));
+			CC_CALLBACK_1(EditorLayer::_MenuInputListener, this));
 		_btnSaveXml = cocos2d::MenuItemImage::create("btn-save-normal.png", "btn-save-selected.png",
-			this, menu_selector(EditorLayer::_MenuInputListener));
+			CC_CALLBACK_1(EditorLayer::_MenuInputListener, this));
 		_btnReloadWorld = cocos2d::MenuItemImage::create("btn-reload-world-normal.png", "btn-reload-world-selected.png",
-			this, menu_selector(EditorLayer::_MenuInputListener));
+			CC_CALLBACK_1(EditorLayer::_MenuInputListener, this));
 	}
 
 	Vector2 pos;
@@ -66,20 +72,17 @@ bool EditorLayer::init(void)
 	addChild(_printPos);
 	addChild(_printNum);
 	addChild(menu);
-	setTouchEnabled(true);
 
-	this->scheduleUpdate();
+	scheduleUpdate();
 
 	return true;
 }
 
 void EditorLayer::update(float dt)
 {
-	ArbitraryHull hull = _mapProjector->ProjectOnScreen(_hull1);
-	hull.Draw(Color(0.0f, 0.0f, 1.0f, 1.0f));
 }
 
-void EditorLayer::onTouchesBegan(const std::vector<cocos2d::Touch* > &touches, cocos2d::Event* event)
+void EditorLayer::TouchesBegan(const std::vector<cocos2d::Touch* > &touches, cocos2d::Event* event)
 {
 	cocos2d::Touch *touch = touches.at(0);
 
@@ -104,7 +107,7 @@ void EditorLayer::onTouchesBegan(const std::vector<cocos2d::Touch* > &touches, c
 }
 
 
-void EditorLayer::onTouchesEnded(const std::vector<cocos2d::Touch* > &touches, cocos2d::Event* event)
+void EditorLayer::TouchesEnded(const std::vector<cocos2d::Touch* > &touches, cocos2d::Event* event)
 {
 	cocos2d::Touch *touch = touches.at(0);
 	_touchPos = touch->getLocation();
@@ -113,7 +116,7 @@ void EditorLayer::onTouchesEnded(const std::vector<cocos2d::Touch* > &touches, c
 	_printPos->setString(cocos2d::StringUtils::format("X: %f, Y: %f", projected_point.x, projected_point.y));
 }
 
-void EditorLayer::onTouchesMoved(const std::vector<cocos2d::Touch* > &touches, cocos2d::Event* event)
+void EditorLayer::TouchesMoved(const std::vector<cocos2d::Touch* > &touches, cocos2d::Event* event)
 {
 	cocos2d::Touch *touch = touches.at(0);
 	Vector2 point = touch->getLocation();
@@ -142,13 +145,9 @@ void EditorLayer::_MenuInputListener(cocos2d::Ref *sender)
 		_isCreationAllowed = !_isCreationAllowed;
 		break;
 	case MENU_ITEM_DELETE:
-		{
 		_hull1.PopPoint();
-		_hull1.Draw(Color(0.0f, 0.0f, 1.0f, 1.0f));
 		break;
-		}
 	case MENU_ITEM_SAVE_XML:
-		//SaveHullToXml(_hull1, "../_gamedata/map/hulls.xml");
 		SaveHullToXml(_hull1, "map/hulls.xml");
 		break;
 	default: break;

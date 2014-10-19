@@ -20,19 +20,16 @@ bool MapGuiLayer::init(void)
 		return false;
 	}
 
-	setTouchEnabled(true);
-    setKeypadEnabled(true);
-
 	{
 		using namespace cocos2d;
 		_btnZoomIn = cocos2d::CCMenuItemImage::create("Btn_Plus.png", "Btn_Plus_Pressed.png",
-			this, menu_selector(MapGuiLayer::_MenuInputListener));
+			CC_CALLBACK_1(MapGuiLayer::_MenuInputListener, this));
 		_btnZoomOut = cocos2d::CCMenuItemImage::create("Btn_Minus.png", "Btn_Minus_Pressed.png",
-			this, menu_selector(MapGuiLayer::_MenuInputListener));
+			CC_CALLBACK_1(MapGuiLayer::_MenuInputListener, this));
 		_btnEditor = cocos2d::CCMenuItemImage::create("Btn_Edit.png", "Btn_Edit_Pressed.png",
-			this, menu_selector(MapGuiLayer::_MenuInputListener));
+			CC_CALLBACK_1(MapGuiLayer::_MenuInputListener, this));
 		_btnMenu = cocos2d::CCMenuItemImage::create("Btn_Menu.png", "Btn_Menu_Pressed.png",
-			this, menu_selector(MapGuiLayer::_MenuInputListener));
+			CC_CALLBACK_1(MapGuiLayer::_MenuInputListener, this));
 	}
 	
 	cocos2d::Director *director = cocos2d::Director::getInstance();

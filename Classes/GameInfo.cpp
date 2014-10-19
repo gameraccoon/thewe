@@ -14,13 +14,12 @@ GameInfo& GameInfo::Instance(void)
 bool GameInfo::ParseXml(const std::string &filename)
 {
 	std::string fullPath;
-	unsigned char* buffer = NULL;
-	ssize_t bufferSize = 0;
+	std::string buffer;
 
 	fullPath = cocos2d::FileUtils::getInstance()->fullPathForFilename(filename);
-	buffer = cocos2d::FileUtils::getInstance()->getFileData(fullPath.c_str(), "r", &bufferSize);
+	buffer = cocos2d::FileUtils::getInstance()->getStringFromFile(fullPath);
 
-	if (!buffer)
+	if (buffer.empty())
 	{
 		Log::Instance().writeWarning("Failed to get file data: " + fullPath);
 		return false;
@@ -28,7 +27,7 @@ bool GameInfo::ParseXml(const std::string &filename)
 
 	pugi::xml_document gameInfo;
 
-	if (gameInfo.load_buffer(buffer, bufferSize))
+	if (gameInfo.load_buffer((const void *)buffer.c_str(), buffer.size()))
 	{
 		pugi::xml_node root = gameInfo.first_child();
 		pugi::xml_node node = root.first_child();

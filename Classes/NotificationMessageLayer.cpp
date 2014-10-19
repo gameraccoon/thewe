@@ -23,9 +23,6 @@ bool NotificationMessageLayer::init(void)
 	_messagesMargin = Vector2(5.0f, 5.0f);
 	_messagesPosition = Vector2(origin + screen - _messagesMargin);
 
-	setTouchEnabled(true);
-    setKeypadEnabled(true);
-
 	scheduleUpdate();
 
 	return true;

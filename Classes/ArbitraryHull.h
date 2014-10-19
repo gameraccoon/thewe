@@ -13,8 +13,6 @@ public:
 
 	void PushPoint(const Vector2 &point);
 	void PopPoint(void);
-	void Draw(const Color &color) const;
-	void Draw(void) const;
 	void Clear(void);
 	
 	int GetPointsNum(void) const;

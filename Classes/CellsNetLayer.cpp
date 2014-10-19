@@ -37,9 +37,6 @@ bool CellsNetLayer::init(void)
 	menu->setPosition(0.0f, 0.0f);
 	addChild(menu);
 
-	setKeyboardEnabled(true);
-	setTouchEnabled(true);
-
 	scheduleUpdate();
 
 	_isInMooving = false;
