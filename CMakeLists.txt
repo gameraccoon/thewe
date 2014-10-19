@@ -91,6 +91,8 @@ set(GAME_SRC
 	Classes/Region.cpp
 	Classes/SessionEndScreen.cpp
 	Classes/SplashScreenScene.cpp
+	Classes/SqliteConnection.cpp
+	Classes/SqliteDataReader.cpp
 	Classes/Task.cpp
 	Classes/TaskManager.cpp
 	Classes/Town.cpp

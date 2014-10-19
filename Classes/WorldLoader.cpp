@@ -14,13 +14,36 @@
 #include "GameInfo.h"
 
 #include <string>
+#include "SqliteDataReader.h"
+#include "SqliteConnection.h"
+
+struct WorldLoaderImpl
+{
+public:
+	WorldLoaderImpl(const std::string& filePath)
+		:database(filePath)
+	{
+	}
+
+public:
+	SqliteConnection database;
+};
 
 WorldLoader::WorldLoader()
 {
+	std::string dbPath = cocos2d::FileUtils::sharedFileUtils()->getWritablePath();
+	dbPath.append("userdata.db");
+	_impl = new WorldLoaderImpl(dbPath);
+
+	if (!_impl->database.IsTableExists("UserData"))
+	{
+		_impl->database.execSql("create table UserData (tutorial_state varchar(255));");
+	}
 }
 
 WorldLoader::~WorldLoader()
 {
+	delete _impl;
 }
 
 WorldLoader& WorldLoader::Instance()
@@ -41,7 +64,7 @@ static void LoadCellsRecursively(pugi::xml_node root, pugi::xml_node parent_node
 	while (child_id_node)
 	{
 		int child_id = child_id_node.attribute("id").as_int();
-		
+
 		pugi::xml_node child = root.find_child_by_attribute("id", cocos2d::StringUtils::format("%d", child_id).c_str());
 
 		Cell::Info info;
@@ -98,7 +121,7 @@ static void LoadInvestigator(Investigator::BranchBundle &bundle, pugi::xml_node 
 		branch.timeDuration = Utils::StringToTime(bundleNode.attribute("timeDuration").as_string());
 		branch.progressPercentage = 0.0f;
 		LoadInvestigator(branch.childBrunches, bundleNode, cast);
-		
+
 		bundle.push_back(branch);
 		bundleNode = bundleNode.next_sibling();
 	}
@@ -389,10 +412,15 @@ bool WorldLoader::LoadGameState(void)
 			}
 		}
 
-		if (player_info)
+
+
+		// loading the tutorial state
 		{
-			pugi::xml_attribute tutorialState = player_info.attribute("tutorial_state");
-			World::Instance().SetTutorialState(tutorialState.as_string());
+			SqliteDataReader::Ptr reader = _impl->database.execQuery("select * from UserData limit 1");
+			if (reader->next())
+			{
+				World::Instance().SetTutorialState(reader->getValueByName("tutorial_state")->asString());
+			}
 		}
 
 		_state = State::Ready;
@@ -430,7 +458,7 @@ bool WorldLoader::SaveGameState(void)
 
 	pugi::xml_document doc;
 	pugi::xml_node root = doc.append_child("Save");
-	
+
 	pugi::xml_node player_info = root.append_child("PlayerInfo");
 	pugi::xml_node cells_root = root.append_child("CellsNetwork");
 	pugi::xml_node inves_root = root.append_child("Investigators");
@@ -440,7 +468,7 @@ bool WorldLoader::SaveGameState(void)
 	{
 		const Cell *cell = (*it).get();
 		const Cell::Info info = (*it)->GetInfo();
-	
+
 		int parent_id = info.parent != nullptr ? cellsIndicesCast.find(info.parent)->second : -1;
 
 		pugi::xml_node cell_node = cells_root.append_child("Cell");
@@ -490,11 +518,15 @@ bool WorldLoader::SaveGameState(void)
 		pugi::xml_node investigatorNode = inves_root.append_child("Investigator");
 		int investigation_root_cell = cellsIndicesCast.find(investigator->GetInvestigationRoot().get())->second;
 		investigatorNode.append_attribute("investigation_root_cell").set_value(investigation_root_cell);
-		
+
 		SaveInvestigator(investigator->GetRootBranchBundle(), investigatorNode, cellsIndicesCast, true);
 	}
 
-	player_info.append_attribute("tutorial_state").set_value(World::Instance().GetTutorialState().c_str());
+	// saving the tutorial state
+	_impl->database.execSql("begin;"
+		"delete from UserData;"
+		"insert into UserData (tutorial_state) values ('" + World::Instance().GetTutorialState() +"');"
+		"commit;");
 
 	_state = State::Ready;
 	return doc.save_file(Utils::GetDocumentsPath().append("save.sav").c_str());
