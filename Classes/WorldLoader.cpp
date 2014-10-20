@@ -528,6 +528,7 @@ bool WorldLoader::SaveGameState(void)
 	_impl->database.execSql("COMMIT;");
 
 	_state = State::Ready;
+	return false;
 }
 
 void WorldLoader::RequestToSave()

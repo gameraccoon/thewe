@@ -3,10 +3,11 @@
 
 #include <string>
 
-#include <sqlite3.h>
-
 #include "SqlDataReader.h"
 #include "DbConnection.h"
+
+struct sqlite3_stmt;
+struct sqlite3;
 
 class SqliteValue : public DbValue
 {

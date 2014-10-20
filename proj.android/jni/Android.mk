@@ -46,6 +46,8 @@ LOCAL_SRC_FILES := hellocpp/main.cpp \
 				   	../../Classes/Region.cpp \
 				   	../../Classes/SessionEndScreen.cpp \
 				   	../../Classes/SplashScreenScene.cpp \
+				   	../../Classes/SqliteConnection.cpp \
+				   	../../Classes/SqliteDataReader.cpp \
 				   	../../Classes/Task.cpp \
 				   	../../Classes/TaskManager.cpp \
 				   	../../Classes/Town.cpp \
@@ -59,6 +61,7 @@ LOCAL_SRC_FILES := hellocpp/main.cpp \
 				   	../../Classes/World.cpp \
 				   	../../Classes/WorldLoader.cpp \
 				   	../../Classes/WorldMapLayer.cpp \
+				   	\
                   	../../dependencies/pugixml-1.4/pugixml.cpp \
                   	\
                   	../../dependencies/luabind-0.9.1/src/class.cpp \
@@ -108,7 +111,9 @@ LOCAL_SRC_FILES := hellocpp/main.cpp \
 					../../dependencies/lua-5.1.5/lundump.c \
 					../../dependencies/lua-5.1.5/lvm.c \
 					../../dependencies/lua-5.1.5/lzio.c \
-					../../dependencies/lua-5.1.5/print.c
+					../../dependencies/lua-5.1.5/print.c \
+					\
+					../../dependencies/sqlite3/sqlite3.c
                    
 
 LOCAL_C_INCLUDES := $(LOCAL_PATH)/../../Classes \
@@ -116,6 +121,7 @@ LOCAL_C_INCLUDES := $(LOCAL_PATH)/../../Classes \
 					$(LOCAL_PATH)/../../dependencies/lua-5.1.5 \
 					$(LOCAL_PATH)/../../dependencies/luabind-0.9.1 \
 					$(LOCAL_PATH)/../../dependencies/pugixml-1.4 \
+					$(LOCAL_PATH)/../../dependencies/sqlite3 \
 					$(LOCAL_PATH)/../../cocos2d/extensions
 
 LOCAL_WHOLE_STATIC_LIBRARIES := cocos2dx_static

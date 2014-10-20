@@ -3,6 +3,7 @@
 #include "Log.h"
 
 #include <sys/stat.h>
+#include <sqlite3.h>
 
 #include "SqliteDataReader.h"
 

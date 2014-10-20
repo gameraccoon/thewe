@@ -1,5 +1,7 @@
 #include "SqliteDataReader.h"
 
+#include <sqlite3.h>
+
 #include "Log.h"
 
 SqliteValue::SqliteValue(sqlite3_stmt* ppStmt, int columnIndex)
