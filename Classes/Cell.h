@@ -17,6 +17,11 @@ public:
 		READY
 	};
 
+	enum Specialization
+	{
+		NORMAL
+	};
+
 	struct Info
 	{
 		Cell *parent;
@@ -24,13 +29,21 @@ public:
 		Vector2 location;
 		State state;
 
-		float morale;
-		float contentment;
-		Utils::GameTime constructionBegin;
-		Utils::GameTime constructionDuration;
-		
 		int cash;
 		int membersCount;
+		int ratsCount;
+		int techUnitsCount;
+		int experience;
+		Specialization specialization;
+		float morale;
+		float devotion;
+		float fame;
+		float townInfluence;
+		float townHeartPounding;
+		float townWelfare;
+
+		Utils::GameTime constructionBegin;
+		Utils::GameTime constructionDuration;
 	};
 
 	typedef std::shared_ptr<Cell> Ptr;
@@ -87,13 +100,6 @@ private:
 
 	/** Set parent for the cell */
 	void _SetParent(Cell *cell);
-
-	/** Recalculate cash */
-	void _UpdateCash(float deltatime);
-	/** Recalculate morale value */
-	void _UpdateMorale(float deltatime);
-	/** Recalculate contentement level */
-	void _UpdateContentment(float deltatime);
 
 	/** Check all values and write warnings to the log */
 	void _CheckValues() const;

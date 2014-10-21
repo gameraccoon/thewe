@@ -150,14 +150,14 @@ void CellInfoMenu::UpdateInfoBy(Cell::Ptr cell)
 	
 	std::string strCashInfo = cocos2d::StringUtils::format("Cash: %d $", info.cash);
 	std::string strMembersInfo = cocos2d::StringUtils::format("Members: %d", info.membersCount); 
-	std::string strContentmentInfo = cocos2d::StringUtils::format("Contentment: %.1f %%", info.contentment);
+	std::string strDevotion = cocos2d::StringUtils::format("Devotion: %.1f %%", info.devotion);
 	std::string strMoraleInfo = cocos2d::StringUtils::format("Morale: %.1f %%", info.morale);
 	std::string strChildrensInfo = cocos2d::StringUtils::format("Childrens: %s",
 	cocos2d::StringUtils::toString<int>(cell->GetChildren().size()).c_str());
 
 	_labelCachInfo->setString(strCashInfo);
 	_labelMembersInfo->setString(strMembersInfo);
-	_labelContentmentInfo->setString(strContentmentInfo);
+	_labelContentmentInfo->setString(strDevotion);
 	_labelMoraleInfo->setString(strMoraleInfo);
 	_labelChildrensInfo->setString(strChildrensInfo);
 }

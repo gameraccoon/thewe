@@ -78,18 +78,6 @@ void Cell::UpdateToTime(Utils::GameTime time)
 	_CheckValues();
 }
 
-void Cell::_UpdateCash(float deltalime)
-{
-}
-
-void Cell::_UpdateMorale(float deltatime)
-{
-}
-
-void Cell::_UpdateContentment(float deltatime)
-{
-}
-
 void Cell::AddCurrentTask(Task::WeakPtr currentTask)
 {
 	_currentTask = currentTask;
@@ -121,20 +109,55 @@ void Cell::_CheckValues() const
 	{
 		Log::Instance().writeWarning("Negative cash value");
 	}
-	
-	if (_info.contentment < 0.0f || 1.0f < _info.contentment)
-	{
-		Log::Instance().writeWarning("Wrong value of the containment");
-	}
 
 	if (_info.membersCount <= 0)
 	{
 		Log::Instance().writeWarning("Wrong members count");
 	}
 
+	if (_info.techUnitsCount < 0)
+	{
+		Log::Instance().writeWarning("Wrong techUnitsCount value");
+	}
+
+	if (_info.ratsCount < 0)
+	{
+		Log::Instance().writeWarning("Wrong ratsCount value");
+	}
+
+	if (_info.experience < 0)
+	{
+		Log::Instance().writeWarning("Wrong experience value");
+	}
+
 	if (_info.morale < 0.0f || 1.0f < _info.morale)
 	{
 		Log::Instance().writeWarning("Wrong morale value");
+	}
+	
+	if (_info.devotion < 0.0f || 1.0f < _info.devotion)
+	{
+		Log::Instance().writeWarning("Wrong devotion value");
+	}
+
+	if (_info.fame < 0.0f || 1.0f < _info.fame)
+	{
+		Log::Instance().writeWarning("Wrong fame value");
+	}
+
+	if (_info.townHeartPounding < 0.0f || 1.0f < _info.townHeartPounding)
+	{
+		Log::Instance().writeWarning("Wrong townHeartPounding value");
+	}
+
+	if (_info.townInfluence < 0.0f || 1.0f < _info.townInfluence)
+	{
+		Log::Instance().writeWarning("Wrong townInfluence value");
+	}
+
+	if (_info.townWelfare < 0.0f || 1.0f < _info.townWelfare)
+	{
+		Log::Instance().writeWarning("Wrong townWelfare value");
 	}
 
 	if (_info.town.expired())
