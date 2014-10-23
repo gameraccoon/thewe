@@ -8,6 +8,19 @@ CellInfoMenu::CellInfoMenu(Cell::WeakPtr cell, CellMenuSelector *selector)
 	init();
 }
 
+cocos2d::Label *CreateTTFLabel(const std::string text,
+							Vector2 position,
+							cocos2d::Node *parent,
+							cocos2d::TextHAlignment aligment = cocos2d::TextHAlignment::LEFT,
+							Vector2 anchorPoint = cocos2d::Vec2(0.0f, 0.0f))
+{
+	cocos2d::Label *label = cocos2d::Label::createWithBMFont("arial-26-en-ru.fnt", text, aligment);
+	label->setAnchorPoint(anchorPoint);
+	label->setPosition(position);
+	parent->addChild(label, 1);
+	return label;
+}
+
 bool CellInfoMenu::init(void)
 {
 	if (!cocos2d::Layer::init())
@@ -49,33 +62,23 @@ bool CellInfoMenu::init(void)
 	float info_x = center.x - background->getContentSize().width  / 2.0f + 10.0f;
 	float info_y = center.y + background->getContentSize().height / 2.0f - 70.0f;
 
-	_labelCachInfo = cocos2d::Label::createWithBMFont("arial-26-en-ru.fnt", "", cocos2d::TextHAlignment::LEFT);
-	_labelCachInfo->setAnchorPoint(cocos2d::Vec2(0.0f, 0.0f));
-	_labelCachInfo->setPosition(info_x, info_y);
+	_labelCashInfo = CreateTTFLabel("", Vector2(info_x, info_y), this);
 	
 	info_y -= 30.0f;
 	
-	_labelMembersInfo = cocos2d::Label::createWithBMFont("arial-26-en-ru.fnt", "", cocos2d::TextHAlignment::LEFT);
-	_labelMembersInfo->setAnchorPoint(cocos2d::Vec2(0.0f, 0.0f));
-	_labelMembersInfo->setPosition(info_x, info_y);
+	_labelMembersInfo = CreateTTFLabel("", Vector2(info_x, info_y), this);
 		
 	info_y -= 30.0f;
 	
-	_labelContentmentInfo = cocos2d::Label::createWithBMFont("arial-26-en-ru.fnt", "", cocos2d::TextHAlignment::LEFT);
-	_labelContentmentInfo->setAnchorPoint(cocos2d::Vec2(0.0f, 0.0f));
-	_labelContentmentInfo->setPosition(info_x, info_y);
+	_labelContentmentInfo = CreateTTFLabel("", Vector2(info_x, info_y), this);
 
 	info_y -= 30.0f;
 	
-	_labelMoraleInfo = cocos2d::Label::createWithBMFont("arial-26-en-ru.fnt", "", cocos2d::TextHAlignment::LEFT);
-	_labelMoraleInfo->setAnchorPoint(cocos2d::Vec2(0.0f, 0.0f));
-	_labelMoraleInfo->setPosition(info_x, info_y);
+	_labelMoraleInfo = CreateTTFLabel("", Vector2(info_x, info_y), this);
 
 	info_y -= 30.0f;
 	
-	_labelChildrensInfo = cocos2d::Label::createWithBMFont("arial-26-en-ru.fnt", "", cocos2d::TextHAlignment::LEFT);
-	_labelChildrensInfo->setAnchorPoint(cocos2d::Vec2(0.0f, 0.0f));
-	_labelChildrensInfo->setPosition(info_x, info_y);
+	_labelChildrensInfo = CreateTTFLabel("", Vector2(info_x, info_y), this);
 
 	Cell::Ptr cell = _cell.lock();
 	_cellCurrentTask = cell->getCurrentTask().lock();
@@ -116,11 +119,6 @@ bool CellInfoMenu::init(void)
 	addChild(background, 0);
 	addChild(menu, 1);
 	addChild(labelTitle, 1);
-	addChild(_labelCachInfo, 1);
-	addChild(_labelMembersInfo, 1);
-	addChild(_labelContentmentInfo, 1);
-	addChild(_labelMoraleInfo, 1);
-	addChild(_labelChildrensInfo, 1);
 
 	return true;
 }
@@ -149,16 +147,19 @@ void CellInfoMenu::UpdateInfoBy(Cell::Ptr cell)
 	Cell::Info info = cell->GetInfo();
 	
 	std::string strCashInfo = cocos2d::StringUtils::format("Cash: %d $", info.cash);
-	std::string strMembersInfo = cocos2d::StringUtils::format("Members: %d", info.membersCount); 
+	_labelCashInfo->setString(strCashInfo);
+
+	std::string strMembersInfo = cocos2d::StringUtils::format("Members: %d", info.membersCount);
+	_labelMembersInfo->setString(strMembersInfo);
+
 	std::string strDevotion = cocos2d::StringUtils::format("Devotion: %.1f %%", info.devotion);
+	_labelContentmentInfo->setString(strDevotion);
+
 	std::string strMoraleInfo = cocos2d::StringUtils::format("Morale: %.1f %%", info.morale);
+	_labelMoraleInfo->setString(strMoraleInfo);
+
 	std::string strChildrensInfo = cocos2d::StringUtils::format("Childrens: %s",
 	cocos2d::StringUtils::toString<int>(cell->GetChildren().size()).c_str());
-
-	_labelCachInfo->setString(strCashInfo);
-	_labelMembersInfo->setString(strMembersInfo);
-	_labelContentmentInfo->setString(strDevotion);
-	_labelMoraleInfo->setString(strMoraleInfo);
 	_labelChildrensInfo->setString(strChildrensInfo);
 }
 

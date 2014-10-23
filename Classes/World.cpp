@@ -355,7 +355,31 @@ void World::SetTutorialState(const std::string& state)
 
 void World::RunTutorialFunction(const std::string& function)
 {
-	luabind::call_function<void>(World::Instance().GetLuaInst()->GetLuaState()
+	luabind::call_function<void>(_luaScript->GetLuaState()
 		, std::string("RunTutorial_" + function).c_str()
+		, 0);
+}
+
+int World::GetExperienceForLevel(int level) const
+{
+	return luabind::call_function<int>(_luaScript->GetLuaState()
+		, std::string("ExperienceForLevel").c_str()
+		, level
+		, 0);
+}
+
+int World::GetLevelFromExperience(int experience) const
+{
+	return luabind::call_function<int>(_luaScript->GetLuaState()
+		, std::string("LevelFromExperience").c_str()
+		, experience
+		, 0);
+}
+
+float World::GetCellPursuedLevel(const Cell* cell) const
+{
+	return luabind::call_function<float>(_luaScript->GetLuaState()
+		, std::string("CalcCellPursuedLevel").c_str()
+		, cell
 		, 0);
 }

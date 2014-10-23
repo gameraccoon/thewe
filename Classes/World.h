@@ -81,6 +81,10 @@ public:
 	void SetTutorialState(const std::string& state);
 	void RunTutorialFunction(const std::string& function);
 
+	// calculated parameters of cells
+	int GetExperienceForLevel(int level) const;
+	int GetLevelFromExperience(int experience) const;
+	float GetCellPursuedLevel(const Cell* cell) const;
 private:
 	void CalcWorldCapturingState();
 

@@ -21,7 +21,7 @@ private:
 private:
 	SquareProgressBar *_taskProgressBar;
 
-	cocos2d::Label *_labelCachInfo;
+	cocos2d::Label *_labelCashInfo;
 	cocos2d::Label *_labelMembersInfo;
 	cocos2d::Label *_labelContentmentInfo;
 	cocos2d::Label *_labelMoraleInfo;
