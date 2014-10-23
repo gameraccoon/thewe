@@ -66,6 +66,7 @@ bool CellInfoMenu::init(void)
 
 	float close_x = background->getContentSize().width  / 2 - closeButton->getContentSize().width  + 5.0f;
 	float close_y = background->getContentSize().height / 2 - closeButton->getContentSize().height + 5.0f;
+	float textPadding = 27.0f;
 	closeButton->setPosition(close_x, close_y);
 
 	float title_x = center.x;
@@ -73,37 +74,43 @@ bool CellInfoMenu::init(void)
 	labelTitle->setPosition(title_x, title_y);
 	labelTitle->setColor(cocos2d::Color3B(255, 255, 255));
 	
-	float info_x = center.x - background->getContentSize().width  / 2.0f + 10.0f;
-	float info_y = center.y + background->getContentSize().height / 2.0f - 70.0f;
+	float info_x = center.x - background->getContentSize().width  / 2.0f + textPadding;
+	float info_y = center.y + background->getContentSize().height / 2.0f - 75.0f;
 
 	_levelProgressBar = CreateProgressBar(this, Vector2(center.x - 150.0f, info_y - 1.0f),
 										  Vector2(300.0f, 30.0f), Color(0.0f, 0.5f, 0.0f, 1.0f),
 										  0.0f);
 	_labelLevelInfo = CreateTTFLabel(this, "", Vector2(center.x, info_y), Vector2(0.5f, 0.0f));
 
-	info_y -= 40.0f;
-	_labelCashInfo = CreateTTFLabel(this, "", Vector2(info_x, info_y));
-
-	info_y -= 30.0f;
+	info_y -= 45.0f;
 	_labelMembersInfo = CreateTTFLabel(this, "", Vector2(info_x, info_y));
+	_labelCashInfo = CreateTTFLabel(this, "",
+									Vector2(info_x + background->getContentSize().width - textPadding * 2, info_y),
+									Vector2(1.0f, 0.0f));
 
-	info_y -= 30.0f;
-	CreateTTFLabel(this, "Morale", Vector2(info_x, info_y));
+	info_y -= 37.0f;
+	_labelPursuedLevelInfo = CreateTTFLabel(this, "", Vector2(center.x, info_y), Vector2(0.5f, 0.0f));
+
+	info_y -= 40.0f;
+	CreateTTFLabel(this, "Morale", Vector2(info_x + 170.0f, info_y), Vector2(1.0f, 0.0f));
 	_moraleProgressBar = CreateProgressBar(this, Vector2(info_x + 180.0f, info_y + 4.0f),
 										  Vector2(200.0f, 15.0f), Color(0.0f, 0.5f, 0.0f, 1.0f),
 										  0.0f);
+	_moraleProgressBar->SetBorderColor(Color(0.5f, 0.5f, 0.5f, 1.0f));
 
 	info_y -= 30.0f;
-	CreateTTFLabel(this, "Devotion", Vector2(info_x, info_y));
+	CreateTTFLabel(this, "Devotion", Vector2(info_x + 170.0f, info_y), Vector2(1.0f, 0.0f));
 	_devotionProgressBar = CreateProgressBar(this, Vector2(info_x + 180.0f, info_y + 4.0f),
 										  Vector2(200.0f, 15.0f), Color(0.0f, 0.5f, 0.0f, 1.0f),
 										  0.0f);
+	_devotionProgressBar->SetBorderColor(Color(0.5f, 0.5f, 0.5f, 1.0f));
 
 	info_y -= 30.0f;
-	CreateTTFLabel(this, "Town influence", Vector2(info_x, info_y));
+	CreateTTFLabel(this, "Town influence", Vector2(info_x + 170.0f, info_y), Vector2(1.0f, 0.0f));
 	_townInfluenceProgressBar = CreateProgressBar(this, Vector2(info_x + 180.0f, info_y + 4.0f),
 										  Vector2(200.0f, 15.0f), Color(0.0f, 0.5f, 0.0f, 1.0f),
 										  0.0f);
+	_townInfluenceProgressBar->SetBorderColor(Color(0.5f, 0.5f, 0.5f, 1.0f));
 
 	Cell::Ptr cell = _cell.lock();
 	_cellCurrentTask = cell->getCurrentTask().lock();
@@ -168,7 +175,7 @@ void CellInfoMenu::UpdateInfoBy(Cell::Ptr cell)
 	Cell::Info info = cell->GetInfo();
 
 	int level = World::Instance().GetLevelFromExperience(info.experience);
-	std::string strLevelInfo = cocos2d::StringUtils::format("Level: %d", level);
+	std::string strLevelInfo = cocos2d::StringUtils::format("Level %d", level);
 	_labelLevelInfo->setString(strLevelInfo);
 
 	int currentLevelExp = World::Instance().GetExperienceForLevel(level);
@@ -182,6 +189,20 @@ void CellInfoMenu::UpdateInfoBy(Cell::Ptr cell)
 
 	std::string strMembersInfo = cocos2d::StringUtils::format("Members: %d", info.membersCount);
 	_labelMembersInfo->setString(strMembersInfo);
+
+	float pursuedLevel = World::Instance().GetCellPursuedLevel(cell.get());
+	if (pursuedLevel < 33.0f)
+	{
+		_labelPursuedLevelInfo->setString("Low pursued level");
+	}
+	else if (pursuedLevel < 66.0f)
+	{
+		_labelPursuedLevelInfo->setString("Middle pursued level");
+	}
+	else
+	{
+		_labelPursuedLevelInfo->setString("High pursued level");
+	}
 
 	_moraleProgressBar->SetProgressPercentage(info.morale * 100.0f);
 	_devotionProgressBar->SetProgressPercentage(info.devotion * 100.0f);

@@ -56,6 +56,16 @@ void SquareProgressBar::SetProgressPercentage(float progress)
 	UpdateBarSize(_maxSizeX * _progress / 100.0f, _maxSizeY);
 }
 
+void SquareProgressBar::SetProgressColor(const Color &color)
+{
+	_progressDraw->setColor(color);
+}
+
+void SquareProgressBar::SetBorderColor(const Color &color)
+{
+	_progressBorder->setColor(color);
+}
+
 float SquareProgressBar::GetMaxWidth(void) const
 {
 	return _maxSizeX;

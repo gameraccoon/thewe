@@ -23,7 +23,7 @@ end
 
 -- вычисляем уровень ячейки из опыта
 function LevelFromExperience(experience)
-	local nextLevelExp = -1
+	local nextLevelExp
 	local nextLevel = 1
 
 	repeat

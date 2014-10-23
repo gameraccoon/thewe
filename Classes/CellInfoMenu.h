@@ -28,6 +28,7 @@ private:
 	cocos2d::Label *_labelLevelInfo;
 	cocos2d::Label *_labelCashInfo;
 	cocos2d::Label *_labelMembersInfo;
+	cocos2d::Label *_labelPursuedLevelInfo;
 	cocos2d::Label *_currentTaskLabel;
 
 	Cell::WeakPtr _cell;

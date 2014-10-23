@@ -84,7 +84,7 @@ public:
 	// calculated parameters of cells
 	int GetExperienceForLevel(int level) const;
 	int GetLevelFromExperience(int experience) const;
-	float GetCellPursuedLevel(const Cell* cell) const;
+	float GetCellPursuedLevel(Cell* cell) const;
 private:
 	void CalcWorldCapturingState();
 

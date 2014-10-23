@@ -376,7 +376,7 @@ int World::GetLevelFromExperience(int experience) const
 		, 0);
 }
 
-float World::GetCellPursuedLevel(const Cell* cell) const
+float World::GetCellPursuedLevel(Cell* cell) const
 {
 	return luabind::call_function<float>(_luaScript->GetLuaState()
 		, std::string("CalcCellPursuedLevel").c_str()

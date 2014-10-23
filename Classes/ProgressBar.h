@@ -2,6 +2,7 @@
 #define PROGRESS_BAR_H
 
 #include <cocos2d.h>
+#include "Color.h"
 
 class SquareProgressBar : public cocos2d::Node
 {
@@ -11,6 +12,9 @@ public:
 	virtual bool init(void) override;
 
 	void SetProgressPercentage(float progress);
+
+	void SetProgressColor(const Color &color);
+	void SetBorderColor(const Color &color);
 
 	float GetMaxWidth(void) const;
 	float GetMaxHeight(void) const;
