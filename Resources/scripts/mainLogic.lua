@@ -23,12 +23,14 @@ end
 
 -- вычисляем уровень ячейки из опыта
 function LevelFromExperience(experience)
-	local nextLevelExp = 0
-	local nextLevel = 0
-	while experience < nextLevelExp do
+	local nextLevelExp = -1
+	local nextLevel = 1
+
+	repeat
 		nextLevel = nextLevel + 1
 		nextLevelExp = ExperienceForLevel(nextLevel)
-	end
+	until (experience < nextLevelExp)
+
 	return nextLevel - 1
 end
 
@@ -40,7 +42,7 @@ function ExperienceForLevel(level)
 	-- если значение не нашли
 	if expValue == nil then
 		-- вычисляем значение
-		expValue = math.pow(math.exp(level), 0.3)
+		expValue = math.floor(math.exp(level)) - 2
 		-- кешируем
 		CashedTableOfLevels[level] = expValue
 	end
