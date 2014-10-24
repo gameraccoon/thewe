@@ -52,8 +52,15 @@ static void LoadCellsRecursively(pugi::xml_node root, pugi::xml_node parent_node
 		info.location.y = child.attribute("location_y").as_float();
 		info.cash = child.attribute("cash").as_float();
 		info.morale = child.attribute("morale").as_float();
-		info.contentment = child.attribute("contentment").as_float();
-		info.membersCount = child.attribute("members_num").as_int();
+		info.devotion = child.attribute("devotion").as_float();
+		info.membersCount = child.attribute("members_count").as_int();
+		info.ratsCount = child.attribute("rats_count").as_int();
+		info.experience = child.attribute("experience").as_int();
+		info.fame = child.attribute("fame").as_float();
+		info.techUnitsCount = child.attribute("tech_units_count").as_int();
+		info.townHeartPounding = child.attribute("town_heart_pounding").as_int();
+		info.townInfluence = child.attribute("town_influence").as_int();
+		info.townWelfare = child.attribute("town_welfare").as_int();
 		info.constructionBegin = Utils::GetGameTime();
 		info.constructionDuration = GameInfo::Instance().GetFloat("CELL_CONSTRUCTION_TIME");
 
@@ -162,14 +169,20 @@ static bool LoadTasksInfo()
 	{
 		Task::Info info;
 
-		info.id = task_node.attribute("Id").as_string();
-		info.title = task_node.attribute("Title").as_string();
-		info.severity = task_node.attribute("Severity").as_float();
-		info.duration = Utils::StringToTime(task_node.attribute("Duration").as_string());
-		info.moralLevel = task_node.attribute("MoralLevel").as_float();
-		info.successFn = task_node.attribute("SuccessFn").as_string();
-		info.failFn = task_node.attribute("FailFn").as_string();
-		info.abortFn = task_node.attribute("AbortFn").as_string();
+		info.id = task_node.attribute("id").as_string();
+		info.title = task_node.attribute("title").as_string();
+		info.fameImpact = task_node.attribute("fameImpact").as_float();
+		info.duration = Utils::StringToTime(task_node.attribute("duration").as_string());
+		info.moralLevel = task_node.attribute("moralLevel").as_float();
+		info.heartPoundingLevel = task_node.attribute("heartPoundingLevel").as_float();
+		info.level = task_node.attribute("level").as_int();
+		info.needCash = task_node.attribute("needCash").as_int();
+		info.needMembers = task_node.attribute("needMembers").as_int();
+		info.needTech = task_node.attribute("needTech").as_int();
+		info.politicalImpact = task_node.attribute("politicalImpact").as_float();
+		info.successFn = task_node.attribute("successFn").as_string();
+		info.failFn = task_node.attribute("failFn").as_string();
+		info.abortFn = task_node.attribute("abortFn").as_string();
 
 		infos.push_back(info);
 
@@ -337,8 +350,15 @@ bool WorldLoader::LoadGameState(void)
 			info.location.y = cell_root.attribute("location_y").as_float();
 			info.cash = cell_root.attribute("cash").as_float();
 			info.morale = cell_root.attribute("morale").as_float();
-			info.contentment = cell_root.attribute("contentment").as_float();
-			info.membersCount = cell_root.attribute("members_num").as_int();
+			info.devotion = cell_root.attribute("devotion").as_float();
+			info.membersCount = cell_root.attribute("members_count").as_int();
+			info.ratsCount = cell_root.attribute("rats_count").as_int();
+			info.experience = cell_root.attribute("experience").as_int();
+			info.fame = cell_root.attribute("fame").as_float();
+			info.techUnitsCount = cell_root.attribute("tech_units_count").as_int();
+			info.townHeartPounding = cell_root.attribute("town_heart_pounding").as_int();
+			info.townInfluence = cell_root.attribute("town_influence").as_int();
+			info.townWelfare = cell_root.attribute("town_welfare").as_int();
 			info.constructionBegin = Utils::GetGameTime();
 			info.constructionDuration = GameInfo::Instance().GetFloat("CELL_CONSTRUCTION_TIME");
 
@@ -449,8 +469,15 @@ bool WorldLoader::SaveGameState(void)
 		cell_node.append_attribute("location_y").set_value(info.location.y);
 		cell_node.append_attribute("cash").set_value(info.cash);
 		cell_node.append_attribute("morale").set_value(info.morale);
-		cell_node.append_attribute("contentment").set_value(info.contentment);
-		cell_node.append_attribute("members_num").set_value(info.membersCount);
+		cell_node.append_attribute("devotion").set_value(info.devotion);
+		cell_node.append_attribute("members_count").set_value(info.membersCount);
+		cell_node.append_attribute("rats_count").set_value(info.ratsCount);
+		cell_node.append_attribute("experience").set_value(info.experience);
+		cell_node.append_attribute("fame").set_value(info.fame);
+		cell_node.append_attribute("tech_units_count").set_value(info.techUnitsCount);
+		cell_node.append_attribute("town_heart_pounding").set_value(info.townHeartPounding);
+		cell_node.append_attribute("town_influence").set_value(info.townInfluence);
+		cell_node.append_attribute("town_welfare").set_value(info.townWelfare);
 
 		if (!cell->GetChildren().empty())
 		{

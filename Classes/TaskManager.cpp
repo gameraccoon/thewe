@@ -156,7 +156,7 @@ void TaskManager::_CheckTask(const Task::Info& taskInfo) const
 {
 	if (taskInfo.id == "")
 	{
-		Log::Instance().writeWarning("Empty task Id");
+		Log::Instance().writeWarning("Empty task id");
 	}
 
 	if (taskInfo.successFn == "")
@@ -176,17 +176,47 @@ void TaskManager::_CheckTask(const Task::Info& taskInfo) const
 
 	if (taskInfo.moralLevel < 0.0f || 1.0f < taskInfo.moralLevel)
 	{
-		Log::Instance().writeWarning("Wrong moral level");
+		Log::Instance().writeWarning("Wrong task moral level");
 	}
 
-	if (taskInfo.severity < 0.0f || 1.0f < taskInfo.severity)
+	if (taskInfo.fameImpact < 0.0f || 1.0f < taskInfo.fameImpact)
 	{
-		Log::Instance().writeWarning("Wrong severity level");
+		Log::Instance().writeWarning("Wrong fameImpact level");
+	}
+
+	if (taskInfo.chanceToLooseMembers < 0.0f || 1.0f < taskInfo.chanceToLooseMembers)
+	{
+		Log::Instance().writeWarning("Wrong chanceToLooseMembers value");
+	}
+
+	if (taskInfo.heartPoundingLevel < 0.0f || 1.0f < taskInfo.heartPoundingLevel)
+	{
+		Log::Instance().writeWarning("Wrong heartPoundingLevel value");
 	}
 
 	if (taskInfo.duration < 0.0f)
 	{
-		Log::Instance().writeWarning("Negative duration");
+		Log::Instance().writeWarning("Negative task duration");
+	}
+
+	if (taskInfo.level < 0.0f)
+	{
+		Log::Instance().writeWarning("Negative task level");
+	}
+
+	if (taskInfo.needCash < 0)
+	{
+		Log::Instance().writeWarning("Negative needCash value");
+	}
+
+	if (taskInfo.needMembers < 0)
+	{
+		Log::Instance().writeWarning("Negative needMembers value");
+	}
+
+	if (taskInfo.needTech < 0)
+	{
+		Log::Instance().writeWarning("Negative needTech value");
 	}
 }
 

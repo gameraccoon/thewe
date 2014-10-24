@@ -20,12 +20,15 @@ private:
 
 private:
 	SquareProgressBar *_taskProgressBar;
+	SquareProgressBar *_levelProgressBar;
+	SquareProgressBar *_moraleProgressBar;
+	SquareProgressBar *_devotionProgressBar;
+	SquareProgressBar *_townInfluenceProgressBar;
 
-	cocos2d::Label *_labelCachInfo;
+	cocos2d::Label *_labelLevelInfo;
+	cocos2d::Label *_labelCashInfo;
 	cocos2d::Label *_labelMembersInfo;
-	cocos2d::Label *_labelContentmentInfo;
-	cocos2d::Label *_labelMoraleInfo;
-	cocos2d::Label *_labelChildrensInfo;
+	cocos2d::Label *_labelPursuedLevelInfo;
 	cocos2d::Label *_currentTaskLabel;
 
 	Cell::WeakPtr _cell;

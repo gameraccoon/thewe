@@ -27,9 +27,16 @@ void LuaInstance::BindClass<Cell::Info>()
 	luabind::module(_luaState) [
 	luabind::class_<Cell::Info>("CellInfo")
 		.def_readwrite("cash", &Cell::Info::cash)
-		.def_readwrite("contantement", &Cell::Info::contentment)
 		.def_readwrite("membersCount", &Cell::Info::membersCount)
+		.def_readwrite("ratsCount", &Cell::Info::ratsCount)
+		.def_readwrite("techUnitsCount", &Cell::Info::techUnitsCount)
+		.def_readwrite("devotion", &Cell::Info::devotion)
 		.def_readwrite("morale", &Cell::Info::morale)
+		.def_readwrite("experience", &Cell::Info::experience)
+		.def_readwrite("fame", &Cell::Info::fame)
+		.def_readwrite("townHeartPounding", &Cell::Info::townHeartPounding)
+		.def_readwrite("townInfluence", &Cell::Info::townInfluence)
+		.def_readwrite("townWelfare", &Cell::Info::townWelfare)
 	];
 }
 
@@ -72,8 +79,15 @@ void LuaInstance::BindClass<const Task::Info>()
 	luabind::class_<const Task::Info>("TaskInfo")
 		.def_readonly("id", &Task::Info::id)
 		.def_readonly("title", &Task::Info::title)
+		.def_readonly("chanceToLooseMembers", &Task::Info::chanceToLooseMembers)
+		.def_readonly("fameImpact", &Task::Info::fameImpact)
+		.def_readonly("heartPoundingLevel", &Task::Info::heartPoundingLevel)
+		.def_readonly("level", &Task::Info::level)
 		.def_readonly("moraleLevel", &Task::Info::moralLevel)
-		.def_readonly("severity", &Task::Info::severity)
+		.def_readonly("needCash", &Task::Info::needCash)
+		.def_readonly("needCash", &Task::Info::needMembers)
+		.def_readonly("needCash", &Task::Info::needTech)
+		.def_readonly("needCash", &Task::Info::politicalImpact)
 	];
 }
 

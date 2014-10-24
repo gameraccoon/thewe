@@ -520,8 +520,16 @@ void WorldMapLayer::_OnTownSelect(Town::WeakPtr town)
 			info.location = town.lock()->GetLocation();
 			info.cash = GameInfo::Instance().GetInt("CELL_STARTUP_MONEY");
 			info.morale = GameInfo::Instance().GetFloat("CELL_STARTUP_MORALE");
-			info.contentment = GameInfo::Instance().GetFloat("CELL_STARTUP_CONTENTMENT");
+			info.devotion = GameInfo::Instance().GetFloat("CELL_STARTUP_DEVOTION");
 			info.membersCount = GameInfo::Instance().GetInt("CELL_STARTUP_MEMBERS");
+			info.ratsCount = GameInfo::Instance().GetInt("CELL_STARTUP_RATS_COUNT");
+			info.techUnitsCount = GameInfo::Instance().GetInt("CELL_STARTUP_TECH_UNITS_COUNT");
+			info.experience = 0;
+			info.fame = 0.0f;
+			info.specialization = Cell::NORMAL;
+			info.townHeartPounding = GameInfo::Instance().GetFloat("CELL_STARTUP_TOWN_HEART_POUNDING");
+			info.townInfluence = GameInfo::Instance().GetFloat("CELL_STARTUP_TOWN_INFLUENCE");
+			info.townWelfare = GameInfo::Instance().GetFloat("CELL_STARTUP_TOWN_WELFARE");
 			info.constructionBegin = Utils::GetGameTime();
 			info.constructionDuration = GameInfo::Instance().GetFloat("CELL_CONSTRUCTION_TIME");
 			CreateCell(info, Cell::READY);
@@ -550,10 +558,16 @@ void WorldMapLayer::_OnTownSelect(Town::WeakPtr town)
 				info.location = town.lock()->GetLocation();
 				info.cash = GameInfo::Instance().GetInt("CELL_STARTUP_MONEY");
 				info.morale = GameInfo::Instance().GetFloat("CELL_STARTUP_MORALE");
-				info.contentment = GameInfo::Instance().GetFloat("CELL_STARTUP_CONTENTMENT");
+				info.devotion = GameInfo::Instance().GetFloat("CELL_STARTUP_DEVOTION");
 				info.membersCount = GameInfo::Instance().GetInt("CELL_STARTUP_MEMBERS");
-				info.constructionBegin = Utils::GetGameTime();
-				info.constructionDuration = GameInfo::Instance().GetFloat("CELL_CONSTRUCTION_TIME");
+				info.ratsCount = GameInfo::Instance().GetInt("CELL_STARTUP_RATS_COUNT");
+				info.techUnitsCount = GameInfo::Instance().GetInt("CELL_STARTUP_TECH_UNITS_COUNT");
+				info.experience = 0;
+				info.fame = 0.0f;
+				info.specialization = Cell::NORMAL;
+				info.townHeartPounding = GameInfo::Instance().GetFloat("CELL_STARTUP_TOWN_HEART_POUNDING");
+				info.townInfluence = GameInfo::Instance().GetFloat("CELL_STARTUP_TOWN_INFLUENCE");
+				info.townWelfare = GameInfo::Instance().GetFloat("CELL_STARTUP_TOWN_WELFARE");
 
 				info.parent->GetInfo().cash -= GameInfo::Instance().GetInt("CELL_SPINOFF_CASH_PRICE");
 				info.parent->GetInfo().membersCount -= GameInfo::Instance().GetInt("CELL_SPINOFF_MEMBERS_PRICE");

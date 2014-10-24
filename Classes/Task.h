@@ -27,11 +27,19 @@ public:
 		std::string id;
 		/** Title of the task */
 		std::string title;
-		/** Comlexity */
-		float severity;
 		/** Time needless to complete the task */
 		Utils::GameTime duration;
 		float moralLevel;
+		int level;
+
+		int needMembers;
+		int needCash;
+		int needTech;
+
+		float chanceToLooseMembers;
+		float politicalImpact;
+		float fameImpact;
+		float heartPoundingLevel;
 
 		/** The name of the Lua-function, that will be run on successful end of the task */
 		std::string successFn;

@@ -8,6 +8,33 @@ CellInfoMenu::CellInfoMenu(Cell::WeakPtr cell, CellMenuSelector *selector)
 	init();
 }
 
+cocos2d::Label *CreateTTFLabel(cocos2d::Node *parent,
+							   const std::string text,
+							   Vector2 position,
+							   Vector2 anchorPoint = cocos2d::Vec2(0.0f, 0.0f),
+							   cocos2d::TextHAlignment aligment = cocos2d::TextHAlignment::LEFT)
+{
+	cocos2d::Label *label = cocos2d::Label::createWithBMFont("arial-26-en-ru.fnt", text, aligment);
+	label->setAnchorPoint(anchorPoint);
+	label->setPosition(position);
+	parent->addChild(label, 1);
+	return label;
+}
+
+SquareProgressBar *CreateProgressBar(cocos2d::Node *parent,
+									 Vector2 position,
+									 Vector2 size,
+									 Color color,
+									 float progress)
+{
+	SquareProgressBar *progressBar = new SquareProgressBar(size.x, size.y, color);
+	progressBar->setPosition(position);
+	progressBar->autorelease();
+	progressBar->SetProgressPercentage(progress * 100.0f);
+	parent->addChild(progressBar, 1);
+	return progressBar;
+}
+
 bool CellInfoMenu::init(void)
 {
 	if (!cocos2d::Layer::init())
@@ -39,6 +66,7 @@ bool CellInfoMenu::init(void)
 
 	float close_x = background->getContentSize().width  / 2 - closeButton->getContentSize().width  + 5.0f;
 	float close_y = background->getContentSize().height / 2 - closeButton->getContentSize().height + 5.0f;
+	float textPadding = 27.0f;
 	closeButton->setPosition(close_x, close_y);
 
 	float title_x = center.x;
@@ -46,36 +74,43 @@ bool CellInfoMenu::init(void)
 	labelTitle->setPosition(title_x, title_y);
 	labelTitle->setColor(cocos2d::Color3B(255, 255, 255));
 	
-	float info_x = center.x - background->getContentSize().width  / 2.0f + 10.0f;
-	float info_y = center.y + background->getContentSize().height / 2.0f - 70.0f;
+	float info_x = center.x - background->getContentSize().width  / 2.0f + textPadding;
+	float info_y = center.y + background->getContentSize().height / 2.0f - 75.0f;
 
-	_labelCachInfo = cocos2d::Label::createWithBMFont("arial-26-en-ru.fnt", "", cocos2d::TextHAlignment::LEFT);
-	_labelCachInfo->setAnchorPoint(cocos2d::Vec2(0.0f, 0.0f));
-	_labelCachInfo->setPosition(info_x, info_y);
-	
-	info_y -= 30.0f;
-	
-	_labelMembersInfo = cocos2d::Label::createWithBMFont("arial-26-en-ru.fnt", "", cocos2d::TextHAlignment::LEFT);
-	_labelMembersInfo->setAnchorPoint(cocos2d::Vec2(0.0f, 0.0f));
-	_labelMembersInfo->setPosition(info_x, info_y);
-		
-	info_y -= 30.0f;
-	
-	_labelContentmentInfo = cocos2d::Label::createWithBMFont("arial-26-en-ru.fnt", "", cocos2d::TextHAlignment::LEFT);
-	_labelContentmentInfo->setAnchorPoint(cocos2d::Vec2(0.0f, 0.0f));
-	_labelContentmentInfo->setPosition(info_x, info_y);
+	_levelProgressBar = CreateProgressBar(this, Vector2(center.x - 150.0f, info_y - 2.0f),
+										  Vector2(300.0f, 30.0f), Color(0.0f, 0.5f, 0.0f, 1.0f),
+										  0.0f);
+	_labelLevelInfo = CreateTTFLabel(this, "", Vector2(center.x, info_y), Vector2(0.5f, 0.0f));
+
+	info_y -= 45.0f;
+	_labelMembersInfo = CreateTTFLabel(this, "", Vector2(info_x, info_y));
+	_labelCashInfo = CreateTTFLabel(this, "",
+									Vector2(info_x + background->getContentSize().width - textPadding * 2, info_y),
+									Vector2(1.0f, 0.0f));
+
+	info_y -= 37.0f;
+	_labelPursuedLevelInfo = CreateTTFLabel(this, "", Vector2(center.x, info_y), Vector2(0.5f, 0.0f));
+
+	info_y -= 40.0f;
+	CreateTTFLabel(this, "Morale", Vector2(info_x + 170.0f, info_y), Vector2(1.0f, 0.0f));
+	_moraleProgressBar = CreateProgressBar(this, Vector2(info_x + 180.0f, info_y + 4.0f),
+										  Vector2(200.0f, 15.0f), Color(0.0f, 0.5f, 0.0f, 1.0f),
+										  0.0f);
+	_moraleProgressBar->SetBorderColor(Color(0.5f, 0.5f, 0.5f, 1.0f));
 
 	info_y -= 30.0f;
-	
-	_labelMoraleInfo = cocos2d::Label::createWithBMFont("arial-26-en-ru.fnt", "", cocos2d::TextHAlignment::LEFT);
-	_labelMoraleInfo->setAnchorPoint(cocos2d::Vec2(0.0f, 0.0f));
-	_labelMoraleInfo->setPosition(info_x, info_y);
+	CreateTTFLabel(this, "Devotion", Vector2(info_x + 170.0f, info_y), Vector2(1.0f, 0.0f));
+	_devotionProgressBar = CreateProgressBar(this, Vector2(info_x + 180.0f, info_y + 4.0f),
+										  Vector2(200.0f, 15.0f), Color(0.0f, 0.5f, 0.0f, 1.0f),
+										  0.0f);
+	_devotionProgressBar->SetBorderColor(Color(0.5f, 0.5f, 0.5f, 1.0f));
 
 	info_y -= 30.0f;
-	
-	_labelChildrensInfo = cocos2d::Label::createWithBMFont("arial-26-en-ru.fnt", "", cocos2d::TextHAlignment::LEFT);
-	_labelChildrensInfo->setAnchorPoint(cocos2d::Vec2(0.0f, 0.0f));
-	_labelChildrensInfo->setPosition(info_x, info_y);
+	CreateTTFLabel(this, "Town influence", Vector2(info_x + 170.0f, info_y), Vector2(1.0f, 0.0f));
+	_townInfluenceProgressBar = CreateProgressBar(this, Vector2(info_x + 180.0f, info_y + 4.0f),
+										  Vector2(200.0f, 15.0f), Color(0.0f, 0.5f, 0.0f, 1.0f),
+										  0.0f);
+	_townInfluenceProgressBar->SetBorderColor(Color(0.5f, 0.5f, 0.5f, 1.0f));
 
 	Cell::Ptr cell = _cell.lock();
 	_cellCurrentTask = cell->getCurrentTask().lock();
@@ -91,16 +126,12 @@ bool CellInfoMenu::init(void)
 		Utils::GameTime time = Utils::GetGameTime();
 		float progress = _cellCurrentTask->CalculateProgress(time);
 
-		_taskProgressBar = new SquareProgressBar(w, 10.0f, cocos2d::Color4F(1.0f, 0.5f, 0, 1.0f));
-		_taskProgressBar->setPosition(x, y);
-		_taskProgressBar->autorelease();
-		_taskProgressBar->SetProgressPercentage(progress);
+		_taskProgressBar = CreateProgressBar(this, Vector2(x, y), Vector2(w, 10.0f), Color(1.0f, 0.5f, 0, 1.0f), progress);
 
 		std::string strTaskLabel = cocos2d::StringUtils::format("Current task: %s", _cellCurrentTask->GetInfo()->title.c_str());
 		_currentTaskLabel = cocos2d::Label::createWithTTF(ttfConfig, strTaskLabel, cocos2d::TextHAlignment::CENTER);
 		_currentTaskLabel->setPosition(center.x, y+25.0f);
 
-		addChild(_taskProgressBar, 1);
 		addChild(_currentTaskLabel, 1);
 	}
 
@@ -116,11 +147,6 @@ bool CellInfoMenu::init(void)
 	addChild(background, 0);
 	addChild(menu, 1);
 	addChild(labelTitle, 1);
-	addChild(_labelCachInfo, 1);
-	addChild(_labelMembersInfo, 1);
-	addChild(_labelContentmentInfo, 1);
-	addChild(_labelMoraleInfo, 1);
-	addChild(_labelChildrensInfo, 1);
 
 	return true;
 }
@@ -147,19 +173,40 @@ void CellInfoMenu::update(float dt)
 void CellInfoMenu::UpdateInfoBy(Cell::Ptr cell)
 {
 	Cell::Info info = cell->GetInfo();
-	
-	std::string strCashInfo = cocos2d::StringUtils::format("Cash: %d $", info.cash);
-	std::string strMembersInfo = cocos2d::StringUtils::format("Members: %d", info.membersCount); 
-	std::string strContentmentInfo = cocos2d::StringUtils::format("Contentment: %.1f %%", info.contentment);
-	std::string strMoraleInfo = cocos2d::StringUtils::format("Morale: %.1f %%", info.morale);
-	std::string strChildrensInfo = cocos2d::StringUtils::format("Childrens: %s",
-	cocos2d::StringUtils::toString<int>(cell->GetChildren().size()).c_str());
 
-	_labelCachInfo->setString(strCashInfo);
+	int level = World::Instance().GetLevelFromExperience(info.experience);
+	std::string strLevelInfo = cocos2d::StringUtils::format("Level %d", level);
+	_labelLevelInfo->setString(strLevelInfo);
+
+	int currentLevelExp = World::Instance().GetExperienceForLevel(level);
+	int expBetweenLevels = World::Instance().GetExperienceForLevel(level + 1) - currentLevelExp;
+	int earnedLevelExp = info.experience - currentLevelExp;
+	float levelProgress = 1.0f * earnedLevelExp / expBetweenLevels;
+	_levelProgressBar->SetProgressPercentage(levelProgress * 100.0f);
+
+	std::string strCashInfo = cocos2d::StringUtils::format("Cash: %d $", info.cash);
+	_labelCashInfo->setString(strCashInfo);
+
+	std::string strMembersInfo = cocos2d::StringUtils::format("Members: %d", info.membersCount);
 	_labelMembersInfo->setString(strMembersInfo);
-	_labelContentmentInfo->setString(strContentmentInfo);
-	_labelMoraleInfo->setString(strMoraleInfo);
-	_labelChildrensInfo->setString(strChildrensInfo);
+
+	float pursuedLevel = World::Instance().GetCellPursuedLevel(cell.get());
+	if (pursuedLevel < 33.0f)
+	{
+		_labelPursuedLevelInfo->setString("Low pursued level");
+	}
+	else if (pursuedLevel < 66.0f)
+	{
+		_labelPursuedLevelInfo->setString("Middle pursued level");
+	}
+	else
+	{
+		_labelPursuedLevelInfo->setString("High pursued level");
+	}
+
+	_moraleProgressBar->SetProgressPercentage(info.morale * 100.0f);
+	_devotionProgressBar->SetProgressPercentage(info.devotion * 100.0f);
+	_townInfluenceProgressBar->SetProgressPercentage(info.townInfluence * 100.0f);
 }
 
 void CellInfoMenu::_OnCloseCallback(cocos2d::Ref *sender)

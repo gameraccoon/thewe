@@ -41,9 +41,6 @@ public:
 		cocos2d::Label *labelMorale = cocos2d::Label::createWithBMFont("arial-26-en-ru.fnt", stringMorale, cocos2d::TextHAlignment::LEFT);
 		labelMorale->setPosition(-30.0f, -15.0f);
 
-		std::string stringDifficult = cocos2d::StringUtils::format("Severity: %.1f", _taskInfo->severity);
-		cocos2d::Label *labelSeverity = cocos2d::Label::createWithBMFont("arial-26-en-ru.fnt", stringDifficult, cocos2d::TextHAlignment::RIGHT);
-		labelSeverity->setPosition(130.0f, -15.0f);
 
 		setContentSize(size);
 		addChild(bkg, 0);
@@ -51,7 +48,6 @@ public:
 		addChild(labelStart, 2);
 		addChild(labelDesc, 1);
 		addChild(labelMorale, 1);
-		addChild(labelSeverity, 1);
 
 		return true;
 	}

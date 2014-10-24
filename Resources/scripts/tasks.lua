@@ -1,8 +1,7 @@
 -- Определяем, считать задание выполненным или провеленным
 function CheckTaskStatus(cellInfo, taskInfo)
-	local membersIsEnough = cellInfo.membersCount >= taskInfo.severity * 10.0
 	local moraleIsNorm = math.abs(cellInfo.morale - taskInfo.moraleLevel) < 0.5
-	return membersIsEnough and moraleIsNorm
+	return moraleIsNorm
 end
 
 -- определяем будет ли показываться задание для данной ячейки
@@ -56,13 +55,13 @@ function MissionSuccess_Test(cellInfo, taskInfo)
 	Log:log("Task "..taskInfo.id.." successfully finished!")
 
 	-- увеличивем преданность на 10% от текущего
-	cellInfo.contantement = cellInfo.contantement + (cellInfo.contantement * 0.1)
+	cellInfo.devotion = cellInfo.devotion + (cellInfo.devotion * 0.1)
 	cellInfo.cash = cellInfo.cash + 200
 	cellInfo.membersCount = cellInfo.membersCount + 1
 
 	-- проверяем на предельное значение
-	if cellInfo.contantement > 1.0 then
-		cellInfo.contantement = 1
+	if cellInfo.devotion > 1.0 then
+		cellInfo.devotion = 1
 	end
 
 	SayCompleted(taskInfo.title)
@@ -72,7 +71,7 @@ function MissionFail_Test(cellInfo, taskInfo)
 	Log:log("Task "..taskInfo.id.." failed.")
 
 	-- уменьшаем преданность на 10% от текущего
-	cellInfo.contantement = cellInfo.contantement - (cellInfo.contantement * 0.1)
+	cellInfo.devotion = cellInfo.devotion - (cellInfo.devotion * 0.1)
 
 	-- убираем одного члена ячейки, если их болльше 2
 	if cellInfo.membersCount > 2 then
@@ -86,7 +85,7 @@ function MissionAbort_Test(cellInfo, taskInfo)
 	Log:log("Task "..taskInfo.title.." aborted")
 
 	-- уменьшаем довольство на 20% от текущего
-	cellInfo.contantement = cellInfo.contantement - (cellInfo.contantement * 0.2)
+	cellInfo.devotion = cellInfo.devotion - (cellInfo.devotion * 0.2)
 end
 
 function MissionSuccess_InvestigatorTest(cellInfo, taskInfo)
@@ -121,8 +120,8 @@ function MissionSuccess_TutorialFirstRealWork(cellInfo, taskInfo)
 	cellInfo.morale = cellInfo.morale + (taskInfo.moraleLevel - cellInfo.morale) * 0.3
 
 	-- увеличивем преданность на 10% от текущего
-	cellInfo.contantement = cellInfo.contantement + (cellInfo.contantement * 0.1)
-	if (cellInfo.contantement > 1.0) then cellInfo.contantement = 1.0 end
+	cellInfo.devotion = cellInfo.devotion + (cellInfo.devotion * 0.1)
+	if (cellInfo.devotion > 1.0) then cellInfo.devotion = 1.0 end
 
 	cellInfo.cash = cellInfo.cash + math.random(150, 200) * 1000
 
@@ -146,8 +145,8 @@ function MissionSuccess_Alpha1BankRobbery(cellInfo, taskInfo)
 	cellInfo.morale = cellInfo.morale + (taskInfo.moraleLevel - cellInfo.morale) * 0.3
 
 	-- увеличивем преданность на 10% от текущего
-	cellInfo.contantement = cellInfo.contantement + (cellInfo.contantement * 0.1)
-	if (cellInfo.contantement > 1.0) then cellInfo.contantement = 1.0 end
+	cellInfo.devotion = cellInfo.devotion + (cellInfo.devotion * 0.1)
+	if (cellInfo.devotion > 1.0) then cellInfo.devotion = 1.0 end
 
 	cellInfo.cash = cellInfo.cash + math.random(150, 200) * 1000
 end
@@ -159,7 +158,7 @@ function MissionFail_Alpha1BankRobbery(cellInfo, taskInfo)
 	cellInfo.morale = cellInfo.morale + (taskInfo.moraleLevel - cellInfo.morale) * 0.3
 
 	-- уменьшаем преданность на 25-35% от текущего
-	cellInfo.contantement = cellInfo.contantement - (cellInfo.contantement * 0.01 * math.random(25, 35))
+	cellInfo.devotion = cellInfo.devotion - (cellInfo.devotion * 0.01 * math.random(25, 35))
 
 	cellInfo.membersCount = cellInfo.membersCount - math.random(0, 3)
 end
