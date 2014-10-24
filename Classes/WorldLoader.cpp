@@ -391,10 +391,52 @@ bool WorldLoader::LoadGameState(void)
 	return false;
 }
 
+void appendCellToQuery(std::string* const query, Cell* const cell, const std::map<const Cell *, int>* const cellsIndicesCast)
+{
+	const Cell::Info info = cell->GetInfo();
+
+	std::string parent_id = info.parent != nullptr ? std::to_string(cellsIndicesCast->find(info.parent)->second) : "-1";
+
+	query->append("(")
+		.append(std::to_string(cellsIndicesCast->find(cell)->second)).append(",")
+		.append(std::to_string(info.state)).append(",")
+		.append(parent_id).append(",")
+		.append("'").append(info.town.lock()->GetInfo().name).append("',")
+		.append(std::to_string(info.location.x)).append(",")
+		.append(std::to_string(info.location.y)).append(",")
+		.append(std::to_string(info.cash)).append(",")
+		.append(std::to_string(info.morale)).append(",")
+		.append(std::to_string(info.contentment)).append(",")
+		.append(std::to_string(info.membersCount))
+		.append(")");
+}
+
+void appendCellToQuery(std::string* const query, Task::Ptr task, int cellIndex)
+{
+	std::string currentTaskId = task->GetInfo()->id;
+	std::string taskStartTime = Utils::TimeToString(task->GetStartTime());
+
+	query->append("(")
+		.append("'").append(currentTaskId).append("',")
+		.append("'").append(std::to_string(cellIndex)).append("',")
+		.append("'").append(taskStartTime).append("'")
+		.append(")");
+}
+
+void appendCellConstructionToQuery(std::string* const query, Cell* cell, int cellIndex)
+{
+	const Cell::Info info = cell->GetInfo();
+
+	query->append("(")
+		.append("'").append(std::to_string(cellIndex)).append("',")
+		.append("'").append(Utils::TimeToString(info.constructionBegin)).append("',")
+		.append("'").append(Utils::TimeToString(info.constructionDuration)).append("'")
+		.append(")");
+}
+
 bool WorldLoader::SaveGameState(void)
 {
 	_state = State::Saving;
-
 
 	// saving the cells network
 	std::string cellsAdditionSqlStatement =
@@ -435,23 +477,9 @@ bool WorldLoader::SaveGameState(void)
 		cellIndex++;
 		cellsIndicesCast.insert(std::pair<const Cell *, int>((*it).get(), cellIndex));
 
-		const Cell *cell = (*it).get();
-		const Cell::Info info = (*it)->GetInfo();
-
-		std::string parent_id = info.parent != nullptr ? std::to_string(cellsIndicesCast.find(info.parent)->second) : "-1";
-
-		cellsAdditionSqlStatement.append("(");
-		cellsAdditionSqlStatement.append(std::to_string(cellsIndicesCast.find(cell)->second)).append(",");
-		cellsAdditionSqlStatement.append(std::to_string(info.state)).append(",");
-		cellsAdditionSqlStatement.append(parent_id).append(",");
-		cellsAdditionSqlStatement.append("'").append(info.town.lock()->GetInfo().name).append("',");
-		cellsAdditionSqlStatement.append(std::to_string(info.location.x)).append(",");
-		cellsAdditionSqlStatement.append(std::to_string(info.location.y)).append(",");
-		cellsAdditionSqlStatement.append(std::to_string(info.cash)).append(",");
-		cellsAdditionSqlStatement.append(std::to_string(info.morale)).append(",");
-		cellsAdditionSqlStatement.append(std::to_string(info.contentment)).append(",");
-		cellsAdditionSqlStatement.append(std::to_string(info.membersCount));
-		cellsAdditionSqlStatement.append(")");
+		Cell *cell = (*it).get();
+		Cell::Info &cellInfo = cell->GetInfo();
+		appendCellToQuery(&cellsAdditionSqlStatement, cell, &cellsIndicesCast);
 
 		if (cell->IsCurrentTaskExists())
 		{
@@ -465,17 +493,10 @@ bool WorldLoader::SaveGameState(void)
 			}
 
 			Task::Ptr task = cell->getCurrentTask().lock();
-			std::string currentTaskId = task->GetInfo()->id;
-			std::string taskStartTime = Utils::TimeToString(task->GetStartTime());
-
-			taskAdditionSqlStatement.append("(");
-			taskAdditionSqlStatement.append("'").append(currentTaskId).append("',");
-			taskAdditionSqlStatement.append("'").append(std::to_string(cellIndex)).append("',");
-			taskAdditionSqlStatement.append("'").append(taskStartTime).append("'");
-			taskAdditionSqlStatement.append(")");
+			appendCellToQuery(&taskAdditionSqlStatement, task, cellIndex);
 		}
 
-		if (info.state == Cell::State::CONSTRUCTION)
+		if (cellInfo.state == Cell::State::CONSTRUCTION)
 		{
 			if (addConstructions)
 			{
@@ -486,11 +507,7 @@ bool WorldLoader::SaveGameState(void)
 				addConstructions = true;
 			}
 
-			constructionSqlStatement.append("(");
-			constructionSqlStatement.append("'").append(std::to_string(cellIndex)).append("',");
-			constructionSqlStatement.append("'").append(Utils::TimeToString(info.constructionBegin)).append("',");
-			constructionSqlStatement.append("'").append(Utils::TimeToString(info.constructionDuration)).append("'");
-			constructionSqlStatement.append(")");
+			appendCellConstructionToQuery(&constructionSqlStatement, cell, cellIndex);
 		}
 	}
 
