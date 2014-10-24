@@ -1,5 +1,5 @@
-#ifndef MESSAGE_MANAGER_H
-#define MESSAGE_MANAGER_H
+#ifndef NOTIFICATION_MANAGER_H
+#define NOTIFICATION_MANAGER_H
 
 #include <map>
 #include <string>
