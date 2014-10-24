@@ -180,6 +180,7 @@ static bool LoadTasksInfo()
 		info.needMembers = task_node.attribute("needMembers").as_int();
 		info.needTech = task_node.attribute("needTech").as_int();
 		info.politicalImpact = task_node.attribute("politicalImpact").as_float();
+		info.chanceToLooseMembers = task_node.attribute("chanceToLooseMembers").as_float();
 		info.successFn = task_node.attribute("successFn").as_string();
 		info.failFn = task_node.attribute("failFn").as_string();
 		info.abortFn = task_node.attribute("abortFn").as_string();
