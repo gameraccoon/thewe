@@ -7,6 +7,7 @@
 #include "GameInfo.h"
 #include "World.h"
 #include "WorldLoader.h"
+#include "MessageManager.h"
 
 #include <cocos2d.h>
 #include <luabind/luabind.hpp>
@@ -146,6 +147,7 @@ bool World::RemoveInvestigator(Investigator::Ptr investigator)
 	{
 		if ((*it) == investigator)
 		{
+			MessageManager::Instance().PutMessage(Message("DeleteInvestigatorWidget", investigator->GetUid()));
 			it = _investigators.erase(it);
 			return true;
 		}
@@ -244,6 +246,8 @@ void World::Update()
 	}
 
 	_taskManager.UpdateToTime(time);
+
+	MessageManager::Instance().CallAcceptMessages();
 }
 
 void World::SetPause(bool pause)

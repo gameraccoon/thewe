@@ -152,6 +152,7 @@ xcopy /Y /Q "$(EngineRoot)external\websockets\prebuilt\win32\*.lib" "$(SolutionD
     <ClCompile Include="..\Classes\EditorLayer.cpp" />
     <ClCompile Include="..\Classes\Investigator.cpp" />
     <ClCompile Include="..\Classes\InvestigatorMapWidget.cpp" />
+    <ClCompile Include="..\Classes\MessageManager.cpp" />
     <ClCompile Include="..\Classes\MiscUtils.cpp" />
     <ClCompile Include="..\Classes\GameInfo.cpp" />
     <ClCompile Include="..\Classes\GameScene.cpp" />
@@ -249,6 +250,7 @@ xcopy /Y /Q "$(EngineRoot)external\websockets\prebuilt\win32\*.lib" "$(SolutionD
     <ClInclude Include="..\Classes\EditorLayer.h" />
     <ClInclude Include="..\Classes\Investigator.h" />
     <ClInclude Include="..\Classes\InvestigatorMapWidget.h" />
+    <ClInclude Include="..\Classes\MessageManager.h" />
     <ClInclude Include="..\Classes\MiscUtils.h" />
     <ClInclude Include="..\Classes\GameInfo.h" />
     <ClInclude Include="..\Classes\GameScene.h" />

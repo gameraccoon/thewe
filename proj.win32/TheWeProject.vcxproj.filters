@@ -327,6 +327,9 @@
     <ClCompile Include="..\Classes\NotificationMessageManager.cpp">
       <Filter>Classes\GameInterface</Filter>
     </ClCompile>
+    <ClCompile Include="..\Classes\MessageManager.cpp">
+      <Filter>Classes</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="main.h">
@@ -544,6 +547,9 @@
     </ClInclude>
     <ClInclude Include="..\Classes\NotificationMessageManager.h">
       <Filter>Classes\GameInterface</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\MessageManager.h">
+      <Filter>Classes</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

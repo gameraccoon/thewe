@@ -5,6 +5,7 @@
 
 #include "ArbitraryHull.h"
 #include "MapProjector.h"
+#include "MessageManager.h"
 #include "Region.h"
 #include "Cell.h"
 #include "CellGameInterface.h"
@@ -14,7 +15,7 @@
 
 class GameScene;
 
-class WorldMapLayer : public cocos2d::Layer
+class WorldMapLayer : public cocos2d::Layer, public MessageReceiver
 {
 public:
 	WorldMapLayer(GameScene *gameScene, MapProjector* projector);
@@ -22,6 +23,7 @@ public:
 
 	virtual bool init(void) override;
 	virtual void update(float dt) override;
+	virtual void AcceptMessage(const Message &msg) override;
 
 	void menuCloseCallback(cocos2d::Ref *Sender);
 
