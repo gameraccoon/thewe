@@ -23,6 +23,7 @@ public:
 
 	void SetProjectorUid(int uid);
 	int GetProjectorUid(void) const;
+	int GetCellUid(void) const;
 
 	const cocos2d::Rect& GetCellRect(void) const;
 	Cell::Ptr GetCell(void) const;
@@ -42,6 +43,7 @@ private:
 	float _hitAreaBeginY, _hitAreaEndY;
 
 	int _projectorUid;
+	const int _cellUid;
 
 	CellMapImage *_cellMapSprite;
 	RoundProgressBar *_cellMapTaskProgressBar;

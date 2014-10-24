@@ -120,6 +120,8 @@ void World::AddInvestigator(Investigator::Ptr investigator)
 	}
 
 	_investigators.push_back(investigator);
+	
+	MessageManager::Instance().PutMessage(Message("AddInvestigatorWidget", investigator->GetUid()));
 }
 
 void World::AddInvestigatorByCell(Cell::Ptr investigationRoot)
@@ -154,6 +156,26 @@ bool World::RemoveInvestigator(Investigator::Ptr investigator)
 	}
 
 	return false;
+}
+
+Cell::Ptr World::GetCellByUid(int uid) const
+{
+	for (Cell::Ptr cell : _cells) {
+		if (cell->GetUid() == uid) {
+			return cell;
+		}
+	}
+	return Cell::Ptr();
+}
+
+Investigator::Ptr World::GetInvestigatorByUid(int uid)
+{
+	for (Investigator::Ptr investigator : _investigators) {
+		if (investigator->GetUid() == uid) {
+			return investigator;
+		}
+	}
+	return Investigator::Ptr();
 }
 
 const Region::WeakPtr World::GetRegionByName(const std::string &name) const

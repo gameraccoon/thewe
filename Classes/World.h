@@ -50,6 +50,9 @@ public:
 	void AddInvestigatorByInfo(const Cell::Info &cellInfo);
 
 	bool RemoveInvestigator(Investigator::Ptr investigator);
+	
+	Cell::Ptr GetCellByUid(int uid) const;
+	Investigator::Ptr GetInvestigatorByUid(int uid);
 
 	const Region::WeakPtr GetRegionByName(const std::string &name) const;
 	const Town::WeakPtr GetTownByName(const std::string &name) const;

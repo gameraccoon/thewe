@@ -113,54 +113,37 @@ void WorldMapLayer::update(float dt)
 
 	// allow to draw towns olny if cell spinoff creation enabled
 	_townsDrawLayer->setVisible(!_nextCellParent.expired() || World::Instance().IsFirstLaunch());
+}
 
-	// check for widgets existance and create new if needed
-	for (Investigator::Ptr investigator : World::Instance().GetInvestigators())
+void WorldMapLayer::AcceptMessage(const Message &msg)
+{
+	if (msg.name == "AddInvestigatorWidget")
 	{
-		if (!getChildByTag(investigator->GetUid()))
+		Investigator::Ptr investigator = World::Instance().GetInvestigatorByUid(msg.param);
+		if (investigator)
 		{
 			InvestigatorMapWidget *widget = _CreateInvestigatorWidget(investigator);
 			addChild(widget, Z_INVESTIGATOR);
 			_investigatorWidgetsList.push_back(widget);
 
 			dynamic_cast<GameScene*>(getParent())->MoveViewToPoint(
-						investigator->GetInvestigationRoot()->GetInfo().town.lock()->GetLocation());
+				investigator->GetInvestigationRoot()->GetInfo().town.lock()->GetLocation());
 		}
 	}
-
-	// check for model existance and delete widget if needed
-	for (InvestigatorWidgetsIter it = _investigatorWidgetsList.begin(); it != _investigatorWidgetsList.end() ;)//(InvestigatorMapWidget *widget : _investigatorWidgetsList)
+	else if (msg.name == "DeleteInvestigatorWidget")
 	{
-		InvestigatorMapWidget *widget = (*it);
-		Investigator::Ptr existed = widget->GetInvestigator();
-		bool founded = false;
-
-		for (Investigator::Ptr investigator : World::Instance().GetInvestigators())
+		for (InvestigatorWidgetsIter it = _investigatorWidgetsList.begin(); it != _investigatorWidgetsList.end(); ++it)
 		{
-			if (existed == investigator)
+			InvestigatorMapWidget *widget = (*it);
+			if (widget->GetInvestigatorUid() == msg.param)
 			{
-				founded = true;
-				break;
+				removeChild(widget);
+				it = _investigatorWidgetsList.erase(it);
 			}
 		}
-
-		if (!founded)
-		{
-			removeChild(widget);
-			it = _investigatorWidgetsList.erase(it);
-		}
-		else
-			it++;
 	}
-}
-
-void WorldMapLayer::AcceptMessage(const Message &msg)
-{
-	if (msg.name == "DeleteInvestigatorWidget") {
-		;
-	}
-	else if (msg.name == "TestMessage") {
-		;
+	else if (msg.name == "DelelteCellWidget")
+	{
 	}
 }
 
@@ -580,6 +563,8 @@ void WorldMapLayer::_OnTownSelect(Town::WeakPtr town)
 				info.townHeartPounding = GameInfo::Instance().GetFloat("CELL_STARTUP_TOWN_HEART_POUNDING");
 				info.townInfluence = GameInfo::Instance().GetFloat("CELL_STARTUP_TOWN_INFLUENCE");
 				info.townWelfare = GameInfo::Instance().GetFloat("CELL_STARTUP_TOWN_WELFARE");
+				info.constructionBegin = Utils::GetGameTime();
+				info.constructionDuration = GameInfo::Instance().GetFloat("CELL_CONSTRUCTION_TIME");
 
 				info.parent->GetInfo().cash -= GameInfo::Instance().GetInt("CELL_SPINOFF_CASH_PRICE");
 				info.parent->GetInfo().membersCount -= GameInfo::Instance().GetInt("CELL_SPINOFF_MEMBERS_PRICE");

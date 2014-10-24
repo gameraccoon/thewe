@@ -18,6 +18,7 @@ public:
 
 	void SetProjectorUid(int uid);
 	int GetProjectorUid(void) const;
+	int GetInvestigatorUid(void) const;
 
 public:
 	void UpdateInvestigationMap(const Investigator::BranchBundle &bundle);
@@ -30,6 +31,7 @@ public:
 	MapProjector *_projector;
 
 	int _projectorUid;
+	const int _investigatorUid;
 
 	cocos2d::DrawNode *_investigationDrawer;
 };

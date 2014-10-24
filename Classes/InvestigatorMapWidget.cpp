@@ -9,6 +9,7 @@ InvestigatorMapWidget::InvestigatorMapWidget(Investigator::Ptr investigator, Map
 	, _projector(proj)
 	, _invesRootCellWidget(nullptr)
 	, _projectorUid(-1)
+	, _investigatorUid(investigator->GetUid())
 {
 	init();
 }
@@ -101,4 +102,9 @@ void InvestigatorMapWidget::SetProjectorUid(int uid)
 int InvestigatorMapWidget::GetProjectorUid(void) const
 {
 	return _projectorUid;
+}
+
+int InvestigatorMapWidget::GetInvestigatorUid(void) const
+{
+	return _investigatorUid;
 }

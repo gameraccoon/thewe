@@ -85,6 +85,7 @@ CellMapWidget::CellMapWidget(Cell::Ptr cell)
 	, _hitAreaEndX(1.0f)
 	, _hitAreaEndY(1.0f)
 	, _projectorUid(-1)
+	, _cellUid(cell->GetUid())
 	, _lastCellState(Cell::READY)
 	, _cellMapSprite(nullptr)
 	, _constructionProgress(nullptr)
@@ -201,6 +202,11 @@ void CellMapWidget::SetProjectorUid(int uid)
 int CellMapWidget::GetProjectorUid(void) const
 {
 	return _projectorUid;
+}
+
+int CellMapWidget::GetCellUid(void) const
+{
+	return _cellUid;
 }
 
 const cocos2d::Rect& CellMapWidget::GetCellRect(void) const
