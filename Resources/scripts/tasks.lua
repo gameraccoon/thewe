@@ -1,8 +1,7 @@
 -- Определяем, считать задание выполненным или провеленным
 function CheckTaskStatus(cellInfo, taskInfo)
-	local membersIsEnough = cellInfo.membersCount >= taskInfo.severity * 10.0
 	local moraleIsNorm = math.abs(cellInfo.morale - taskInfo.moraleLevel) < 0.5
-	return membersIsEnough and moraleIsNorm
+	return moraleIsNorm
 end
 
 -- определяем будет ли показываться задание для данной ячейки

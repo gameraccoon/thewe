@@ -169,14 +169,20 @@ static bool LoadTasksInfo()
 	{
 		Task::Info info;
 
-		info.id = task_node.attribute("Id").as_string();
-		info.title = task_node.attribute("Title").as_string();
-		info.severity = task_node.attribute("Severity").as_float();
-		info.duration = Utils::StringToTime(task_node.attribute("Duration").as_string());
-		info.moralLevel = task_node.attribute("MoralLevel").as_float();
-		info.successFn = task_node.attribute("SuccessFn").as_string();
-		info.failFn = task_node.attribute("FailFn").as_string();
-		info.abortFn = task_node.attribute("AbortFn").as_string();
+		info.id = task_node.attribute("id").as_string();
+		info.title = task_node.attribute("title").as_string();
+		info.fameImpact = task_node.attribute("fameImpact").as_float();
+		info.duration = Utils::StringToTime(task_node.attribute("duration").as_string());
+		info.moralLevel = task_node.attribute("moralLevel").as_float();
+		info.heartPoundingLevel = task_node.attribute("heartPoundingLevel").as_float();
+		info.level = task_node.attribute("level").as_int();
+		info.needCash = task_node.attribute("needCash").as_int();
+		info.needMembers = task_node.attribute("needMembers").as_int();
+		info.needTech = task_node.attribute("needTech").as_int();
+		info.politicalImpact = task_node.attribute("politicalImpact").as_float();
+		info.successFn = task_node.attribute("successFn").as_string();
+		info.failFn = task_node.attribute("failFn").as_string();
+		info.abortFn = task_node.attribute("abortFn").as_string();
 
 		infos.push_back(info);
 

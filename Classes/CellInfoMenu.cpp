@@ -77,7 +77,7 @@ bool CellInfoMenu::init(void)
 	float info_x = center.x - background->getContentSize().width  / 2.0f + textPadding;
 	float info_y = center.y + background->getContentSize().height / 2.0f - 75.0f;
 
-	_levelProgressBar = CreateProgressBar(this, Vector2(center.x - 150.0f, info_y - 1.0f),
+	_levelProgressBar = CreateProgressBar(this, Vector2(center.x - 150.0f, info_y - 2.0f),
 										  Vector2(300.0f, 30.0f), Color(0.0f, 0.5f, 0.0f, 1.0f),
 										  0.0f);
 	_labelLevelInfo = CreateTTFLabel(this, "", Vector2(center.x, info_y), Vector2(0.5f, 0.0f));
