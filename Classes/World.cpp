@@ -1,7 +1,7 @@
 #include "World.h"
 
 #include "TaskManager.h"
-#include "MessageManager.h"
+#include "NotificationMessageManager.h"
 #include "Log.h"
 #include "LuaInstance.h"
 #include "GameInfo.h"
@@ -37,7 +37,7 @@ TaskManager& World::GetTaskManager()
 	return _taskManager;
 }
 
-MessageManager& World::GetMessageManager()
+NotificationMessageManager& World::GetMessageManager()
 {
 	return _messageManager;
 }
@@ -56,7 +56,7 @@ void World::InitLuaContext()
 		_isLuaInited = true;
 
 		_luaScript->BindClass<Log>();
-		_luaScript->BindClass<MessageManager>();
+		_luaScript->BindClass<NotificationMessageManager>();
 		_luaScript->BindClass<GameInfo>();
 		_luaScript->BindClass<World>();
 		_luaScript->BindClass<Cell::Info>();

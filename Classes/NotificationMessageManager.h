@@ -5,10 +5,10 @@
 #include <string>
 #include "UserMessage.h"
 
-class MessageManager
+class NotificationMessageManager
 {
 public:
-	MessageManager();
+	NotificationMessageManager();
 
 	/**
 	 * Send new message to the player messages box

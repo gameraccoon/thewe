@@ -11,7 +11,7 @@
 #include "MiscUtils.h"
 #include "LuaInstance.h"
 #include "TaskManager.h"
-#include "MessageManager.h"
+#include "NotificationMessageManager.h"
 #include "Tutorial.h"
 
 class World
@@ -30,7 +30,7 @@ public:
 	static World& Instance();
 
 	TaskManager& GetTaskManager();
-	MessageManager& GetMessageManager();
+	NotificationMessageManager& GetMessageManager();
 
 	/** Removes all the regions */
 	void CleanupMapContent(void);
@@ -86,7 +86,7 @@ private:
 
 private:
 	TaskManager _taskManager;
-	MessageManager _messageManager;
+	NotificationMessageManager _messageManager;
 
 	Regions _regions;
 	Cells _cells;

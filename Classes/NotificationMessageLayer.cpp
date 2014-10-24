@@ -4,7 +4,7 @@
 
 #include "World.h"
 #include "GameScene.h"
-#include "MessageManager.h"
+#include "NotificationMessageManager.h"
 
 NotificationMessageLayer::NotificationMessageLayer()
 {

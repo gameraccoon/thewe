@@ -3,7 +3,7 @@
 #include <luabind/luabind.hpp>
 
 #include "Log.h"
-#include "MessageManager.h"
+#include "NotificationMessageManager.h"
 #include "Vector2.h"
 #include "Cell.h"
 #include "Task.h"
@@ -57,11 +57,11 @@ void LuaInstance::BindClass<Log>()
 }
 
 template<>
-void LuaInstance::BindClass<MessageManager>()
+void LuaInstance::BindClass<NotificationMessageManager>()
 {
 	luabind::module(_luaState) [
-	luabind::class_<MessageManager>("MessageManagerClass")
-		.def("sendMessage", &MessageManager::SendGameMessage)
+	luabind::class_<NotificationMessageManager>("MessageManagerClass")
+		.def("sendMessage", &NotificationMessageManager::SendGameMessage)
 	];
 }
 
@@ -122,7 +122,7 @@ void LuaInstance::RegisterVariable<Log>(const char* name, Log* value)
 }
 
 template<>
-void LuaInstance::RegisterVariable<MessageManager>(const char* name, MessageManager* value)
+void LuaInstance::RegisterVariable<NotificationMessageManager>(const char* name, NotificationMessageManager* value)
 {
 	luabind::globals(_luaState)[name] = value;
 }

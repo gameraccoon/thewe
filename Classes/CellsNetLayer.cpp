@@ -1,7 +1,7 @@
 #include "CellsNetLayer.h"
 
 #include "World.h"
-#include "MessageManager.h"
+#include "NotificationMessageManager.h"
 #include "MapGuiLayer.h"
 #include "WorldMapLayer.h"
 

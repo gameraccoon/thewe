@@ -38,8 +38,8 @@ LOCAL_SRC_FILES := hellocpp/main.cpp \
 				   	../../Classes/MainMenuScene.cpp \
 				   	../../Classes/MapGuiLayer.cpp \
 				   	../../Classes/MapProjector.cpp \
-				   	../../Classes/MessageManager.cpp \
 				   	../../Classes/MiscUtils.cpp \
+				   	../../Classes/NotificationMessageManager.cpp \
 				   	../../Classes/NotificationMessageLayer.cpp \
 				   	../../Classes/NotificationMessageWidget.cpp \
 				   	../../Classes/ProgressBar.cpp \
