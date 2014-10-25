@@ -139,11 +139,26 @@ void WorldMapLayer::AcceptMessage(const Message &msg)
 			{
 				removeChild(widget);
 				it = _investigatorWidgetsList.erase(it);
+				break;
 			}
 		}
 	}
-	else if (msg.name == "DelelteCellWidget")
+	else if (msg.name == "DeleteCellWidget")
 	{
+		for (CellWidgetsIter it = _cellWidgetsList.begin(); it != _cellWidgetsList.end(); ++it)
+		{
+			CellMapWidget *widget = (*it);
+			if (widget->GetCellUid() == msg.param)
+			{
+				removeChild(widget);
+				_mapProjector->RemoveMapPart(widget->GetProjectorUid());
+				_mapProjector->Update();
+				_UpdateNetwork();
+				it = _cellWidgetsList.erase(it);
+				delete widget;
+				break;
+			}
+		}
 	}
 }
 
@@ -196,12 +211,10 @@ void WorldMapLayer::CreateCell(const Cell::Info &info, Cell::State state)
 void WorldMapLayer::DeleteCell(CellMapWidget *widget)
 {
 	// we need to delete cell from the network
-	Cell::Ptr cell = widget->GetCell();
+	//Cell::Ptr cell = widget->GetCell();
 
 	removeChild(widget);
 	_mapProjector->RemoveMapPart(widget->GetProjectorUid());
-
-	delete widget;
 }
 
 void WorldMapLayer::PushSessionFailScreen(void)
@@ -248,7 +261,7 @@ CellMapWidget* WorldMapLayer::GetCellMapWidget(Cell::Ptr cell) const
 {
 	for (CellMapWidget *widget : _cellWidgetsList)
 	{
-		if (widget->GetCell() == cell)
+		if (widget->GetCell().lock() == cell)
 		{
 			return widget;
 		}
@@ -448,8 +461,9 @@ Cell::WeakPtr WorldMapLayer::_GetCellUnderPoint(const Vector2& point) const
 {
 	for (CellMapWidget *widget : _cellWidgetsList)
 	{
-		Cell::Ptr cell = widget->GetCell();
-		if (cell->GetInfo().state != Cell::READY)
+		Cell::Ptr cell = widget->GetCell().lock();
+
+		if (!cell || cell->GetInfo().state != Cell::READY)
 		{
 			continue;
 		}

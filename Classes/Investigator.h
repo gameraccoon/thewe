@@ -50,9 +50,12 @@ public:
 	void UpdateToTime(Utils::GameTime time);
 	
 	bool IsStateType(Investigator::State state) const;
+	bool IsCellUnderInvestigation(Cell::Ptr cell, const BranchBundle &bundle) const;
+
+	void CancleInvestigationTo(Cell::Ptr cell, BranchBundle &bundle);
 	
 	Cell::Ptr GetInvestigationRoot(void) const;
-	const BranchBundle& GetRootBranchBundle(void);
+	BranchBundle& GetRootBranchBundle(void);
 	Investigator::State GetState(void) const;
 
 	int GetUid(void) const;

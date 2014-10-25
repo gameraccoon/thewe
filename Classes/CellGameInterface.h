@@ -10,6 +10,7 @@
 #include "World.h"
 
 class WorldMapLayer;
+class CellMapPopupButton;
 
 class CellMenuSelector : public cocos2d::Layer
 {
@@ -43,11 +44,13 @@ private:
 	void _PrepearButtonToAppear(cocos2d::MenuItemImage *item, Vector2 pos);
 	void _PrepearButtonToDisappear(cocos2d::MenuItemImage *item);
 	void _MenuInputListener(cocos2d::Ref *sender);
+	void OnKillButtonPressed(cocos2d::Ref *sender);
 	bool _IsAnimationFinished(void);
 
 private:
 	WorldMapLayer *_worldMapLayer;
 	MapProjector *_projector;
+	CellMapPopupButton *_killButton;
 
 	cocos2d::Menu *_menu;
 

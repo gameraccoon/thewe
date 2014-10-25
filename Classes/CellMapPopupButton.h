@@ -20,7 +20,7 @@ public:
 
 	void SetOnPressCallback(cocos2d::ccMenuCallback &callback);
 
-	void Appear(float jumpHeight);
+	void Appear(float jumpHeight, float angle = 0.0f);
 	void Disappear(bool useWarningAnim = false);
 
 private:

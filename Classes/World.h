@@ -49,6 +49,8 @@ public:
 	void AddInvestigatorByCell(Cell::Ptr investigationRoot);
 	void AddInvestigatorByInfo(const Cell::Info &cellInfo);
 
+	bool RemoveCell(Cell::Ptr cell);
+	void RemoveCellFromInvestigation(Cell::Ptr cell);
 	bool RemoveInvestigator(Investigator::Ptr investigator);
 	
 	Cell::Ptr GetCellByUid(int uid) const;
@@ -71,6 +73,7 @@ public:
 	bool IsFirstLaunch(void) const;
 	bool IsGameOver(void) const;
 	bool IsTownAvaliableToPlaceCell(Town::WeakPtr town) const;
+	bool IsCellUnderInvestigation(Cell::Ptr cell) const;
 
 	unsigned int GetNewUid(void) const;
 

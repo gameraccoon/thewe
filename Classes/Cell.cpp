@@ -2,10 +2,11 @@
 
 #include "World.h"
 #include "Log.h"
+#include "GameInfo.h"
+#include "MessageManager.h"
 
 Cell::Cell(const Info &info)
 	: _info(info)
-	, _state(READY)
 	, _currentTask()
 	, _uid(World::Instance().GetNewUid())
 {
@@ -19,6 +20,10 @@ Cell::Cell(const Info &info)
 	_CheckValues();
 }
 
+Cell::~Cell(void)
+{
+}
+
 Cell::Ptr Cell::Create(const Info &info)
 {
 	return std::make_shared<Cell>(info);
@@ -27,7 +32,7 @@ Cell::Ptr Cell::Create(const Info &info)
 void Cell::AddChild(Cell::Ptr cell)
 {
 	_childCells.push_back(cell);
-	cell->_SetParent(this);
+	cell->SetParent(this);
 }
 
 void Cell::RemoveChild(Cell::Ptr cell)
@@ -39,7 +44,7 @@ void Cell::RemoveChild(Cell::Ptr cell)
 
 		if (currentPart == cell)
 		{
-			cell->_SetParent(nullptr);
+			cell->SetParent(nullptr);
 			_childCells.erase(iterator);
 			return;
 		}
@@ -48,7 +53,14 @@ void Cell::RemoveChild(Cell::Ptr cell)
 	}
 }
 
-void Cell::_SetParent(Cell* cell)
+void Cell::Kill(void)
+{
+	_info.state = DESTRUCTION;
+	_info.destructionBegin = Utils::GetGameTime();
+	_info.destructionDuration = GameInfo::Instance().GetFloat("CELL_DESTRUCTION_TIME");
+}
+
+void Cell::SetParent(Cell* cell)
 {
 	_info.parent = cell;
 }
@@ -73,6 +85,13 @@ void Cell::UpdateToTime(Utils::GameTime time)
 	if (_info.state == CONSTRUCTION && time > _info.constructionBegin + _info.constructionDuration)
 	{
 		_info.state = READY;
+	}
+	else if (_info.state == DESTRUCTION && time > _info.destructionBegin + _info.destructionDuration)
+	{
+		Cell::Ptr ptr = World::Instance().GetCellByInfo(_info).lock();
+		World::Instance().RemoveCellFromInvestigation(ptr);
+		World::Instance().RemoveCell(ptr);
+		MessageManager::Instance().PutMessage(Message("DeleteCellWidget", _uid));
 	}
 
 	_CheckValues();
@@ -169,6 +188,11 @@ void Cell::_CheckValues() const
 float Cell::GetConstructionProgress(Utils::GameTime time) const
 {
 	return 1.0f - ((float)((_info.constructionBegin + _info.constructionDuration) - time)) / ((float)_info.constructionDuration);
+}
+
+float Cell::GetDestructionProgress(Utils::GameTime time) const
+{
+	return 1.0f - ((float)((_info.destructionBegin + _info.destructionDuration) - time)) / ((float)_info.destructionDuration);
 }
 
 float Cell::CalcConnectivity() const

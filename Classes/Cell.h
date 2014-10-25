@@ -12,9 +12,10 @@ class Cell
 public:
 	enum State
 	{
-		CONSTRUCTION,
+		CONSTRUCTION = 0,
 		ARRESTED,
-		READY
+		READY,
+		DESTRUCTION
 	};
 
 	enum Specialization
@@ -44,6 +45,8 @@ public:
 
 		Utils::GameTime constructionBegin;
 		Utils::GameTime constructionDuration;
+		Utils::GameTime destructionBegin;
+		Utils::GameTime destructionDuration;
 	};
 
 	typedef std::shared_ptr<Cell> Ptr;
@@ -51,6 +54,7 @@ public:
 
 public:
 	Cell(const Info &info);
+	~Cell(void);
 
 	/**
 	 * Create Cell and return a smart ptr
@@ -68,6 +72,8 @@ public:
 	 * Set child's parent to null
 	 */
 	void RemoveChild(Cell::Ptr cell);
+
+	void Kill(void);
 
 	/** Returns all child cells */
 	const std::vector<Cell::Ptr>& GetChildren() const;
@@ -92,22 +98,21 @@ public:
 	void UpdateToTime(Utils::GameTime time);
 
 	float GetConstructionProgress(Utils::GameTime time) const;
+	float GetDestructionProgress(Utils::GameTime time) const;
 
 	float CalcConnectivity() const;
 	int CalcDistanceToTheRootCell() const;
 
-private:
-
 	/** Set parent for the cell */
-	void _SetParent(Cell *cell);
+	void SetParent(Cell *cell);
+
+private:
 
 	/** Check all values and write warnings to the log */
 	void _CheckValues() const;
 
 	/** All usual info about the cell */
 	Info _info;
-
-	State _state;
 
 	unsigned int _uid;
 

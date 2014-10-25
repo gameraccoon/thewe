@@ -143,6 +143,35 @@ void World::AddInvestigatorByInfo(const Cell::Info &cellInfo)
 	}
 }
 
+bool World::RemoveCell(Cell::Ptr cell)
+{
+	for (Cells::iterator it = _cells.begin(); it != _cells.end(); ++it)
+	{
+		if ((*it) == cell)
+		{
+			Cell *parent = cell->GetInfo().parent;
+			if (parent) {
+				parent->RemoveChild(cell);
+			}
+			for (Cell::Ptr child : cell->GetChildren()) {
+				child->SetParent(nullptr);
+			}
+
+			it = _cells.erase(it);
+			return true;
+		}
+	}
+
+	return false;
+}
+
+void World::RemoveCellFromInvestigation(Cell::Ptr cell)
+{
+	for (Investigator::Ptr investigator : _investigators) {
+		investigator->CancleInvestigationTo(cell, investigator->GetRootBranchBundle());
+	}
+}
+
 bool World::RemoveInvestigator(Investigator::Ptr investigator)
 {
 	for (Investigators::iterator it = _investigators.begin(); it != _investigators.end(); ++it)
@@ -326,6 +355,18 @@ bool World::IsTownAvaliableToPlaceCell(Town::WeakPtr town) const
 	}
 
 	return true;
+}
+
+bool World::IsCellUnderInvestigation(Cell::Ptr cell) const
+{
+	for (Investigator::Ptr investigator : _investigators)
+	{
+		if (investigator->IsCellUnderInvestigation(cell, investigator->GetRootBranchBundle())){
+			return true;
+		}
+	}
+
+	return false;
 }
 
 unsigned int World::GetNewUid(void) const

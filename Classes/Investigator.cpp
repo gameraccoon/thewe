@@ -193,12 +193,46 @@ bool Investigator::IsStateType(Investigator::State state) const
 	return _state == state;
 }
 
+bool Investigator::IsCellUnderInvestigation(Cell::Ptr cell, const BranchBundle &bundle) const
+{
+	for (const Branch &branch : bundle)
+	{
+		if (branch.progressPercentage < 100.0f && branch.cellTo == cell.get())
+		{
+			return true;
+		}
+		else
+		{
+			return IsCellUnderInvestigation(cell, branch.childBrunches);
+		}
+	}
+
+	return false;
+}
+
+void Investigator::CancleInvestigationTo(Cell::Ptr cell, BranchBundle &bundle)
+{
+	for (BranchBundle::iterator it = bundle.begin(); it != bundle.end(); ++it)
+	{
+		Branch &branch = (*it);
+		if (branch.cellTo == cell.get())
+		{
+			it = bundle.erase(it);
+			break;
+		}
+		else
+		{
+			CancleInvestigationTo(cell, branch.childBrunches);
+		}
+	}
+}
+
 Cell::Ptr Investigator::GetInvestigationRoot(void) const
 {
 	return _investigationRoot.lock();
 }
 
-const Investigator::BranchBundle& Investigator::GetRootBranchBundle(void)
+Investigator::BranchBundle& Investigator::GetRootBranchBundle(void)
 {
 	return _branchRoot;
 }

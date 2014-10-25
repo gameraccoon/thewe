@@ -78,14 +78,14 @@ private:
 	Cell::State _state;
 };
 
-CellMapWidget::CellMapWidget(Cell::Ptr cell)
+CellMapWidget::CellMapWidget(Cell::WeakPtr cell)
 	: _cell(cell)
 	, _hitAreaBeginX(0.0f)
 	, _hitAreaBeginY(0.0f)
 	, _hitAreaEndX(1.0f)
 	, _hitAreaEndY(1.0f)
 	, _projectorUid(-1)
-	, _cellUid(cell->GetUid())
+	, _cellUid(cell.lock()->GetUid())
 	, _lastCellState(Cell::READY)
 	, _cellMapSprite(nullptr)
 	, _constructionProgress(nullptr)
@@ -93,9 +93,18 @@ CellMapWidget::CellMapWidget(Cell::Ptr cell)
 	init();
 }
 
+CellMapWidget::~CellMapWidget(void)
+{
+}
+
 bool CellMapWidget::init(void)
 {
-	_cellMapSprite = new CellMapImage(_cell->GetInfo().state);
+	if (!cocos2d::Node::init())
+	{
+		return false;
+	}
+
+	_cellMapSprite = new CellMapImage(_cell.lock()->GetInfo().state);
 	_cellMapSprite->setPosition(0.0f, 0.0f);
 	_cellMapSprite->setScale(1.0f);
 	_cellMapSprite->autorelease();
@@ -129,16 +138,23 @@ bool CellMapWidget::init(void)
 
 void CellMapWidget::update(float dt)
 {
-	Utils::GameTime currentTime = Utils::GetGameTime();
-	_cell->UpdateToTime(currentTime);
-	if (_cell->GetInfo().state == Cell::CONSTRUCTION)
+	Cell::Ptr cell = _cell.lock();
+
+	if (!cell)
 	{
-		_constructionProgress->SetProgressImmediately(_cell->GetConstructionProgress(currentTime) * 100.0f);
+		return;
+	}
+
+	Utils::GameTime currentTime = Utils::GetGameTime();
+	cell->UpdateToTime(currentTime);
+	if (_cell.lock()->GetInfo().state == Cell::CONSTRUCTION)
+	{
+		_constructionProgress->SetProgressImmediately(cell->GetConstructionProgress(currentTime) * 100.0f);
 		_constructionProgress->setVisible(true);
 		_cellMapSprite->setVisible(false);
 		_lastCellState = Cell::CONSTRUCTION;
 	}
-	else if (_cell->GetInfo().state == Cell::READY && _lastCellState == Cell::CONSTRUCTION)
+	else if (cell->GetInfo().state == Cell::READY && _lastCellState == Cell::CONSTRUCTION)
 	{
 		World::Instance().GetMessageManager().SendGameMessage("Cell created");
 		removeChild(_constructionProgress);
@@ -146,15 +162,25 @@ void CellMapWidget::update(float dt)
 		_cellMapSprite->setVisible(true);
 		_lastCellState = Cell::READY;
 	}
-	else if (_cell->GetInfo().state == Cell::ARRESTED && _lastCellState == Cell::READY)
+	else if (cell->GetInfo().state == Cell::ARRESTED && _lastCellState == Cell::READY)
 	{
 		_cellMapSprite->SwitchState(Cell::ARRESTED);
 		_lastCellState = Cell::ARRESTED;
 	}
-
-	if (_cell->IsCurrentTaskExists())
+	else if (cell->GetInfo().state == Cell::DESTRUCTION)
 	{
-		Task::Ptr task = _cell->getCurrentTask().lock();
+		float progress = abs(1.0f - cell->GetDestructionProgress(currentTime));
+		if (progress < 1.0f)
+		{
+			_constructionProgress->SetProgressImmediately(progress * 100.0f);
+			_constructionProgress->setVisible(true);
+			_cellMapSprite->setVisible(false);
+		}
+	}
+
+	if (cell->IsCurrentTaskExists())
+	{
+		Task::Ptr task = cell->getCurrentTask().lock();
 		
 		Utils::GameTime time = Utils::GetGameTime();
 		float progress = task->CalculateProgress(time);
@@ -214,7 +240,7 @@ const cocos2d::Rect& CellMapWidget::GetCellRect(void) const
 	return _cellMapSprite->GetCurrentStateImage()->getTextureRect();
 }
 
-Cell::Ptr CellMapWidget::GetCell(void) const
+Cell::WeakPtr CellMapWidget::GetCell(void) const
 {
 	return _cell;
 }

@@ -39,7 +39,16 @@ bool CellMenuSelector::init()
 		_button[CELL_OPEN_INFO], _button[CELL_OPEN_SPINOFF], nullptr);
 	_menu->setPosition(_position);
 
+	CellMapPopupButton::Settings s;
+	s.normalStateImage = "marker_crosshair.png";
+	s.pressedStateImage = "marker_crosshair_pressed.png";
+	s.callbackOnPress = CC_CALLBACK_1(CellMenuSelector::OnKillButtonPressed, this);
+	_killButton = new CellMapPopupButton(s);
+	_killButton->setPosition(_position);
+	_killButton->setScale(1.3f);
+
 	addChild(_menu, 0);
+	addChild(_killButton, 0);
 	scheduleUpdate();
 	setVisible(false);
 
@@ -61,6 +70,7 @@ void CellMenuSelector::update(float dt)
 		Vector2 updatedPos = _projector->ProjectOnScreen(initialPos);
 
 		_menu->setPosition(updatedPos);
+		_killButton->setPosition(updatedPos);
 	}
 }
 
@@ -93,6 +103,15 @@ void CellMenuSelector::AppearWithAnimation(Cell::WeakPtr cell, const Vector2 &po
 		return;
 	}
 
+	int numButtonsToShow = CELL_NUM_TAGS;
+	bool mustShowKillButton = World::Instance().IsCellUnderInvestigation(cell.lock());
+	if (mustShowKillButton)
+	{
+		_killButton->setPosition(_position);
+		_killButton->Appear(15.0f, 360.0f/(CELL_NUM_TAGS+1));
+		numButtonsToShow += 1;
+	}
+
 	_cell = cell;
 	_position = position;
 	_isDisappearing = false;
@@ -101,8 +120,8 @@ void CellMenuSelector::AppearWithAnimation(Cell::WeakPtr cell, const Vector2 &po
 
 	cocos2d::Vec2 dir(0.0f, 1.0f);
 	const float dist = 45.0f;
-	const float angle = 2.0f * 3.14159265f / (float)CELL_NUM_TAGS;
-
+	const float angle = 3.14159265f*2.0f / (float)numButtonsToShow;
+	
 	for (ButtonsList::iterator it = _button.begin(); it != _button.end(); ++it)
 	{
 		cocos2d::MenuItemImage *item = (*it);
@@ -142,6 +161,7 @@ void CellMenuSelector::DisappearWithAnimation(void)
 		_PrepearButtonToDisappear(item);
 	}
 
+	_killButton->Disappear();
 	_isDisappearing = true;
 }
 
@@ -152,7 +172,6 @@ void CellMenuSelector::OnCellMenuClosed(void)
 	if (menu)
 	{
 		removeChild(menu, true);
-		//DisappearWithAnimation();
 
 		_worldMapLayer->SetGuiEnabled(true);
 		_worldMapLayer->SetMapInputEnabled(true);
@@ -252,6 +271,12 @@ void CellMenuSelector::_MenuInputListener(cocos2d::Ref *sender)
 		_worldMapLayer->SetGuiEnabled(false);
 		_worldMapLayer->SetMapInputEnabled(false);
 	}
+}
+
+void CellMenuSelector::OnKillButtonPressed(cocos2d::Ref *sender)
+{
+	_cell.lock()->Kill();
+	DisappearWithAnimation();
 }
 
 bool CellMenuSelector::_IsAnimationFinished(void)

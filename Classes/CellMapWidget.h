@@ -10,7 +10,8 @@ class CellMapImage;
 class CellMapWidget : public cocos2d::Node
 {
 public:
-	CellMapWidget(Cell::Ptr cell);
+	CellMapWidget(Cell::WeakPtr cell);
+	~CellMapWidget(void);
 
 	virtual bool init(void) override;
 	virtual void update(float dt) override;
@@ -26,7 +27,7 @@ public:
 	int GetCellUid(void) const;
 
 	const cocos2d::Rect& GetCellRect(void) const;
-	Cell::Ptr GetCell(void) const;
+	Cell::WeakPtr GetCell(void) const;
 
 private:
 	enum DrawOrder
@@ -37,7 +38,7 @@ private:
 	};
 
 private:
-	Cell::Ptr _cell;
+	Cell::WeakPtr _cell;
 
 	float _hitAreaBeginX, _hitAreaEndX;
 	float _hitAreaBeginY, _hitAreaEndY;

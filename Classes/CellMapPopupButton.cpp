@@ -32,10 +32,11 @@ void CellMapPopupButton::SetOnPressCallback(cocos2d::ccMenuCallback &callback)
 	_button->setCallback(callback);
 }
 
-void CellMapPopupButton::Appear(float jumpHeight)
+void CellMapPopupButton::Appear(float jumpHeight, float angle)
 {
 	_jumpHeight = jumpHeight;
 
+	setRotation3D(cocos2d::Vec3(0.0f, 0.0f, angle));
 	setVisible(true);
 	_button->setEnabled(true);
 	_button->setScale(_startScale.x, _startScale.y);
@@ -46,6 +47,11 @@ void CellMapPopupButton::Appear(float jumpHeight)
 
 void CellMapPopupButton::Disappear(bool useWarningAnim)
 {
+	// if cell is unvisible there is no appear call before, so no reason to dissapear
+	if (!isVisible()){
+		return;
+	}
+
 	_button->setEnabled(false);
 	_button->stopAllActions();
 
