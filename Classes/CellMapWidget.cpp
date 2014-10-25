@@ -90,7 +90,7 @@ CellMapWidget::CellMapWidget(Cell::WeakPtr cell)
 	, _cellUid(cell.lock()->GetUid())
 	, _lastCellState(Cell::READY)
 	, _cellMapSprite(nullptr)
-	, _constructionProgress(nullptr)
+	, _cellCommonProgressBar(nullptr)
 {
 	init();
 }
@@ -118,9 +118,9 @@ bool CellMapWidget::init(void)
 	_cellMapTaskProgressBar->ToggleReverse(true);
 	_cellMapTaskProgressBar->autorelease();
 
-	_constructionProgress = new RoundProgressBar("cell.png", 0.8f);
-	_constructionProgress->setPosition(0.0f, 0.0f);
-	_constructionProgress->SetProgressImmediately(0.0f);
+	_cellCommonProgressBar = new RoundProgressBar("cell.png", 0.8f);
+	_cellCommonProgressBar->setPosition(0.0f, 0.0f);
+	_cellCommonProgressBar->SetProgressImmediately(0.0f);
 
 	CellMapPopupButton::Settings s;
 	s.normalStateImage = "marker_crosshair.png";
@@ -131,7 +131,7 @@ bool CellMapWidget::init(void)
 	
 	addChild(_cellMapSprite, DrawOrder::SPRITE);
 	addChild(_cellMapTaskProgressBar, DrawOrder::PROGRESS);
-	addChild(_constructionProgress, DrawOrder::PROGRESS);
+	addChild(_cellCommonProgressBar, DrawOrder::PROGRESS);
 	addChild(_popupCatchInvestigator, DrawOrder::BUTTON);
 	scheduleUpdate();
 
@@ -151,16 +151,15 @@ void CellMapWidget::update(float dt)
 	cell->UpdateToTime(currentTime);
 	if (_cell.lock()->GetInfo().state == Cell::CONSTRUCTION)
 	{
-		_constructionProgress->SetProgressImmediately(cell->GetConstructionProgress(currentTime) * 100.0f);
-		_constructionProgress->setVisible(true);
+		_cellCommonProgressBar->SetProgressImmediately(cell->GetConstructionProgress(currentTime) * 100.0f);
+		_cellCommonProgressBar->setVisible(true);
 		_cellMapSprite->setVisible(false);
 		_lastCellState = Cell::CONSTRUCTION;
 	}
 	else if (cell->GetInfo().state == Cell::READY && _lastCellState == Cell::CONSTRUCTION)
 	{
 		World::Instance().GetMessageManager().SendGameMessage("Cell created");
-		removeChild(_constructionProgress);
-		_constructionProgress->setVisible(false);
+		_cellCommonProgressBar->setVisible(false);
 		_cellMapSprite->setVisible(true);
 		_lastCellState = Cell::READY;
 	}
@@ -174,8 +173,8 @@ void CellMapWidget::update(float dt)
 		float progress = abs(1.0f - cell->GetDestructionProgress(currentTime));
 		if (progress < 1.0f)
 		{
-			_constructionProgress->SetProgressImmediately(progress * 100.0f);
-			_constructionProgress->setVisible(true);
+			_cellCommonProgressBar->SetProgressImmediately(progress * 100.0f);
+			_cellCommonProgressBar->setVisible(true);
 			_cellMapSprite->setVisible(false);
 		}
 	}

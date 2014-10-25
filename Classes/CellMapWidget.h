@@ -48,7 +48,7 @@ private:
 
 	CellMapImage *_cellMapSprite;
 	RoundProgressBar *_cellMapTaskProgressBar;
-	RoundProgressBar *_constructionProgress;
+	RoundProgressBar *_cellCommonProgressBar;
 
 	CellMapPopupButton *_popupCatchInvestigator;
 
