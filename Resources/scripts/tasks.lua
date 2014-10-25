@@ -41,6 +41,16 @@ function IsShowTaskInList(cell, taskInfo)
 	return true
 end
 
+function TryToStartInvestigation(cell)
+	local cellInfo = cell:getInfo()
+	local investigationChance = GetInvestigationChance(cell)
+	Log:log("Investigation chance = " .. investigationChance)
+	if math.random(0, 1000) / 1000.0 < investigationChance then
+		World:addInvestigatorByInfo(cellInfo)
+		Log:log("Investigation started")
+	end
+end
+
 -- отправляем игроку сообщение, о том что задание выполнено
 function SayCompleted(taskName)
 	MessageManager:sendMessage("Task " .. taskName .. " completed")
@@ -51,8 +61,9 @@ function SayFailed(taskName)
 	MessageManager:sendMessage("Task " .. taskName .. " failed")
 end
 
-function MissionSuccess_Test(cellInfo, taskInfo)
-	Log:log("Task "..taskInfo.id.." successfully finished!")
+function MissionSuccess_Test(cell, taskInfo)
+	local cellInfo = cell:getInfo()
+	SayCompleted(taskInfo.title)
 
 	-- увеличивем преданность на 10% от текущего
 	cellInfo.devotion = cellInfo.devotion + (cellInfo.devotion * 0.1)
@@ -63,12 +74,11 @@ function MissionSuccess_Test(cellInfo, taskInfo)
 	if cellInfo.devotion > 1.0 then
 		cellInfo.devotion = 1
 	end
-
-	SayCompleted(taskInfo.title)
 end
 
-function MissionFail_Test(cellInfo, taskInfo)
-	Log:log("Task "..taskInfo.id.." failed.")
+function MissionFail_Test(cell, taskInfo)
+	local cellInfo = cell:getInfo()
+	SayFailed(taskInfo.title)
 
 	-- уменьшаем преданность на 10% от текущего
 	cellInfo.devotion = cellInfo.devotion - (cellInfo.devotion * 0.1)
@@ -77,35 +87,38 @@ function MissionFail_Test(cellInfo, taskInfo)
 	if cellInfo.membersCount > 2 then
 		cellInfo.membersCount = cellInfo.membersCount - 1
 	end
-	
-	SayFailed(taskInfo.title)
 end
 
-function MissionAbort_Test(cellInfo, taskInfo)
+function MissionAbort_Test(cell, taskInfo)
+	local cellInfo = cell:getInfo()
 	Log:log("Task "..taskInfo.title.." aborted")
 
 	-- уменьшаем довольство на 20% от текущего
 	cellInfo.devotion = cellInfo.devotion - (cellInfo.devotion * 0.2)
 end
 
-function MissionSuccess_InvestigatorTest(cellInfo, taskInfo)
+function MissionSuccess_InvestigatorTest(cell, taskInfo)
+	local cellInfo = cell:getInfo()
 	MessageManager:sendMessage("Investigation launched")
 	World:addInvestigatorByInfo(cellInfo)
 end
 
-function MissionFail_InvestigatorTest(cellInfo, taskInfo)
+function MissionFail_InvestigatorTest(cell, taskInfo)
+	local cellInfo = cell:getInfo()
 	SayFailed(taskInfo.title)
 	MessageManager:sendMessage("Investigation launched")
 	World:addInvestigatorByInfo(cellInfo)
 end
 
-function MissionSuccess_CheatMission(cellInfo, taskInfo)
+function MissionSuccess_CheatMission(cell, taskInfo)
+	local cellInfo = cell:getInfo()
 	SayCompleted("CheatMission")
 	cellInfo.membersCount = 100
 	cellInfo.cash = 100000
 end
 
-function MissionSuccess_TutorialRecrutment(cellInfo, taskInfo)
+function MissionSuccess_TutorialRecrutment(cell, taskInfo)
+	local cellInfo = cell:getInfo()
 	SayCompleted(taskInfo.title)
 
 	cellInfo.membersCount = cellInfo.membersCount + 6
@@ -113,7 +126,8 @@ function MissionSuccess_TutorialRecrutment(cellInfo, taskInfo)
 	World:runTutorialFuncton("AfterFirstTaskFinished")
 end
 
-function MissionSuccess_TutorialFirstRealWork(cellInfo, taskInfo)
+function MissionSuccess_TutorialFirstRealWork(cell, taskInfo)
+	local cellInfo = cell:getInfo()
 	SayCompleted(taskInfo.title)
 
 	-- мораль ячейки приближается к морали задания
@@ -128,17 +142,20 @@ function MissionSuccess_TutorialFirstRealWork(cellInfo, taskInfo)
 	World:runTutorialFuncton("AfterRealWorkDone")
 end
 
-function MissionSuccess_Alpha1Recrutment(cellInfo, taskInfo)
+function MissionSuccess_Alpha1Recrutment(cell, taskInfo)
+	local cellInfo = cell:getInfo()
 	SayCompleted(taskInfo.title)
 
 	cellInfo.membersCount = cellInfo.membersCount + math.random(2, 5)
 end
 
-function MissionFail_Alpha1Recrutment(cellInfo, taskInfo)
+function MissionFail_Alpha1Recrutment(cell, taskInfo)
+	local cellInfo = cell:getInfo()
 	SayFailed(taskInfo.title)
 end
 
-function MissionSuccess_Alpha1BankRobbery(cellInfo, taskInfo)
+function MissionSuccess_Alpha1BankRobbery(cell, taskInfo)
+	local cellInfo = cell:getInfo()
 	SayCompleted(taskInfo.title)
 
 	-- мораль ячейки приближается к морали задания
@@ -151,7 +168,8 @@ function MissionSuccess_Alpha1BankRobbery(cellInfo, taskInfo)
 	cellInfo.cash = cellInfo.cash + math.random(150, 200) * 1000
 end
 
-function MissionFail_Alpha1BankRobbery(cellInfo, taskInfo)
+function MissionFail_Alpha1BankRobbery(cell, taskInfo)
+	local cellInfo = cell:getInfo()
 	SayFailed(taskInfo.title)
 
 	-- мораль ячейки приближается к морали задания
@@ -161,4 +179,6 @@ function MissionFail_Alpha1BankRobbery(cellInfo, taskInfo)
 	cellInfo.devotion = cellInfo.devotion - (cellInfo.devotion * 0.01 * math.random(25, 35))
 
 	cellInfo.membersCount = cellInfo.membersCount - math.random(0, 3)
+
+	TryToStartInvestigation(cell)
 end

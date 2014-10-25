@@ -83,6 +83,7 @@ set(GAME_SRC
 	Classes/MainMenuScene.cpp
 	Classes/MapGuiLayer.cpp
 	Classes/MapProjector.cpp
+	Classes/MessageManager.cpp
 	Classes/NotificationMessageManager.cpp
 	Classes/NotificationMessageLayer.cpp
 	Classes/NotificationMessageWidget.cpp

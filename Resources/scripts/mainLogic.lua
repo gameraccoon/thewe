@@ -55,3 +55,22 @@ function CalcCellPursuedLevel(cell)
 	local cellInfo = cell:getInfo()
 	return cellInfo.fame * (1 - cellInfo.townInfluence)
 end
+
+-- вычисляем вероятность, с которой у данной ячейки может появиться инвестигейтор
+function GetInvestigationChance(cell)
+	local connectivity = cell:calcConnectivity()
+	local distanceToRoot = cell:calcDistanceToTheRootCell()
+	local pursuedLevel = CalcCellPursuedLevel(cell)
+
+	Log:log("conn" .. connectivity)
+
+	local investigationChance = pursuedLevel
+
+	if distanceToRoot < 2 then
+		investigationChance = investigationChance * 0.3
+	end
+
+	investigationChance = investigationChance * math.min(connectivity / 5.0, 1.0)
+
+	return investigationChance
+end

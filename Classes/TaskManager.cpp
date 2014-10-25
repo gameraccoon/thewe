@@ -91,7 +91,7 @@ void TaskManager::UpdateToTime(Utils::GameTime worldTime)
 				// call task end function (success, fail, abort)
 				luabind::call_function<bool>(World::Instance().GetLuaInst()->GetLuaState()
 											 , funcName.c_str()
-											 , &cell->GetInfo()
+											 , cell.get()
 											 , taskInfo
 											 , 0);
 

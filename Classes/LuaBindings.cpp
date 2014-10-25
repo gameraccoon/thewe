@@ -85,9 +85,9 @@ void LuaInstance::BindClass<const Task::Info>()
 		.def_readonly("level", &Task::Info::level)
 		.def_readonly("moraleLevel", &Task::Info::moralLevel)
 		.def_readonly("needCash", &Task::Info::needCash)
-		.def_readonly("needCash", &Task::Info::needMembers)
-		.def_readonly("needCash", &Task::Info::needTech)
-		.def_readonly("needCash", &Task::Info::politicalImpact)
+		.def_readonly("needMembers", &Task::Info::needMembers)
+		.def_readonly("needTech", &Task::Info::needTech)
+		.def_readonly("politicalImpact", &Task::Info::politicalImpact)
 	];
 }
 
