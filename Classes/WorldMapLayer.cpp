@@ -188,9 +188,9 @@ void WorldMapLayer::SetNextCellParent(Cell::WeakPtr parent)
 	_nextCellParent = parent;
 }
 
-void WorldMapLayer::CreateCell(const Cell::Info &info, Cell::State state)
+void WorldMapLayer::CreateCell(const Cell::Info &info, Cell::State state, bool root)
 {
-	Cell::Ptr cell = Cell::Create(info);
+	Cell::Ptr cell = Cell::Create(info, root);
 	
 	if (info.parent)
 	{
@@ -543,7 +543,7 @@ void WorldMapLayer::_OnTownSelect(Town::WeakPtr town)
 			info.constructionDuration = GameInfo::Instance().GetFloat("CELL_CONSTRUCTION_TIME");
 			info.destructionBegin = Utils::GetGameTime();
 			info.destructionDuration = GameInfo::Instance().GetFloat("CELL_DESTRUCTION_TIME");
-			CreateCell(info, Cell::READY);
+			CreateCell(info, Cell::READY, true);
 
 			World::Instance().SetFirstLaunch(false);
 

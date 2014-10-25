@@ -55,7 +55,7 @@ void Investigator::BeginInvestigation(void)
 	cell->GetInfo().state = Cell::ARRESTED;
 	_state = State::INVESTIGATION;
 
-	if (cell->GetInfo().parent == nullptr)
+	if (cell->IsRoot())
 	{
 		// set game over state to World
 		World::Instance().SetGameOver();
@@ -132,7 +132,7 @@ void Investigator::UpdateBranchesRecurcively(Investigator::BranchBundle &bundle,
 			}
 			else if (branch.cellTo->GetInfo().state != Cell::ARRESTED)
 			{
-				if (branch.cellTo->GetInfo().parent == nullptr)
+				if (branch.cellTo->IsRoot())
 				{
 					// We are in the root cell. This is GameOver condition
 					World::Instance().SetGameOver();

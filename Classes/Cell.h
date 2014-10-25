@@ -53,13 +53,13 @@ public:
 	typedef std::weak_ptr<Cell> WeakPtr;
 
 public:
-	Cell(const Info &info);
+	Cell(const Info &info, bool root);
 	~Cell(void);
 
 	/**
 	 * Create Cell and return a smart ptr
 	 */
-	static Ptr Create(const Info &info);
+	static Ptr Create(const Info &info, bool root = false);
 	
 	/**
 	 * Adds new child to the cell
@@ -89,6 +89,7 @@ public:
 	Task::WeakPtr getCurrentTask() const;
 
 	bool IsCurrentTaskExists(void) const;
+	bool IsRoot(void) const;
 
 	/** Add completed task */
 	void AddCompletedTask(const Task::CompletedTaskInfo& completedTask);
@@ -113,6 +114,8 @@ private:
 
 	/** All usual info about the cell */
 	Info _info;
+
+	bool _isRoot;
 
 	unsigned int _uid;
 

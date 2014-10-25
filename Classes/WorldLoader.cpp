@@ -343,7 +343,7 @@ bool WorldLoader::LoadGameState(void)
 		pugi::xml_node player_info = root.child("PlayerInfo");
 		pugi::xml_node cells_network = root.child("CellsNetwork");
 		pugi::xml_node inves_root = root.child("Investigators");
-		pugi::xml_node cell_root = cells_network.find_child_by_attribute("parent_id", "-1");
+		pugi::xml_node cell_root = cells_network.find_child_by_attribute("root", "true");
 
 		std::map<int, Cell *> cellsIndicesCast;
 
@@ -386,7 +386,7 @@ bool WorldLoader::LoadGameState(void)
 				info.destructionDuration = Utils::StringToTime(destruct.attribute("destruction_duration").as_string());
 			}
 
-			Cell::Ptr cell = Cell::Create(info);
+			Cell::Ptr cell = Cell::Create(info, true);
 			World::Instance().AddCell(cell);
 			cellsIndicesCast.insert(std::pair<int, Cell *>(cell_root.attribute("id").as_int(), cell.get()));
 
@@ -495,6 +495,10 @@ bool WorldLoader::SaveGameState(void)
 		cell_node.append_attribute("town_heart_pounding").set_value(info.townHeartPounding);
 		cell_node.append_attribute("town_influence").set_value(info.townInfluence);
 		cell_node.append_attribute("town_welfare").set_value(info.townWelfare);
+
+		if (cell->IsRoot()) {
+			cell_node.append_attribute("root").set_value(true);
+		}
 
 		if (!cell->GetChildren().empty())
 		{

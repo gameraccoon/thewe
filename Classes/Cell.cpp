@@ -5,9 +5,10 @@
 #include "GameInfo.h"
 #include "MessageManager.h"
 
-Cell::Cell(const Info &info)
+Cell::Cell(const Info &info, bool root)
 	: _info(info)
 	, _currentTask()
+	, _isRoot(root)
 	, _uid(World::Instance().GetNewUid())
 {
 	if (_info.constructionDuration <= 0)
@@ -24,9 +25,9 @@ Cell::~Cell(void)
 {
 }
 
-Cell::Ptr Cell::Create(const Info &info)
+Cell::Ptr Cell::Create(const Info &info, bool root)
 {
-	return std::make_shared<Cell>(info);
+	return std::make_shared<Cell>(info, root);
 }
 
 void Cell::AddChild(Cell::Ptr cell)
@@ -110,6 +111,11 @@ Task::WeakPtr Cell::getCurrentTask() const
 bool Cell::IsCurrentTaskExists(void) const
 {
 	return _currentTask.use_count() > 0;
+}
+
+bool Cell::IsRoot(void) const
+{
+	return _isRoot;
 }
 
 void Cell::AddCompletedTask(const Task::CompletedTaskInfo& completedTask)

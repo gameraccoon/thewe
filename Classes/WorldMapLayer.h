@@ -38,7 +38,7 @@ public:
 	void SetGuiEnabled(bool isEnabled);
 	void SetNextCellParent(Cell::WeakPtr parent);
 
-	void CreateCell(const Cell::Info &info, Cell::State state);
+	void CreateCell(const Cell::Info &info, Cell::State state, bool root = false);
 	void DeleteCell(CellMapWidget *widget);
 
 	void PushSessionFailScreen(void);
