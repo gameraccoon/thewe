@@ -20,7 +20,7 @@ bool InvestigatorMapWidget::init(void)
 		return false;
 	}
 
-	Cell::WeakPtr cell = World::Instance().GetCellByInfo(_investigator->GetInvestigationRoot()->GetInfo());
+	Cell::WeakPtr cell = World::Instance().GetCellsNetwork().GetCellByInfo(_investigator->GetInvestigationRoot()->GetInfo());
 	_invesRootCellWidget = _worldMapLayer->GetCellMapWidget(cell.lock());
 	_lastState = _investigator->GetState();
 
@@ -32,7 +32,7 @@ bool InvestigatorMapWidget::init(void)
 	// pop up investigator catch button in the cell map widget
 	if (_investigator->IsStateType(Investigator::START_CATCH_DELAY))
 	{
-		Cell::WeakPtr cell = World::Instance().GetCellByInfo(_investigator->GetInvestigationRoot()->GetInfo());
+		Cell::WeakPtr cell = World::Instance().GetCellsNetwork().GetCellByInfo(_investigator->GetInvestigationRoot()->GetInfo());
 		_invesRootCellWidget = _worldMapLayer->GetCellMapWidget(cell.lock());
 		_invesRootCellWidget->ShowInvestigatorLaunchButton(CC_CALLBACK_1(InvestigatorMapWidget::OnCatchInFirstCell, this));
 	}

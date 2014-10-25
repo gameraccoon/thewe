@@ -80,7 +80,7 @@ static void LoadCellsRecursively(pugi::xml_node root, pugi::xml_node parent_node
 		}
 
 		Cell::Ptr cell = Cell::Create(info);
-		World::Instance().AddCell(cell);
+		World::Instance().GetCellsNetwork().AppendCell(cell);
 		parent->AddChild(cell);
 		cast.insert(std::pair<int, Cell *>(child.attribute("id").as_int(), cell.get()));
 
@@ -387,7 +387,7 @@ bool WorldLoader::LoadGameState(void)
 			}
 
 			Cell::Ptr cell = Cell::Create(info, true);
-			World::Instance().AddCell(cell);
+			World::Instance().GetCellsNetwork().AppendCell(cell);
 			cellsIndicesCast.insert(std::pair<int, Cell *>(cell_root.attribute("id").as_int(), cell.get()));
 
 			pugi::xml_node tasks = cell_root.child("Tasks");
@@ -413,7 +413,7 @@ bool WorldLoader::LoadGameState(void)
 			{
 				int investigation_root_id = investigatorNode.attribute("investigation_root_cell").as_int();
 				Cell* ptr = cellsIndicesCast.find(investigation_root_id)->second;
-				Cell::WeakPtr cell = World::Instance().GetCellByInfo(ptr->GetInfo());
+				Cell::Ptr cell = World::Instance().GetCellsNetwork().GetCellByInfo(ptr->GetInfo());
 
 				Investigator::BranchBundle bundle;
 				LoadInvestigator(bundle, investigatorNode, cellsIndicesCast);
@@ -452,11 +452,11 @@ bool WorldLoader::SaveGameState(void)
 	// temporary code without transactional save
 
 	World &map = World::Instance();
-	const World::Cells &cells = map.GetCells();
+	const CellsNetwork::CellsList &cells = map.GetCellsNetwork().GetActiveCellsList();
 
 	std::map<const Cell *, int> cellsIndicesCast;
 	int index = 0;
-	for (World::Cells::const_iterator it = cells.begin(); it != cells.end(); ++it)
+	for (CellsNetwork::CellsCIter it = cells.begin(); it != cells.end(); ++it)
 	{
 		index = index + 1;
 		cellsIndicesCast.insert(std::pair<const Cell *, int>((*it).get(), index));
@@ -470,7 +470,7 @@ bool WorldLoader::SaveGameState(void)
 	pugi::xml_node inves_root = root.append_child("Investigators");
 
 	// save cells network
-	for (World::Cells::const_iterator it = cells.begin(); it != cells.end(); ++it)
+	for (CellsNetwork::CellsCIter it = cells.begin(); it != cells.end(); ++it)
 	{
 		const Cell *cell = (*it).get();
 		const Cell::Info info = (*it)->GetInfo();

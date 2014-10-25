@@ -6,6 +6,7 @@
 #include "MapGuiLayer.h"
 #include "TaskManager.h"
 #include "SessionEndScreen.h"
+#include "WorldLoader.h"
 #include "Log.h"
 #include <luabind/luabind.hpp>
 
@@ -63,7 +64,7 @@ bool WorldMapLayer::init(void)
 
 	SetGuiEnabled(true);
 
-	for (const Cell::Ptr cell : World::Instance().GetCells())
+	for (const Cell::Ptr cell : World::Instance().GetCellsNetwork().GetActiveCellsList())
 	{
 		CellMapWidget *widget = _CreateCellWidget(cell);
 		_cellWidgetsList.push_back(widget);
@@ -199,7 +200,7 @@ void WorldMapLayer::CreateCell(const Cell::Info &info, Cell::State state, bool r
 
 	cell->GetInfo().state = state;
 
-	World::Instance().AddCell(cell);
+	World::Instance().GetCellsNetwork().AppendCell(cell);
 
 	CellMapWidget *widget = _CreateCellWidget(cell);
 	_cellWidgetsList.push_back(widget);
@@ -546,6 +547,7 @@ void WorldMapLayer::_OnTownSelect(Town::WeakPtr town)
 			CreateCell(info, Cell::READY, true);
 
 			World::Instance().SetFirstLaunch(false);
+			WorldLoader::Instance().RequestToSave();
 
 			if (World::Instance().GetTutorialState() == "FirstCell")
 			{
@@ -588,6 +590,7 @@ void WorldMapLayer::_OnTownSelect(Town::WeakPtr town)
 				info.parent->GetInfo().membersCount -= GameInfo::Instance().GetInt("CELL_SPINOFF_MEMBERS_PRICE");
 
 				CreateCell(info, Cell::CONSTRUCTION);
+				WorldLoader::Instance().RequestToSave();
 			}
 
 			_nextCellParent = Cell::Ptr();
@@ -608,10 +611,10 @@ void WorldMapLayer::HideCellGameInterface(void)
 
 void WorldMapLayer::_UpdateNetwork()
 {
-	if (!World::Instance().GetRootCell().expired())
+	if (World::Instance().GetCellsNetwork().GetRootCell())
 	{
 		_networkVisualiser->clear();
-		_RecursiveUpdateNetworkVisualiser(_networkVisualiser, World::Instance().GetRootCell());
+		_RecursiveUpdateNetworkVisualiser(_networkVisualiser, World::Instance().GetCellsNetwork().GetRootCell());
 	}
 }
 
