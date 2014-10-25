@@ -149,6 +149,8 @@ bool World::RemoveCell(Cell::Ptr cell)
 	{
 		if ((*it) == cell)
 		{
+			cell->GetInfo().town.lock()->SetCellPresented(false);
+
 			Cell *parent = cell->GetInfo().parent;
 			if (parent) {
 				parent->RemoveChild(cell);
