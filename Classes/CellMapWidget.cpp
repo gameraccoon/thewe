@@ -35,6 +35,7 @@ public:
 		switch (_state)
 		{
 		case Cell::CONSTRUCTION:
+		case Cell::DESTRUCTION:
 		case Cell::READY:
 			_stateNormal->setVisible(true);
 			_stateArrested->setVisible(false);
@@ -56,6 +57,7 @@ public:
 		switch (_state)
 		{
 		case Cell::CONSTRUCTION:
+		case Cell::DESTRUCTION:
 		case Cell::READY:
 			return _stateNormal;
 			break;

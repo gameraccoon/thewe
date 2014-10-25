@@ -541,6 +541,8 @@ void WorldMapLayer::_OnTownSelect(Town::WeakPtr town)
 			info.townWelfare = GameInfo::Instance().GetFloat("CELL_STARTUP_TOWN_WELFARE");
 			info.constructionBegin = Utils::GetGameTime();
 			info.constructionDuration = GameInfo::Instance().GetFloat("CELL_CONSTRUCTION_TIME");
+			info.destructionBegin = Utils::GetGameTime();
+			info.destructionDuration = GameInfo::Instance().GetFloat("CELL_DESTRUCTION_TIME");
 			CreateCell(info, Cell::READY);
 
 			World::Instance().SetFirstLaunch(false);
@@ -579,6 +581,8 @@ void WorldMapLayer::_OnTownSelect(Town::WeakPtr town)
 				info.townWelfare = GameInfo::Instance().GetFloat("CELL_STARTUP_TOWN_WELFARE");
 				info.constructionBegin = Utils::GetGameTime();
 				info.constructionDuration = GameInfo::Instance().GetFloat("CELL_CONSTRUCTION_TIME");
+				info.destructionBegin = Utils::GetGameTime();
+				info.destructionDuration = GameInfo::Instance().GetFloat("CELL_DESTRUCTION_TIME");
 
 				info.parent->GetInfo().cash -= GameInfo::Instance().GetInt("CELL_SPINOFF_CASH_PRICE");
 				info.parent->GetInfo().membersCount -= GameInfo::Instance().GetInt("CELL_SPINOFF_MEMBERS_PRICE");

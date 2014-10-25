@@ -63,12 +63,20 @@ static void LoadCellsRecursively(pugi::xml_node root, pugi::xml_node parent_node
 		info.townWelfare = child.attribute("town_welfare").as_int();
 		info.constructionBegin = Utils::GetGameTime();
 		info.constructionDuration = GameInfo::Instance().GetFloat("CELL_CONSTRUCTION_TIME");
+		info.destructionBegin = Utils::GetGameTime();
+		info.destructionDuration = GameInfo::Instance().GetFloat("CELL_DESTRUCTION_TIME");
 
 		pugi::xml_node construct = child.child("Construction");
 		if (construct)
 		{
 			info.constructionBegin =  Utils::StringToTime(construct.attribute("construction_begin").as_string());
 			info.constructionDuration = Utils::StringToTime(construct.attribute("construction_duration").as_string());
+		}
+		pugi::xml_node destruct = child.child("Destruction");
+		if (destruct)
+		{
+			info.destructionBegin = Utils::StringToTime(destruct.attribute("destruction_begin").as_string());
+			info.destructionDuration = Utils::StringToTime(destruct.attribute("destruction_duration").as_string());
 		}
 
 		Cell::Ptr cell = Cell::Create(info);
@@ -362,12 +370,20 @@ bool WorldLoader::LoadGameState(void)
 			info.townWelfare = cell_root.attribute("town_welfare").as_int();
 			info.constructionBegin = Utils::GetGameTime();
 			info.constructionDuration = GameInfo::Instance().GetFloat("CELL_CONSTRUCTION_TIME");
+			info.destructionBegin = Utils::GetGameTime();
+			info.destructionDuration = GameInfo::Instance().GetFloat("CELL_DESTRUCTION_TIME");
 
 			pugi::xml_node construct = cell_root.child("Construction");
 			if (construct)
 			{
 				info.constructionBegin =  Utils::StringToTime(construct.attribute("construction_begin").as_string());
 				info.constructionDuration = Utils::StringToTime(construct.attribute("construction_duration").as_string());
+			}
+			pugi::xml_node destruct = cell_root.child("Destruction");
+			if (destruct)
+			{
+				info.destructionBegin = Utils::StringToTime(destruct.attribute("destruction_begin").as_string());
+				info.destructionDuration = Utils::StringToTime(destruct.attribute("destruction_duration").as_string());
 			}
 
 			Cell::Ptr cell = Cell::Create(info);
@@ -506,6 +522,12 @@ bool WorldLoader::SaveGameState(void)
 			pugi::xml_node construct = cell_node.append_child("Construction");
 			construct.append_attribute("construction_begin").set_value(Utils::TimeToString(info.constructionBegin).c_str());
 			construct.append_attribute("construction_duration").set_value(Utils::TimeToString(info.constructionDuration).c_str());
+		}
+		else if (info.state == Cell::State::DESTRUCTION)
+		{
+			pugi::xml_node destruct = cell_node.append_child("Destruction");
+			destruct.append_attribute("destruction_begin").set_value(Utils::TimeToString(info.destructionBegin).c_str());
+			destruct.append_attribute("destruction_duration").set_value(Utils::TimeToString(info.destructionDuration).c_str());
 		}
 	}
 
