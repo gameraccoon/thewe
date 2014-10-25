@@ -64,10 +64,12 @@ bool CellInfoMenu::init(void)
 	cocos2d::TTFConfig ttfConfig("arial.ttf", 18);
 	cocos2d::Label *labelTitle = cocos2d::Label::createWithTTF(ttfConfig, "Cell Info", cocos2d::TextHAlignment::CENTER);
 
-	float close_x = background->getContentSize().width  / 2 - closeButton->getContentSize().width  + 5.0f;
-	float close_y = background->getContentSize().height / 2 - closeButton->getContentSize().height + 5.0f;
-	float textPadding = 27.0f;
+	float close_x = background->getContentSize().width  / 2 - closeButton->getContentSize().width  + 23.0f;
+	float close_y = background->getContentSize().height / 2 - closeButton->getContentSize().height + 17.0f;
+	closeButton->setAnchorPoint(Vector2(0.5f, 0.5f));
 	closeButton->setPosition(close_x, close_y);
+
+	float textPadding = 27.0f;
 
 	float title_x = center.x;
 	float title_y = center.y + background->getContentSize().height / 2 - 16.0f;
