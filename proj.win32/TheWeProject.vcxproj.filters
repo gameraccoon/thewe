@@ -40,6 +40,12 @@
     <Filter Include="Classes\GameMap\Model">
       <UniqueIdentifier>{98697692-000d-4656-ad66-55f44742be61}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Classes\DataLoader">
+      <UniqueIdentifier>{f60ce8f2-0857-487a-98ff-7bcc56eb3311}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="dependencies\sqlite3">
+      <UniqueIdentifier>{25fe8be1-1243-43d7-8e82-ab73407e7ff1}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -207,9 +213,6 @@
     <ClCompile Include="..\Classes\WorldMapLayer.cpp">
       <Filter>Classes\GameMap</Filter>
     </ClCompile>
-    <ClCompile Include="..\Classes\WorldLoader.cpp">
-      <Filter>Classes\GameMap</Filter>
-    </ClCompile>
     <ClCompile Include="..\Classes\MapProjector.cpp">
       <Filter>Classes\GameMap</Filter>
     </ClCompile>
@@ -333,6 +336,21 @@
     <ClCompile Include="..\Classes\CellsNetwork.cpp">
       <Filter>Classes\GameMap\Model</Filter>
     </ClCompile>
+    <ClCompile Include="..\Classes\WorldLoader.cpp">
+      <Filter>Classes\DataLoader</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\GameSavesManager.cpp">
+      <Filter>Classes\DataLoader</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\SqliteConnection.cpp">
+      <Filter>Classes\DataLoader</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\SqliteDataReader.cpp">
+      <Filter>Classes\DataLoader</Filter>
+    </ClCompile>
+    <ClCompile Include="..\dependencies\sqlite3\sqlite3.c">
+      <Filter>dependencies\sqlite3</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="main.h">
@@ -429,9 +447,6 @@
       <Filter>dependencies\lua</Filter>
     </ClInclude>
     <ClInclude Include="..\Classes\WorldMapLayer.h">
-      <Filter>Classes\GameMap</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Classes\WorldLoader.h">
       <Filter>Classes\GameMap</Filter>
     </ClInclude>
     <ClInclude Include="..\Classes\MapProjector.h">
@@ -556,6 +571,27 @@
     </ClInclude>
     <ClInclude Include="..\Classes\CellsNetwork.h">
       <Filter>Classes\GameMap\Model</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\WorldLoader.h">
+      <Filter>Classes\DataLoader</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\DbConnection.h">
+      <Filter>Classes\DataLoader</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\GameSavesManager.h">
+      <Filter>Classes\DataLoader</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\SqlDataReader.h">
+      <Filter>Classes\DataLoader</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\SqliteConnection.h">
+      <Filter>Classes\DataLoader</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\SqliteDataReader.h">
+      <Filter>Classes\DataLoader</Filter>
+    </ClInclude>
+    <ClInclude Include="..\dependencies\sqlite3\sqlite3.h">
+      <Filter>dependencies\sqlite3</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

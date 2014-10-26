@@ -71,7 +71,7 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <Optimization>Disabled</Optimization>
-      <AdditionalIncludeDirectories>../dependencies/luabind-0.9.1;../dependencies/lua-5.1.5;../dependencies/pugixml-1.4;../dependencies/boost-1.55.0;$(EngineRoot)cocos\audio\include;$(EngineRoot)external;$(EngineRoot)external\chipmunk\include\chipmunk;$(EngineRoot);$(EngineRoot)extensions;..\Classes;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>../dependencies/luabind-0.9.1;../dependencies/lua-5.1.5;../dependencies/pugixml-1.4;../dependencies/boost-1.55.0;../dependencies/sqlite3;$(EngineRoot)cocos\audio\include;$(EngineRoot)external;$(EngineRoot)external\chipmunk\include\chipmunk;$(EngineRoot);$(EngineRoot)extensions;..\Classes;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>LUA_COMPAT_ALL;WIN32;_DEBUG;_WINDOWS;_USE_MATH_DEFINES;GL_GLEXT_PROTOTYPES;CC_ENABLE_CHIPMUNK_INTEGRATION=1;COCOS2D_DEBUG=1;_CRT_SECURE_NO_WARNINGS;_SCL_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <MinimalRebuild>false</MinimalRebuild>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
@@ -151,6 +151,7 @@ xcopy /Y /Q "$(EngineRoot)external\websockets\prebuilt\win32\*.lib" "$(SolutionD
     <ClCompile Include="..\Classes\Color.cpp" />
     <ClCompile Include="..\Classes\Drawable.cpp" />
     <ClCompile Include="..\Classes\EditorLayer.cpp" />
+    <ClCompile Include="..\Classes\GameSavesManager.cpp" />
     <ClCompile Include="..\Classes\Investigator.cpp" />
     <ClCompile Include="..\Classes\InvestigatorMapWidget.cpp" />
     <ClCompile Include="..\Classes\MessageManager.cpp" />
@@ -170,6 +171,8 @@ xcopy /Y /Q "$(EngineRoot)external\websockets\prebuilt\win32\*.lib" "$(SolutionD
     <ClCompile Include="..\Classes\Region.cpp" />
     <ClCompile Include="..\Classes\SessionEndScreen.cpp" />
     <ClCompile Include="..\Classes\SplashScreenScene.cpp" />
+    <ClCompile Include="..\Classes\SqliteConnection.cpp" />
+    <ClCompile Include="..\Classes\SqliteDataReader.cpp" />
     <ClCompile Include="..\Classes\Task.cpp" />
     <ClCompile Include="..\Classes\TaskManager.cpp" />
     <ClCompile Include="..\Classes\Town.cpp" />
@@ -231,6 +234,7 @@ xcopy /Y /Q "$(EngineRoot)external\websockets\prebuilt\win32\*.lib" "$(SolutionD
     <ClCompile Include="..\dependencies\luabind-0.9.1\src\weak_ref.cpp" />
     <ClCompile Include="..\dependencies\luabind-0.9.1\src\wrapper_base.cpp" />
     <ClCompile Include="..\dependencies\pugixml-1.4\pugixml.cpp" />
+    <ClCompile Include="..\dependencies\sqlite3\sqlite3.c" />
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -248,8 +252,10 @@ xcopy /Y /Q "$(EngineRoot)external\websockets\prebuilt\win32\*.lib" "$(SolutionD
     <ClInclude Include="..\Classes\CellTaskInfoMenu.h" />
     <ClInclude Include="..\Classes\CellTasksMenu.h" />
     <ClInclude Include="..\Classes\Color.h" />
+    <ClInclude Include="..\Classes\DbConnection.h" />
     <ClInclude Include="..\Classes\Drawable.h" />
     <ClInclude Include="..\Classes\EditorLayer.h" />
+    <ClInclude Include="..\Classes\GameSavesManager.h" />
     <ClInclude Include="..\Classes\Investigator.h" />
     <ClInclude Include="..\Classes\InvestigatorMapWidget.h" />
     <ClInclude Include="..\Classes\MessageManager.h" />
@@ -269,6 +275,9 @@ xcopy /Y /Q "$(EngineRoot)external\websockets\prebuilt\win32\*.lib" "$(SolutionD
     <ClInclude Include="..\Classes\SessionEndScreen.h" />
     <ClInclude Include="..\Classes\SettingsManager.h" />
     <ClInclude Include="..\Classes\SplashScreenScene.h" />
+    <ClInclude Include="..\Classes\SqlDataReader.h" />
+    <ClInclude Include="..\Classes\SqliteConnection.h" />
+    <ClInclude Include="..\Classes\SqliteDataReader.h" />
     <ClInclude Include="..\Classes\Task.h" />
     <ClInclude Include="..\Classes\TaskManager.h" />
     <ClInclude Include="..\Classes\Town.h" />
@@ -307,6 +316,7 @@ xcopy /Y /Q "$(EngineRoot)external\websockets\prebuilt\win32\*.lib" "$(SolutionD
     <ClInclude Include="..\dependencies\lua-5.1.5\lzio.h" />
     <ClInclude Include="..\dependencies\pugixml-1.4\pugiconfig.hpp" />
     <ClInclude Include="..\dependencies\pugixml-1.4\pugixml.hpp" />
+    <ClInclude Include="..\dependencies\sqlite3\sqlite3.h" />
     <ClInclude Include="main.h" />
   </ItemGroup>
   <ItemGroup>
