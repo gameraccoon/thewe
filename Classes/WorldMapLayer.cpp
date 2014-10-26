@@ -127,8 +127,13 @@ void WorldMapLayer::AcceptMessage(const Message &msg)
 			addChild(widget, Z_INVESTIGATOR);
 			_investigatorWidgetsList.push_back(widget);
 
-			dynamic_cast<GameScene*>(getParent())->MoveViewToPoint(
-				investigator->GetInvestigationRoot()->GetInfo().town.lock()->GetLocation());
+			if (World::Instance().GetTutorialState() == "WaitForCatchingFirstInvestigator")
+			{
+				dynamic_cast<GameScene*>(getParent())->MoveViewToPoint(
+					investigator->GetInvestigationRoot()->GetInfo().town.lock()->GetLocation());
+				_UpdateNetwork();
+			}
+
 		}
 	}
 	else if (msg.name == "DeleteInvestigatorWidget")

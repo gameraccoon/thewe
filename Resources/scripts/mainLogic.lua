@@ -1,4 +1,4 @@
-local StartWithoutTutorial = true
+local StartWithoutTutorial = false
 
 -- кешированные значения опыта для достижения уровней
 local CashedTableOfLevels = {}

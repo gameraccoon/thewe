@@ -161,7 +161,7 @@ set(GAME_SRC
 	dependencies/lua-5.1.5/lzio.c
 	dependencies/lua-5.1.5/print.c
 
-	dependencies/sqlite3/sqlite3.c
+	dependencies/sqlite3-3.8.7/sqlite3.c
 
 )
 elseif ( WIN32 )
