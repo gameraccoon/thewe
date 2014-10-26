@@ -22,7 +22,6 @@ bool TownMapWidget::init(void)
 	return true;
 }
 
-
 void TownMapWidget::SetHitArea(float beginX, float beginY, float endX, float endY)
 {
 	_hitAreaBeginX = beginX;

@@ -15,6 +15,7 @@ public:
 		CONSTRUCTION = 0,
 		ARRESTED,
 		READY,
+		AUTONOMY,
 		DESTRUCTION
 	};
 
@@ -47,6 +48,8 @@ public:
 		Utils::GameTime constructionDuration;
 		Utils::GameTime destructionBegin;
 		Utils::GameTime destructionDuration;
+		Utils::GameTime autonomyBegin;
+		Utils::GameTime autonomyDuration;
 	};
 
 	typedef std::shared_ptr<Cell> Ptr;
@@ -73,7 +76,8 @@ public:
 	 */
 	void RemoveChild(Cell::Ptr cell);
 
-	void Kill(void);
+	void BeginDestruction(void);
+	void BeginAutonomy(void);
 
 	/** Returns all child cells */
 	const std::vector<Cell::Ptr>& GetChildren() const;
@@ -89,6 +93,7 @@ public:
 	Task::WeakPtr getCurrentTask() const;
 
 	bool IsCurrentTaskExists(void) const;
+	bool IsState(State state) const;
 	bool IsRoot(void) const;
 
 	/** Add completed task */
@@ -100,6 +105,7 @@ public:
 
 	float GetConstructionProgress(Utils::GameTime time) const;
 	float GetDestructionProgress(Utils::GameTime time) const;
+	float GetAutonomyProgress(Utils::GameTime time) const;
 
 	float CalcConnectivity() const;
 	int CalcDistanceToTheRootCell() const;

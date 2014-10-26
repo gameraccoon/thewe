@@ -12,23 +12,30 @@ void CellsNetwork::InitAndLink(const CellsNetwork::CellsList &list)
 
 void CellsNetwork::UpdateToTime(Utils::GameTime time)
 {
+	for (CellsIter it = _cells.begin(); it != _cells.end(); ++it)
+	{
+		Cell::Ptr cell = (*it);		
+		if (!IsConnectedWithRoot(cell) && cell->IsState(Cell::READY)) {
+			cell->BeginAutonomy();
+		}
+	}
 }
 
 void CellsNetwork::AppendCell(Cell::Ptr cell)
 {
-	for (CellsIter it = _activeCells.begin(); it != _activeCells.end(); ++it) {
+	for (CellsIter it = _cells.begin(); it != _cells.end(); ++it) {
 		if ((*it) == cell) {
 			return;
 		}
 	}
 
-	_activeCells.push_back(cell);
+	_cells.push_back(cell);
 	_uidMapCast.insert(std::pair<int, Cell::Ptr>(cell->GetUid(), cell));
 }
 
 void CellsNetwork::RemoveCell(Cell::Ptr cell)
 {	
-	for (CellsIter it = _activeCells.begin(); it != _activeCells.end(); ++it)
+	for (CellsIter it = _cells.begin(); it != _cells.end(); ++it)
 	{
 		if ((*it) == cell)
 		{
@@ -42,7 +49,7 @@ void CellsNetwork::RemoveCell(Cell::Ptr cell)
 				child->SetParent(nullptr);
 			}
 
-			it = _activeCells.erase(it);
+			it = _cells.erase(it);
 			
 			std::map<int, Cell::Ptr>::const_iterator uidIter;
 			uidIter = _uidMapCast.find(cell->GetUid());
@@ -58,7 +65,7 @@ Cell::Ptr CellsNetwork::GetCellByInfo(const Cell::Info &info)
 	Cell *parent = info.parent;
 	Town::Ptr town = info.town.lock();
 
-	for (Cell::Ptr cell : _activeCells) {
+	for (Cell::Ptr cell : _cells) {
 		if (cell->GetInfo().parent == parent &&
 			cell->GetInfo().town.lock() == town)
 		{
@@ -83,7 +90,7 @@ Cell::Ptr CellsNetwork::GetCellByUid(int uid) const
 
 Cell::Ptr CellsNetwork::GetRootCell(void) const
 {
-	for (CellsCIter it = _activeCells.begin(); it != _activeCells.end(); ++it) {
+	for (CellsCIter it = _cells.begin(); it != _cells.end(); ++it) {
 		if ((*it)->IsRoot()) {
 			return (*it);
 		}
@@ -92,17 +99,32 @@ Cell::Ptr CellsNetwork::GetRootCell(void) const
 	return Cell::Ptr();
 }
 
-bool CellsNetwork::CheckActiveCellToOffline(Cell::Ptr cell)
-{
-	return false;
-}
-
 const CellsNetwork::CellsList& CellsNetwork::GetActiveCellsList(void) const
 {
-	return _activeCells;
+	return _cells;
 }
 
 const CellsNetwork::CellsList& CellsNetwork::GetOfflineCellsList(void) const
 {
-	return _offlineCells;
+	return _cells;
+}
+
+bool CellsNetwork::IsConnectedWithRoot(Cell::Ptr cell) const
+{
+	Cell *parent = cell->GetInfo().parent;
+	if (!cell->GetInfo().parent) {
+		return cell->IsRoot();
+	}
+
+	while (parent)
+	{
+		Cell *next = parent->GetInfo().parent;
+		if (!next) {
+			return parent->IsRoot();
+		}
+
+		parent = next;
+	}
+
+	return false;
 }

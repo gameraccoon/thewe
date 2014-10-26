@@ -66,11 +66,14 @@ void CellMenuSelector::update(float dt)
 
 	if (isVisible())
 	{
-		Vector2 initialPos = _cell.lock()->GetInfo().location;
-		Vector2 updatedPos = _projector->ProjectOnScreen(initialPos);
+		if (!_cell.expired())
+		{
+			Vector2 initialPos = _cell.lock()->GetInfo().location;
+			Vector2 updatedPos = _projector->ProjectOnScreen(initialPos);
 
-		_menu->setPosition(updatedPos);
-		_killButton->setPosition(updatedPos);
+			_menu->setPosition(updatedPos);
+			_killButton->setPosition(updatedPos);
+		}
 	}
 }
 
@@ -275,7 +278,7 @@ void CellMenuSelector::_MenuInputListener(cocos2d::Ref *sender)
 
 void CellMenuSelector::OnKillButtonPressed(cocos2d::Ref *sender)
 {
-	_cell.lock()->Kill();
+	_cell.lock()->BeginDestruction();
 	DisappearWithAnimation();
 }
 

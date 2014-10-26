@@ -15,10 +15,11 @@ public:
 	typedef CellsList::const_iterator CellsCIter;
 
 private:
-	CellsList _activeCells;
-	CellsList _offlineCells;
+	CellsList _cells;
 
 	std::map<int, Cell::Ptr> _uidMapCast;
+
+	bool IsConnectedWithRoot(Cell::Ptr cell) const;
 
 public:
 	CellsNetwork(void);
@@ -32,8 +33,6 @@ public:
 	Cell::Ptr GetCellByInfo(const Cell::Info &info);
 	Cell::Ptr GetCellByUid(int uid) const;
 	Cell::Ptr GetRootCell(void) const;
-
-	bool CheckActiveCellToOffline(Cell::Ptr cell);
 
 	const CellsList& GetActiveCellsList(void) const;
 	const CellsList& GetOfflineCellsList(void) const;

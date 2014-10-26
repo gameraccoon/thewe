@@ -15,6 +15,7 @@
 
 	<Const name="CELL_CONSTRUCTION_TIME" type="float" value="60.0" />
 	<Const name="CELL_DESTRUCTION_TIME" type="float" value="30.0" />
+	<const name="CELL_AUTONOMY_LIFE_TIME" type="float" value="60.0" />
 
 	<Const name="INVESTIGATION_DURATION" type="float" value="600.0" />
 	<Const name="INVESTIGATOR_CATCH_TIME" type="float" value="5.0" />

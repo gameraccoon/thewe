@@ -49,11 +49,18 @@ void Cell::RemoveChild(Cell::Ptr cell)
 	}
 }
 
-void Cell::Kill(void)
+void Cell::BeginDestruction(void)
 {
 	_info.state = DESTRUCTION;
 	_info.destructionBegin = Utils::GetGameTime();
 	_info.destructionDuration = GameInfo::Instance().GetFloat("CELL_DESTRUCTION_TIME");
+}
+
+void Cell::BeginAutonomy(void)
+{
+	_info.state = AUTONOMY;
+	_info.autonomyBegin = Utils::GetGameTime();
+	_info.autonomyDuration = GameInfo::Instance().GetFloat("CELL_AUTONOMY_LIFE_TIME");
 }
 
 void Cell::SetParent(Cell* cell)
@@ -89,6 +96,10 @@ void Cell::UpdateToTime(Utils::GameTime time)
 		World::Instance().GetCellsNetwork().RemoveCell(ptr);
 		MessageManager::Instance().PutMessage(Message("DeleteCellWidget", _uid));
 	}
+	else if (_info.state == AUTONOMY && time > _info.autonomyBegin + _info.autonomyDuration)
+	{
+		BeginDestruction();
+	}
 
 	_CheckValues();
 }
@@ -106,6 +117,11 @@ Task::WeakPtr Cell::getCurrentTask() const
 bool Cell::IsCurrentTaskExists(void) const
 {
 	return _currentTask.use_count() > 0;
+}
+
+bool Cell::IsState(State state) const
+{
+	return _info.state == state;
 }
 
 bool Cell::IsRoot(void) const
@@ -199,6 +215,11 @@ float Cell::GetConstructionProgress(Utils::GameTime time) const
 float Cell::GetDestructionProgress(Utils::GameTime time) const
 {
 	return 1.0f - ((float)((_info.destructionBegin + _info.destructionDuration) - time)) / ((float)_info.destructionDuration);
+}
+
+float Cell::GetAutonomyProgress(Utils::GameTime time) const
+{
+	return 1.0f - ((float)((_info.autonomyBegin + _info.autonomyDuration) - time)) / ((float)_info.autonomyDuration);
 }
 
 float Cell::CalcConnectivity() const
