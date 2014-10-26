@@ -71,7 +71,7 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <Optimization>Disabled</Optimization>
-      <AdditionalIncludeDirectories>../dependencies/luabind-0.9.1;../dependencies/lua-5.1.5;../dependencies/pugixml-1.4;../dependencies/boost-1.55.0;../dependencies/sqlite3;$(EngineRoot)cocos\audio\include;$(EngineRoot)external;$(EngineRoot)external\chipmunk\include\chipmunk;$(EngineRoot);$(EngineRoot)extensions;..\Classes;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>../dependencies/luabind-0.9.1;../dependencies/lua-5.1.5;../dependencies/pugixml-1.4;../dependencies/boost-1.55.0;../dependencies/sqlite3-3.8.7;$(EngineRoot)cocos\audio\include;$(EngineRoot)external;$(EngineRoot)external\chipmunk\include\chipmunk;$(EngineRoot);$(EngineRoot)extensions;..\Classes;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>LUA_COMPAT_ALL;WIN32;_DEBUG;_WINDOWS;_USE_MATH_DEFINES;GL_GLEXT_PROTOTYPES;CC_ENABLE_CHIPMUNK_INTEGRATION=1;COCOS2D_DEBUG=1;_CRT_SECURE_NO_WARNINGS;_SCL_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <MinimalRebuild>false</MinimalRebuild>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
@@ -234,7 +234,8 @@ xcopy /Y /Q "$(EngineRoot)external\websockets\prebuilt\win32\*.lib" "$(SolutionD
     <ClCompile Include="..\dependencies\luabind-0.9.1\src\weak_ref.cpp" />
     <ClCompile Include="..\dependencies\luabind-0.9.1\src\wrapper_base.cpp" />
     <ClCompile Include="..\dependencies\pugixml-1.4\pugixml.cpp" />
-    <ClCompile Include="..\dependencies\sqlite3\sqlite3.c" />
+    <ClCompile Include="..\dependencies\sqlite3-3.8.7\shell.c" />
+    <ClCompile Include="..\dependencies\sqlite3-3.8.7\sqlite3.c" />
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -316,7 +317,8 @@ xcopy /Y /Q "$(EngineRoot)external\websockets\prebuilt\win32\*.lib" "$(SolutionD
     <ClInclude Include="..\dependencies\lua-5.1.5\lzio.h" />
     <ClInclude Include="..\dependencies\pugixml-1.4\pugiconfig.hpp" />
     <ClInclude Include="..\dependencies\pugixml-1.4\pugixml.hpp" />
-    <ClInclude Include="..\dependencies\sqlite3\sqlite3.h" />
+    <ClInclude Include="..\dependencies\sqlite3-3.8.7\sqlite3.h" />
+    <ClInclude Include="..\dependencies\sqlite3-3.8.7\sqlite3ext.h" />
     <ClInclude Include="main.h" />
   </ItemGroup>
   <ItemGroup>

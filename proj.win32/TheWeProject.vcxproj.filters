@@ -348,7 +348,10 @@
     <ClCompile Include="..\Classes\SqliteDataReader.cpp">
       <Filter>Classes\DataLoader</Filter>
     </ClCompile>
-    <ClCompile Include="..\dependencies\sqlite3\sqlite3.c">
+    <ClCompile Include="..\dependencies\sqlite3-3.8.7\shell.c">
+      <Filter>dependencies\sqlite3</Filter>
+    </ClCompile>
+    <ClCompile Include="..\dependencies\sqlite3-3.8.7\sqlite3.c">
       <Filter>dependencies\sqlite3</Filter>
     </ClCompile>
   </ItemGroup>
@@ -590,7 +593,10 @@
     <ClInclude Include="..\Classes\SqliteDataReader.h">
       <Filter>Classes\DataLoader</Filter>
     </ClInclude>
-    <ClInclude Include="..\dependencies\sqlite3\sqlite3.h">
+    <ClInclude Include="..\dependencies\sqlite3-3.8.7\sqlite3.h">
+      <Filter>dependencies\sqlite3</Filter>
+    </ClInclude>
+    <ClInclude Include="..\dependencies\sqlite3-3.8.7\sqlite3ext.h">
       <Filter>dependencies\sqlite3</Filter>
     </ClInclude>
   </ItemGroup>
