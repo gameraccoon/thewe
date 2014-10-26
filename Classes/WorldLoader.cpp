@@ -14,88 +14,86 @@
 #include "GameInfo.h"
 
 #include <string>
+#include "SqliteDataReader.h"
+#include "SqliteConnection.h"
+
+static const std::string USER_DATA_TABLE = "user_data";
+static const std::string CELLS_TABLE = "cells";
+static const std::string RUNNED_TASKS_TABLE = "runned_tasks";
+static const std::string CONSTRUCTIONS_TABLE = "cell_constructions";
+
+struct WorldLoaderImpl
+{
+public:
+	WorldLoaderImpl(const std::string& filePath)
+		:database(filePath)
+	{
+	}
+
+public:
+	SqliteConnection database;
+};
 
 WorldLoader::WorldLoader()
 {
+	std::string dbPath = cocos2d::FileUtils::sharedFileUtils()->getWritablePath();
+	dbPath.append("userdata.db");
+	_impl = new WorldLoaderImpl(dbPath);
+
+	if (!_impl->database.IsTableExists(USER_DATA_TABLE))
+	{
+		_impl->database.execSql("CREATE TABLE " + USER_DATA_TABLE + " (tutorial_state VARCHAR(255));");
+		World::Instance().SetFirstLaunch(true);
+	}
+	else
+	{
+		World::Instance().SetFirstLaunch(false);
+	}
+
+	if (!_impl->database.IsTableExists(CELLS_TABLE))
+	{
+		_impl->database.execSql("CREATE TABLE " + CELLS_TABLE + " ("
+								"'id' INTEGER NOT NULL,"
+								"'state' INTEGER NOT NULL,"
+								"'parent_id' INTEGER DEFAULT (-1),"
+								"'town' VARCHAR(255) NOT NULL,"
+								"'location_x' REAL NOT NULL,"
+								"'location_y' REAL NOT NULL,"
+								"'cash' INTEGER NOT NULL DEFAULT (0),"
+								"'morale' REAL NOT NULL,"
+								"'contentment' REAL NOT NULL,"
+								"'members_count' INTEGER NOT NULL"
+								");");
+	}
+
+	if (!_impl->database.IsTableExists(RUNNED_TASKS_TABLE))
+	{
+		_impl->database.execSql("CREATE TABLE " + RUNNED_TASKS_TABLE + " ("
+								"'task_id' VARCHAR(255) NOT NULL,"
+								"'cell_id' INTEGER NOT NULL,"
+								"'start_time' VARCHAR(255) NOT NULL"
+								");");
+	}
+
+	if (!_impl->database.IsTableExists(CONSTRUCTIONS_TABLE))
+	{
+		_impl->database.execSql("CREATE TABLE " + CONSTRUCTIONS_TABLE + " ("
+								"'cell_id' INTEGER NOT NULL,"
+								"'begin_time' VARCHAR(255) NOT NULL,"
+								"'duration' VARCHAR(255) NOT NULL"
+								");");
+	}
 }
 
 WorldLoader::~WorldLoader()
 {
+	delete _impl;
 }
 
 WorldLoader& WorldLoader::Instance()
 {
 	static WorldLoader singleInstance;
 	return singleInstance;
-}
-
-static void LoadCellsRecursively(pugi::xml_node root, pugi::xml_node parent_node, Cell *parent, std::map<int, Cell *> &cast)
-{
-	pugi::xml_node childrens = parent_node.child("Childrens");
-	pugi::xml_node child_id_node;
-	if (childrens)
-	{
-		child_id_node = childrens.first_child();
-	}
-
-	while (child_id_node)
-	{
-		int child_id = child_id_node.attribute("id").as_int();
-		
-		pugi::xml_node child = root.find_child_by_attribute("id", cocos2d::StringUtils::format("%d", child_id).c_str());
-
-		Cell::Info info;
-		info.parent = parent;
-		info.state = (Cell::State)child.attribute("state").as_int();
-		info.town = World::Instance().GetTownByName(child.attribute("town").as_string());
-		info.location.x = child.attribute("location_x").as_float();
-		info.location.y = child.attribute("location_y").as_float();
-		info.cash = child.attribute("cash").as_float();
-		info.morale = child.attribute("morale").as_float();
-		info.devotion = child.attribute("devotion").as_float();
-		info.membersCount = child.attribute("members_count").as_int();
-		info.ratsCount = child.attribute("rats_count").as_int();
-		info.experience = child.attribute("experience").as_int();
-		info.fame = child.attribute("fame").as_float();
-		info.techUnitsCount = child.attribute("tech_units_count").as_int();
-		info.townHeartPounding = child.attribute("town_heart_pounding").as_int();
-		info.townInfluence = child.attribute("town_influence").as_int();
-		info.townWelfare = child.attribute("town_welfare").as_int();
-		info.constructionBegin = Utils::GetGameTime();
-		info.constructionDuration = GameInfo::Instance().GetFloat("CELL_CONSTRUCTION_TIME");
-		info.destructionBegin = Utils::GetGameTime();
-		info.destructionDuration = GameInfo::Instance().GetFloat("CELL_DESTRUCTION_TIME");
-
-		pugi::xml_node construct = child.child("Construction");
-		if (construct)
-		{
-			info.constructionBegin =  Utils::StringToTime(construct.attribute("construction_begin").as_string());
-			info.constructionDuration = Utils::StringToTime(construct.attribute("construction_duration").as_string());
-		}
-		pugi::xml_node destruct = child.child("Destruction");
-		if (destruct)
-		{
-			info.destructionBegin = Utils::StringToTime(destruct.attribute("destruction_begin").as_string());
-			info.destructionDuration = Utils::StringToTime(destruct.attribute("destruction_duration").as_string());
-		}
-
-		Cell::Ptr cell = Cell::Create(info);
-		World::Instance().AddCell(cell);
-		parent->AddChild(cell);
-		cast.insert(std::pair<int, Cell *>(child.attribute("id").as_int(), cell.get()));
-
-		pugi::xml_node tasks = child.child("Tasks");
-		if (tasks)
-		{
-			std::string currentTaskId = tasks.attribute("current_task_id").as_string();
-			Utils::GameTime startTime = Utils::StringToTime(tasks.attribute("task_start_time").as_string());
-			World::Instance().GetTaskManager().RunTask((Cell::WeakPtr)cell, currentTaskId, startTime);
-		}
-
-		LoadCellsRecursively(root, child, cell.get(), cast);
-
-		child_id_node = child_id_node.next_sibling();
-	}
 }
 
 static void LoadInvestigator(Investigator::BranchBundle &bundle, pugi::xml_node node, std::map<int, Cell *> &cast)
@@ -113,7 +111,7 @@ static void LoadInvestigator(Investigator::BranchBundle &bundle, pugi::xml_node 
 		branch.timeDuration = Utils::StringToTime(bundleNode.attribute("timeDuration").as_string());
 		branch.progressPercentage = 0.0f;
 		LoadInvestigator(branch.childBrunches, bundleNode, cast);
-		
+
 		bundle.push_back(branch);
 		bundleNode = bundleNode.next_sibling();
 	}
@@ -308,247 +306,251 @@ bool WorldLoader::LoadGameState(void)
 {
 	_state = State::Loading;
 
-	cocos2d::FileUtils *fu = cocos2d::FileUtils::getInstance();
-	std::string fullPath;
-	std::string buffer;
-	std::string filename = "save.sav";
-
-	pugi::xml_document doc;
-	pugi::xml_parse_result result;
-
-	fullPath = fu->fullPathForFilename(Utils::GetDocumentsPath().append(filename).c_str());
-	buffer = fu->getStringFromFile(fullPath);
-	result = doc.load_buffer(buffer.c_str(), buffer.size());
-
-	if (!result)
 	{
-		if (CreateEmptyGameState(filename))
+		std::map<int, std::pair<Cell::Ptr, int>> cellsIndicesCast;
+
+		SqliteDataReader::Ptr cellsReader = _impl->database.execQuery("SELECT * FROM " + CELLS_TABLE);
+		while (cellsReader->next())
 		{
-			fullPath = fu->fullPathForFilename(Utils::GetDocumentsPath().append(filename).c_str());
-			buffer = fu->getStringFromFile(fullPath);
-			result = doc.load_buffer(buffer.c_str(), buffer.size());
-		}
-		else
-		{
-			Log::Instance().writeError("Failed to create empty world state file.");
-		}
-	}
-
-	if (result)
-	{
-		// 1. find the root cell
-		// 2. recursively add childs
-
-		pugi::xml_node root = doc.first_child();
-		pugi::xml_node player_info = root.child("PlayerInfo");
-		pugi::xml_node cells_network = root.child("CellsNetwork");
-		pugi::xml_node inves_root = root.child("Investigators");
-		pugi::xml_node cell_root = cells_network.find_child_by_attribute("root", "true");
-
-		std::map<int, Cell *> cellsIndicesCast;
-
-		if (cell_root)
-		{ 
-			World::Instance().SetFirstLaunch(false);
-
 			Cell::Info info;
+			int id = cellsReader->getValueByName("id")->asInt();
+			int parentId = cellsReader->getValueByName("parent_id")->asInt();
+			info.state = (Cell::State)cellsReader->getValueByName("state")->asInt();
+			info.town = World::Instance().GetTownByName(cellsReader->getValueByName("town")->asString());
+			info.location.x = cellsReader->getValueByName("location_x")->asFloat();
+			info.location.y = cellsReader->getValueByName("location_y")->asFloat();
+			info.cash = cellsReader->getValueByName("cash")->asInt();
+			info.morale = cellsReader->getValueByName("morale")->asFloat();
+			info.contentment = cellsReader->getValueByName("contentment")->asFloat();
+			info.membersCount = cellsReader->getValueByName("members_count")->asInt();
 			info.parent = nullptr;
-			info.state = (Cell::State)cell_root.attribute("state").as_int();
-			info.town = World::Instance().GetTownByName(cell_root.attribute("town").as_string());
-			info.location.x = cell_root.attribute("location_x").as_float();
-			info.location.y = cell_root.attribute("location_y").as_float();
-			info.cash = cell_root.attribute("cash").as_float();
-			info.morale = cell_root.attribute("morale").as_float();
-			info.devotion = cell_root.attribute("devotion").as_float();
-			info.membersCount = cell_root.attribute("members_count").as_int();
-			info.ratsCount = cell_root.attribute("rats_count").as_int();
-			info.experience = cell_root.attribute("experience").as_int();
-			info.fame = cell_root.attribute("fame").as_float();
-			info.techUnitsCount = cell_root.attribute("tech_units_count").as_int();
-			info.townHeartPounding = cell_root.attribute("town_heart_pounding").as_int();
-			info.townInfluence = cell_root.attribute("town_influence").as_int();
-			info.townWelfare = cell_root.attribute("town_welfare").as_int();
+
+			// TEST
 			info.constructionBegin = Utils::GetGameTime();
-			info.constructionDuration = GameInfo::Instance().GetFloat("CELL_CONSTRUCTION_TIME");
-			info.destructionBegin = Utils::GetGameTime();
-			info.destructionDuration = GameInfo::Instance().GetFloat("CELL_DESTRUCTION_TIME");
+			info.constructionDuration = 1;
 
-			pugi::xml_node construct = cell_root.child("Construction");
-			if (construct)
-			{
-				info.constructionBegin =  Utils::StringToTime(construct.attribute("construction_begin").as_string());
-				info.constructionDuration = Utils::StringToTime(construct.attribute("construction_duration").as_string());
-			}
-			pugi::xml_node destruct = cell_root.child("Destruction");
-			if (destruct)
-			{
-				info.destructionBegin = Utils::StringToTime(destruct.attribute("destruction_begin").as_string());
-				info.destructionDuration = Utils::StringToTime(destruct.attribute("destruction_duration").as_string());
-			}
-
-			Cell::Ptr cell = Cell::Create(info, true);
+			Cell::Ptr cell = std::make_shared<Cell>(info);
 			World::Instance().AddCell(cell);
-			cellsIndicesCast.insert(std::pair<int, Cell *>(cell_root.attribute("id").as_int(), cell.get()));
-
-			pugi::xml_node tasks = cell_root.child("Tasks");
-			if (tasks)
-			{
-				std::string currentTaskId = tasks.attribute("current_task_id").as_string();
-				Utils::GameTime startTime = Utils::StringToTime(tasks.attribute("task_start_time").as_string());
-				World::Instance().GetTaskManager().RunTask((Cell::WeakPtr)cell, currentTaskId, startTime);
-			}
-
-			LoadCellsRecursively(cells_network, cell_root, cell.get(), cellsIndicesCast);
-		}
-		else
-		{
-			World::Instance().SetFirstLaunch(true);
+			cellsIndicesCast.insert(std::pair<int, std::pair<Cell::Ptr, int>>(id, std::pair<Cell::Ptr, int>(cell, parentId)));
 		}
 
-		if (inves_root)
+		// link cells by their id
+		for (auto& cell : cellsIndicesCast)
 		{
-			pugi::xml_node investigatorNode = inves_root.first_child();
-
-			while (investigatorNode)
+			if (cell.second.second != -1)
 			{
-				int investigation_root_id = investigatorNode.attribute("investigation_root_cell").as_int();
-				Cell* ptr = cellsIndicesCast.find(investigation_root_id)->second;
-				Cell::WeakPtr cell = World::Instance().GetCellByInfo(ptr->GetInfo());
-
-				Investigator::BranchBundle bundle;
-				LoadInvestigator(bundle, investigatorNode, cellsIndicesCast);
-				World::Instance().AddInvestigator(Investigator::Create(cell, bundle));
-
-				investigatorNode = investigatorNode.next_sibling();
+				Cell::Ptr parentCell = (*cellsIndicesCast.find(cell.second.second)).second.first;
+				parentCell->AddChild(cell.second.first);
 			}
 		}
 
-		if (player_info)
+		SqliteDataReader::Ptr constructionsReader = _impl->database.execQuery("SELECT * FROM " + CONSTRUCTIONS_TABLE);
+		while (constructionsReader->next())
 		{
-			pugi::xml_attribute tutorialState = player_info.attribute("tutorial_state");
-			World::Instance().SetTutorialState(tutorialState.as_string());
+			int cell_id = constructionsReader->getValueByName("cell_id")->asInt();
+			Cell::Ptr cell = (*cellsIndicesCast.find(cell_id)).second.first;
+			Cell::Info &info = cell->GetInfo();
+			info.constructionBegin =  Utils::StringToTime(constructionsReader->getValueByName("begin_time")->asString());
+			info.constructionDuration = Utils::StringToTime(constructionsReader->getValueByName("duration")->asString());
 		}
 
-		_state = State::Ready;
-		return true;
+		SqliteDataReader::Ptr tasksReader = _impl->database.execQuery("SELECT * FROM " + RUNNED_TASKS_TABLE);
+		while (tasksReader->next())
+		{
+			std::string currentTaskId = tasksReader->getValueByName("task_id")->asString();
+			Utils::GameTime startTime = Utils::StringToTime(tasksReader->getValueByName("start_time")->asString());
+			int cell_id = tasksReader->getValueByName("cell_id")->asInt();
+			Cell::Ptr cell = (*cellsIndicesCast.find(cell_id)).second.first;
+			World::Instance().GetTaskManager().RunTask(cell, currentTaskId, startTime);
+		}
 	}
-	else
+
+//	if (inves_root)
+//	{
+//		pugi::xml_node investigatorNode = inves_root.first_child();
+
+//		while (investigatorNode)
+//		{
+//			int investigation_root_id = investigatorNode.attribute("investigation_root_cell").as_int();
+//			Cell* ptr = cellsIndicesCast.find(investigation_root_id)->second;
+//			Cell::WeakPtr cell = World::Instance().GetCellByInfo(ptr->GetInfo());
+
+//			Investigator::BranchBundle bundle;
+//			LoadInvestigator(bundle, investigatorNode, cellsIndicesCast);
+//			World::Instance().AddInvestigator(Investigator::Create(cell, bundle));
+
+//			investigatorNode = investigatorNode.next_sibling();
+//		}
+//	}
+
+	// loading the tutorial state
 	{
-		Log::Instance().writeError("Failed to read world .");
+		SqliteDataReader::Ptr reader = _impl->database.execQuery("SELECT * FROM " + USER_DATA_TABLE + " LIMIT 1");
+		if (reader->next())
+		{
+			World::Instance().SetTutorialState(reader->getValueByName("tutorial_state")->asString());
+		}
 	}
 
 	_state = State::Ready;
 	return false;
 }
 
+void appendCellToQuery(std::string* const query, Cell* const cell, const std::map<const Cell *, int>* const cellsIndicesCast)
+{
+	const Cell::Info info = cell->GetInfo();
+
+	std::string parent_id = info.parent != nullptr ? std::to_string(cellsIndicesCast->find(info.parent)->second) : "-1";
+
+	query->append("(")
+		.append(std::to_string(cellsIndicesCast->find(cell)->second)).append(",")
+		.append(std::to_string(info.state)).append(",")
+		.append(parent_id).append(",")
+		.append("'").append(info.town.lock()->GetInfo().name).append("',")
+		.append(std::to_string(info.location.x)).append(",")
+		.append(std::to_string(info.location.y)).append(",")
+		.append(std::to_string(info.cash)).append(",")
+		.append(std::to_string(info.morale)).append(",")
+		.append(std::to_string(info.contentment)).append(",")
+		.append(std::to_string(info.membersCount))
+		.append(")");
+}
+
+void appendCellToQuery(std::string* const query, Task::Ptr task, int cellIndex)
+{
+	std::string currentTaskId = task->GetInfo()->id;
+	std::string taskStartTime = Utils::TimeToString(task->GetStartTime());
+
+	query->append("(")
+		.append("'").append(currentTaskId).append("',")
+		.append("'").append(std::to_string(cellIndex)).append("',")
+		.append("'").append(taskStartTime).append("'")
+		.append(")");
+}
+
+void appendCellConstructionToQuery(std::string* const query, Cell* cell, int cellIndex)
+{
+	const Cell::Info info = cell->GetInfo();
+
+	query->append("(")
+		.append("'").append(std::to_string(cellIndex)).append("',")
+		.append("'").append(Utils::TimeToString(info.constructionBegin)).append("',")
+		.append("'").append(Utils::TimeToString(info.constructionDuration)).append("'")
+		.append(")");
+}
+
 bool WorldLoader::SaveGameState(void)
 {
 	_state = State::Saving;
-	// TODO
-	// 1. get number of current profile
-	// 2. create and save xml-file whith name of save-@profile name@-@index + 1@
-	// 3. if saving complete delete the last
 
-	// temporary code without transactional save
+	// saving the cells network
+	std::string cellsAdditionSqlStatement =
+		"INSERT INTO " + CELLS_TABLE +
+		"(id, state, parent_id, town, location_x, location_y, cash, morale, contentment, members_count)"
+		"VALUES";
+	bool addCells = false;
 
-	World &map = World::Instance();
-	const World::Cells &cells = map.GetCells();
+	// saving the active tasks
+	std::string taskAdditionSqlStatement = "DELETE FROM " + RUNNED_TASKS_TABLE + ";"
+			"INSERT INTO " + RUNNED_TASKS_TABLE +
+			"(task_id, cell_id, start_time)"
+			"VALUES";
+	bool addTasks = false;
 
+	// saving construction state of the cells
+	std::string constructionSqlStatement = "DELETE FROM " + CONSTRUCTIONS_TABLE + ";"
+			"INSERT INTO " + CONSTRUCTIONS_TABLE +
+			"(cell_id, begin_time, duration)"
+			"VALUES";
+	bool addConstructions = false;
+
+	World &world = World::Instance();
+	const World::Cells &cells = world.GetCells();
+	int cellIndex = -1;
 	std::map<const Cell *, int> cellsIndicesCast;
-	int index = 0;
 	for (World::Cells::const_iterator it = cells.begin(); it != cells.end(); ++it)
 	{
-		index = index + 1;
-		cellsIndicesCast.insert(std::pair<const Cell *, int>((*it).get(), index));
-	}
-
-	pugi::xml_document doc;
-	pugi::xml_node root = doc.append_child("Save");
-	
-	pugi::xml_node player_info = root.append_child("PlayerInfo");
-	pugi::xml_node cells_root = root.append_child("CellsNetwork");
-	pugi::xml_node inves_root = root.append_child("Investigators");
-
-	// save cells network
-	for (World::Cells::const_iterator it = cells.begin(); it != cells.end(); ++it)
-	{
-		const Cell *cell = (*it).get();
-		const Cell::Info info = (*it)->GetInfo();
-	
-		int parent_id = info.parent != nullptr ? cellsIndicesCast.find(info.parent)->second : -1;
-
-		pugi::xml_node cell_node = cells_root.append_child("Cell");
-		cell_node.append_attribute("id").set_value(cellsIndicesCast.find(cell)->second);
-		cell_node.append_attribute("state").set_value((int)info.state);
-		cell_node.append_attribute("parent_id").set_value(parent_id);
-		cell_node.append_attribute("town").set_value(info.town.lock()->GetInfo().name.c_str());
-		cell_node.append_attribute("location_x").set_value(info.location.x);
-		cell_node.append_attribute("location_y").set_value(info.location.y);
-		cell_node.append_attribute("cash").set_value(info.cash);
-		cell_node.append_attribute("morale").set_value(info.morale);
-		cell_node.append_attribute("devotion").set_value(info.devotion);
-		cell_node.append_attribute("members_count").set_value(info.membersCount);
-		cell_node.append_attribute("rats_count").set_value(info.ratsCount);
-		cell_node.append_attribute("experience").set_value(info.experience);
-		cell_node.append_attribute("fame").set_value(info.fame);
-		cell_node.append_attribute("tech_units_count").set_value(info.techUnitsCount);
-		cell_node.append_attribute("town_heart_pounding").set_value(info.townHeartPounding);
-		cell_node.append_attribute("town_influence").set_value(info.townInfluence);
-		cell_node.append_attribute("town_welfare").set_value(info.townWelfare);
-
-		if (cell->IsRoot()) {
-			cell_node.append_attribute("root").set_value(true);
-		}
-
-		if (!cell->GetChildren().empty())
+		if (addCells)
 		{
-			pugi::xml_node childrens = cell_node.append_child("Childrens");
-			for (Cell::Ptr child : cell->GetChildren())
-			{
-				pugi::xml_node cell_child_node = childrens.append_child("Child");
-				cell_child_node.append_attribute("id").set_value(cellsIndicesCast.find(child.get())->second);
-			}
+			cellsAdditionSqlStatement.append(",");
 		}
+		else
+		{
+			addCells = true;
+		}
+
+		cellIndex++;
+		cellsIndicesCast.insert(std::pair<const Cell *, int>((*it).get(), cellIndex));
+
+		Cell *cell = (*it).get();
+		Cell::Info &cellInfo = cell->GetInfo();
+		appendCellToQuery(&cellsAdditionSqlStatement, cell, &cellsIndicesCast);
 
 		if (cell->IsCurrentTaskExists())
 		{
+			if (addTasks)
+			{
+				taskAdditionSqlStatement.append(",");
+			}
+			else
+			{
+				addTasks = true;
+			}
+
 			Task::Ptr task = cell->getCurrentTask().lock();
-			std::string currentTaskId = task->GetInfo()->id;
-			std::string taskStartTime = Utils::TimeToString(task->GetStartTime());
-
-			pugi::xml_node tasks = cell_node.append_child("Tasks");
-			tasks.append_attribute("current_task_id").set_value(currentTaskId.c_str());
-			tasks.append_attribute("task_start_time").set_value(taskStartTime.c_str());
+			appendCellToQuery(&taskAdditionSqlStatement, task, cellIndex);
 		}
 
-		if (info.state == Cell::State::CONSTRUCTION)
+		if (cellInfo.state == Cell::State::CONSTRUCTION)
 		{
-			pugi::xml_node construct = cell_node.append_child("Construction");
-			construct.append_attribute("construction_begin").set_value(Utils::TimeToString(info.constructionBegin).c_str());
-			construct.append_attribute("construction_duration").set_value(Utils::TimeToString(info.constructionDuration).c_str());
-		}
-		else if (info.state == Cell::State::DESTRUCTION)
-		{
-			pugi::xml_node destruct = cell_node.append_child("Destruction");
-			destruct.append_attribute("destruction_begin").set_value(Utils::TimeToString(info.destructionBegin).c_str());
-			destruct.append_attribute("destruction_duration").set_value(Utils::TimeToString(info.destructionDuration).c_str());
+			if (addConstructions)
+			{
+				constructionSqlStatement.append(",");
+			}
+			else
+			{
+				addConstructions = true;
+			}
+
+			appendCellConstructionToQuery(&constructionSqlStatement, cell, cellIndex);
 		}
 	}
+
+	cellsAdditionSqlStatement.append(";");
+	taskAdditionSqlStatement.append(";");
+	constructionSqlStatement.append(";");
 
 	// save investigator
-	for (Investigator::Ptr investigator : World::Instance().GetInvestigators())
-	{
-		pugi::xml_node investigatorNode = inves_root.append_child("Investigator");
-		int investigation_root_cell = cellsIndicesCast.find(investigator->GetInvestigationRoot().get())->second;
-		investigatorNode.append_attribute("investigation_root_cell").set_value(investigation_root_cell);
-		
-		SaveInvestigator(investigator->GetRootBranchBundle(), investigatorNode, cellsIndicesCast, true);
-	}
+//	for (Investigator::Ptr investigator : World::Instance().GetInvestigators())
+//	{
+//		pugi::xml_node investigatorNode = inves_root.append_child("Investigator");
+//		int investigation_root_cell = cellsIndicesCast.find(investigator->GetInvestigationRoot().get())->second;
+//		investigatorNode.append_attribute("investigation_root_cell").set_value(investigation_root_cell);
 
-	player_info.append_attribute("tutorial_state").set_value(World::Instance().GetTutorialState().c_str());
+//		SaveInvestigator(investigator->GetRootBranchBundle(), investigatorNode, cellsIndicesCast, true);
+//	}
+
+	// saving the tutorial state
+	std::string savingTutorialSqlStatement =
+			"INSERT INTO "+USER_DATA_TABLE+" (tutorial_state) VALUES ('" + world.GetTutorialState() +"');";
+
+	// begining transaction
+	_impl->database.execSql("BEGIN;");
+	// clearing tables
+	_impl->database.execSql("DELETE FROM " + CELLS_TABLE + ";"
+							"DELETE FROM " + RUNNED_TASKS_TABLE + ";"
+							"DELETE FROM " + CONSTRUCTIONS_TABLE + ";"
+							"DELETE FROM " + USER_DATA_TABLE + ";");
+	// adding new data
+	if (addCells) _impl->database.execSql(cellsAdditionSqlStatement);
+	if (addTasks) _impl->database.execSql(taskAdditionSqlStatement);
+	if (addConstructions) _impl->database.execSql(constructionSqlStatement);
+	_impl->database.execSql(savingTutorialSqlStatement);
+	// commiting transaction
+	_impl->database.execSql("COMMIT;");
 
 	_state = State::Ready;
-	return doc.save_file(Utils::GetDocumentsPath().append("save.sav").c_str());
+	return false;
 }
 
 void WorldLoader::RequestToSave()

@@ -1,6 +1,9 @@
 #ifndef WORLD_LOADER_H
 #define WORLD_LOADER_H
 
+// pimpl idiom
+struct WorldLoaderImpl;
+
 class WorldLoader
 {
 public:
@@ -28,6 +31,8 @@ private:
 		,Loading
 		,Saving
 	} _state;
+
+	WorldLoaderImpl* _impl;
 
 	/*
 	 * Turn off useless operations

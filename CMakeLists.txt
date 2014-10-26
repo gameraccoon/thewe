@@ -92,6 +92,8 @@ set(GAME_SRC
 	Classes/Region.cpp
 	Classes/SessionEndScreen.cpp
 	Classes/SplashScreenScene.cpp
+	Classes/SqliteConnection.cpp
+	Classes/SqliteDataReader.cpp
 	Classes/Task.cpp
 	Classes/TaskManager.cpp
 	Classes/Town.cpp
@@ -105,6 +107,8 @@ set(GAME_SRC
 	Classes/World.cpp
 	Classes/WorldLoader.cpp
 	Classes/WorldMapLayer.cpp
+
+	dependencies/pugixml-1.4/pugixml.cpp
 
 	dependencies/luabind-0.9.1/src/class.cpp
 	dependencies/luabind-0.9.1/src/class_info.cpp
@@ -155,6 +159,8 @@ set(GAME_SRC
 	dependencies/lua-5.1.5/lzio.c
 	dependencies/lua-5.1.5/print.c
 
+	dependencies/sqlite3/sqlite3.c
+
 )
 elseif ( WIN32 )
 set(GAME_SRCcos2d::c
@@ -192,7 +198,6 @@ include_directories(
 	${COCOS2D_ROOT}/external/curl/include/win32
 	${COCOS2D_ROOT}/external/tinyxml2
 	${COCOS2D_ROOT}/external/unzip
-	${COCOS2D_ROOT}/external/sqlite3/include
 	${COCOS2D_ROOT}/external/chipmunk/include/chipmunk
 	${COCOS2D_ROOT}/external/freetype2/include/win32
 	${COCOS2D_ROOT}/external/websockets/include/win32
@@ -211,7 +216,6 @@ link_directories(
 	${COCOS2D_ROOT}/external/glfw3/prebuilt/win32
 	${COCOS2D_ROOT}/external/webp/prebuilt/win32
 	${COCOS2D_ROOT}/external/curl/prebuilt/win32
-	${COCOS2D_ROOT}/external/sqlite3/libraries/win32
 	${COCOS2D_ROOT}/external/freetype2/prebuilt/win32
 	${COCOS2D_ROOT}/external/websockets/prebuilt/win32
 	${COCOS2D_ROOT}/external/spidermonkey/prebuilt/win32
@@ -247,6 +251,7 @@ include_directories(
 	${COCOS2D_ROOT}/../dependencies/boost_1_55_0
 	${COCOS2D_ROOT}/../dependencies/luabind-0.9.1
 	${COCOS2D_ROOT}/../dependencies/lua-5.1.5
+	${COCOS2D_ROOT}/../dependencies/sqlite3
 )
 
 link_directories(
@@ -335,8 +340,8 @@ target_link_libraries(${APP_NAME}
 	Xrandr
 	Xcursor
 	Xi
-	# наши библиотеки
-	pugixml
+	# другие библиотеки
+	dl
   )
 
 set(APP_BIN_DIR "${CMAKE_BINARY_DIR}/bin")
