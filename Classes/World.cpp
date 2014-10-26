@@ -129,7 +129,7 @@ void World::AddInvestigatorByCell(Cell::Ptr investigationRoot)
 
 	AddInvestigator(investigator);
 
-	WorldLoader::Instance().RequestToSave();
+	MessageManager::Instance().PutMessage(Message("SaveGame", 0));
 }
 
 void World::AddInvestigatorByInfo(const Cell::Info &cellInfo)

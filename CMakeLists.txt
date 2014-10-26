@@ -66,6 +66,7 @@ set(GAME_SRC
 	Classes/CellMapPopupButton.cpp
 	Classes/CellMapWidget.cpp
 	Classes/CellNetWidget.cpp
+	Classes/CellsNetwork.cpp
 	Classes/CellSpinoffMenu.cpp
 	Classes/CellTasksMenu.cpp
 	Classes/CellTaskInfoMenu.cpp
@@ -74,6 +75,7 @@ set(GAME_SRC
 	Classes/Drawable.cpp
 	Classes/EditorLayer.cpp
 	Classes/GameInfo.cpp
+	Classes/GameSavesManager.cpp
 	Classes/GameScene.cpp
 	Classes/Investigator.cpp
 	Classes/InvestigatorMapWidget.cpp

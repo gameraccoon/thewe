@@ -547,7 +547,7 @@ void WorldMapLayer::_OnTownSelect(Town::WeakPtr town)
 			CreateCell(info, Cell::READY, true);
 
 			World::Instance().SetFirstLaunch(false);
-			WorldLoader::Instance().RequestToSave();
+			MessageManager::Instance().PutMessage(Message("SaveGame", 0));
 
 			if (World::Instance().GetTutorialState() == "FirstCell")
 			{
@@ -590,7 +590,7 @@ void WorldMapLayer::_OnTownSelect(Town::WeakPtr town)
 				info.parent->GetInfo().membersCount -= GameInfo::Instance().GetInt("CELL_SPINOFF_MEMBERS_PRICE");
 
 				CreateCell(info, Cell::CONSTRUCTION);
-				WorldLoader::Instance().RequestToSave();
+				MessageManager::Instance().PutMessage(Message("SaveGame", 0));
 			}
 
 			_nextCellParent = Cell::Ptr();

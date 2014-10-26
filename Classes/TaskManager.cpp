@@ -4,6 +4,7 @@
 #include "World.h"
 #include "LuaInstance.h"
 #include "WorldLoader.h"
+#include "MessageManager.h"
 
 #include <luabind/luabind.hpp>
 
@@ -21,7 +22,7 @@ void TaskManager::RunTask(Cell::WeakPtr cell, const Task::Info* info, Utils::Gam
 
 	_runnedTasks.push_back(runnedTaskInfo);
 
-	WorldLoader::Instance().RequestToSave();
+	MessageManager::Instance().PutMessage(Message("SaveGame", 0));
 }
 
 void TaskManager::RunTask(Cell::WeakPtr cell, const std::string& id, Utils::GameTime startTime)
@@ -102,7 +103,7 @@ void TaskManager::UpdateToTime(Utils::GameTime worldTime)
 			// release smart ptr
 			iterator = _runnedTasks.erase(iterator);
 
-			WorldLoader::Instance().RequestToSave();
+			MessageManager::Instance().PutMessage(Message("SaveGame", 0));
 		}
 		else
 		{

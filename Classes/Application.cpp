@@ -7,6 +7,7 @@
 #include "MiscUtils.h"
 #include "Log.h"
 #include "WorldLoader.h"
+#include "GameSavesManager.h"
 
 AppDelegate::AppDelegate()
 {
@@ -65,8 +66,8 @@ bool AppDelegate::applicationDidFinishLaunching()
 
 	// load game data
 	World::Instance().InitLuaContext();
-	WorldLoader::Instance().LoadGameInfo();
-	WorldLoader::Instance().LoadGameState();
+	WorldLoader::LoadGameInfo();
+	GameSavesManager::Instance().LoadGameState();
 
 	// initialize graphics after all data is loaded
 	mainMenuScene->init();
