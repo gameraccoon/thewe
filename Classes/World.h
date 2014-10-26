@@ -8,18 +8,18 @@
 #include "Cell.h"
 #include "Town.h"
 #include "Investigator.h"
-#include "MiscUtils.h"
-#include "LuaInstance.h"
+#include "CellsNetwork.h"
 #include "TaskManager.h"
 #include "NotificationMessageManager.h"
 #include "Tutorial.h"
+#include "LuaInstance.h"
+#include "MiscUtils.h"
 
 class World
 {
 public:
 	
 	typedef std::vector<Region::Ptr> Regions;
-	typedef std::vector<Cell::Ptr> Cells;
 	typedef std::vector<Town::Ptr> Towns;
 	typedef std::vector<Investigator::Ptr> Investigators;
 
@@ -30,6 +30,7 @@ public:
 	static World& Instance();
 
 	TaskManager& GetTaskManager();
+	CellsNetwork& GetCellsNetwork();
 	NotificationMessageManager& GetMessageManager();
 
 	/** Removes all the regions */
@@ -38,29 +39,22 @@ public:
 	void StartLogic();
 
 	const Regions& GetRegions() const;
-	const Cells& GetCells() const;
 	const Towns& GetTowns() const;
 	const Investigators& GetInvestigators(void) const;
 
 	void AddRegion(Region::Ptr region);
-	void AddCell(Cell::Ptr cell);
 	void AddTown(Town::Ptr town);
 	void AddInvestigator(Investigator::Ptr investigator);
 	void AddInvestigatorByCell(Cell::Ptr investigationRoot);
 	void AddInvestigatorByInfo(const Cell::Info &cellInfo);
 
-	bool RemoveCell(Cell::Ptr cell);
 	void RemoveCellFromInvestigation(Cell::Ptr cell);
 	bool RemoveInvestigator(Investigator::Ptr investigator);
 	
-	Cell::Ptr GetCellByUid(int uid) const;
 	Investigator::Ptr GetInvestigatorByUid(int uid);
 
 	const Region::WeakPtr GetRegionByName(const std::string &name) const;
 	const Town::WeakPtr GetTownByName(const std::string &name) const;
-	const Cell::WeakPtr GetCellByInfo(const Cell::Info &info) const;
-	const Cell::WeakPtr GetRootCell(void) const;
-	int GetCellsCount() const;
 
 	void Update();
 
@@ -76,7 +70,7 @@ public:
 	bool IsCellUnderInvestigation(Cell::Ptr cell) const;
 
 	unsigned int GetNewUid(void) const;
-
+	int GetCellsCount(void) const;
 	LuaInstance* GetLuaInst(void) const;
 
 	void AddTutorial(Tutorial tutrorial);
@@ -91,15 +85,16 @@ public:
 	int GetExperienceForLevel(int level) const;
 	int GetLevelFromExperience(int experience) const;
 	float GetCellPursuedLevel(Cell* cell) const;
+
 private:
 	void CalcWorldCapturingState();
 
 private:
+	CellsNetwork _cellsNetwork;
 	TaskManager _taskManager;
 	NotificationMessageManager _messageManager;
 
 	Regions _regions;
-	Cells _cells;
 	Towns _towns;
 	Investigators _investigators;
 

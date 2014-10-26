@@ -38,6 +38,11 @@ TaskManager& World::GetTaskManager()
 	return _taskManager;
 }
 
+CellsNetwork& World::GetCellsNetwork()
+{
+	return _cellsNetwork;
+}
+
 NotificationMessageManager& World::GetMessageManager()
 {
 	return _messageManager;
@@ -99,13 +104,6 @@ void World::AddRegion(Region::Ptr region)
 	_regions.push_back(region);
 }
 
-void World::AddCell(Cell::Ptr cell)
-{
-	_cells.push_back(cell);
-	CalcWorldCapturingState();
-	WorldLoader::Instance().RequestToSave();
-}
-
 void World::AddTown(Town::Ptr cell)
 {
 	_towns.push_back(cell);
@@ -136,35 +134,11 @@ void World::AddInvestigatorByCell(Cell::Ptr investigationRoot)
 
 void World::AddInvestigatorByInfo(const Cell::Info &cellInfo)
 {
-	Cell::WeakPtr cell = GetCellByInfo(cellInfo);
+	Cell::WeakPtr cell = _cellsNetwork.GetCellByInfo(cellInfo);
 	if (!cell.expired())
 	{
 		AddInvestigatorByCell(cell.lock());
 	}
-}
-
-bool World::RemoveCell(Cell::Ptr cell)
-{
-	for (Cells::iterator it = _cells.begin(); it != _cells.end(); ++it)
-	{
-		if ((*it) == cell)
-		{
-			cell->GetInfo().town.lock()->SetCellPresented(false);
-
-			Cell *parent = cell->GetInfo().parent;
-			if (parent) {
-				parent->RemoveChild(cell);
-			}
-			for (Cell::Ptr child : cell->GetChildren()) {
-				child->SetParent(nullptr);
-			}
-
-			it = _cells.erase(it);
-			return true;
-		}
-	}
-
-	return false;
 }
 
 void World::RemoveCellFromInvestigation(Cell::Ptr cell)
@@ -187,16 +161,6 @@ bool World::RemoveInvestigator(Investigator::Ptr investigator)
 	}
 
 	return false;
-}
-
-Cell::Ptr World::GetCellByUid(int uid) const
-{
-	for (Cell::Ptr cell : _cells) {
-		if (cell->GetUid() == uid) {
-			return cell;
-		}
-	}
-	return Cell::Ptr();
 }
 
 Investigator::Ptr World::GetInvestigatorByUid(int uid)
@@ -235,48 +199,9 @@ const Town::WeakPtr World::GetTownByName(const std::string &name) const
 	return Town::WeakPtr();
 }
 
-const Cell::WeakPtr World::GetCellByInfo(const Cell::Info &info) const
-{
-	Cell *parent = info.parent;
-	Town::Ptr town = info.town.lock();
-
-	for (Cell::Ptr cell : _cells)
-	{
-		if (cell->GetInfo().parent == parent && cell->GetInfo().town.lock() == town)
-		{
-			return cell;
-		}
-	}
-
-	return Cell::WeakPtr();
-}
-
-const Cell::WeakPtr World::GetRootCell(void) const
-{
-	for (Cell::Ptr cell : _cells)
-	{
-		if (cell->GetInfo().parent == nullptr)
-		{
-			return cell;
-		}
-	}
-
-	return Cell::WeakPtr();
-}
-
-int World::GetCellsCount() const
-{
-	return _cells.size();
-}
-
 const World::Regions& World::GetRegions() const
 {
 	return _regions;
-}
-
-const World::Cells& World::GetCells() const
-{
-	return _cells;
 }
 
 const World::Towns& World::GetTowns() const
@@ -293,12 +218,15 @@ void World::Update()
 {
 	Utils::GameTime time = Utils::GetGameTime();
 
+	CalcWorldCapturingState();
+
 	for (Investigator::Ptr investigator : _investigators)
 	{
 		investigator->UpdateToTime(time);
 	}
 
 	_taskManager.UpdateToTime(time);
+	_cellsNetwork.UpdateToTime(time);
 
 	MessageManager::Instance().CallAcceptMessages();
 }
@@ -348,7 +276,7 @@ bool World::IsGameOver(void) const
 
 bool World::IsTownAvaliableToPlaceCell(Town::WeakPtr town) const
 {
-	for (Cell::Ptr cell : _cells)
+	for (Cell::Ptr cell : _cellsNetwork.GetActiveCellsList())
 	{
 		if (cell->GetInfo().town.lock()->GetName() == town.lock()->GetName())
 		{
@@ -375,6 +303,11 @@ unsigned int World::GetNewUid(void) const
 {
 	static unsigned int uid = 0;
 	return uid++;
+}
+
+int World::GetCellsCount(void) const
+{
+	return _cellsNetwork.GetActiveCellsList().size();
 }
 
 LuaInstance* World::GetLuaInst(void) const

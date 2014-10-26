@@ -330,6 +330,9 @@
     <ClCompile Include="..\Classes\MessageManager.cpp">
       <Filter>Classes</Filter>
     </ClCompile>
+    <ClCompile Include="..\Classes\CellsNetwork.cpp">
+      <Filter>Classes\GameMap\Model</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="main.h">
@@ -550,6 +553,9 @@
     </ClInclude>
     <ClInclude Include="..\Classes\MessageManager.h">
       <Filter>Classes</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\CellsNetwork.h">
+      <Filter>Classes\GameMap\Model</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

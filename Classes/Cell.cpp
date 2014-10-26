@@ -84,9 +84,9 @@ void Cell::UpdateToTime(Utils::GameTime time)
 	}
 	else if (_info.state == DESTRUCTION && time > _info.destructionBegin + _info.destructionDuration)
 	{
-		Cell::Ptr ptr = World::Instance().GetCellByInfo(_info).lock();
+		Cell::Ptr ptr = World::Instance().GetCellsNetwork().GetCellByInfo(_info);
 		World::Instance().RemoveCellFromInvestigation(ptr);
-		World::Instance().RemoveCell(ptr);
+		World::Instance().GetCellsNetwork().RemoveCell(ptr);
 		MessageManager::Instance().PutMessage(Message("DeleteCellWidget", _uid));
 	}
 
