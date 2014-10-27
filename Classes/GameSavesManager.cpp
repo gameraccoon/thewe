@@ -14,7 +14,7 @@
 static const std::string USER_DATA_TABLE = "user_data";
 static const std::string CELLS_TABLE = "cells";
 static const std::string RUNNED_TASKS_TABLE = "runned_tasks";
-static const std::string CONSTRUCTIONS_TABLE = "cell_constructions";
+static const std::string CONSTRUCTIONS_TABLE = "cell_processes";
 
 struct GameSavesManagerImpl
 {
@@ -62,7 +62,11 @@ void GameSavesManager::FirstInitSave()
 {
 	if (!_impl->database.IsTableExists(USER_DATA_TABLE))
 	{
-		_impl->database.execSql("CREATE TABLE " + USER_DATA_TABLE + " (tutorial_state VARCHAR(255));");
+		_impl->database.execSql("CREATE TABLE " + USER_DATA_TABLE + " ("
+								"last_uid INTEGER NOT NULL,"
+								"root_cell INTEGER NOT NULL,"
+								"tutorial_state VARCHAR(255) NOT NULL"
+								");");
 	}
 	else
 	{
@@ -73,7 +77,7 @@ void GameSavesManager::FirstInitSave()
 	{
 		_impl->database.execSql("CREATE TABLE " + CELLS_TABLE + " ("
 								"'id' INTEGER NOT NULL,"
-								"'state' INTEGER NOT NULL,"
+								"'state' VARCHAR(100) NOT NULL,"
 								"'parent_id' INTEGER DEFAULT (-1),"
 								"'town' VARCHAR(255) NOT NULL,"
 								"'location_x' REAL NOT NULL,"
@@ -89,7 +93,7 @@ void GameSavesManager::FirstInitSave()
 		_impl->database.execSql("CREATE TABLE " + RUNNED_TASKS_TABLE + " ("
 								"'task_id' VARCHAR(255) NOT NULL,"
 								"'cell_id' INTEGER NOT NULL,"
-								"'start_time' VARCHAR(255) NOT NULL"
+								"'start_time' VARCHAR(20) NOT NULL"
 								");");
 	}
 
@@ -97,9 +101,31 @@ void GameSavesManager::FirstInitSave()
 	{
 		_impl->database.execSql("CREATE TABLE " + CONSTRUCTIONS_TABLE + " ("
 								"'cell_id' INTEGER NOT NULL,"
-								"'begin_time' VARCHAR(255) NOT NULL,"
-								"'duration' VARCHAR(255) NOT NULL"
+								"'type' VARCHAR(100) NOT NULL,"
+								"'begin_time' VARCHAR(20) NOT NULL,"
+								"'duration' VARCHAR(20) NOT NULL"
 								");");
+	}
+}
+
+namespace std
+{
+	string to_string(Cell::State __val)
+	{
+		switch (__val) {
+		case Cell::State::READY:
+			return "READY";
+		case Cell::State::CONSTRUCTION:
+			return "CONSTRUCTION";
+		case Cell::State::DESTRUCTION:
+			return "DESTRUCTION";
+		case Cell::State::ARRESTED:
+			return "ARRESTED";
+		case Cell::State::AUTONOMY:
+			return "AUTONOMY";
+		default:
+			return "";
+		}
 	}
 }
 
@@ -127,8 +153,8 @@ void GameSavesManager::LoadGameState(void)
 			info.parent = nullptr;
 
 			// TEST
-			info.constructionBegin = Utils::GetGameTime();
-			info.constructionDuration = 1;
+			info.stateBegin = Utils::GetGameTime();
+			info.stateDuration = 1;
 
 			Cell::Ptr cell = std::make_shared<Cell>(info, false);
 			//World::Instance().AddCell(cell);
@@ -151,8 +177,17 @@ void GameSavesManager::LoadGameState(void)
 			int cell_id = constructionsReader->getValueByName("cell_id")->asInt();
 			Cell::Ptr cell = (*cellsIndicesCast.find(cell_id)).second.first;
 			Cell::Info &info = cell->GetInfo();
-			info.constructionBegin =  Utils::StringToTime(constructionsReader->getValueByName("begin_time")->asString());
-			info.constructionDuration = Utils::StringToTime(constructionsReader->getValueByName("duration")->asString());
+
+			if (std::to_string(info.state) == constructionsReader->getValueByName("type")->asString())
+			{
+				info.stateBegin = Utils::StringToTime(constructionsReader->getValueByName("begin_time")->asString());
+				info.stateDuration = Utils::StringToTime(constructionsReader->getValueByName("duration")->asString());
+			}
+			else
+			{
+				Log::Instance().writeWarning("Loaded old unusual process for a cell. Process type: "
+					+ constructionsReader->getValueByName("type")->asString());
+			}
 		}
 
 		SqliteDataReader::Ptr tasksReader = _impl->database.execQuery("SELECT * FROM " + RUNNED_TASKS_TABLE);
@@ -184,7 +219,7 @@ void AppendCellToQuery(std::string* const query, Cell* const cell, const std::ma
 
 	query->append("(")
 		.append(std::to_string(cellsIndicesCast->find(cell)->second)).append(",")
-		.append(std::to_string(info.state)).append(",")
+		.append("'").append(std::to_string(info.state)).append("',")
 		.append(parent_id).append(",")
 		.append("'").append(info.town.lock()->GetInfo().name).append("',")
 		.append(std::to_string(info.location.x)).append(",")
@@ -213,8 +248,9 @@ void AppendCellConstructionToQuery(std::string* const query, Cell* cell, int cel
 
 	query->append("(")
 		.append("'").append(std::to_string(cellIndex)).append("',")
-		.append("'").append(Utils::TimeToString(info.constructionBegin)).append("',")
-		.append("'").append(Utils::TimeToString(info.constructionDuration)).append("'")
+		.append("'").append(std::to_string(info.state)).append("',")
+		.append("'").append(Utils::TimeToString(info.stateBegin)).append("',")
+		.append("'").append(Utils::TimeToString(info.stateDuration)).append("'")
 		.append(")");
 }
 
@@ -237,7 +273,7 @@ void GameSavesManager::SaveGameState(void)
 	// saving construction state of the cells
 	std::string constructionSqlStatement = "DELETE FROM " + CONSTRUCTIONS_TABLE + ";"
 			"INSERT INTO " + CONSTRUCTIONS_TABLE +
-			"(cell_id, begin_time, duration)"
+			"(cell_id, type, begin_time, duration)"
 			"VALUES";
 	bool addConstructions = false;
 
@@ -278,7 +314,7 @@ void GameSavesManager::SaveGameState(void)
 			AppendTaskToQuery(&taskAdditionSqlStatement, task, cellIndex);
 		}
 
-		if (cellInfo.state == Cell::State::CONSTRUCTION)
+		if (cell->IsInTemporaryState())
 		{
 			if (addConstructions)
 			{
@@ -297,19 +333,12 @@ void GameSavesManager::SaveGameState(void)
 	taskAdditionSqlStatement.append(";");
 	constructionSqlStatement.append(";");
 
-	// save investigator
-//	for (Investigator::Ptr investigator : World::Instance().GetInvestigators())
-//	{
-//		pugi::xml_node investigatorNode = inves_root.append_child("Investigator");
-//		int investigation_root_cell = cellsIndicesCast.find(investigator->GetInvestigationRoot().get())->second;
-//		investigatorNode.append_attribute("investigation_root_cell").set_value(investigation_root_cell);
-
-//		SaveInvestigator(investigator->GetRootBranchBundle(), investigatorNode, cellsIndicesCast, true);
-//	}
-
-	// saving the tutorial state
+	// saving user data
 	std::string savingTutorialSqlStatement =
-			"INSERT INTO "+USER_DATA_TABLE+" (tutorial_state) VALUES ('" + world.GetTutorialState() +"');";
+			std::string("INSERT INTO ").append(USER_DATA_TABLE).append(" (last_uid, root_cell, tutorial_state) VALUES (")
+			.append(std::to_string(world.GetLastUid())).append(",")
+			.append(std::to_string(world.GetCellsNetwork().GetRootCell()->GetUid())).append(",")
+			.append("'").append(world.GetTutorialState()).append("');");
 
 	// begining transaction
 	_impl->database.execSql("BEGIN;");

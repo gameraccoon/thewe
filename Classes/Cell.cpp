@@ -51,16 +51,18 @@ void Cell::RemoveChild(Cell::Ptr cell)
 
 void Cell::BeginDestruction(void)
 {
-	_info.state = DESTRUCTION;
-	_info.destructionBegin = Utils::GetGameTime();
-	_info.destructionDuration = GameInfo::Instance().GetFloat("CELL_DESTRUCTION_TIME");
+	// ToDo: make some checks
+	_info.state = State::DESTRUCTION;
+	_info.stateBegin = Utils::GetGameTime();
+	_info.stateDuration = GameInfo::Instance().GetFloat("CELL_DESTRUCTION_TIME");
 }
 
 void Cell::BeginAutonomy(void)
 {
-	_info.state = AUTONOMY;
-	_info.autonomyBegin = Utils::GetGameTime();
-	_info.autonomyDuration = GameInfo::Instance().GetFloat("CELL_AUTONOMY_LIFE_TIME");
+	// ToDo: make some checks
+	_info.state = State::AUTONOMY;
+	_info.stateBegin = Utils::GetGameTime();
+	_info.stateDuration = GameInfo::Instance().GetFloat("CELL_AUTONOMY_LIFE_TIME");
 }
 
 void Cell::SetParent(Cell* cell)
@@ -85,18 +87,18 @@ Cell::Info& Cell::GetInfo(void)
 
 void Cell::UpdateToTime(Utils::GameTime time)
 {
-	if (_info.state == CONSTRUCTION && time > _info.constructionBegin + _info.constructionDuration)
+	if (_info.state == State::CONSTRUCTION && time > _info.stateBegin + _info.stateDuration)
 	{
-		_info.state = READY;
+		_info.state = State::READY;
 	}
-	else if (_info.state == DESTRUCTION && time > _info.destructionBegin + _info.destructionDuration)
+	else if (_info.state == State::DESTRUCTION && time > _info.stateBegin + _info.stateDuration)
 	{
 		Cell::Ptr ptr = World::Instance().GetCellsNetwork().GetCellByInfo(_info);
 		World::Instance().RemoveCellFromInvestigation(ptr);
 		World::Instance().GetCellsNetwork().RemoveCell(ptr);
 		MessageManager::Instance().PutMessage(Message("DeleteCellWidget", _uid));
 	}
-	else if (_info.state == AUTONOMY && time > _info.autonomyBegin + _info.autonomyDuration)
+	else if (_info.state == State::AUTONOMY && time > _info.stateBegin + _info.stateDuration)
 	{
 		BeginDestruction();
 	}
@@ -201,25 +203,15 @@ void Cell::_CheckValues() const
 		Log::Instance().writeWarning("Dead reference to town");
 	}
 
-	if (_info.constructionDuration <= 0)
+	if (IsInTemporaryState() && _info.stateDuration <= 0)
 	{
-		Log::Instance().writeError("Construction duration less or equals than zero");
+		Log::Instance().writeError("State duration less or equals than zero");
 	}
 }
 
-float Cell::GetConstructionProgress(Utils::GameTime time) const
+float Cell::GetStateProgress(Utils::GameTime time) const
 {
-	return 1.0f - ((float)((_info.constructionBegin + _info.constructionDuration) - time)) / ((float)_info.constructionDuration);
-}
-
-float Cell::GetDestructionProgress(Utils::GameTime time) const
-{
-	return 1.0f - ((float)((_info.destructionBegin + _info.destructionDuration) - time)) / ((float)_info.destructionDuration);
-}
-
-float Cell::GetAutonomyProgress(Utils::GameTime time) const
-{
-	return 1.0f - ((float)((_info.autonomyBegin + _info.autonomyDuration) - time)) / ((float)_info.autonomyDuration);
+	return 1.0f - ((float)((_info.stateBegin + _info.stateDuration) - time)) / ((float)_info.stateDuration);
 }
 
 float Cell::CalcConnectivity() const
@@ -244,4 +236,9 @@ int Cell::CalcDistanceToTheRootCell() const
 	{
 		return 0;
 	}
+}
+
+bool Cell::IsInTemporaryState() const
+{
+	return (_info.state != State::READY && _info.state != State::ARRESTED);
 }

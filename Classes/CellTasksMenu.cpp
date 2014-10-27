@@ -55,7 +55,7 @@ public:
 private:
 	void _OnStartPressed(cocos2d::Ref *sender)
 	{
-		if (_cell.lock()->GetInfo().state == Cell::READY)
+		if (_cell.lock()->GetInfo().state == Cell::State::READY)
 		{
 			World::Instance().GetTaskManager().RunTask(_cell, _taskInfo, Utils::GetGameTime());
 			_tasksScreen->CloseMenu();

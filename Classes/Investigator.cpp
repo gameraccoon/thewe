@@ -52,7 +52,7 @@ void Investigator::BeginInvestigation(void)
 	}
 
 	Cell::Ptr cell = _investigationRoot.lock();
-	cell->GetInfo().state = Cell::ARRESTED;
+	cell->GetInfo().state = Cell::State::ARRESTED;
 	_state = State::INVESTIGATION;
 
 	if (cell->IsRoot())
@@ -130,7 +130,7 @@ void Investigator::UpdateBranchesRecurcively(Investigator::BranchBundle &bundle,
 					branch.progressPercentage = 100.0f;
 				}
 			}
-			else if (branch.cellTo->GetInfo().state != Cell::ARRESTED)
+			else if (branch.cellTo->GetInfo().state != Cell::State::ARRESTED)
 			{
 				if (branch.cellTo->IsRoot())
 				{
@@ -139,7 +139,7 @@ void Investigator::UpdateBranchesRecurcively(Investigator::BranchBundle &bundle,
 				}
 				else
 				{
-					branch.cellTo->GetInfo().state = Cell::ARRESTED;
+					branch.cellTo->GetInfo().state = Cell::State::ARRESTED;
 
 					// trying to add bratch to parent cell
 					if (branch.cellTo->GetInfo().parent != branch.cellFrom)

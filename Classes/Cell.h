@@ -10,16 +10,16 @@
 class Cell
 {
 public:
-	enum State
+	enum class State
 	{
-		CONSTRUCTION = 0,
+		READY = 0,
+		CONSTRUCTION,
 		ARRESTED,
-		READY,
 		AUTONOMY,
 		DESTRUCTION
 	};
 
-	enum Specialization
+	enum class Specialization
 	{
 		NORMAL
 	};
@@ -44,12 +44,9 @@ public:
 		float townHeartPounding;
 		float townWelfare;
 
-		Utils::GameTime constructionBegin;
-		Utils::GameTime constructionDuration;
-		Utils::GameTime destructionBegin;
-		Utils::GameTime destructionDuration;
-		Utils::GameTime autonomyBegin;
-		Utils::GameTime autonomyDuration;
+		// current process (construction, destruction, etc..)
+		Utils::GameTime stateBegin;
+		Utils::GameTime stateDuration;
 	};
 
 	typedef std::shared_ptr<Cell> Ptr;
@@ -103,17 +100,16 @@ public:
 
 	void UpdateToTime(Utils::GameTime time);
 
-	float GetConstructionProgress(Utils::GameTime time) const;
-	float GetDestructionProgress(Utils::GameTime time) const;
-	float GetAutonomyProgress(Utils::GameTime time) const;
+	float GetStateProgress(Utils::GameTime time) const;
 
 	float CalcConnectivity() const;
 	int CalcDistanceToTheRootCell() const;
 
-	/** Set parent for the cell */
-	void SetParent(Cell *cell);
+	bool IsInTemporaryState() const;
 
 private:
+	/** Set parent for the cell */
+	void SetParent(Cell *cell);
 
 	/** Check all values and write warnings to the log */
 	void _CheckValues() const;

@@ -34,14 +34,14 @@ public:
 
 		switch (_state)
 		{
-		case Cell::CONSTRUCTION:
-		case Cell::DESTRUCTION:
-		case Cell::AUTONOMY:
-		case Cell::READY:
+		case Cell::State::CONSTRUCTION:
+		case Cell::State::DESTRUCTION:
+		case Cell::State::AUTONOMY:
+		case Cell::State::READY:
 			_stateNormal->setVisible(true);
 			_stateArrested->setVisible(false);
 			break;
-		case Cell::ARRESTED:
+		case Cell::State::ARRESTED:
 			_stateNormal->setVisible(false);
 			_stateArrested->setVisible(true);
 			break;
@@ -55,13 +55,13 @@ public:
 	{
 		switch (_state)
 		{
-		case Cell::CONSTRUCTION:
-		case Cell::DESTRUCTION:
-		case Cell::AUTONOMY:
-		case Cell::READY:
+		case Cell::State::CONSTRUCTION:
+		case Cell::State::DESTRUCTION:
+		case Cell::State::AUTONOMY:
+		case Cell::State::READY:
 			return _stateNormal;
 			break;
-		case Cell::ARRESTED:
+		case Cell::State::ARRESTED:
 			return _stateArrested;
 			break;
 		default:
@@ -86,7 +86,7 @@ CellMapWidget::CellMapWidget(Cell::WeakPtr cell)
 	, _hitAreaEndY(1.0f)
 	, _projectorUid(-1)
 	, _cellUid(cell.lock()->GetUid())
-	, _lastCellState(Cell::READY)
+	, _lastCellState(Cell::State::READY)
 	, _cellMapSprite(nullptr)
 	, _cellCommonProgressBar(nullptr)
 {
@@ -147,37 +147,37 @@ void CellMapWidget::update(float dt)
 
 	Utils::GameTime currentTime = Utils::GetGameTime();
 	cell->UpdateToTime(currentTime);
-	if (cell->IsState(Cell::CONSTRUCTION))
+	if (cell->IsState(Cell::State::CONSTRUCTION))
 	{
-		_cellCommonProgressBar->SetProgressImmediately(cell->GetConstructionProgress(currentTime) * 100.0f);
+		_cellCommonProgressBar->SetProgressImmediately(cell->GetStateProgress(currentTime) * 100.0f);
 		_cellCommonProgressBar->setVisible(true);
 		_cellMapSprite->setVisible(false);
-		_lastCellState = Cell::CONSTRUCTION;
+		_lastCellState = Cell::State::CONSTRUCTION;
 	}
-	else if (cell->IsState(Cell::READY) && _lastCellState == Cell::CONSTRUCTION)
+	else if (cell->IsState(Cell::State::READY) && _lastCellState == Cell::State::CONSTRUCTION)
 	{
 		World::Instance().GetMessageManager().SendGameMessage("Cell created");
 		_cellCommonProgressBar->setVisible(false);
 		_cellMapSprite->setVisible(true);
-		_lastCellState = Cell::READY;
+		_lastCellState = Cell::State::READY;
 	}
-	else if (cell->IsState(Cell::ARRESTED) && _lastCellState == Cell::READY)
+	else if (cell->IsState(Cell::State::ARRESTED) && _lastCellState == Cell::State::READY)
 	{
-		_cellMapSprite->SwitchState(Cell::ARRESTED);
-		_lastCellState = Cell::ARRESTED;
+		_cellMapSprite->SwitchState(Cell::State::ARRESTED);
+		_lastCellState = Cell::State::ARRESTED;
 	}
-	else if (cell->IsState(Cell::AUTONOMY))
+	else if (cell->IsState(Cell::State::AUTONOMY))
 	{
-		float progress = abs(1.0f - cell->GetAutonomyProgress(currentTime));
+		float progress = abs(1.0f - cell->GetStateProgress(currentTime));
 		if (progress <= 1.0f)
 		{
 			_cellMapTaskProgressBar->SetProgressImmediately(progress * 100.0f);
 			_cellMapTaskProgressBar->setVisible(true);
 		}
 	}
-	else if (cell->IsState(Cell::DESTRUCTION))
+	else if (cell->IsState(Cell::State::DESTRUCTION))
 	{
-		float progress = abs(1.0f - cell->GetDestructionProgress(currentTime));
+		float progress = abs(1.0f - cell->GetStateProgress(currentTime));
 		if (progress <= 1.0f)
 		{
 			_cellCommonProgressBar->SetProgressImmediately(progress * 100.0f);
@@ -186,7 +186,7 @@ void CellMapWidget::update(float dt)
 		}
 	}
 
-	if (cell->IsState(Cell::READY))
+	if (cell->IsState(Cell::State::READY))
 	{
 		if (cell->IsCurrentTaskExists())
 		{

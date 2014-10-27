@@ -15,7 +15,7 @@ void CellsNetwork::UpdateToTime(Utils::GameTime time)
 	for (CellsIter it = _cells.begin(); it != _cells.end(); ++it)
 	{
 		Cell::Ptr cell = (*it);		
-		if (!IsConnectedWithRoot(cell) && cell->IsState(Cell::READY)) {
+		if (!IsConnectedWithRoot(cell) && cell->IsState(Cell::State::READY)) {
 			cell->BeginAutonomy();
 		}
 	}
@@ -44,9 +44,6 @@ void CellsNetwork::RemoveCell(Cell::Ptr cell)
 			Cell *parent = cell->GetInfo().parent;
 			if (parent) {
 				parent->RemoveChild(cell);
-			}
-			for (Cell::Ptr child : cell->GetChildren()) {
-				child->SetParent(nullptr);
 			}
 
 			it = _cells.erase(it);

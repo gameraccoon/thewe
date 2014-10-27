@@ -133,7 +133,6 @@ void WorldMapLayer::AcceptMessage(const Message &msg)
 					investigator->GetInvestigationRoot()->GetInfo().town.lock()->GetLocation());
 				_UpdateNetwork();
 			}
-
 		}
 	}
 	else if (msg.name == "DeleteInvestigatorWidget")
@@ -469,7 +468,7 @@ Cell::WeakPtr WorldMapLayer::_GetCellUnderPoint(const Vector2& point) const
 	{
 		Cell::Ptr cell = widget->GetCell().lock();
 
-		if (!cell || cell->GetInfo().state != Cell::READY)
+		if (!cell || cell->GetInfo().state != Cell::State::READY)
 		{
 			continue;
 		}
@@ -541,15 +540,11 @@ void WorldMapLayer::_OnTownSelect(Town::WeakPtr town)
 			info.techUnitsCount = GameInfo::Instance().GetInt("CELL_STARTUP_TECH_UNITS_COUNT");
 			info.experience = 0;
 			info.fame = 0.0f;
-			info.specialization = Cell::NORMAL;
+			info.specialization = Cell::Specialization::NORMAL;
 			info.townHeartPounding = GameInfo::Instance().GetFloat("CELL_STARTUP_TOWN_HEART_POUNDING");
 			info.townInfluence = GameInfo::Instance().GetFloat("CELL_STARTUP_TOWN_INFLUENCE");
 			info.townWelfare = GameInfo::Instance().GetFloat("CELL_STARTUP_TOWN_WELFARE");
-			info.constructionBegin = Utils::GetGameTime();
-			info.constructionDuration = GameInfo::Instance().GetFloat("CELL_CONSTRUCTION_TIME");
-			info.destructionBegin = Utils::GetGameTime();
-			info.destructionDuration = GameInfo::Instance().GetFloat("CELL_DESTRUCTION_TIME");
-			CreateCell(info, Cell::READY, true);
+			CreateCell(info, Cell::State::READY, true);
 
 			World::Instance().SetFirstLaunch(false);
 			MessageManager::Instance().PutMessage(Message("SaveGame", 0));
@@ -582,19 +577,18 @@ void WorldMapLayer::_OnTownSelect(Town::WeakPtr town)
 				info.techUnitsCount = GameInfo::Instance().GetInt("CELL_STARTUP_TECH_UNITS_COUNT");
 				info.experience = 0;
 				info.fame = 0.0f;
-				info.specialization = Cell::NORMAL;
+				info.specialization = Cell::Specialization::NORMAL;
 				info.townHeartPounding = GameInfo::Instance().GetFloat("CELL_STARTUP_TOWN_HEART_POUNDING");
 				info.townInfluence = GameInfo::Instance().GetFloat("CELL_STARTUP_TOWN_INFLUENCE");
 				info.townWelfare = GameInfo::Instance().GetFloat("CELL_STARTUP_TOWN_WELFARE");
-				info.constructionBegin = Utils::GetGameTime();
-				info.constructionDuration = GameInfo::Instance().GetFloat("CELL_CONSTRUCTION_TIME");
-				info.destructionBegin = Utils::GetGameTime();
-				info.destructionDuration = GameInfo::Instance().GetFloat("CELL_DESTRUCTION_TIME");
 
 				info.parent->GetInfo().cash -= GameInfo::Instance().GetInt("CELL_SPINOFF_CASH_PRICE");
 				info.parent->GetInfo().membersCount -= GameInfo::Instance().GetInt("CELL_SPINOFF_MEMBERS_PRICE");
 
-				CreateCell(info, Cell::CONSTRUCTION);
+				info.stateBegin = Utils::GetGameTime();
+				info.stateDuration = GameInfo::Instance().GetFloat("CELL_CONSTRUCTION_TIME");
+
+				CreateCell(info, Cell::State::CONSTRUCTION);
 				MessageManager::Instance().PutMessage(Message("SaveGame", 0));
 			}
 

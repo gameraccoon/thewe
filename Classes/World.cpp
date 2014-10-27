@@ -18,6 +18,7 @@ World::World()
 	, _isLuaInited(false)
 	, _isGameOver(false)
 	, _tutorialState("NotInitialized")
+	, _uid(0)
 {
 	_luaScript = new LuaInstance();
 }
@@ -299,10 +300,26 @@ bool World::IsCellUnderInvestigation(Cell::Ptr cell) const
 	return false;
 }
 
-unsigned int World::GetNewUid(void) const
+unsigned int World::GetNewUid(void)
 {
-	static unsigned int uid = 0;
-	return uid++;
+	return _uid++;
+}
+
+unsigned int World::GetLastUid() const
+{
+	return _uid;
+}
+
+void World::InitUid(unsigned int uid)
+{
+	if (uid == 0)
+	{
+		_uid = uid;
+	}
+	else
+	{
+		Log::Instance().writeWarning("Trying to double initialize UId");
+	}
 }
 
 int World::GetCellsCount(void) const

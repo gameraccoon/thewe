@@ -232,7 +232,7 @@ void CellMenuSelector::_MenuInputListener(cocos2d::Ref *sender)
 		return;
 	}
 
-	if (_cell.lock()->GetInfo().state != Cell::READY)
+	if (_cell.lock()->GetInfo().state != Cell::State::READY)
 	{
 		DisappearWithAnimation();
 		return;

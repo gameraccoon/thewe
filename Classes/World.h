@@ -69,7 +69,10 @@ public:
 	bool IsTownAvaliableToPlaceCell(Town::WeakPtr town) const;
 	bool IsCellUnderInvestigation(Cell::Ptr cell) const;
 
-	unsigned int GetNewUid(void) const;
+	unsigned int GetNewUid(void);
+	unsigned int GetLastUid(void) const;
+	void InitUid(unsigned int uid);
+
 	int GetCellsCount(void) const;
 	LuaInstance* GetLuaInst(void) const;
 
@@ -109,6 +112,8 @@ private:
 
 	std::queue<Tutorial::Ptr> _tutorials;
 	std::string _tutorialState;
+
+	unsigned int _uid;
 
 	/*
 	 * Turn off useless operations
