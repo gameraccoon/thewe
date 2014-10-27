@@ -1,7 +1,13 @@
 -- Определяем, считать задание выполненным или провеленным
 function CheckTaskStatus(cellInfo, taskInfo)
-	local moraleIsNorm = math.abs(cellInfo.morale - taskInfo.moraleLevel) < 0.5
-	return moraleIsNorm
+	local successChance = CalcTaskSuccessChance(cellInfo, taskInfo)
+	return math.random(0, 1000) / 1000.0 < successChance
+end
+
+-- возвращает вероятность выполнения конкретного задания конкретной ячейкой
+function CalcTaskSuccessChance(cellInfo, taskInfo)
+	local successChance = 1 - math.abs(cellInfo.morale - taskInfo.moraleLevel)
+	return successChance
 end
 
 -- определяем будет ли показываться задание для данной ячейки

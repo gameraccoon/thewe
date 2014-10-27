@@ -128,6 +128,15 @@ void TaskManager::FillTasks(const std::vector<Task::Info>& tasks)
 	_isTasksFilled = true;
 }
 
+float TaskManager::CalcTaskSuccessChance(const Cell::Info& cellInfo, const Task::Info* taskInfo)
+{
+	return luabind::call_function<float>(World::Instance().GetLuaInst()->GetLuaState()
+												  , "CalcTaskSuccessChance"
+												  , cellInfo
+												  , taskInfo
+												  , 0);
+}
+
 TaskManager::TasksList TaskManager::GetAvailableTasks(Cell::WeakPtr cell) const
 {
 	if (!_isTasksFilled)

@@ -25,29 +25,37 @@ public:
 		cocos2d::Sprite *bkg = cocos2d::Sprite::create("TasksLine.png");
 		cocos2d::Menu *menu = cocos2d::Menu::create(startBtn, nullptr);
 		cocos2d::Size size = bkg->getContentSize();
+		addChild(bkg, 0);
 
 		menu->setPosition(0.0f, 0.0f);
 		startBtn->setPosition(-size.width / 2.0 + startBtn->getContentSize().width / 2.0f, 0.0f);
+		addChild(menu, 1);
 
 		cocos2d::TTFConfig ttfConfig("arial.ttf");
 		cocos2d::Label *labelStart = cocos2d::Label::createWithTTF(ttfConfig, "Start", cocos2d::TextHAlignment::CENTER);
 		labelStart->setColor(cocos2d::Color3B(0, 0, 0));	
 		labelStart->setPosition(startBtn->getPosition());
+		addChild(labelStart, 2);
 
-		cocos2d::Label *labelDesc = cocos2d::Label::createWithBMFont("arial-26-en-ru.fnt", _taskInfo->title, cocos2d::TextHAlignment::CENTER);
+		cocos2d::Label *labelDesc = cocos2d::Label::createWithBMFont("arial-26-en-ru.fnt",
+																	 _taskInfo->title, cocos2d::TextHAlignment::CENTER);
 		labelDesc->setPosition(50.0f, 15.0f);
+		addChild(labelDesc, 1);
 
-		std::string stringMorale = cocos2d::StringUtils::format("Morale: %.1f", _taskInfo->moralLevel);
-		cocos2d::Label *labelMorale = cocos2d::Label::createWithBMFont("arial-26-en-ru.fnt", stringMorale, cocos2d::TextHAlignment::LEFT);
-		labelMorale->setPosition(-30.0f, -15.0f);
+		std::string durationText = cocos2d::StringUtils::format("Duration: %.1d", _taskInfo->duration);
+		cocos2d::Label *labelDuraion = cocos2d::Label::createWithBMFont("arial-26-en-ru.fnt",
+																		durationText, cocos2d::TextHAlignment::LEFT);
+		labelDuraion->setPosition(-30.0f, -15.0f);
+		addChild(labelDuraion, 1);
 
+		std::string chanceText = cocos2d::StringUtils::format("Chance: %.1f",
+			World::Instance().GetTaskManager().CalcTaskSuccessChance(_cell.lock()->GetInfo(), _taskInfo));
+		cocos2d::Label *labelChance = cocos2d::Label::createWithBMFont("arial-26-en-ru.fnt",
+																	   chanceText, cocos2d::TextHAlignment::RIGHT);
+		labelChance->setPosition(130.0f, -15.0f);
+		addChild(labelChance, 1);
 
 		setContentSize(size);
-		addChild(bkg, 0);
-		addChild(menu, 1);
-		addChild(labelStart, 2);
-		addChild(labelDesc, 1);
-		addChild(labelMorale, 1);
 
 		return true;
 	}

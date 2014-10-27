@@ -41,6 +41,7 @@ GameSavesManager::GameSavesManager()
 
 GameSavesManager::~GameSavesManager()
 {
+	MessageManager::Instance().UnregisterReceiver(this);
 	delete _impl;
 }
 
