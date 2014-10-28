@@ -10,12 +10,12 @@
 class CellsNetwork
 {
 public:
-	typedef std::vector<Cell::Ptr> CellsList;
-	typedef CellsList::iterator CellsIter;
-	typedef CellsList::const_iterator CellsCIter;
+	typedef std::vector<Cell::Ptr> Cells;
+	typedef Cells::iterator CellsIter;
+	typedef Cells::const_iterator CellsCIter;
 
 private:
-	CellsList _cells;
+	Cells _cells;
 
 	std::map<int, Cell::Ptr> _uidMapCast;
 
@@ -24,7 +24,7 @@ private:
 public:
 	CellsNetwork(void);
 
-	void InitAndLink(const CellsList &list);
+	void InitAndLink(const Cells &cells);
 	void UpdateToTime(Utils::GameTime time);
 
 	void AppendCell(Cell::Ptr cell);
@@ -34,8 +34,8 @@ public:
 	Cell::Ptr GetCellByUid(int uid) const;
 	Cell::Ptr GetRootCell(void) const;
 
-	const CellsList& GetActiveCellsList(void) const;
-	const CellsList& GetOfflineCellsList(void) const;
+	const Cells& GetActiveCells(void) const;
+	const Cells& GetOfflineCells(void) const;
 };
 
 #endif

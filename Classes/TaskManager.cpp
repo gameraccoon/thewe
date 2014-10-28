@@ -137,7 +137,7 @@ float TaskManager::CalcTaskSuccessChance(const Cell::Info& cellInfo, const Task:
 												  , 0);
 }
 
-TaskManager::TasksList TaskManager::GetAvailableTasks(Cell::WeakPtr cell) const
+TaskManager::Tasks TaskManager::GetAvailableTasks(Cell::WeakPtr cell) const
 {
 	if (!_isTasksFilled)
 	{

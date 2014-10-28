@@ -179,7 +179,7 @@ void CellTasksScreen::_OnCloseCallback(cocos2d::Ref *sender)
 	CloseMenu();
 }
 
-void CellTasksScreen::_CreateTasksScrollViewMenu(const TaskManager::TasksList &tasksList, const cocos2d::Vec2 &pos, const cocos2d::Size &size)
+void CellTasksScreen::_CreateTasksScrollViewMenu(const TaskManager::Tasks &tasks, const cocos2d::Vec2 &pos, const cocos2d::Size &size)
 {
 	_scrollTasksView = cocos2d::extension::ScrollView::create(size);
 	_scrollTasksView->setPosition(pos);
@@ -187,7 +187,7 @@ void CellTasksScreen::_CreateTasksScrollViewMenu(const TaskManager::TasksList &t
 
 	float itemOffsetY = 1.0f;
 	float itemContentWidth = 75.0f;
-	float contentSizeY = tasksList.size() * (itemContentWidth - itemOffsetY);
+	float contentSizeY = tasks.size() * (itemContentWidth - itemOffsetY);
 
 	if (contentSizeY * itemContentWidth > size.height)
 	{
@@ -201,7 +201,7 @@ void CellTasksScreen::_CreateTasksScrollViewMenu(const TaskManager::TasksList &t
 	float y = _scrollTasksView->getContentSize().height - itemContentWidth / 2.0f;
 
 	int index = 0;
-	for (TaskManager::TasksList::const_iterator it = tasksList.begin(); it != tasksList.end(); it++, ++index)
+	for (TaskManager::Tasks::const_iterator it = tasks.begin(); it != tasks.end(); it++, ++index)
 	{
 		const Task::Info *info = (*it);
 		CellTaskMenuItem *item = new CellTaskMenuItem(this, _cell, info);

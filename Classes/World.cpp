@@ -277,7 +277,7 @@ bool World::IsGameOver(void) const
 
 bool World::IsTownAvaliableToPlaceCell(Town::WeakPtr town) const
 {
-	for (Cell::Ptr cell : _cellsNetwork.GetActiveCellsList())
+	for (Cell::Ptr cell : _cellsNetwork.GetActiveCells())
 	{
 		if (cell->GetInfo().town.lock()->GetName() == town.lock()->GetName())
 		{
@@ -324,7 +324,7 @@ void World::InitUid(unsigned int uid)
 
 int World::GetCellsCount(void) const
 {
-	return _cellsNetwork.GetActiveCellsList().size();
+	return _cellsNetwork.GetActiveCells().size();
 }
 
 LuaInstance* World::GetLuaInst(void) const

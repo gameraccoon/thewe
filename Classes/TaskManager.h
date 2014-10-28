@@ -9,7 +9,7 @@
 class TaskManager
 {
 public:
-	typedef std::vector<const Task::Info*> TasksList;
+	typedef std::vector<const Task::Info*> Tasks;
 
 public:
 	TaskManager();
@@ -27,7 +27,7 @@ public:
 	/**
 	 * Returns tasks that available for current cell for now
 	 */
-	TasksList GetAvailableTasks(Cell::WeakPtr cell) const;
+	Tasks GetAvailableTasks(Cell::WeakPtr cell) const;
 
 	/** Update information to the time */
 	void UpdateToTime(Utils::GameTime worldTime);

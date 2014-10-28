@@ -22,7 +22,7 @@ bool CellsNetLayer::init(void)
 	// adding click events to cell widgets
 	cocos2d::Vector<cocos2d::MenuItem*> menuItems;
 
-	for (auto cell : World::Instance().GetCellsNetwork().GetActiveCellsList())
+	for (auto cell : World::Instance().GetCellsNetwork().GetActiveCells())
 	{
 		if (cell->GetParent() == nullptr)
 		{

@@ -64,17 +64,17 @@ bool WorldMapLayer::init(void)
 
 	SetGuiEnabled(true);
 
-	for (const Cell::Ptr cell : World::Instance().GetCellsNetwork().GetActiveCellsList())
+	for (const Cell::Ptr cell : World::Instance().GetCellsNetwork().GetActiveCells())
 	{
 		CellMapWidget *widget = _CreateCellWidget(cell);
-		_cellWidgetsList.push_back(widget);
+		_cellWidgets.push_back(widget);
 		addChild(widget, Z_CELL);
 	}
 	
 	for (const Town::Ptr town : World::Instance().GetTowns())
 	{
 		TownMapWidget *widget = _CreateTownWidget(town);
-		_townWidgetsList.push_back(widget);
+		_townWidgets.push_back(widget);
 		_townsDrawLayer->addChild(widget, 0);
 	}
 	
@@ -125,7 +125,7 @@ void WorldMapLayer::AcceptMessage(const Message &msg)
 		{
 			InvestigatorMapWidget *widget = _CreateInvestigatorWidget(investigator);
 			addChild(widget, Z_INVESTIGATOR);
-			_investigatorWidgetsList.push_back(widget);
+			_investigatorWidgets.push_back(widget);
 
 			if (World::Instance().GetTutorialState() == "WaitForCatchingFirstInvestigator")
 			{
@@ -137,20 +137,20 @@ void WorldMapLayer::AcceptMessage(const Message &msg)
 	}
 	else if (msg.name == "DeleteInvestigatorWidget")
 	{
-		for (InvestigatorWidgetsIter it = _investigatorWidgetsList.begin(); it != _investigatorWidgetsList.end(); ++it)
+		for (InvestigatorWidgetsIter it = _investigatorWidgets.begin(); it != _investigatorWidgets.end(); ++it)
 		{
 			InvestigatorMapWidget *widget = (*it);
 			if (widget->GetInvestigatorUid() == msg.param)
 			{
 				removeChild(widget);
-				it = _investigatorWidgetsList.erase(it);
+				it = _investigatorWidgets.erase(it);
 				break;
 			}
 		}
 	}
 	else if (msg.name == "DeleteCellWidget")
 	{
-		for (CellWidgetsIter it = _cellWidgetsList.begin(); it != _cellWidgetsList.end(); ++it)
+		for (CellWidgetsIter it = _cellWidgets.begin(); it != _cellWidgets.end(); ++it)
 		{
 			CellMapWidget *widget = (*it);
 			if (widget->GetCellUid() == msg.param)
@@ -159,7 +159,7 @@ void WorldMapLayer::AcceptMessage(const Message &msg)
 				_mapProjector->RemoveMapPart(widget->GetProjectorUid());
 				_mapProjector->Update();
 				_UpdateNetwork();
-				it = _cellWidgetsList.erase(it);
+				it = _cellWidgets.erase(it);
 				delete widget;
 				break;
 			}
@@ -207,7 +207,7 @@ void WorldMapLayer::CreateCell(const Cell::Info &info, Cell::State state, bool r
 	World::Instance().GetCellsNetwork().AppendCell(cell);
 
 	CellMapWidget *widget = _CreateCellWidget(cell);
-	_cellWidgetsList.push_back(widget);
+	_cellWidgets.push_back(widget);
 	addChild(widget, Z_CELL);
 
 	_UpdateNetwork();
@@ -264,7 +264,7 @@ void WorldMapLayer::PushSessionWinScreen(void)
 
 CellMapWidget* WorldMapLayer::GetCellMapWidget(Cell::Ptr cell) const
 {
-	for (CellMapWidget *widget : _cellWidgetsList)
+	for (CellMapWidget *widget : _cellWidgets)
 	{
 		if (widget->GetCell().lock() == cell)
 		{
@@ -464,7 +464,7 @@ Region::WeakPtr WorldMapLayer::_GetRegionUnderPoint(const Vector2& point) const
 
 Cell::WeakPtr WorldMapLayer::_GetCellUnderPoint(const Vector2& point) const
 {
-	for (CellMapWidget *widget : _cellWidgetsList)
+	for (CellMapWidget *widget : _cellWidgets)
 	{
 		Cell::Ptr cell = widget->GetCell().lock();
 
@@ -492,7 +492,7 @@ Cell::WeakPtr WorldMapLayer::_GetCellUnderPoint(const Vector2& point) const
 
 Town::WeakPtr WorldMapLayer::_GetTownUnderPoint(const Vector2& point)
 {
-	for (TownMapWidget *widget : _townWidgetsList)
+	for (TownMapWidget *widget : _townWidgets)
 	{
 		Town::Ptr town = widget->GetTown();
 

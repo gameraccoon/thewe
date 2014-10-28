@@ -279,10 +279,10 @@ void GameSavesManager::SaveGameState(void)
 	bool addConstructions = false;
 
 	World &world = World::Instance();
-	const CellsNetwork::CellsList &cells = world.GetCellsNetwork().GetActiveCellsList();
+	const CellsNetwork::Cells &cells = world.GetCellsNetwork().GetActiveCells();
 	int cellIndex = -1;
 	std::map<const Cell *, int> cellsIndicesCast;
-	for (CellsNetwork::CellsList::const_iterator it = cells.begin(); it != cells.end(); ++it)
+	for (CellsNetwork::Cells::const_iterator it = cells.begin(); it != cells.end(); ++it)
 	{
 		if (addCells)
 		{

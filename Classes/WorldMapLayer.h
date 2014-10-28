@@ -58,12 +58,12 @@ private:
 		Z_MAP_GUI
 	};
 
-	typedef std::vector<CellMapWidget *> CellWidgetsList;
-	typedef CellWidgetsList::iterator CellWidgetsIter;
-	typedef std::vector<TownMapWidget *> TownWidgetsList;
-	typedef TownWidgetsList::iterator TownWidgetsIter;
-	typedef std::vector<InvestigatorMapWidget *> InvestigatorWidgetsList;
-	typedef InvestigatorWidgetsList::iterator InvestigatorWidgetsIter;
+	typedef std::vector<CellMapWidget *> CellWidgets;
+	typedef CellWidgets::iterator CellWidgetsIter;
+	typedef std::vector<TownMapWidget *> TownWidgets;
+	typedef TownWidgets::iterator TownWidgetsIter;
+	typedef std::vector<InvestigatorMapWidget *> InvestigatorWidgets;
+	typedef InvestigatorWidgets::iterator InvestigatorWidgetsIter;
 
 private:
 	GameScene *_gameScene;
@@ -85,9 +85,9 @@ private:
 	void ResetTouches();
 	void BackToMainMenuCallback(cocos2d::Ref *sender);
 
-	CellWidgetsList _cellWidgetsList;
-	TownWidgetsList _townWidgetsList;
-	InvestigatorWidgetsList _investigatorWidgetsList;
+	CellWidgets _cellWidgets;
+	TownWidgets _townWidgets;
+	InvestigatorWidgets _investigatorWidgets;
 
 	CellMenuSelector *_cellMenu;
 	cocos2d::Layer *_cellGameInterface;

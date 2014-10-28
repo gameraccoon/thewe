@@ -79,7 +79,7 @@ void CellMenuSelector::update(float dt)
 
 bool CellMenuSelector::IsCursorOnMenu(const Vector2 &cursorPos) const
 {
-	for (ButtonsList::const_iterator it = _button.begin(); it != _button.end(); ++it)
+	for (Buttons::const_iterator it = _button.begin(); it != _button.end(); ++it)
 	{
 		if ((*it)->getBoundingBox().containsPoint(cursorPos))
 		{
@@ -125,7 +125,7 @@ void CellMenuSelector::AppearWithAnimation(Cell::WeakPtr cell, const Vector2 &po
 	const float dist = 45.0f;
 	const float angle = 3.14159265f*2.0f / (float)numButtonsToShow;
 	
-	for (ButtonsList::iterator it = _button.begin(); it != _button.end(); ++it)
+	for (Buttons::iterator it = _button.begin(); it != _button.end(); ++it)
 	{
 		cocos2d::MenuItemImage *item = (*it);
 
@@ -144,7 +144,7 @@ void CellMenuSelector::AppearWithAnimation(Cell::WeakPtr cell, const Vector2 &po
 
 void CellMenuSelector::DisappearImmedaitely(void)
 {
-	for (ButtonsList::iterator it = _button.begin(); it != _button.end(); ++it)
+	for (Buttons::iterator it = _button.begin(); it != _button.end(); ++it)
 	{
 		(*it)->stopAllActions();
 	}
@@ -156,7 +156,7 @@ void CellMenuSelector::DisappearImmedaitely(void)
 
 void CellMenuSelector::DisappearWithAnimation(void)
 {
-	for (ButtonsList::iterator it = _button.begin(); it != _button.end(); ++it)
+	for (Buttons::iterator it = _button.begin(); it != _button.end(); ++it)
 	{
 		cocos2d::MenuItemImage *item = (*it);
 
@@ -284,7 +284,7 @@ void CellMenuSelector::OnKillButtonPressed(cocos2d::Ref *sender)
 
 bool CellMenuSelector::_IsAnimationFinished(void)
 {
-	for (ButtonsList::iterator it = _button.begin(); it != _button.end(); ++it)
+	for (Buttons::iterator it = _button.begin(); it != _button.end(); ++it)
 	{
 		if ((*it)->getNumberOfRunningActions() > 0)
 		{

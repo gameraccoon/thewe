@@ -38,7 +38,7 @@ private:
 		CELL_NUM_TAGS
 	};
 
-	typedef std::vector<cocos2d::MenuItemImage *> ButtonsList;
+	typedef std::vector<cocos2d::MenuItemImage *> Buttons;
 
 private:
 	void _PrepearButtonToAppear(cocos2d::MenuItemImage *item, Vector2 pos);
@@ -56,7 +56,7 @@ private:
 
 	Cell::WeakPtr _cell;
 	Vector2 _position;
-	ButtonsList _button;
+	Buttons _button;
 
 	bool _isDisappearing;
 	const std::string _menuNodeName;

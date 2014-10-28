@@ -6,7 +6,7 @@ CellsNetwork::CellsNetwork(void)
 {
 }
 
-void CellsNetwork::InitAndLink(const CellsNetwork::CellsList &list)
+void CellsNetwork::InitAndLink(const CellsNetwork::Cells &cells)
 {
 }
 
@@ -96,12 +96,12 @@ Cell::Ptr CellsNetwork::GetRootCell(void) const
 	return Cell::Ptr();
 }
 
-const CellsNetwork::CellsList& CellsNetwork::GetActiveCellsList(void) const
+const CellsNetwork::Cells& CellsNetwork::GetActiveCells(void) const
 {
 	return _cells;
 }
 
-const CellsNetwork::CellsList& CellsNetwork::GetOfflineCellsList(void) const
+const CellsNetwork::Cells& CellsNetwork::GetOfflineCells(void) const
 {
 	return _cells;
 }
