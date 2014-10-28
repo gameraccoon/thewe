@@ -30,7 +30,7 @@ public:
 
 GameSavesManager::GameSavesManager()
 {
-	std::string dbPath = cocos2d::FileUtils::sharedFileUtils()->getWritablePath();
+	std::string dbPath = cocos2d::FileUtils::getInstance()->getWritablePath();
 	dbPath.append("userdata.db");
 	_impl = new GameSavesManagerImpl(dbPath);
 

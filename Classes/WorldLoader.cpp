@@ -39,10 +39,8 @@ static bool LoadTasksInfo()
 {
 	pugi::xml_document tasks_xml_doc;
 	std::string fullPath = cocos2d::FileUtils::getInstance()->fullPathForFilename("tasks.xml");
-	unsigned char* pBuffer = NULL;
-	ssize_t bufferSize = 0;
-	pBuffer = cocos2d::FileUtils::getInstance()->getFileData(fullPath.c_str(), "r", &bufferSize);
-	pugi::xml_parse_result result = tasks_xml_doc.load_buffer(pBuffer, bufferSize);
+	std::string buffer = cocos2d::FileUtils::getInstance()->getStringFromFile(fullPath);
+	pugi::xml_parse_result result = tasks_xml_doc.load_buffer(buffer.c_str(), buffer.size());
 
 	std::vector<Task::Info> infos;
 	
@@ -84,15 +82,21 @@ static bool LoadWorld(void)
 	pugi::xml_document hulls_xml_doc;
 	pugi::xml_document regions_xml_doc;
 
+	std::string hullsBuffer, regionsBuffer;
+	
 	std::string fullPath = cocos2d::FileUtils::getInstance()->fullPathForFilename("hulls.xml");
-	unsigned char* pBuffer = NULL;
-	ssize_t bufferSize = 0;
-	pBuffer = cocos2d::FileUtils::getInstance()->getFileData(fullPath.c_str(), "r", &bufferSize);
-	pugi::xml_parse_result result = hulls_xml_doc.load_buffer(pBuffer,bufferSize);
+	hullsBuffer = cocos2d::FileUtils::getInstance()->getStringFromFile(fullPath);
+	if (!hulls_xml_doc.load_buffer(hullsBuffer.c_str(), hullsBuffer.size())) {
+		Log::Instance().writeError("Failed to open hulls data file.");
+		return false;
+	}
 	
 	fullPath = cocos2d::FileUtils::getInstance()->fullPathForFilename("regions.xml");
-	pBuffer = cocos2d::FileUtils::getInstance()->getFileData(fullPath.c_str(), "r", &bufferSize);
-	result = regions_xml_doc.load_buffer(pBuffer,bufferSize);
+	regionsBuffer = cocos2d::FileUtils::getInstance()->getStringFromFile(fullPath);
+	if (!regions_xml_doc.load_buffer(regionsBuffer.c_str(), regionsBuffer.size())) {
+		Log::Instance().writeError("Failed to open regions data file.");
+		return false;
+	}
 
 	World &map = World::Instance();
 	map.CleanupMapContent();
