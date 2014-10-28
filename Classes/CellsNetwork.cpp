@@ -21,6 +21,11 @@ void CellsNetwork::UpdateToTime(Utils::GameTime time)
 	}
 }
 
+void CellsNetwork::RelinkCells(Cell::Ptr parent, Cell::Ptr child)
+{
+	parent->AddChild(child);
+}
+
 void CellsNetwork::AppendCell(Cell::Ptr cell)
 {
 	for (CellsIter it = _cells.begin(); it != _cells.end(); ++it) {

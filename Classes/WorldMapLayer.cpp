@@ -19,6 +19,7 @@ WorldMapLayer::WorldMapLayer(GameScene *gameScene, MapProjector* projector)
 	, _mapGui(nullptr)
 	, _gameScene(gameScene)
 	, _nextCellParent()
+	, _linkCellChildren()
 	, _cellMenu(nullptr)
 	, _cellGameInterface(nullptr)
 {
@@ -193,6 +194,11 @@ void WorldMapLayer::SetNextCellParent(Cell::WeakPtr parent)
 	_nextCellParent = parent;
 }
 
+void WorldMapLayer::SetLinkCellChildren(Cell::WeakPtr children)
+{
+	_linkCellChildren = children;
+}
+
 void WorldMapLayer::CreateCell(Cell::Info info, Cell::State state, bool root)
 {	
 	info.state = state;
@@ -314,11 +320,26 @@ void WorldMapLayer::TouchesEnded(const std::vector<cocos2d::Touch* > &touches, c
 				Cell::WeakPtr cell = _GetCellUnderPoint(point);
 				if (!cell.expired())
 				{
-					Vector2 cell_pos = cell.lock()->GetInfo().location;
-					Vector2 menu_pos = _mapProjector->ProjectOnScreen(cell_pos);
+					if (!_linkCellChildren.expired())
+					{
+						Cell::Ptr relinked = _linkCellChildren.lock();
+						relinked->GetInfo().state = Cell::State::READY;
+						relinked->GetInfo().stateBegin = 0;
+						relinked->GetInfo().stateDuration = 0;
 
-					_cellMenu->DisappearImmedaitely();
-					_cellMenu->AppearWithAnimation(cell, menu_pos);
+						World::Instance().GetCellsNetwork().RelinkCells(cell.lock(), relinked);
+						_linkCellChildren.reset();
+
+						_UpdateNetwork();
+					}
+					else
+					{
+						Vector2 cell_pos = cell.lock()->GetInfo().location;
+						Vector2 menu_pos = _mapProjector->ProjectOnScreen(cell_pos);
+
+						_cellMenu->DisappearImmedaitely();
+						_cellMenu->AppearWithAnimation(cell, menu_pos);
+					}
 
 					return;
 				}
@@ -462,13 +483,17 @@ Region::WeakPtr WorldMapLayer::_GetRegionUnderPoint(const Vector2& point) const
 	return Region::WeakPtr();
 }
 
-Cell::WeakPtr WorldMapLayer::_GetCellUnderPoint(const Vector2& point) const
+Cell::WeakPtr WorldMapLayer::_GetCellUnderPoint(const Vector2& point)
 {
 	for (CellMapWidget *widget : _cellWidgets)
 	{
 		Cell::Ptr cell = widget->GetCell().lock();
 
-		if (!cell || cell->GetInfo().state != Cell::State::READY)
+		if (cell->IsState(Cell::State::AUTONOMY)) {
+			_linkCellChildren = (Cell::WeakPtr)cell;
+			continue;
+		}
+		if (!cell || !cell->IsState(Cell::State::READY))
 		{
 			continue;
 		}

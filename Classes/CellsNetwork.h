@@ -27,6 +27,8 @@ public:
 	void InitAndLink(const Cells &cells);
 	void UpdateToTime(Utils::GameTime time);
 
+	void RelinkCells(Cell::Ptr parent, Cell::Ptr child);
+
 	void AppendCell(Cell::Ptr cell);
 	void RemoveCell(Cell::Ptr cell);
 
