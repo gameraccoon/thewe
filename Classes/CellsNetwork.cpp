@@ -46,6 +46,10 @@ void CellsNetwork::RemoveCell(Cell::Ptr cell)
 				parent->RemoveChild(cell);
 			}
 
+			for (Cell::Ptr child : cell->GetChildren()) {
+				child->GetInfo().parent = nullptr;
+			}
+
 			it = _cells.erase(it);
 			
 			std::map<int, Cell::Ptr>::const_iterator uidIter;
