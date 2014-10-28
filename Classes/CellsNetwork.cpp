@@ -46,9 +46,7 @@ void CellsNetwork::RemoveCell(Cell::Ptr cell)
 				parent->RemoveChild(cell);
 			}
 
-			for (Cell::Ptr child : cell->GetChildren()) {
-				child->GetInfo().parent = nullptr;
-			}
+			cell->RemoveAllChildren();
 
 			it = _cells.erase(it);
 			

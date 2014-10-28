@@ -49,6 +49,14 @@ void Cell::RemoveChild(Cell::Ptr cell)
 	}
 }
 
+void Cell::RemoveAllChildren(void)
+{
+	for (Cell::Ptr child : _childCells) {
+		child->SetParent(nullptr);
+	}
+	_childCells.clear();
+}
+
 void Cell::BeginDestruction(void)
 {
 	// ToDo: make some checks

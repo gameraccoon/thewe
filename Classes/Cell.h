@@ -72,6 +72,7 @@ public:
 	 * Set child's parent to null
 	 */
 	void RemoveChild(Cell::Ptr cell);
+	void RemoveAllChildren(void);
 
 	void BeginDestruction(void);
 	void BeginAutonomy(void);
