@@ -193,16 +193,16 @@ void WorldMapLayer::SetNextCellParent(Cell::WeakPtr parent)
 	_nextCellParent = parent;
 }
 
-void WorldMapLayer::CreateCell(const Cell::Info &info, Cell::State state, bool root)
-{
+void WorldMapLayer::CreateCell(Cell::Info info, Cell::State state, bool root)
+{	
+	info.state = state;
+
 	Cell::Ptr cell = Cell::Create(info, root);
 	
 	if (info.parent)
 	{
 		info.parent->AddChild(cell);
 	}
-
-	cell->GetInfo().state = state;
 
 	World::Instance().GetCellsNetwork().AppendCell(cell);
 
@@ -540,6 +540,8 @@ void WorldMapLayer::_OnTownSelect(Town::WeakPtr town)
 			info.techUnitsCount = GameInfo::Instance().GetInt("CELL_STARTUP_TECH_UNITS_COUNT");
 			info.experience = 0;
 			info.fame = 0.0f;
+			info.stateBegin = 0;
+			info.stateDuration = 0;
 			info.specialization = Cell::Specialization::NORMAL;
 			info.townHeartPounding = GameInfo::Instance().GetFloat("CELL_STARTUP_TOWN_HEART_POUNDING");
 			info.townInfluence = GameInfo::Instance().GetFloat("CELL_STARTUP_TOWN_INFLUENCE");

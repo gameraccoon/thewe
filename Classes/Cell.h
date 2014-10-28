@@ -44,7 +44,7 @@ public:
 		float townHeartPounding;
 		float townWelfare;
 
-		// current process (construction, destruction, etc..)
+		// current process (construction, destruction, autonomy)
 		Utils::GameTime stateBegin;
 		Utils::GameTime stateDuration;
 	};
