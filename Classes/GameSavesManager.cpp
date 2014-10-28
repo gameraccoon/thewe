@@ -15,6 +15,7 @@ static const std::string USER_DATA_TABLE = "user_data";
 static const std::string CELLS_TABLE = "cells";
 static const std::string RUNNED_TASKS_TABLE = "runned_tasks";
 static const std::string CONSTRUCTIONS_TABLE = "cell_processes";
+static const std::string INVESIGATIONS_TABLE = "investigations";
 
 struct GameSavesManagerImpl
 {
@@ -77,7 +78,7 @@ void GameSavesManager::FirstInitSave()
 	if (!_impl->database.IsTableExists(CELLS_TABLE))
 	{
 		_impl->database.execSql("CREATE TABLE " + CELLS_TABLE + " ("
-								"'id' INTEGER NOT NULL,"
+								"'uid' INTEGER NOT NULL,"
 								"'state' VARCHAR(100) NOT NULL,"
 								"'parent_id' INTEGER DEFAULT (-1),"
 								"'town' VARCHAR(255) NOT NULL,"
@@ -212,14 +213,37 @@ void GameSavesManager::LoadGameState(void)
 	}
 }
 
-void AppendCellToQuery(std::string* const query, Cell* const cell, const std::map<const Cell *, int>* const cellsIndicesCast)
+static std::string InitCellsAdditionStatement()
+{
+	return "INSERT INTO " + CELLS_TABLE +
+			"(uid, state, parent_id, town, location_x, location_y, cash, morale, members_count)"
+			"VALUES";
+}
+
+static std::string InitRunnedTasksAdditionStatement()
+{
+	return "DELETE FROM " + RUNNED_TASKS_TABLE + ";"
+			"INSERT INTO " + RUNNED_TASKS_TABLE +
+			"(task_id, cell_id, start_time)"
+			"VALUES";
+}
+
+static std::string InitConstrucrionAdditionStatement()
+{
+	return "DELETE FROM " + CONSTRUCTIONS_TABLE + ";"
+			"INSERT INTO " + CONSTRUCTIONS_TABLE +
+			"(cell_id, type, begin_time, duration)"
+			"VALUES";
+}
+
+static void AppendCellToQuery(std::string* const query, Cell* const cell)
 {
 	const Cell::Info info = cell->GetInfo();
 
-	std::string parent_id = info.parent != nullptr ? std::to_string(cellsIndicesCast->find(info.parent)->second) : "-1";
+	std::string parent_id = info.parent != nullptr ? std::to_string(info.parent->GetUid()) : "-1";
 
 	query->append("(")
-		.append(std::to_string(cellsIndicesCast->find(cell)->second)).append(",")
+		.append(std::to_string(cell->GetUid())).append(",")
 		.append("'").append(std::to_string(info.state)).append("',")
 		.append(parent_id).append(",")
 		.append("'").append(info.town.lock()->GetInfo().name).append("',")
@@ -231,7 +255,7 @@ void AppendCellToQuery(std::string* const query, Cell* const cell, const std::ma
 		.append(")");
 }
 
-void AppendTaskToQuery(std::string* const query, Task::Ptr task, int cellIndex)
+static void AppendTaskToQuery(std::string* const query, Task::Ptr task, int cellIndex)
 {
 	std::string currentTaskId = task->GetInfo()->id;
 	std::string taskStartTime = Utils::TimeToString(task->GetStartTime());
@@ -243,103 +267,103 @@ void AppendTaskToQuery(std::string* const query, Task::Ptr task, int cellIndex)
 		.append(")");
 }
 
-void AppendCellConstructionToQuery(std::string* const query, Cell* cell, int cellIndex)
+static void AppendCellProcessToQuery(std::string* const query, Cell* cell)
 {
 	const Cell::Info info = cell->GetInfo();
 
 	query->append("(")
-		.append("'").append(std::to_string(cellIndex)).append("',")
+		.append("'").append(std::to_string(cell->GetUid())).append("',")
 		.append("'").append(std::to_string(info.state)).append("',")
 		.append("'").append(Utils::TimeToString(info.stateBegin)).append("',")
 		.append("'").append(Utils::TimeToString(info.stateDuration)).append("'")
 		.append(")");
 }
 
-void GameSavesManager::SaveGameState(void)
+static void AppendSeparatorAndSetFlag(std::string* const taskAdditionSqlStatement, bool addTasks)
 {
-	// saving the cells network
-	std::string cellsAdditionSqlStatement =
-		"INSERT INTO " + CELLS_TABLE +
-		"(id, state, parent_id, town, location_x, location_y, cash, morale, members_count)"
-		"VALUES";
-	bool addCells = false;
-
-	// saving the active tasks
-	std::string taskAdditionSqlStatement = "DELETE FROM " + RUNNED_TASKS_TABLE + ";"
-			"INSERT INTO " + RUNNED_TASKS_TABLE +
-			"(task_id, cell_id, start_time)"
-			"VALUES";
-	bool addTasks = false;
-
-	// saving construction state of the cells
-	std::string constructionSqlStatement = "DELETE FROM " + CONSTRUCTIONS_TABLE + ";"
-			"INSERT INTO " + CONSTRUCTIONS_TABLE +
-			"(cell_id, type, begin_time, duration)"
-			"VALUES";
-	bool addConstructions = false;
-
-	World &world = World::Instance();
-	const CellsNetwork::Cells &cells = world.GetCellsNetwork().GetActiveCells();
-	int cellIndex = -1;
-	std::map<const Cell *, int> cellsIndicesCast;
-	for (CellsNetwork::Cells::const_iterator it = cells.begin(); it != cells.end(); ++it)
+	if (addTasks)
 	{
-		if (addCells)
-		{
-			cellsAdditionSqlStatement.append(",");
-		}
-		else
-		{
-			addCells = true;
-		}
+		taskAdditionSqlStatement->append(",");
+	}
+	else
+	{
+		addTasks = true;
+	}
+}
 
-		cellIndex++;
-		cellsIndicesCast.insert(std::pair<const Cell *, int>((*it).get(), cellIndex));
-
-		Cell *cell = (*it).get();
-		Cell::Info &cellInfo = cell->GetInfo();
-		AppendCellToQuery(&cellsAdditionSqlStatement, cell, &cellsIndicesCast);
-
-		if (cell->IsCurrentTaskExists())
-		{
-			if (addTasks)
-			{
-				taskAdditionSqlStatement.append(",");
-			}
-			else
-			{
-				addTasks = true;
-			}
-
-			Task::Ptr task = cell->getCurrentTask().lock();
-			AppendTaskToQuery(&taskAdditionSqlStatement, task, cellIndex);
-		}
-
+static bool FillProcessesAdditionStatement(std::string* const processesSqlStatement)
+{
+	const CellsNetwork::Cells &cells = World::Instance().GetCellsNetwork().GetActiveCells();
+	bool addProcesses = false;
+	for (auto& cell : cells)
+	{
 		if (cell->IsInTemporaryState())
 		{
-			if (addConstructions)
-			{
-				constructionSqlStatement.append(",");
-			}
-			else
-			{
-				addConstructions = true;
-			}
+			AppendSeparatorAndSetFlag(processesSqlStatement, addProcesses);
 
-			AppendCellConstructionToQuery(&constructionSqlStatement, cell, cellIndex);
+			AppendCellProcessToQuery(processesSqlStatement, cell.get());
 		}
 	}
+	processesSqlStatement->append(";");
 
-	cellsAdditionSqlStatement.append(";");
-	taskAdditionSqlStatement.append(";");
-	constructionSqlStatement.append(";");
+	return addProcesses;
+}
 
-	// saving user data
-	std::string savingTutorialSqlStatement =
-			std::string("INSERT INTO ").append(USER_DATA_TABLE).append(" (last_uid, root_cell, tutorial_state) VALUES (")
+static bool FillRunnedTasksAdditionStatement(std::string* const taskAdditionSqlStatement)
+{
+	const CellsNetwork::Cells &cells = World::Instance().GetCellsNetwork().GetActiveCells();
+	bool addTasks = false;
+	for (auto& cell : cells)
+	{
+		if (cell->IsCurrentTaskExists())
+		{
+			AppendSeparatorAndSetFlag(taskAdditionSqlStatement, addTasks);
+
+			Task::Ptr task = cell->getCurrentTask().lock();
+			AppendTaskToQuery(taskAdditionSqlStatement, task, cell->GetUid());
+		}
+	}
+	taskAdditionSqlStatement->append(";");
+
+	return addTasks;
+}
+
+static bool FillCellsAdditionStatement(std::string* const cellsAdditionSqlStatement)
+{
+	const CellsNetwork::Cells &cells = World::Instance().GetCellsNetwork().GetActiveCells();
+	bool addCells = false;
+	for (auto& cell : cells)
+	{
+		AppendSeparatorAndSetFlag(cellsAdditionSqlStatement, addCells);
+
+		AppendCellToQuery(cellsAdditionSqlStatement, cell.get());
+	}
+	cellsAdditionSqlStatement->append(";");
+
+	return addCells;
+}
+
+static std::string GetUserInfoAdditionStatement()
+{
+	World &world = World::Instance();
+	return std::string("INSERT INTO ").append(USER_DATA_TABLE).append(" (last_uid, root_cell, tutorial_state) VALUES (")
 			.append(std::to_string(world.GetLastUid())).append(",")
 			.append(std::to_string(world.GetCellsNetwork().GetRootCell()->GetUid())).append(",")
 			.append("'").append(world.GetTutorialState()).append("');");
+}
+
+void GameSavesManager::SaveGameState(void)
+{
+	std::string cellsAdditionSqlStatement = InitCellsAdditionStatement();
+	bool addCells = FillCellsAdditionStatement(&cellsAdditionSqlStatement);
+
+	std::string taskAdditionSqlStatement = InitRunnedTasksAdditionStatement();
+	bool addTasks = FillRunnedTasksAdditionStatement(&taskAdditionSqlStatement);
+
+	std::string processesSqlStatement = InitConstrucrionAdditionStatement();
+	bool addProcesses = FillProcessesAdditionStatement(&processesSqlStatement);
+
+	std::string userInfoSqlStatement = GetUserInfoAdditionStatement();
 
 	// begining transaction
 	_impl->database.execSql("BEGIN;");
@@ -351,8 +375,8 @@ void GameSavesManager::SaveGameState(void)
 	// adding new data
 	if (addCells) _impl->database.execSql(cellsAdditionSqlStatement);
 	if (addTasks) _impl->database.execSql(taskAdditionSqlStatement);
-	if (addConstructions) _impl->database.execSql(constructionSqlStatement);
-	_impl->database.execSql(savingTutorialSqlStatement);
+	if (addProcesses) _impl->database.execSql(processesSqlStatement);
+	_impl->database.execSql(userInfoSqlStatement);
 	// commiting transaction
 	_impl->database.execSql("COMMIT;");
 }
