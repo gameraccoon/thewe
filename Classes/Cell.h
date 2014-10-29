@@ -53,13 +53,13 @@ public:
 	typedef std::weak_ptr<Cell> WeakPtr;
 
 public:
-	Cell(const Info &info, bool root);
+	Cell(const Info &info);
 	~Cell(void);
 
 	/**
 	 * Create Cell and return a smart ptr
 	 */
-	static Ptr Create(const Info &info, bool root = false);
+	static Ptr Create(const Info &info);
 	
 	/**
 	 * Adds new child to the cell
@@ -92,7 +92,6 @@ public:
 
 	bool IsCurrentTaskExists(void) const;
 	bool IsState(State state) const;
-	bool IsRoot(void) const;
 
 	/** Add completed task */
 	void AddCompletedTask(const Task::CompletedTaskInfo& completedTask);
@@ -109,16 +108,16 @@ public:
 	bool IsInTemporaryState() const;
 
 private:
+	Cell(const Info &info, unsigned int uid);
 	/** Set parent for the cell */
 	void SetParent(Cell *cell);
 
 	/** Check all values and write warnings to the log */
 	void _CheckValues() const;
 
+private:
 	/** All usual info about the cell */
 	Info _info;
-
-	bool _isRoot;
 
 	unsigned int _uid;
 
@@ -133,6 +132,8 @@ private:
 
 	/** Geographic position on the map */
 	Vector2 _worldLocation;
+
+	friend class GameSavesManager;
 };
 
 #endif // CELL_H

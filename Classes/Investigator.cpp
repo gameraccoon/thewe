@@ -7,7 +7,7 @@ Investigator::Investigator(Cell::WeakPtr investigationRoot)
 	: _investigationRoot(investigationRoot)
 	, _catchTimeBegin(1)
 	, _catchTimeEnd(1)
-	, _state(START_CATCH_DELAY)
+	, _state(State::START_CATCH_DELAY)
 	, _uid(World::Instance().GetNewUid())
 {
 }
@@ -17,7 +17,7 @@ Investigator::Investigator(Cell::WeakPtr investigationRoot, const Investigator::
 	, _investigationRoot(investigationRoot)
 	, _catchTimeBegin(1)
 	, _catchTimeEnd(1)
-	, _state(START_CATCH_DELAY)
+	, _state(State::START_CATCH_DELAY)
 	, _uid(World::Instance().GetNewUid())
 {
 }
@@ -55,7 +55,7 @@ void Investigator::BeginInvestigation(void)
 	cell->GetInfo().state = Cell::State::ARRESTED;
 	_state = State::INVESTIGATION;
 
-	if (cell->IsRoot())
+	if (cell == World::Instance().GetCellsNetwork().GetRootCell().lock())
 	{
 		// set game over state to World
 		World::Instance().SetGameOver();
@@ -104,7 +104,7 @@ void Investigator::UpdateToTime(Utils::GameTime time)
 
 void Investigator::UpdateBranchesRecurcively(Investigator::BranchBundle &bundle, Utils::GameTime time)
 {
-	if (IsStateType(START_CATCH_DELAY))
+	if (IsStateType(State::START_CATCH_DELAY))
 	{
 		float allTime = _catchTimeEnd - _catchTimeBegin;
 		float eta = _catchTimeEnd - time;
@@ -115,7 +115,7 @@ void Investigator::UpdateBranchesRecurcively(Investigator::BranchBundle &bundle,
 			BeginInvestigation();
 		}
 	}
-	else if (IsStateType(INVESTIGATION))
+	else if (IsStateType(State::INVESTIGATION))
 	{
 		for (Investigator::Branch &branch : bundle)
 		{
@@ -132,7 +132,7 @@ void Investigator::UpdateBranchesRecurcively(Investigator::BranchBundle &bundle,
 			}
 			else if (branch.cellTo->GetInfo().state != Cell::State::ARRESTED)
 			{
-				if (branch.cellTo->IsRoot())
+				if (branch.cellTo == World::Instance().GetCellsNetwork().GetRootCell().lock().get())
 				{
 					// We are in the root cell. This is GameOver condition
 					World::Instance().SetGameOver();
@@ -182,7 +182,7 @@ void Investigator::UpdateBranchesRecurcively(Investigator::BranchBundle &bundle,
 			UpdateBranchesRecurcively(branch.childBrunches, time);
 		}
 	}
-	else if (IsStateType(ABORTED))
+	else if (IsStateType(State::ABORTED))
 	{
 		// we dont need this implementation yet
 	}

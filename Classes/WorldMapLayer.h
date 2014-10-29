@@ -39,7 +39,7 @@ public:
 	void SetNextCellParent(Cell::WeakPtr parent);
 	void SetLinkCellChildren(Cell::WeakPtr children);
 
-	void CreateCell(Cell::Info info, Cell::State state, bool root = false);
+	Cell::Ptr CreateCell(Cell::Info info, Cell::State state);
 	void DeleteCell(CellMapWidget *widget);
 
 	void PushSessionFailScreen(void);

@@ -12,7 +12,7 @@ Town::Town(const Info &info)
 	, _location(info.location)
 	, _spriteScale(info.spriteScale)
 	, _isCellPresented(false)
-	, _uid(World::Instance().GetNewUid())
+	, _uid(GetUid())
 {
 	_CheckValues();
 }
@@ -95,7 +95,7 @@ bool Town::IsCellPresented(void)
 	return _isCellPresented;
 }
 
-unsigned int Town::GetUid(void) const
+unsigned int Town::GetUid() const
 {
 	return _uid;
 }

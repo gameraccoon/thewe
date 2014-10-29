@@ -14,15 +14,17 @@ public:
 	 */
 	static GameSavesManager& Instance();
 
-	void LoadGameState(void);
+	void LoadGameState();
 
 	virtual void AcceptMessage(const Message &msg) override;
 
 private:
-	/* Save current state of the game */
-	void SaveGameState(void);
-
 	void FirstInitSave();
+	void SaveGameState();
+	void LoadCellsState();
+	void LoadProcesses();
+	void LoadRunnedTasks();
+	void LoadUserInfo();
 
 private:
 	GameSavesManagerImpl* _impl;

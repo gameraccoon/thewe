@@ -199,11 +199,11 @@ void WorldMapLayer::SetLinkCellChildren(Cell::WeakPtr children)
 	_linkCellChildren = children;
 }
 
-void WorldMapLayer::CreateCell(Cell::Info info, Cell::State state, bool root)
+Cell::Ptr WorldMapLayer::CreateCell(Cell::Info info, Cell::State state)
 {	
 	info.state = state;
 
-	Cell::Ptr cell = Cell::Create(info, root);
+	Cell::Ptr cell = Cell::Create(info);
 	
 	if (info.parent)
 	{
@@ -217,6 +217,8 @@ void WorldMapLayer::CreateCell(Cell::Info info, Cell::State state, bool root)
 	addChild(widget, Z_CELL);
 
 	_UpdateNetwork();
+
+	return cell;
 }
 
 void WorldMapLayer::DeleteCell(CellMapWidget *widget)
@@ -430,7 +432,6 @@ CellMapWidget* WorldMapLayer::_CreateCellWidget(Cell::Ptr cell)
 	float h = tex.size.height * widget->getScaleY();
 	
 	widget->SetHitArea(-(w / 2.0f), -(h / 2.0f), w, h);
-	widget->setTag(cell->GetUid());
 	widget->SetProjectorUid(uid);
 	widget->retain();
 
@@ -449,7 +450,6 @@ TownMapWidget* WorldMapLayer::_CreateTownWidget(Town::Ptr town)
 	float h = tex.size.height * widget->getScaleY();
 	
 	widget->SetHitArea(-(w / 2.0f), -(h / 2.0f), w, h);
-	widget->setTag(town->GetUid());
 	widget->SetProjectorUid(uid);
 	widget->retain();
 
@@ -460,7 +460,6 @@ InvestigatorMapWidget* WorldMapLayer::_CreateInvestigatorWidget(Investigator::Pt
 {
 	InvestigatorMapWidget *widget = new InvestigatorMapWidget(investigator, _mapProjector, this);
 	widget->autorelease();
-	widget->setTag(investigator->GetUid());
 	return widget;
 }
 
@@ -571,15 +570,17 @@ void WorldMapLayer::_OnTownSelect(Town::WeakPtr town)
 			info.townHeartPounding = GameInfo::Instance().GetFloat("CELL_STARTUP_TOWN_HEART_POUNDING");
 			info.townInfluence = GameInfo::Instance().GetFloat("CELL_STARTUP_TOWN_INFLUENCE");
 			info.townWelfare = GameInfo::Instance().GetFloat("CELL_STARTUP_TOWN_WELFARE");
-			CreateCell(info, Cell::State::READY, true);
+			Cell::Ptr cell = CreateCell(info, Cell::State::READY);
 
 			World::Instance().SetFirstLaunch(false);
-			MessageManager::Instance().PutMessage(Message("SaveGame", 0));
+			World::Instance().GetCellsNetwork().SetRootCell(cell);
 
 			if (World::Instance().GetTutorialState() == "FirstCell")
 			{
 				World::Instance().RunTutorialFunction("AfterCreatingFirstCell");
 			}
+
+			MessageManager::Instance().PutMessage(Message("SaveGame", 0));
 		}
 		else if (!_nextCellParent.expired())
 		{
@@ -616,6 +617,7 @@ void WorldMapLayer::_OnTownSelect(Town::WeakPtr town)
 				info.stateDuration = GameInfo::Instance().GetFloat("CELL_CONSTRUCTION_TIME");
 
 				CreateCell(info, Cell::State::CONSTRUCTION);
+
 				MessageManager::Instance().PutMessage(Message("SaveGame", 0));
 			}
 
@@ -637,7 +639,7 @@ void WorldMapLayer::HideCellGameInterface(void)
 
 void WorldMapLayer::_UpdateNetwork()
 {
-	if (World::Instance().GetCellsNetwork().GetRootCell())
+	if (!World::Instance().GetCellsNetwork().GetRootCell().expired())
 	{
 		_networkVisualiser->clear();
 		_RecursiveUpdateNetworkVisualiser(_networkVisualiser, World::Instance().GetCellsNetwork().GetRootCell());

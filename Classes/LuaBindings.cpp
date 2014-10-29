@@ -118,7 +118,6 @@ void LuaInstance::BindClass<World>()
 	luabind::module(_luaState) [
 	luabind::class_<World>("WorldClass")
 		.def("addInvestigatorByInfo", &World::AddInvestigatorByInfo)
-		.def("getCellsCount", &World::GetCellsCount)
 		.def("addTutorial", &World::AddTutorial)
 		.def("getCurrentTutorial", &World::GetCurrentTutorial)
 		.def("removeCurrentTutorial", &World::RemoveCurrentTutorial)

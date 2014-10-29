@@ -2,6 +2,8 @@
 
 #include "Town.h"
 
+#include "MessageManager.h"
+
 CellsNetwork::CellsNetwork(void)
 {
 }
@@ -92,39 +94,40 @@ Cell::Ptr CellsNetwork::GetCellByUid(int uid) const
 	return Cell::Ptr();
 }
 
-Cell::Ptr CellsNetwork::GetRootCell(void) const
+Cell::WeakPtr CellsNetwork::GetRootCell() const
 {
-	for (CellsCIter it = _cells.begin(); it != _cells.end(); ++it) {
-		if ((*it)->IsRoot()) {
-			return (*it);
-		}
-	}
-
-	return Cell::Ptr();
+	return _rootCell;
 }
 
-const CellsNetwork::Cells& CellsNetwork::GetActiveCells(void) const
+void CellsNetwork::SetRootCell(Cell::Ptr cell)
+{
+	_rootCell.swap(cell);
+}
+
+const CellsNetwork::Cells& CellsNetwork::GetActiveCells() const
 {
 	return _cells;
 }
 
-const CellsNetwork::Cells& CellsNetwork::GetOfflineCells(void) const
+const CellsNetwork::Cells& CellsNetwork::GetOfflineCells() const
 {
 	return _cells;
 }
 
 bool CellsNetwork::IsConnectedWithRoot(Cell::Ptr cell) const
 {
+	Cell* rootCell = GetRootCell().lock().get();
+
 	Cell *parent = cell->GetInfo().parent;
 	if (!cell->GetInfo().parent) {
-		return cell->IsRoot();
+		return cell.get() == rootCell;
 	}
 
 	while (parent)
 	{
 		Cell *next = parent->GetInfo().parent;
 		if (!next) {
-			return parent->IsRoot();
+			return parent == rootCell;
 		}
 
 		parent = next;

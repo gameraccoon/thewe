@@ -42,7 +42,7 @@ public:
 		labelDesc->setPosition(50.0f, 15.0f);
 		addChild(labelDesc, 1);
 
-		std::string durationText = cocos2d::StringUtils::format("Duration: %.1d", _taskInfo->duration);
+		std::string durationText = cocos2d::StringUtils::format("Duration: %.1d", (int)_taskInfo->duration);
 		cocos2d::Label *labelDuraion = cocos2d::Label::createWithBMFont("arial-26-en-ru.fnt",
 																		durationText, cocos2d::TextHAlignment::LEFT);
 		labelDuraion->setPosition(-30.0f, -15.0f);

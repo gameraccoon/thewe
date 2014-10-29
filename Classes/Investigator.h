@@ -27,7 +27,7 @@ public:
 		BranchBundle childBrunches;
 	};
 
-	enum State
+	enum class State
 	{
 		START_CATCH_DELAY,
 		INVESTIGATION,

@@ -312,7 +312,7 @@ unsigned int World::GetLastUid() const
 
 void World::InitUid(unsigned int uid)
 {
-	if (uid == 0)
+	if (_uid == 0)
 	{
 		_uid = uid;
 	}
@@ -320,11 +320,6 @@ void World::InitUid(unsigned int uid)
 	{
 		Log::Instance().writeWarning("Trying to double initialize UId");
 	}
-}
-
-int World::GetCellsCount(void) const
-{
-	return _cellsNetwork.GetActiveCells().size();
 }
 
 LuaInstance* World::GetLuaInst(void) const

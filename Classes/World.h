@@ -73,7 +73,6 @@ public:
 	unsigned int GetLastUid(void) const;
 	void InitUid(unsigned int uid);
 
-	int GetCellsCount(void) const;
 	LuaInstance* GetLuaInst(void) const;
 
 	void AddTutorial(Tutorial tutrorial);

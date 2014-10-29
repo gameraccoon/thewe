@@ -5,11 +5,20 @@
 #include "GameInfo.h"
 #include "MessageManager.h"
 
-Cell::Cell(const Info &info, bool root)
+Cell::Cell(const Info &info)
 	: _info(info)
 	, _currentTask()
-	, _isRoot(root)
 	, _uid(World::Instance().GetNewUid())
+{
+	info.town.lock()->SetCellPresented(true);
+
+	_CheckValues();
+}
+
+Cell::Cell(const Info &info, unsigned int uid)
+	: _info(info)
+	, _currentTask()
+	, _uid(uid)
 {
 	info.town.lock()->SetCellPresented(true);
 
@@ -20,9 +29,9 @@ Cell::~Cell(void)
 {
 }
 
-Cell::Ptr Cell::Create(const Info &info, bool root)
+Cell::Ptr Cell::Create(const Info &info)
 {
-	return std::make_shared<Cell>(info, root);
+	return std::make_shared<Cell>(info);
 }
 
 void Cell::AddChild(Cell::Ptr cell)
@@ -132,11 +141,6 @@ bool Cell::IsCurrentTaskExists(void) const
 bool Cell::IsState(State state) const
 {
 	return _info.state == state;
-}
-
-bool Cell::IsRoot(void) const
-{
-	return _isRoot;
 }
 
 void Cell::AddCompletedTask(const Task::CompletedTaskInfo& completedTask)

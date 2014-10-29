@@ -37,7 +37,7 @@ public:
 
 	bool IsCellPresented(void);
 
-	unsigned int GetUid(void) const;
+	unsigned int GetUid() const;
 
 	void _CheckValues() const;
 
