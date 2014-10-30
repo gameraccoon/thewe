@@ -321,7 +321,7 @@ void WorldMapLayer::TouchesEnded(const std::vector<cocos2d::Touch* > &touches, c
 						relinked->GetInfo().stateDuration = 0;
 
 						World::Instance().GetCellsNetwork().RelinkCells(cell.lock(), relinked);
-						_linkCellChildren.swap(Cell::WeakPtr());//.reset();
+						_linkCellChildren.reset();
 
 						_UpdateNetwork();
 					}
