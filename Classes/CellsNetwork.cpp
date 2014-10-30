@@ -20,11 +20,21 @@ void CellsNetwork::UpdateToTime(Utils::GameTime time)
 		if (!IsConnectedWithRoot(cell) && cell->IsState(Cell::State::READY)) {
 			cell->BeginAutonomy();
 		}
+
+		if (IsConnectedWithRoot(cell) && cell->IsState(Cell::State::AUTONOMY)) {
+			cell->GetInfo().state = Cell::State::READY;
+			cell->GetInfo().stateBegin = 0;
+			cell->GetInfo().stateDuration = 0;
+		}
 	}
 }
 
 void CellsNetwork::RelinkCells(Cell::Ptr parent, Cell::Ptr child)
 {
+	if (child->GetInfo().parent) {
+		child->GetInfo().parent->RemoveChild(child);
+	}
+
 	parent->AddChild(child);
 }
 

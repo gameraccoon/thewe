@@ -40,7 +40,6 @@ public:
 	void SetLinkCellChildren(Cell::WeakPtr children);
 
 	Cell::Ptr CreateCell(Cell::Info info, Cell::State state);
-	void DeleteCell(CellMapWidget *widget);
 
 	void PushSessionFailScreen(void);
 	void PushSessionWinScreen(void);

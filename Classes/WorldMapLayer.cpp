@@ -221,15 +221,6 @@ Cell::Ptr WorldMapLayer::CreateCell(Cell::Info info, Cell::State state)
 	return cell;
 }
 
-void WorldMapLayer::DeleteCell(CellMapWidget *widget)
-{
-	// we need to delete cell from the network
-	//Cell::Ptr cell = widget->GetCell();
-
-	removeChild(widget);
-	_mapProjector->RemoveMapPart(widget->GetProjectorUid());
-}
-
 void WorldMapLayer::PushSessionFailScreen(void)
 {
 	CustomSessionEndScreen::ConstructionInfo desc;
@@ -330,7 +321,7 @@ void WorldMapLayer::TouchesEnded(const std::vector<cocos2d::Touch* > &touches, c
 						relinked->GetInfo().stateDuration = 0;
 
 						World::Instance().GetCellsNetwork().RelinkCells(cell.lock(), relinked);
-						_linkCellChildren.reset();
+						_linkCellChildren.swap(Cell::WeakPtr());//.reset();
 
 						_UpdateNetwork();
 					}
@@ -488,15 +479,6 @@ Cell::WeakPtr WorldMapLayer::_GetCellUnderPoint(const Vector2& point)
 	{
 		Cell::Ptr cell = widget->GetCell().lock();
 
-		if (cell->IsState(Cell::State::AUTONOMY)) {
-			_linkCellChildren = (Cell::WeakPtr)cell;
-			continue;
-		}
-		if (!cell || !cell->IsState(Cell::State::READY))
-		{
-			continue;
-		}
-
 		Vector2 projectedPoint = point - _mapProjector->ProjectOnScreen(cell->GetInfo().location);
 		
 		float xbegin, xend, ybegin, yend;
@@ -507,6 +489,14 @@ Cell::WeakPtr WorldMapLayer::_GetCellUnderPoint(const Vector2& point)
 
 		if (rect.containsPoint(projectedPoint))
 		{
+			if (cell->IsState(Cell::State::AUTONOMY)) {
+				_linkCellChildren = (Cell::WeakPtr)cell;
+				return Cell::WeakPtr();
+			}
+			else if (!cell || !cell->IsState(Cell::State::READY)) {
+				return Cell::WeakPtr();	
+			}
+
 			return cell;
 		}
 	}
