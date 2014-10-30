@@ -32,7 +32,7 @@ private:
 	cocos2d::Label *_currentTaskLabel;
 
 	Cell::WeakPtr _cell;
-	Task::Ptr _cellCurrentTask;
+	Task::WeakPtr _cellCurrentTask;
 	CellMenuSelector *_cellMenuSelector;
 };
 

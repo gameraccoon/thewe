@@ -115,22 +115,22 @@ bool CellInfoMenu::init(void)
 	_townInfluenceProgressBar->SetBorderColor(Color(0.5f, 0.5f, 0.5f, 1.0f));
 
 	Cell::Ptr cell = _cell.lock();
-	_cellCurrentTask = cell->getCurrentTask().lock();
+	_cellCurrentTask = cell->getCurrentTask();
 
 	UpdateInfoBy(cell);
-
-	if (_cellCurrentTask != nullptr)
+	Task::Ptr currentTask = _cellCurrentTask.lock();
+	if (currentTask)
 	{
 		float w = background->getContentSize().width - 50.0f;
 		float x = center.x - background->getContentSize().width / 2.0f + 25.0f;
 		float y = center.y - background->getContentSize().height / 2.0f + 25.0f;
 		
 		Utils::GameTime time = Utils::GetGameTime();
-		float progress = _cellCurrentTask->CalculateProgress(time);
+		float progress = currentTask->CalculateProgress(time);
 
 		_taskProgressBar = CreateProgressBar(this, Vector2(x, y), Vector2(w, 10.0f), Color(1.0f, 0.5f, 0, 1.0f), progress);
 
-		std::string strTaskLabel = cocos2d::StringUtils::format("Current task: %s", _cellCurrentTask->GetInfo()->title.c_str());
+		std::string strTaskLabel = cocos2d::StringUtils::format("Current task: %s", currentTask->GetInfo()->title.c_str());
 		_currentTaskLabel = cocos2d::Label::createWithTTF(ttfConfig, strTaskLabel, cocos2d::TextHAlignment::CENTER);
 		_currentTaskLabel->setPosition(center.x, y+25.0f);
 
@@ -155,19 +155,21 @@ bool CellInfoMenu::init(void)
 
 void CellInfoMenu::update(float dt)
 {
-	if (_cellCurrentTask)
+	Task::Ptr currentTask = _cellCurrentTask.lock();
+	if (currentTask)
 	{
-		if (_taskProgressBar->IsFinished())
+		Utils::GameTime time = Utils::GetGameTime();
+		float progress = currentTask->CalculateProgress(time);
+		_taskProgressBar->SetProgressPercentage(progress * 100.0f);
+	}
+	else
+	{
+		if (_taskProgressBar)
 		{
 			removeChild(_taskProgressBar, true);
 			removeChild(_currentTaskLabel, true);
-			_cellCurrentTask = nullptr;
-		}
-		else
-		{
-			Utils::GameTime time = Utils::GetGameTime();
-			float progress = _cellCurrentTask->CalculateProgress(time);
-			_taskProgressBar->SetProgressPercentage(progress * 100.0f);
+			_taskProgressBar = nullptr;
+			_currentTaskLabel = nullptr;
 		}
 	}
 }

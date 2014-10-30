@@ -29,8 +29,6 @@ bool CellTaskInfoMenu::init(void)
 			"cell-tasks-menu-close-pressed.png", CC_CALLBACK_1(CellTaskInfoMenu::_OnCloseCallback, this));
 	}
 
-	cocos2d::Menu *menu = cocos2d::Menu::create(closeButton, nullptr);
-	menu->setPosition(center);
 	cocos2d::Sprite *background = cocos2d::Sprite::create("cell-tasks-menu.png");
 	background->setPosition(center);
 	cocos2d::TTFConfig ttfConfig("arial.ttf", 18);
@@ -46,12 +44,13 @@ bool CellTaskInfoMenu::init(void)
 	labelTitle->setPosition(title_x, title_y);
 	labelTitle->setColor(cocos2d::Color3B(255, 255, 255));
 	
-	_cellCurrentTask = _cell.lock()->getCurrentTask().lock();
+	_cellCurrentTask = _cell.lock()->getCurrentTask();
+	Task::Ptr currentTask = _cellCurrentTask.lock();
 	float w = background->getContentSize().width - 50.0f;
 	float x = center.x - background->getContentSize().width / 2.0f + 25.0f;
 	float y = center.y;
 	Utils::GameTime time = Utils::GetGameTime();
-	float progress = _cellCurrentTask->CalculateProgress(time);
+	float progress = currentTask->CalculateProgress(time);
 
 	_taskProgressBar = new SquareProgressBar(w, 50.0f, cocos2d::Color4F(1.0f, 0.5f, 0, 1.0f));
 	_taskProgressBar->setPosition(x, y);
@@ -64,6 +63,22 @@ bool CellTaskInfoMenu::init(void)
 	cocos2d::ScaleTo *scale = cocos2d::ScaleTo::create(0.8f, 1.0f, 1.0f);
 	cocos2d::FadeIn *fade = cocos2d::FadeIn::create(0.5f);
 	cocos2d::EaseElasticOut *elastic_scale = cocos2d::EaseElasticOut::create(scale, 5.0f);
+
+	{
+		using namespace cocos2d;
+		_cancelButton = MenuItemImage::create("new-cell-button-active.png", "new-cell-button-pressed.png",
+			"new-cell-button-disabled.png", CC_CALLBACK_1(CellTaskInfoMenu::_OnCancel, this));
+		_cancelButton->setPosition(0.0f, -80.0f);
+		_cancelButton->setScale(0.8f);
+	}
+
+	cocos2d::TTFConfig ttfConfigBig("arial.ttf", 24);
+	cocos2d::Label *newCellButtonLabel = cocos2d::Label::createWithTTF(ttfConfigBig, "Abort task", cocos2d::TextHAlignment::CENTER);
+	newCellButtonLabel->setPosition(background->getPosition() + _cancelButton->getPosition());
+	addChild(newCellButtonLabel, 2);
+
+	cocos2d::Menu *menu = cocos2d::Menu::create(closeButton, _cancelButton, nullptr);
+	menu->setPosition(center);
 
 	scheduleUpdate();
 	setScale(0.01f);
@@ -81,22 +96,25 @@ bool CellTaskInfoMenu::init(void)
 
 void CellTaskInfoMenu::update(float dt)
 {
-	if (_cellCurrentTask)
+	Task::Ptr currentTask = _cellCurrentTask.lock();
+	if (currentTask)
 	{
-		if (_taskProgressBar->IsFinished())
+		Utils::GameTime time = Utils::GetGameTime();
+		float progress = currentTask->CalculateProgress(time);
+		_taskProgressBar->SetProgressPercentage(progress * 100.0f);
+
+		std::string label = cocos2d::StringUtils::format("(%d %%)", (int)(progress * 100.0f));
+		_taskProgressLabel->setString(label);
+	}
+	else
+	{
+		if (_taskProgressBar)
 		{
 			removeChild(_taskProgressBar, true);
 			removeChild(_taskProgressLabel, true);
-			_cellCurrentTask = nullptr;
-		}
-		else
-		{
-			Utils::GameTime time = Utils::GetGameTime();
-			float progress = _cellCurrentTask->CalculateProgress(time);
-			_taskProgressBar->SetProgressPercentage(progress * 100.0f);
-
-			std::string label = cocos2d::StringUtils::format("(%d %%)", (int)(progress * 100.0f));
-			_taskProgressLabel->setString(label);
+			_taskProgressBar = nullptr;
+			_taskProgressLabel = nullptr;
+			_CloseMenu();
 		}
 	}
 }
@@ -120,5 +138,14 @@ void CellTaskInfoMenu::KeyReleased(cocos2d::EventKeyboard::KeyCode key, cocos2d:
 	if (key == cocos2d::EventKeyboard::KeyCode::KEY_ESCAPE)
 	{
 		_CloseMenu();
+	}
+}
+
+void CellTaskInfoMenu::_OnCancel(cocos2d::Ref *sender)
+{
+	Task::Ptr currentTask = _cellCurrentTask.lock();
+	if (currentTask)
+	{
+		currentTask->Abort();
 	}
 }

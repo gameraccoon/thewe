@@ -14,15 +14,17 @@ public:
 private:
 	void _OnCloseCallback(cocos2d::Ref *sender);
 	void _CloseMenu(void);
+	void _OnCancel(cocos2d::Ref *sender);
 	void KeyReleased(cocos2d::EventKeyboard::KeyCode key, cocos2d::Event *event);
 
 private:
 	cocos2d::Label *_taskProgressLabel;
 
 	SquareProgressBar *_taskProgressBar;
+	cocos2d::MenuItemImage *_cancelButton;
 
 	Cell::WeakPtr _cell;
-	Task::Ptr _cellCurrentTask;
+	Task::WeakPtr _cellCurrentTask;
 	CellMenuSelector *_cellMenuSelector;
 };
 
