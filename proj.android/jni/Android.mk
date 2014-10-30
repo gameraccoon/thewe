@@ -22,6 +22,7 @@ LOCAL_SRC_FILES := hellocpp/main.cpp \
 				   	../../Classes/CellMapWidget.cpp \
 				   	../../Classes/CellNetWidget.cpp \
 				   	../../Classes/CellsNetLayer.cpp \
+				   	../../Classes/CellsNetwork.cpp \
 				   	../../Classes/CellSpinoffMenu.cpp \
 				   	../../Classes/CellTasksMenu.cpp \
 				   	../../Classes/CellTaskInfoMenu.cpp \
@@ -29,6 +30,7 @@ LOCAL_SRC_FILES := hellocpp/main.cpp \
 				   	../../Classes/Drawable.cpp \
 				   	../../Classes/EditorLayer.cpp \
 				   	../../Classes/GameInfo.cpp \
+				   	../../Classes/GameSavesManager.cpp \
 				   	../../Classes/GameScene.cpp \
 				   	../../Classes/Investigator.cpp \
 				   	../../Classes/InvestigatorMapWidget.cpp \
@@ -38,6 +40,7 @@ LOCAL_SRC_FILES := hellocpp/main.cpp \
 				   	../../Classes/MainMenuScene.cpp \
 				   	../../Classes/MapGuiLayer.cpp \
 				   	../../Classes/MapProjector.cpp \
+				   	../../Classes/MessageManager.cpp \
 				   	../../Classes/MiscUtils.cpp \
 				   	../../Classes/NotificationMessageManager.cpp \
 				   	../../Classes/NotificationMessageLayer.cpp \
@@ -113,7 +116,7 @@ LOCAL_SRC_FILES := hellocpp/main.cpp \
 					../../dependencies/lua-5.1.5/lzio.c \
 					../../dependencies/lua-5.1.5/print.c \
 					\
-					../../dependencies/sqlite3/sqlite3.c
+					../../dependencies/sqlite3-3.8.7/sqlite3.c
                    
 
 LOCAL_C_INCLUDES := $(LOCAL_PATH)/../../Classes \
@@ -121,7 +124,7 @@ LOCAL_C_INCLUDES := $(LOCAL_PATH)/../../Classes \
 					$(LOCAL_PATH)/../../dependencies/lua-5.1.5 \
 					$(LOCAL_PATH)/../../dependencies/luabind-0.9.1 \
 					$(LOCAL_PATH)/../../dependencies/pugixml-1.4 \
-					$(LOCAL_PATH)/../../dependencies/sqlite3 \
+					$(LOCAL_PATH)/../../dependencies/sqlite3-3.8.7 \
 					$(LOCAL_PATH)/../../cocos2d/extensions
 
 LOCAL_WHOLE_STATIC_LIBRARIES := cocos2dx_static
