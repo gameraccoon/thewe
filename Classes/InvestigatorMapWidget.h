@@ -21,7 +21,6 @@ public:
 	int GetInvestigatorUid(void) const;
 
 public:
-	void UpdateInvestigationMap(const Investigator::BranchBundle &bundle);
 	void OnCatchInFirstCell(cocos2d::Ref *sender);
 
 	Investigator::Ptr _investigator;

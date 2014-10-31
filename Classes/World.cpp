@@ -145,7 +145,7 @@ void World::AddInvestigatorByInfo(const Cell::Info &cellInfo)
 void World::RemoveCellFromInvestigation(Cell::Ptr cell)
 {
 	for (Investigator::Ptr investigator : _investigators) {
-		investigator->CancleInvestigationTo(cell, investigator->GetRootBranchBundle());
+		investigator->CancelInvestigationTo(cell);
 	}
 }
 
@@ -290,9 +290,8 @@ bool World::IsTownAvaliableToPlaceCell(Town::WeakPtr town) const
 
 bool World::IsCellUnderInvestigation(Cell::Ptr cell) const
 {
-	for (Investigator::Ptr investigator : _investigators)
-	{
-		if (investigator->IsCellUnderInvestigation(cell, investigator->GetRootBranchBundle())){
+	for (Investigator::Ptr investigator : _investigators) {
+		if (investigator->IsCellUnderInvestigation(cell)) {
 			return true;
 		}
 	}
