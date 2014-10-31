@@ -88,6 +88,7 @@ void GameSavesManager::FirstInitSave()
 								",'morale' REAL NOT NULL"
 								",'members_count' INTEGER NOT NULL"
 								",'devotion' REAL NOT NULL"
+								",'fame' REAL NOT NULL"
 								",'rats_count' INTEGER NOT NULL"
 								",'tech_units_count' INTEGER NOT NULL"
 								",'town_heart_pounding' REAL NOT NULL"
@@ -220,6 +221,7 @@ void GameSavesManager::LoadCellsState()
 		int parentId = cellsReader->getValueByName("parent_uid")->asInt();
 		info.cash = cellsReader->getValueByName("cash")->asInt();
 		info.devotion = cellsReader->getValueByName("devotion")->asFloat();
+		info.fame = cellsReader->getValueByName("fame")->asFloat();
 		info.experience = cellsReader->getValueByName("experience")->asInt();
 		info.location.x = cellsReader->getValueByName("location_x")->asFloat();
 		info.location.y = cellsReader->getValueByName("location_y")->asFloat();
@@ -289,6 +291,7 @@ static std::string InitCellsAdditionStatement()
 			",cash, morale"
 			",members_count"
 			",devotion"
+			",fame"
 			",rats_count"
 			",tech_units_count"
 			",town_heart_pounding"
@@ -335,6 +338,7 @@ static void AppendCellToQuery(std::string* const query, Cell* const cell)
 		.append(std::to_string(info.morale)).append(",")
 		.append(std::to_string(info.membersCount)).append(",")
 		.append(std::to_string(info.devotion)).append(",")
+		.append(std::to_string(info.fame)).append(",")
 		.append(std::to_string(info.ratsCount)).append(",")
 		.append(std::to_string(info.techUnitsCount)).append(",")
 		.append(std::to_string(info.townHeartPounding)).append(",")
