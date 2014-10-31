@@ -14,7 +14,7 @@ public:
 
 	struct Branch
 	{
-		Branch *parentBrunch;
+		Branch *parentBranch;
 		Cell *cellFrom;
 		Cell *cellTo;
 		

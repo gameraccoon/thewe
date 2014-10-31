@@ -66,7 +66,7 @@ void Investigator::BeginInvestigation(void)
 	Investigator::Branch branchToParent;
 	branchToParent.cellFrom = cell.get();
 	branchToParent.cellTo = cell->GetInfo().parent;
-	branchToParent.parentBrunch = nullptr;
+	branchToParent.parentBranch = nullptr;
 	branchToParent.timeDuration = GameInfo::Instance().GetFloat("INVESTIGATION_DURATION");
 	branchToParent.timeBegin = Utils::GetGameTime();
 	branchToParent.timeEnd = branchToParent.timeBegin + branchToParent.timeDuration;
@@ -78,7 +78,7 @@ void Investigator::BeginInvestigation(void)
 		Investigator::Branch branch;
 		branch.cellFrom = cell.get();
 		branch.cellTo = child.get();
-		branch.parentBrunch = nullptr;
+		branch.parentBranch = nullptr;
 		branch.timeDuration = GameInfo::Instance().GetFloat("INVESTIGATION_DURATION");
 		branch.timeBegin = Utils::GetGameTime();
 		branch.timeEnd = branch.timeBegin + branch.timeDuration;
@@ -109,6 +109,7 @@ void Investigator::UpdateToTime(Utils::GameTime time)
 		if (progress >= 1.0f)
 		{
 			BeginInvestigation();
+			MessageManager::Instance().PutMessage(Message("SaveGame", 0));
 		}
 	}
 	else if (IsStateType(State::INVESTIGATION))
@@ -143,6 +144,8 @@ void Investigator::UpdateToTime(Utils::GameTime time)
 
 					_activeBranches.erase(_activeBranches.begin() + index);
 				}
+
+				MessageManager::Instance().PutMessage(Message("SaveGame", 0));
 			}
 		}
 	}
@@ -162,7 +165,7 @@ void Investigator::CaptureCell(Cell *cellTarget, Cell *cellFrom)
 		Investigator::Branch childBranch;
 		childBranch.cellFrom = cellTarget;
 		childBranch.cellTo = cellTarget->GetInfo().parent;
-		childBranch.parentBrunch = nullptr;
+		childBranch.parentBranch = nullptr;
 		childBranch.timeDuration = GameInfo::Instance().GetFloat("INVESTIGATION_DURATION");
 		childBranch.timeBegin = Utils::GetGameTime();
 		childBranch.timeEnd = childBranch.timeBegin + childBranch.timeDuration;
@@ -183,7 +186,7 @@ void Investigator::CaptureCell(Cell *cellTarget, Cell *cellFrom)
 		Investigator::Branch childBranch;
 		childBranch.cellFrom = cellTarget;
 		childBranch.cellTo = child.get();
-		childBranch.parentBrunch = nullptr;
+		childBranch.parentBranch = nullptr;
 		childBranch.timeDuration = GameInfo::Instance().GetFloat("INVESTIGATION_DURATION");
 		childBranch.timeBegin = Utils::GetGameTime();
 		childBranch.timeEnd = childBranch.timeBegin + childBranch.timeDuration;

@@ -70,10 +70,6 @@ void GameSavesManager::FirstInitSave()
 								",tutorial_state VARCHAR(255) NOT NULL"
 								");");
 	}
-	else
-	{
-		World::Instance().SetFirstLaunch(false);
-	}
 
 	if (!_impl->database.IsTableExists(CELLS_TABLE))
 	{
@@ -112,6 +108,17 @@ void GameSavesManager::FirstInitSave()
 		_impl->database.execSql("CREATE TABLE " + PROCESSES_TABLE + " ("
 								"'cell_uid' INTEGER NOT NULL"
 								",'type' VARCHAR(100) NOT NULL"
+								",'begin_time' VARCHAR(20) NOT NULL"
+								",'duration' VARCHAR(20) NOT NULL"
+								");");
+	}
+
+	if (!_impl->database.IsTableExists(INVESIGATIONS_TABLE))
+	{
+		_impl->database.execSql("CREATE TABLE " + INVESIGATIONS_TABLE + " ("
+								"'investigator_uid' INTEGER NOT NULL"
+								",'cellFrom_uid' INTEGER NOT NULL"
+								",'cellTo_uid' INTEGER NOT NULL"
 								",'begin_time' VARCHAR(20) NOT NULL"
 								",'duration' VARCHAR(20) NOT NULL"
 								");");
@@ -167,45 +174,6 @@ Cell::State CastCellStateFromString(const std::string& state)
 	}
 }
 
-void GameSavesManager::LoadProcesses()
-{
-	CellsNetwork &cellsNetwork = World::Instance().GetCellsNetwork();
-	SqliteDataReader::Ptr processesReader = _impl->database.execQuery("SELECT * FROM " + PROCESSES_TABLE);
-	while (processesReader->next())
-	{
-		unsigned int cell_uid = processesReader->getValueByName("cell_uid")->asInt();
-		Cell::Ptr cell = cellsNetwork.GetCellByUid(cell_uid);
-
-		Cell::Info &info = cell->GetInfo();
-
-		if (std::to_string(info.state) == processesReader->getValueByName("type")->asString())
-		{
-			info.stateBegin = Utils::StringToTime(processesReader->getValueByName("begin_time")->asString());
-			info.stateDuration = Utils::StringToTime(processesReader->getValueByName("duration")->asString());
-		}
-		else
-		{
-			Log::Instance().writeWarning("Loaded old unusual process for a cell. Process type: "
-				+ processesReader->getValueByName("type")->asString());
-		}
-	}
-}
-
-void GameSavesManager::LoadRunnedTasks()
-{
-	CellsNetwork &cellsNetwork = World::Instance().GetCellsNetwork();
-	SqliteDataReader::Ptr tasksReader = _impl->database.execQuery("SELECT * FROM " + RUNNED_TASKS_TABLE);
-	while (tasksReader->next())
-	{
-		std::string currentTaskId = tasksReader->getValueByName("task_id")->asString();
-		unsigned int cell_uid = tasksReader->getValueByName("cell_uid")->asInt();
-		Utils::GameTime startTime = Utils::StringToTime(tasksReader->getValueByName("start_time")->asString());
-
-		Cell::Ptr cell = cellsNetwork.GetCellByUid(cell_uid);
-		World::Instance().GetTaskManager().RunTask(cell, currentTaskId, startTime);
-	}
-}
-
 void GameSavesManager::LoadCellsState()
 {
 	std::map<int, std::pair<Cell::Ptr, int>> cellsIndicesCast;
@@ -258,6 +226,78 @@ void GameSavesManager::LoadCellsState()
 	}
 }
 
+void GameSavesManager::LoadRunnedTasks()
+{
+	CellsNetwork &cellsNetwork = World::Instance().GetCellsNetwork();
+	SqliteDataReader::Ptr tasksReader = _impl->database.execQuery("SELECT * FROM " + RUNNED_TASKS_TABLE);
+	while (tasksReader->next())
+	{
+		std::string currentTaskId = tasksReader->getValueByName("task_id")->asString();
+		unsigned int cell_uid = tasksReader->getValueByName("cell_uid")->asInt();
+		Utils::GameTime startTime = Utils::StringToTime(tasksReader->getValueByName("start_time")->asString());
+
+		Cell::Ptr cell = cellsNetwork.GetCellByUid(cell_uid);
+		World::Instance().GetTaskManager().RunTask(cell, currentTaskId, startTime);
+	}
+}
+
+void GameSavesManager::LoadProcesses()
+{
+	CellsNetwork &cellsNetwork = World::Instance().GetCellsNetwork();
+	SqliteDataReader::Ptr processesReader = _impl->database.execQuery("SELECT * FROM " + PROCESSES_TABLE);
+	while (processesReader->next())
+	{
+		unsigned int cell_uid = processesReader->getValueByName("cell_uid")->asInt();
+		Cell::Ptr cell = cellsNetwork.GetCellByUid(cell_uid);
+
+		Cell::Info &info = cell->GetInfo();
+
+		if (std::to_string(info.state) == processesReader->getValueByName("type")->asString())
+		{
+			info.stateBegin = Utils::StringToTime(processesReader->getValueByName("begin_time")->asString());
+			info.stateDuration = Utils::StringToTime(processesReader->getValueByName("duration")->asString());
+		}
+		else
+		{
+			Log::Instance().writeWarning("Loaded old unusual process for a cell. Process type: "
+				+ processesReader->getValueByName("type")->asString());
+		}
+	}
+}
+
+void GameSavesManager::LoadInvestigations()
+{
+	CellsNetwork &cellsNetwork = World::Instance().GetCellsNetwork();
+
+	{
+		SqliteDataReader::Ptr investigatorsReader = _impl->database.execQuery("SELECT DISTINCT investigator_uid FROM "
+																			   + INVESIGATIONS_TABLE);
+		while (investigatorsReader->next())
+		{
+			// ToDo: creating investigators
+		}
+	}
+
+	{
+		SqliteDataReader::Ptr investigationsReader = _impl->database.execQuery("SELECT * FROM "
+																			   + INVESIGATIONS_TABLE
+																			   + " ORDER BY investigator_uid ASC");
+
+		while (investigationsReader->next())
+		{
+			int investigatorUid = investigationsReader->getValueByName("investigator_uid")->asInt();
+			unsigned int cellFrom_uid = investigationsReader->getValueByName("cellFrom_uid")->asInt();
+			unsigned int cellTo_uid = investigationsReader->getValueByName("cellTo_uid")->asInt();
+			Cell::Ptr cellFrom = cellsNetwork.GetCellByUid(cellFrom_uid);
+			Cell::Ptr cellTo = cellsNetwork.GetCellByUid(cellTo_uid);
+			Utils::GameTime beginTime = Utils::StringToTime(investigationsReader->getValueByName("begin_time")->asString());
+			Utils::GameTime duration = Utils::StringToTime(investigationsReader->getValueByName("duration")->asString());
+
+			// ToDo: adding to investigators
+		}
+	}
+}
+
 void GameSavesManager::LoadUserInfo()
 {
 	SqliteDataReader::Ptr reader = _impl->database.execQuery("SELECT * FROM " + USER_DATA_TABLE + " LIMIT 1");
@@ -275,8 +315,9 @@ void GameSavesManager::LoadUserInfo()
 void GameSavesManager::LoadGameState(void)
 {
 	LoadCellsState();
-	LoadProcesses();
 	LoadRunnedTasks();
+	LoadProcesses();
+	LoadInvestigations();
 	LoadUserInfo();
 }
 
@@ -303,8 +344,7 @@ static std::string InitCellsAdditionStatement()
 
 static std::string InitRunnedTasksAdditionStatement()
 {
-	return "DELETE FROM " + RUNNED_TASKS_TABLE + ";"
-			"INSERT INTO " + RUNNED_TASKS_TABLE +
+	return "INSERT INTO " + RUNNED_TASKS_TABLE +
 			"(task_id"
 			",cell_uid"
 			",start_time)"
@@ -313,10 +353,21 @@ static std::string InitRunnedTasksAdditionStatement()
 
 static std::string InitConstrucrionAdditionStatement()
 {
-	return "DELETE FROM " + PROCESSES_TABLE + ";"
-			"INSERT INTO " + PROCESSES_TABLE +
+	return "INSERT INTO " + PROCESSES_TABLE +
 			"(cell_uid"
-			",type, begin_time"
+			",type"
+			",begin_time"
+			",duration)"
+			"VALUES";
+}
+
+static std::string InitInvestigationAdditionStatement()
+{
+	return "INSERT INTO " + INVESIGATIONS_TABLE +
+			"(investigator_uid"
+			",cellFrom_uid"
+			",cellTo_uid"
+			",begin_time"
 			",duration)"
 			"VALUES";
 }
@@ -372,6 +423,19 @@ static void AppendCellProcessToQuery(std::string* const query, Cell* cell)
 		.append(")");
 }
 
+static void AppendInvestigationToQuery(std::string* const query,
+									   const Investigator::Branch& branch,
+									   unsigned int investigatorUid)
+{
+	query->append("(")
+		.append("'").append(std::to_string(investigatorUid)).append("',")
+		.append("'").append(std::to_string(branch.cellFrom->GetUid())).append("',")
+		.append("'").append(std::to_string(branch.cellTo->GetUid())).append("',")
+		.append("'").append(Utils::TimeToString(branch.timeBegin)).append("',")
+		.append("'").append(Utils::TimeToString(branch.timeDuration)).append("'")
+		.append(")");
+}
+
 static void AppendSeparator(std::string* const taskAdditionSqlStatement, bool addTasks)
 {
 	if (addTasks)
@@ -384,23 +448,20 @@ static void AppendSeparator(std::string* const taskAdditionSqlStatement, bool ad
 	}
 }
 
-static bool FillProcessesAdditionStatement(std::string* const processesSqlStatement)
+static bool FillCellsAdditionStatement(std::string* const cellsAdditionSqlStatement)
 {
 	const CellsNetwork::Cells &cells = World::Instance().GetCellsNetwork().GetActiveCells();
-	bool addProcesses = false;
+	bool addCells = false;
 	for (auto& cell : cells)
 	{
-		if (cell->IsInTemporaryState())
-		{
-			AppendSeparator(processesSqlStatement, addProcesses);
-			addProcesses = true;
+		AppendSeparator(cellsAdditionSqlStatement, addCells);
+		addCells = true;
 
-			AppendCellProcessToQuery(processesSqlStatement, cell.get());
-		}
+		AppendCellToQuery(cellsAdditionSqlStatement, cell.get());
 	}
-	processesSqlStatement->append(";");
+	cellsAdditionSqlStatement->append(";");
 
-	return addProcesses;
+	return addCells;
 }
 
 static bool FillRunnedTasksAdditionStatement(std::string* const taskAdditionSqlStatement)
@@ -423,20 +484,42 @@ static bool FillRunnedTasksAdditionStatement(std::string* const taskAdditionSqlS
 	return addTasks;
 }
 
-static bool FillCellsAdditionStatement(std::string* const cellsAdditionSqlStatement)
+static bool FillProcessesAdditionStatement(std::string* const processesSqlStatement)
 {
 	const CellsNetwork::Cells &cells = World::Instance().GetCellsNetwork().GetActiveCells();
-	bool addCells = false;
+	bool addProcesses = false;
 	for (auto& cell : cells)
 	{
-		AppendSeparator(cellsAdditionSqlStatement, addCells);
-		addCells = true;
+		if (cell->IsInTemporaryState())
+		{
+			AppendSeparator(processesSqlStatement, addProcesses);
+			addProcesses = true;
 
-		AppendCellToQuery(cellsAdditionSqlStatement, cell.get());
+			AppendCellProcessToQuery(processesSqlStatement, cell.get());
+		}
 	}
-	cellsAdditionSqlStatement->append(";");
+	processesSqlStatement->append(";");
 
-	return addCells;
+	return addProcesses;
+}
+
+static bool FillInvestigationAdditionStatement(std::string* const processesSqlStatement)
+{
+	const World::Investigators& investigators = World::Instance().GetInvestigators();
+	bool addInvestigations = false;
+	for (Investigator::Ptr investigator : investigators)
+	{
+		for (const Investigator::Branch& investigatonBranch : investigator->GetBranches())
+		{
+			AppendSeparator(processesSqlStatement, addInvestigations);
+			addInvestigations = true;
+
+			AppendInvestigationToQuery(processesSqlStatement, investigatonBranch, investigator->GetUid());
+		}
+	}
+	processesSqlStatement->append(";");
+
+	return addInvestigations;
 }
 
 static std::string GetUserInfoAdditionStatement()
@@ -459,6 +542,9 @@ void GameSavesManager::SaveGameState(void)
 	std::string processesSqlStatement = InitConstrucrionAdditionStatement();
 	bool addProcesses = FillProcessesAdditionStatement(&processesSqlStatement);
 
+	std::string investigationsSqlStatement = InitInvestigationAdditionStatement();
+	bool addInvestigations = FillInvestigationAdditionStatement(&investigationsSqlStatement);
+
 	std::string userInfoSqlStatement = GetUserInfoAdditionStatement();
 
 	// begining transaction
@@ -467,11 +553,13 @@ void GameSavesManager::SaveGameState(void)
 	_impl->database.execSql("DELETE FROM " + CELLS_TABLE + ";"
 							"DELETE FROM " + RUNNED_TASKS_TABLE + ";"
 							"DELETE FROM " + PROCESSES_TABLE + ";"
+							"DELETE FROM " + INVESIGATIONS_TABLE + ";"
 							"DELETE FROM " + USER_DATA_TABLE + ";");
 	// adding new data
 	if (addCells) _impl->database.execSql(cellsAdditionSqlStatement);
 	if (addTasks) _impl->database.execSql(taskAdditionSqlStatement);
 	if (addProcesses) _impl->database.execSql(processesSqlStatement);
+	if (addInvestigations) _impl->database.execSql(investigationsSqlStatement);
 	_impl->database.execSql(userInfoSqlStatement);
 	// commiting transaction
 	_impl->database.execSql("COMMIT;");

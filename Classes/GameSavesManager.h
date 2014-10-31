@@ -20,11 +20,12 @@ public:
 
 private:
 	void FirstInitSave();
-	void SaveGameState();
 	void LoadCellsState();
-	void LoadProcesses();
 	void LoadRunnedTasks();
+	void LoadProcesses();
+	void LoadInvestigations();
 	void LoadUserInfo();
+	void SaveGameState();
 
 private:
 	GameSavesManagerImpl* _impl;
