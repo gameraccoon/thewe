@@ -34,22 +34,28 @@ Cell::Ptr Cell::Create(const Info &info)
 	return std::make_shared<Cell>(info);
 }
 
-void Cell::AddChild(Cell::Ptr cell)
+void Cell::AddChild(Cell::WeakPtr cell)
 {
-	_childCells.push_back(cell);
-	cell->SetParent(this);
+	Cell::Ptr lockedCell = cell.lock();
+	if (lockedCell)
+	{
+		_childCells.push_back(cell);
+		lockedCell->SetParent(World::Instance().GetCellsNetwork().GetCellByUid(_uid));
+	}
 }
 
-void Cell::RemoveChild(Cell::Ptr cell)
+void Cell::RemoveChild(Cell::WeakPtr cell)
 {
+	Cell::Ptr cellPtr = cell.lock();
+
 	auto iterator = _childCells.begin(), iEnd = _childCells.end();
 	while (iterator != iEnd)
 	{
-		const Cell::Ptr currentPart = (*iterator);	
+		const Cell::Ptr currentPart = (*iterator).lock();
 
-		if (currentPart == cell)
+		if (currentPart == cellPtr)
 		{
-			cell->SetParent(nullptr);
+			cellPtr->SetParent(Cell::Ptr());
 			_childCells.erase(iterator);
 			return;
 		}
@@ -60,8 +66,17 @@ void Cell::RemoveChild(Cell::Ptr cell)
 
 void Cell::RemoveAllChildren(void)
 {
-	for (Cell::Ptr child : _childCells) {
-		child->SetParent(nullptr);
+	for (Cell::WeakPtr child : _childCells)
+	{
+		Cell::Ptr childPtr = child.lock();
+		if (childPtr)
+		{
+			childPtr->SetParent(Cell::Ptr());
+		}
+		else
+		{
+			Log::Instance().writeError("Dead link to cell child");
+		}
 	}
 	_childCells.clear();
 }
@@ -82,17 +97,17 @@ void Cell::BeginAutonomy(void)
 	_info.stateDuration = GameInfo::Instance().GetFloat("CELL_AUTONOMY_LIFE_TIME");
 }
 
-void Cell::SetParent(Cell* cell)
+void Cell::SetParent(Cell::WeakPtr cell)
 {
 	_info.parent = cell;
 }
 
-const std::vector<Cell::Ptr>& Cell::GetChildren() const
+const std::vector<Cell::WeakPtr>& Cell::GetChildren() const
 {
 	return _childCells;
 }
 
-const Cell* Cell::GetParent() const
+Cell::WeakPtr Cell::GetParent() const
 {
 	return _info.parent;
 }
@@ -110,7 +125,7 @@ void Cell::UpdateToTime(Utils::GameTime time)
 	}
 	else if (_info.state == State::DESTRUCTION && time > _info.stateBegin + _info.stateDuration)
 	{
-		Cell::Ptr ptr = World::Instance().GetCellsNetwork().GetCellByInfo(_info);
+		Cell::Ptr ptr = World::Instance().GetCellsNetwork().GetCellByUid(_uid);
 		World::Instance().RemoveCellFromInvestigation(ptr);
 		World::Instance().GetCellsNetwork().RemoveCell(ptr);
 		MessageManager::Instance().PutMessage(Message("DeleteCellWidget", _uid));
@@ -228,9 +243,11 @@ float Cell::GetStateProgress(Utils::GameTime time) const
 
 float Cell::CalcConnectivity() const
 {
-	if (_info.parent != nullptr)
+	Cell::Ptr parent = _info.parent.lock();
+
+	if (parent)
 	{
-		return _info.parent->CalcConnectivity() / 2.0f + _childCells.size() + 1.0f;
+		return parent->CalcConnectivity() / 2.0f + _childCells.size() + 1.0f;
 	}
 	else
 	{
@@ -240,9 +257,10 @@ float Cell::CalcConnectivity() const
 
 int Cell::CalcDistanceToTheRootCell() const
 {
-	if (_info.parent != nullptr)
+	Cell::Ptr parent = _info.parent.lock();
+	if (parent)
 	{
-		return _info.parent->CalcDistanceToTheRootCell() + 1;
+		return parent->CalcDistanceToTheRootCell() + 1;
 	}
 	else
 	{

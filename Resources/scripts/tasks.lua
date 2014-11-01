@@ -52,7 +52,7 @@ function TryToStartInvestigation(cell)
 	local investigationChance = GetInvestigationChance(cell)
 	Log:log("Investigation chance = " .. investigationChance)
 	if math.random(0, 1000) / 1000.0 < investigationChance then
-		World:addInvestigatorByInfo(cellInfo)
+		World:addInvestigatorByCellUid(cell:getUid())
 		Log:log("Investigation started")
 	end
 end
@@ -106,14 +106,14 @@ end
 function MissionSuccess_InvestigatorTest(cell, taskInfo)
 	local cellInfo = cell:getInfo()
 	MessageManager:sendMessage("Investigation launched")
-	World:addInvestigatorByInfo(cellInfo)
+	World:addInvestigatorByCellUid(cell:getUid())
 end
 
 function MissionFail_InvestigatorTest(cell, taskInfo)
 	local cellInfo = cell:getInfo()
 	SayFailed(taskInfo.title)
 	MessageManager:sendMessage("Investigation launched")
-	World:addInvestigatorByInfo(cellInfo)
+	World:addInvestigatorByCellUid(cell:getUid())
 end
 
 function MissionSuccess_CheatMission(cell, taskInfo)

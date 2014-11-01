@@ -24,7 +24,7 @@ bool CellsNetLayer::init(void)
 
 	for (auto cell : World::Instance().GetCellsNetwork().GetActiveCells())
 	{
-		if (cell->GetParent() == nullptr)
+		if (cell->GetParent().expired())
 		{
 			RecursivelyCreateCellsNetwork(cell, &menuItems, 0);
 			break;
@@ -189,7 +189,7 @@ void CellsNetLayer::HideAllLevels()
 	}
 }
 
-CellNetWidget* CellsNetLayer::RecursivelyCreateCellsNetwork(Cell::Ptr rootCell, cocos2d::Vector<cocos2d::MenuItem*>* menuItems, int deepness)
+CellNetWidget* CellsNetLayer::RecursivelyCreateCellsNetwork(Cell::WeakPtr rootCell, cocos2d::Vector<cocos2d::MenuItem*>* menuItems, int deepness)
 {
 	CellNetWidget* rootCellWidget = CellNetWidget::create(rootCell, CC_CALLBACK_1(CellsNetLayer::_CellTouchInputListener, this));
 	menuItems->pushBack(rootCellWidget);
@@ -197,7 +197,7 @@ CellNetWidget* CellsNetLayer::RecursivelyCreateCellsNetwork(Cell::Ptr rootCell, 
 	rootCellWidget->SetLevel(deepness);
 	_cells.insert(std::pair<int, CellNetWidget*>(deepness, rootCellWidget));
 
-	std::vector<Cell::Ptr> children = rootCell->GetChildren();
+	std::vector<Cell::WeakPtr> children = rootCell.lock()->GetChildren();
 	for (auto cell : children)
 	{
 		// recursive call

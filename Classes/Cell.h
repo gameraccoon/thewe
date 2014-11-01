@@ -10,6 +10,9 @@
 class Cell
 {
 public:
+	typedef std::shared_ptr<Cell> Ptr;
+	typedef std::weak_ptr<Cell> WeakPtr;
+
 	enum class State
 	{
 		READY = 0,
@@ -26,7 +29,7 @@ public:
 
 	struct Info
 	{
-		Cell *parent;
+		Cell::WeakPtr parent;
 		Town::WeakPtr town;
 		Vector2 location;
 		State state;
@@ -49,9 +52,6 @@ public:
 		Utils::GameTime stateDuration;
 	};
 
-	typedef std::shared_ptr<Cell> Ptr;
-	typedef std::weak_ptr<Cell> WeakPtr;
-
 public:
 	Cell(const Info &info);
 	~Cell(void);
@@ -65,22 +65,22 @@ public:
 	 * Adds new child to the cell
 	 * This cell automatically adds as parent
 	 */
-	void AddChild(Cell::Ptr cell);
+	void AddChild(Cell::WeakPtr cell);
 
 	/**
 	 * Removes child cell
 	 * Set child's parent to null
 	 */
-	void RemoveChild(Cell::Ptr cell);
+	void RemoveChild(Cell::WeakPtr cell);
 	void RemoveAllChildren(void);
 
 	void BeginDestruction(void);
 	void BeginAutonomy(void);
 
 	/** Returns all child cells */
-	const std::vector<Cell::Ptr>& GetChildren() const;
+	const std::vector<Cell::WeakPtr>& GetChildren() const;
 
-	const Cell* GetParent() const;
+	WeakPtr GetParent() const;
 
 	/**
 	* Returns information about the cell
@@ -110,7 +110,7 @@ public:
 private:
 	Cell(const Info &info, unsigned int uid);
 	/** Set parent for the cell */
-	void SetParent(Cell *cell);
+	void SetParent(Cell::WeakPtr cell);
 
 	/** Check all values and write warnings to the log */
 	void _CheckValues() const;
@@ -122,7 +122,7 @@ private:
 	unsigned int _uid;
 
 	/** Child cells */
-	std::vector<Cell::Ptr> _childCells;
+	std::vector<Cell::WeakPtr> _childCells;
 
 	/** Task that runned now */
 	Task::WeakPtr _currentTask;

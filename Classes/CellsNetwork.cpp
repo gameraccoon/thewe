@@ -4,6 +4,8 @@
 
 #include "MessageManager.h"
 
+#include "Log.h"
+
 CellsNetwork::CellsNetwork(void)
 {
 }
@@ -14,9 +16,8 @@ void CellsNetwork::InitAndLink(const CellsNetwork::Cells &cells)
 
 void CellsNetwork::UpdateToTime(Utils::GameTime time)
 {
-	for (CellsIter it = _cells.begin(); it != _cells.end(); ++it)
-	{
-		Cell::Ptr cell = (*it);		
+	for (auto cell : _cells)
+	{	
 		if (!IsConnectedWithRoot(cell) && cell->IsState(Cell::State::READY)) {
 			cell->BeginAutonomy();
 		}
@@ -29,19 +30,25 @@ void CellsNetwork::UpdateToTime(Utils::GameTime time)
 	}
 }
 
-void CellsNetwork::RelinkCells(Cell::Ptr parent, Cell::Ptr child)
+void CellsNetwork::RelinkCells(Cell::WeakPtr newParent, Cell::WeakPtr child)
 {
-	if (child->GetInfo().parent) {
-		child->GetInfo().parent->RemoveChild(child);
+	Cell::Ptr childPtr = child.lock();
+	Cell::Ptr prevParent = childPtr->GetInfo().parent.lock();
+	if (prevParent) {
+		prevParent->RemoveChild(child);
 	}
 
-	parent->AddChild(child);
+	Cell::Ptr newParentPtr = newParent.lock();
+	newParentPtr->AddChild(child);
 }
 
-void CellsNetwork::AppendCell(Cell::Ptr cell)
+void CellsNetwork::AddCell(Cell::Ptr cell)
 {
-	for (CellsIter it = _cells.begin(); it != _cells.end(); ++it) {
-		if ((*it) == cell) {
+	for (auto existedCell : _cells)
+	{
+		if (cell == existedCell)
+		{
+			Log::Instance().writeWarning("Trying to add duplicate cell");
 			return;
 		}
 	}
@@ -50,46 +57,31 @@ void CellsNetwork::AppendCell(Cell::Ptr cell)
 	_uidMapCast.insert(std::pair<int, Cell::Ptr>(cell->GetUid(), cell));
 }
 
-void CellsNetwork::RemoveCell(Cell::Ptr cell)
-{	
-	for (CellsIter it = _cells.begin(); it != _cells.end(); ++it)
+void CellsNetwork::RemoveCell(Cell::WeakPtr cell)
+{
+	Cell::Ptr cellPtr = cell.lock();
+	for (Cells::iterator it = _cells.begin(); it != _cells.end(); ++it)
 	{
-		if ((*it) == cell)
+		if ((*it) == cellPtr)
 		{
-			cell->GetInfo().town.lock()->SetCellPresented(false);
+			cellPtr->GetInfo().town.lock()->SetCellPresented(false);
 
-			Cell *parent = cell->GetInfo().parent;
+			Cell::Ptr parent = cellPtr->GetInfo().parent.lock();
 			if (parent) {
 				parent->RemoveChild(cell);
 			}
 
-			cell->RemoveAllChildren();
+			cellPtr->RemoveAllChildren();
 
 			it = _cells.erase(it);
 			
-			std::map<int, Cell::Ptr>::const_iterator uidIter;
-			uidIter = _uidMapCast.find(cell->GetUid());
+			UidMap::const_iterator uidIter;
+			uidIter = _uidMapCast.find(cellPtr->GetUid());
 			_uidMapCast.erase(uidIter);
 
 			break;
 		}
 	}
-}
-
-Cell::Ptr CellsNetwork::GetCellByInfo(const Cell::Info &info)
-{
-	Cell *parent = info.parent;
-	Town::Ptr town = info.town.lock();
-
-	for (Cell::Ptr cell : _cells) {
-		if (cell->GetInfo().parent == parent &&
-			cell->GetInfo().town.lock() == town)
-		{
-			return cell;
-		}
-	}
-
-	return Cell::Ptr();
 }
 
 Cell::Ptr CellsNetwork::GetCellByUid(int uid) const
@@ -124,23 +116,23 @@ const CellsNetwork::Cells& CellsNetwork::GetOfflineCells() const
 	return _cells;
 }
 
-bool CellsNetwork::IsConnectedWithRoot(Cell::Ptr cell) const
+bool CellsNetwork::IsConnectedWithRoot(Cell::WeakPtr cell) const
 {
-	Cell* rootCell = GetRootCell().lock().get();
+	Cell::Ptr rootCell = GetRootCell().lock();
+	Cell::Ptr cellPtr = cell.lock();
 
-	Cell *parent = cell->GetInfo().parent;
-	if (!cell->GetInfo().parent) {
-		return cell.get() == rootCell;
+	Cell::Ptr parent = cellPtr->GetInfo().parent.lock();
+	if (!parent) {
+		return cellPtr == rootCell;
 	}
 
 	while (parent)
 	{
-		Cell *next = parent->GetInfo().parent;
-		if (!next) {
-			return parent == rootCell;
+		Cell::Ptr current = parent;
+		parent = current->GetParent().lock();
+		if (!parent) {
+			return current == rootCell;
 		}
-
-		parent = next;
 	}
 
 	return false;

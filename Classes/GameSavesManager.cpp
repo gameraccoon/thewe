@@ -195,7 +195,7 @@ void GameSavesManager::LoadCellsState()
 		info.location.y = cellsReader->getValueByName("location_y")->asFloat();
 		info.morale = cellsReader->getValueByName("morale")->asFloat();
 		info.membersCount = cellsReader->getValueByName("members_count")->asInt();
-		info.parent = nullptr;
+		info.parent = Cell::WeakPtr();
 		info.ratsCount = cellsReader->getValueByName("rats_count")->asInt();
 		info.specialization = Cell::Specialization::NORMAL;
 		info.state = CastCellStateFromString(cellsReader->getValueByName("state")->asString());
@@ -209,7 +209,7 @@ void GameSavesManager::LoadCellsState()
 		info.stateDuration = 1;
 
 		Cell::Ptr cell = std::make_shared<Cell>(Cell(info, uid));
-		cellsNetwork.AppendCell(cell);
+		cellsNetwork.AddCell(cell);
 		cellsIndicesCast.insert(std::pair<int, std::pair<Cell::Ptr, int>>(uid, std::pair<Cell::Ptr, int>(cell, parentId)));
 	}
 
@@ -376,7 +376,7 @@ static void AppendCellToQuery(std::string* const query, Cell* const cell)
 {
 	const Cell::Info info = cell->GetInfo();
 
-	std::string parent_id = info.parent != nullptr ? std::to_string(info.parent->GetUid()) : "-1";
+	std::string parent_id = info.parent.expired() ? "-1" : std::to_string(info.parent.lock()->GetUid());
 
 	query->append("(")
 		.append(std::to_string(cell->GetUid())).append(",")
@@ -429,8 +429,8 @@ static void AppendInvestigationToQuery(std::string* const query,
 {
 	query->append("(")
 		.append("'").append(std::to_string(investigatorUid)).append("',")
-		.append("'").append(std::to_string(branch.cellFrom->GetUid())).append("',")
-		.append("'").append(std::to_string(branch.cellTo->GetUid())).append("',")
+		.append("'").append(std::to_string(branch.cellFrom.lock()->GetUid())).append("',")
+		.append("'").append(std::to_string(branch.cellTo.lock()->GetUid())).append("',")
 		.append("'").append(Utils::TimeToString(branch.timeBegin)).append("',")
 		.append("'").append(Utils::TimeToString(branch.timeDuration)).append("'")
 		.append(")");

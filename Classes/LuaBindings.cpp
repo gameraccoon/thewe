@@ -18,6 +18,7 @@ void LuaInstance::BindClass<Cell>()
 		.def("getInfo", &Cell::GetInfo)
 		.def("calcConnectivity", &Cell::CalcConnectivity)
 		.def("calcDistanceToTheRootCell", &Cell::CalcDistanceToTheRootCell)
+		.def("getUid", &Cell::GetUid)
 	];
 }
 
@@ -117,7 +118,7 @@ void LuaInstance::BindClass<World>()
 {
 	luabind::module(_luaState) [
 	luabind::class_<World>("WorldClass")
-		.def("addInvestigatorByInfo", &World::AddInvestigatorByInfo)
+		.def("addInvestigatorByCellUid", &World::AddInvestigatorByCellUid)
 		.def("addTutorial", &World::AddTutorial)
 		.def("getCurrentTutorial", &World::GetCurrentTutorial)
 		.def("removeCurrentTutorial", &World::RemoveCurrentTutorial)

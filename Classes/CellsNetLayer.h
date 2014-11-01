@@ -21,7 +21,7 @@ private:
 	void ShowLevel(int level);
 	void ShowCell(CellNetWidget* cell);
 	void HideAllLevels();
-	CellNetWidget* RecursivelyCreateCellsNetwork(Cell::Ptr rootCell, cocos2d::Vector<cocos2d::MenuItem*>* menuItems, int deepness);
+	CellNetWidget* RecursivelyCreateCellsNetwork(Cell::WeakPtr rootCell, cocos2d::Vector<cocos2d::MenuItem*>* menuItems, int deepness);
 	void _CellTouchInputListener(cocos2d::Ref *sender);
 
 private:

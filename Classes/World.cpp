@@ -123,7 +123,7 @@ void World::AddInvestigator(Investigator::Ptr investigator)
 	MessageManager::Instance().PutMessage(Message("AddInvestigatorWidget", investigator->GetUid()));
 }
 
-void World::AddInvestigatorByCell(Cell::Ptr investigationRoot)
+void World::AddInvestigatorByCell(Cell::WeakPtr investigationRoot)
 {
 	Investigator::Ptr investigator = Investigator::Create((Cell::WeakPtr)investigationRoot);
 	investigator->BeginCatchTime(GameInfo::Instance().GetFloat("INVESTIGATOR_CATCH_TIME", 1.0f));
@@ -133,13 +133,9 @@ void World::AddInvestigatorByCell(Cell::Ptr investigationRoot)
 	MessageManager::Instance().PutMessage(Message("SaveGame", 0));
 }
 
-void World::AddInvestigatorByInfo(const Cell::Info &cellInfo)
+void World::AddInvestigatorByCellUid(unsigned int celluid)
 {
-	Cell::WeakPtr cell = _cellsNetwork.GetCellByInfo(cellInfo);
-	if (!cell.expired())
-	{
-		AddInvestigatorByCell(cell.lock());
-	}
+	AddInvestigatorByCell(GetCellsNetwork().GetCellByUid(celluid));
 }
 
 void World::RemoveCellFromInvestigation(Cell::Ptr cell)

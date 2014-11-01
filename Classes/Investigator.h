@@ -14,15 +14,13 @@ public:
 
 	struct Branch
 	{
-		Branch *parentBranch;
-		Cell *cellFrom;
-		Cell *cellTo;
+		typedef std::weak_ptr<Branch> WeakPtr;
+
+		Cell::WeakPtr cellFrom;
+		Cell::WeakPtr cellTo;
 		
 		Utils::GameTime timeBegin;
-		Utils::GameTime timeEnd;
 		Utils::GameTime timeDuration;
-
-		float progressPercentage;
 	};
 
 	enum class State
@@ -35,10 +33,8 @@ public:
 
 public:
 	Investigator(Cell::WeakPtr investigationRoot);
-	Investigator(Cell::WeakPtr investigationRoot, const Branches &branches);
 
 	static Ptr Create(Cell::WeakPtr investigationRoot);
-	static Ptr Create(Cell::WeakPtr investigationRoot, const Branches &branches);
 
 	void InitInvestigator(const Branches &branches);
 	void BeginCatchTime(float time);
@@ -48,18 +44,19 @@ public:
 	void UpdateToTime(Utils::GameTime time);
 	
 	bool IsStateType(Investigator::State state) const;
-	bool IsCellUnderInvestigation(Cell::Ptr cell) const;
+	bool IsCellUnderInvestigation(Cell::WeakPtr cell) const;
 
-	void CancelInvestigationTo(Cell::Ptr cell);
+	void CancelInvestigationTo(Cell::WeakPtr cell);
 	
-	Cell::Ptr GetInvestigationRoot(void) const;
+	Cell::WeakPtr GetInvestigationRoot(void) const;
 	const Branches& GetBranches(void) const;
 	Investigator::State GetState(void) const;
 
 	int GetUid(void) const;
 
 private:
-	void CaptureCell(Cell *cellTarget, Cell *cellFrom);
+	Investigator(unsigned int uid);
+	void CaptureCell(Cell::WeakPtr cellTarget, Cell::WeakPtr cellFrom);
 
 	Cell::WeakPtr _investigationRoot;
 
@@ -69,7 +66,7 @@ private:
 	Utils::GameTime _catchTimeEnd;
 	Investigator::State _state;
 	
-	int _uid;
+	unsigned int _uid;
 };
 
 #endif

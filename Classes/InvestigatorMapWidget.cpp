@@ -20,7 +20,7 @@ bool InvestigatorMapWidget::init(void)
 		return false;
 	}
 
-	Cell::WeakPtr cell = World::Instance().GetCellsNetwork().GetCellByInfo(_investigator->GetInvestigationRoot()->GetInfo());
+	Cell::WeakPtr cell = _investigator->GetInvestigationRoot();
 	_invesRootCellWidget = _worldMapLayer->GetCellMapWidget(cell.lock());
 	_lastState = _investigator->GetState();
 
@@ -32,12 +32,18 @@ bool InvestigatorMapWidget::init(void)
 	// pop up investigator catch button in the cell map widget
 	if (_investigator->IsStateType(Investigator::State::START_CATCH_DELAY))
 	{
-		Cell::WeakPtr cell = World::Instance().GetCellsNetwork().GetCellByInfo(_investigator->GetInvestigationRoot()->GetInfo());
+		Cell::WeakPtr cell = _investigator->GetInvestigationRoot();
 		_invesRootCellWidget = _worldMapLayer->GetCellMapWidget(cell.lock());
 		_invesRootCellWidget->ShowInvestigatorLaunchButton(CC_CALLBACK_1(InvestigatorMapWidget::OnCatchInFirstCell, this));
 	}
 
 	return true;
+}
+
+float CalcInvestigationBranchDuration(const Investigator::Branch& branch)
+{
+	float timeElapsed = Utils::GetGameTime() - branch.timeBegin;
+	return timeElapsed / branch.timeDuration;
 }
 
 void InvestigatorMapWidget::update(float dt)
@@ -54,10 +60,10 @@ void InvestigatorMapWidget::update(float dt)
 		_investigationDrawer->clear();
 		for (const Investigator::Branch &branch : _investigator->GetBranches())
 		{
-			cocos2d::Vec2 from = branch.cellFrom->GetInfo().location;
-			cocos2d::Vec2 goal = branch.cellTo->GetInfo().location;
+			cocos2d::Vec2 from = branch.cellFrom.lock()->GetInfo().location;
+			cocos2d::Vec2 goal = branch.cellTo.lock()->GetInfo().location;
 
-			float dist = from.getDistance(goal) * branch.progressPercentage / 100.0f;
+			float dist = from.getDistance(goal) * CalcInvestigationBranchDuration(branch);
 
 			cocos2d::Vec2 end = from + (goal - from).getNormalized() * dist;
 

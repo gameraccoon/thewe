@@ -13,24 +13,18 @@ Investigator::Investigator(Cell::WeakPtr investigationRoot)
 {
 }
 
-Investigator::Investigator(Cell::WeakPtr investigationRoot, const Investigator::Branches &branches)
-	: _activeBranches(branches)
-	, _investigationRoot(investigationRoot)
-	, _catchTimeBegin(1)
+Investigator::Investigator(unsigned int uid)
+	: _catchTimeBegin(1)
 	, _catchTimeEnd(1)
 	, _state(State::START_CATCH_DELAY)
-	, _uid(World::Instance().GetNewUid())
+	, _uid(uid)
 {
+
 }
 
 Investigator::Ptr Investigator::Create(Cell::WeakPtr investigationRoot)
 {
 	return std::make_shared<Investigator>(investigationRoot);
-}
-
-Investigator::Ptr Investigator::Create(Cell::WeakPtr investigationRoot, const Investigator::Branches &branches)
-{
-	return std::make_shared<Investigator>(investigationRoot, branches);
 }
 
 void Investigator::InitInvestigator(const Investigator::Branches &branches)
@@ -64,25 +58,19 @@ void Investigator::BeginInvestigation(void)
 	}
 
 	Investigator::Branch branchToParent;
-	branchToParent.cellFrom = cell.get();
+	branchToParent.cellFrom = cell;
 	branchToParent.cellTo = cell->GetInfo().parent;
-	branchToParent.parentBranch = nullptr;
 	branchToParent.timeDuration = GameInfo::Instance().GetFloat("INVESTIGATION_DURATION");
 	branchToParent.timeBegin = Utils::GetGameTime();
-	branchToParent.timeEnd = branchToParent.timeBegin + branchToParent.timeDuration;
-	branchToParent.progressPercentage = 0.0f;
 	_activeBranches.push_back(branchToParent);
 
-	for (Cell::Ptr child : cell->GetChildren())
+	for (Cell::WeakPtr child : cell->GetChildren())
 	{
 		Investigator::Branch branch;
-		branch.cellFrom = cell.get();
-		branch.cellTo = child.get();
-		branch.parentBranch = nullptr;
+		branch.cellFrom = cell;
+		branch.cellTo = child;
 		branch.timeDuration = GameInfo::Instance().GetFloat("INVESTIGATION_DURATION");
 		branch.timeBegin = Utils::GetGameTime();
-		branch.timeEnd = branch.timeBegin + branch.timeDuration;
-		branch.progressPercentage = 0.0f;
 
 		_activeBranches.push_back(branch);
 	}
@@ -118,18 +106,9 @@ void Investigator::UpdateToTime(Utils::GameTime time)
 		{
 			Branch &branch = _activeBranches[index];
 
-			float allTime = branch.timeEnd - branch.timeBegin;
-			float eta = branch.timeEnd - time;
-			branch.progressPercentage = 1.0f - eta / allTime;
-			branch.progressPercentage *= 100.0f;
-
-			if (branch.progressPercentage > 100.0f) {
-				branch.progressPercentage = 100.0f;
-			}
-
-			if (branch.progressPercentage >= 100.0f && branch.cellTo->GetInfo().state != Cell::State::ARRESTED)
+			if (time >= (branch.timeBegin + branch.timeDuration) && branch.cellTo.lock()->GetInfo().state != Cell::State::ARRESTED)
 			{
-				if (branch.cellTo == World::Instance().GetCellsNetwork().GetRootCell().lock().get())
+				if (branch.cellTo.lock() == World::Instance().GetCellsNetwork().GetRootCell().lock())
 				{
 					// We are in the root cell. This is GameOver condition
 					World::Instance().SetGameOver();
@@ -137,9 +116,9 @@ void Investigator::UpdateToTime(Utils::GameTime time)
 				}
 				else
 				{
-					Cell::Ptr c = World::Instance().GetCellsNetwork().GetCellByUid(branch.cellFrom->GetUid());
-					World::Instance().GetCellsNetwork().RemoveCell(c);
-					MessageManager::Instance().PutMessage(Message("DeleteCellWidget", branch.cellFrom->GetUid()));
+					Cell::Ptr cell = branch.cellFrom.lock();
+					World::Instance().GetCellsNetwork().RemoveCell(cell);
+					MessageManager::Instance().PutMessage(Message("DeleteCellWidget", branch.cellFrom.lock()->GetUid()));
 					CaptureCell(branch.cellTo, branch.cellFrom);
 
 					_activeBranches.erase(_activeBranches.begin() + index);
@@ -155,42 +134,37 @@ void Investigator::UpdateToTime(Utils::GameTime time)
 	}
 }
 
-void Investigator::CaptureCell(Cell *cellTarget, Cell *cellFrom)
+void Investigator::CaptureCell(Cell::WeakPtr cellTarget, Cell::WeakPtr cellFrom)
 {
-	cellTarget->GetInfo().state = Cell::State::ARRESTED;
+	Cell::Ptr cellTargetPtr = cellTarget.lock();
+	cellTargetPtr->GetInfo().state = Cell::State::ARRESTED;
 
 	// trying to add bratch to parent cell
-	if (cellTarget->GetInfo().parent != cellFrom)
+	if (cellTargetPtr->GetInfo().parent.lock() != cellFrom.lock())
 	{
 		Investigator::Branch childBranch;
-		childBranch.cellFrom = cellTarget;
-		childBranch.cellTo = cellTarget->GetInfo().parent;
-		childBranch.parentBranch = nullptr;
+		childBranch.cellFrom = cellTargetPtr;
+		childBranch.cellTo = cellTargetPtr->GetInfo().parent;
 		childBranch.timeDuration = GameInfo::Instance().GetFloat("INVESTIGATION_DURATION");
 		childBranch.timeBegin = Utils::GetGameTime();
-		childBranch.timeEnd = childBranch.timeBegin + childBranch.timeDuration;
-		childBranch.progressPercentage = 0.0f;
 
 		_activeBranches.push_back(childBranch);
 	}
 
 	// add branches to all of the children cells
-	for (Cell::Ptr child : cellTarget->GetChildren())
+	for (Cell::WeakPtr child : cellTargetPtr->GetChildren())
 	{
 		// disallow to move in reverse direction
-		if (child.get() == cellFrom)
+		if (child.lock() == cellFrom.lock())
 		{
 			continue;
 		}
 
 		Investigator::Branch childBranch;
-		childBranch.cellFrom = cellTarget;
-		childBranch.cellTo = child.get();
-		childBranch.parentBranch = nullptr;
+		childBranch.cellFrom = cellTargetPtr;
+		childBranch.cellTo = child;
 		childBranch.timeDuration = GameInfo::Instance().GetFloat("INVESTIGATION_DURATION");
 		childBranch.timeBegin = Utils::GetGameTime();
-		childBranch.timeEnd = childBranch.timeBegin + childBranch.timeDuration;
-		childBranch.progressPercentage = 0.0f;
 
 		_activeBranches.push_back(childBranch);
 	}
@@ -201,10 +175,10 @@ bool Investigator::IsStateType(Investigator::State state) const
 	return _state == state;
 }
 
-bool Investigator::IsCellUnderInvestigation(Cell::Ptr cell) const
+bool Investigator::IsCellUnderInvestigation(Cell::WeakPtr cell) const
 {
 	for (const Branch &branch : _activeBranches) {
-		if (branch.progressPercentage < 100.0f && branch.cellTo == cell.get()) {
+		if (branch.cellTo.lock() == cell.lock()) {
 			return true;
 		}
 	}
@@ -212,12 +186,12 @@ bool Investigator::IsCellUnderInvestigation(Cell::Ptr cell) const
 	return false;
 }
 
-void Investigator::CancelInvestigationTo(Cell::Ptr cell)
+void Investigator::CancelInvestigationTo(Cell::WeakPtr cell)
 {
 	for (Branches::iterator it = _activeBranches.begin(); it != _activeBranches.end(); ++it)
 	{
 		Branch &branch = (*it);
-		if (branch.cellTo == cell.get())
+		if (branch.cellTo.lock() == cell.lock())
 		{
 			it = _activeBranches.erase(it);
 			break;
@@ -225,9 +199,9 @@ void Investigator::CancelInvestigationTo(Cell::Ptr cell)
 	}
 }
 
-Cell::Ptr Investigator::GetInvestigationRoot(void) const
+Cell::WeakPtr Investigator::GetInvestigationRoot(void) const
 {
-	return _investigationRoot.lock();
+	return _investigationRoot;
 }
 
 const Investigator::Branches& Investigator::GetBranches(void) const

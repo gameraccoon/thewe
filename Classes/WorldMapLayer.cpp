@@ -131,7 +131,7 @@ void WorldMapLayer::AcceptMessage(const Message &msg)
 			if (World::Instance().GetTutorialState() == "WaitForCatchingFirstInvestigator")
 			{
 				dynamic_cast<GameScene*>(getParent())->MoveViewToPoint(
-					investigator->GetInvestigationRoot()->GetInfo().town.lock()->GetLocation());
+					investigator->GetInvestigationRoot().lock()->GetInfo().town.lock()->GetLocation());
 				_UpdateNetwork();
 			}
 		}
@@ -205,12 +205,13 @@ Cell::Ptr WorldMapLayer::CreateCell(Cell::Info info, Cell::State state)
 
 	Cell::Ptr cell = Cell::Create(info);
 	
-	if (info.parent)
+	Cell::Ptr parent = info.parent.lock();
+	if (parent)
 	{
-		info.parent->AddChild(cell);
+		parent->AddChild(cell);
 	}
 
-	World::Instance().GetCellsNetwork().AppendCell(cell);
+	World::Instance().GetCellsNetwork().AddCell(cell);
 
 	CellMapWidget *widget = _CreateCellWidget(cell);
 	_cellWidgets.push_back(widget);
@@ -261,11 +262,12 @@ void WorldMapLayer::PushSessionWinScreen(void)
 	addChild(screen, Z_MAP_GUI);
 }
 
-CellMapWidget* WorldMapLayer::GetCellMapWidget(Cell::Ptr cell) const
+CellMapWidget* WorldMapLayer::GetCellMapWidget(Cell::WeakPtr cell) const
 {
+	Cell::Ptr cellHardPtr = cell.lock();
 	for (CellMapWidget *widget : _cellWidgets)
 	{
-		if (widget->GetCell().lock() == cell)
+		if (widget->GetCell().lock() == cellHardPtr)
 		{
 			return widget;
 		}
@@ -543,7 +545,7 @@ void WorldMapLayer::_OnTownSelect(Town::WeakPtr town)
 		if (World::Instance().IsFirstLaunch())
 		{
 			Cell::Info info;
-			info.parent = nullptr;
+			info.parent = Cell::WeakPtr();
 			info.town = town;
 			info.location = town.lock()->GetLocation();
 			info.cash = GameInfo::Instance().GetInt("CELL_STARTUP_MONEY");
@@ -572,19 +574,19 @@ void WorldMapLayer::_OnTownSelect(Town::WeakPtr town)
 
 			MessageManager::Instance().PutMessage(Message("SaveGame", 0));
 		}
-		else if (!_nextCellParent.expired())
+		else if (Cell::Ptr parent = _nextCellParent.lock())
 		{
-			Cell::Info info;
-			info.parent = _nextCellParent.lock().get();
 
-			if (info.parent->GetInfo().cash >= GameInfo::Instance().GetInt("CELL_SPINOFF_CASH_PRICE") &&
-				info.parent->GetInfo().membersCount >= GameInfo::Instance().GetInt("CELL_SPINOFF_MEMBERS_PRICE"))
+			if (parent->GetInfo().cash >= GameInfo::Instance().GetInt("CELL_SPINOFF_CASH_PRICE") &&
+				parent->GetInfo().membersCount >= GameInfo::Instance().GetInt("CELL_SPINOFF_MEMBERS_PRICE"))
 			{
+				Cell::Info info;
 				if (World::Instance().GetTutorialState() == "ReadyToCreateSpinoff")
 				{
 					World::Instance().RunTutorialFunction("OnCreateFirstSpinoff");
 				}
 
+				info.parent = parent;
 				info.town = town;
 				info.location = town.lock()->GetLocation();
 				info.cash = GameInfo::Instance().GetInt("CELL_STARTUP_MONEY");
@@ -600,8 +602,8 @@ void WorldMapLayer::_OnTownSelect(Town::WeakPtr town)
 				info.townInfluence = GameInfo::Instance().GetFloat("CELL_STARTUP_TOWN_INFLUENCE");
 				info.townWelfare = GameInfo::Instance().GetFloat("CELL_STARTUP_TOWN_WELFARE");
 
-				info.parent->GetInfo().cash -= GameInfo::Instance().GetInt("CELL_SPINOFF_CASH_PRICE");
-				info.parent->GetInfo().membersCount -= GameInfo::Instance().GetInt("CELL_SPINOFF_MEMBERS_PRICE");
+				parent->GetInfo().cash -= GameInfo::Instance().GetInt("CELL_SPINOFF_CASH_PRICE");
+				parent->GetInfo().membersCount -= GameInfo::Instance().GetInt("CELL_SPINOFF_MEMBERS_PRICE");
 
 				info.stateBegin = Utils::GetGameTime();
 				info.stateDuration = GameInfo::Instance().GetFloat("CELL_CONSTRUCTION_TIME");
@@ -640,12 +642,16 @@ void WorldMapLayer::_RecursiveUpdateNetworkVisualiser(cocos2d::DrawNode *visuali
 {
 	Vector2 p1(_mapProjector->ProjectOnScreen(cell.lock()->GetInfo().location));
 
-	for (Cell::Ptr child : cell.lock()->GetChildren())
+	for (Cell::WeakPtr child : cell.lock()->GetChildren())
 	{
-		Vector2 p2(_mapProjector->ProjectOnScreen(child->GetInfo().location));
-		visualiser->drawSegment(p1, p2, 1.0f, Color(1.0f, 0.0f, 0.0f, 1.0f));
+		Cell::Ptr childPtr = child.lock();
+		if (childPtr)
+		{
+			Vector2 p2(_mapProjector->ProjectOnScreen(childPtr->GetInfo().location));
+			visualiser->drawSegment(p1, p2, 1.0f, Color(1.0f, 0.0f, 0.0f, 1.0f));
 
-		// recursive
-		_RecursiveUpdateNetworkVisualiser(visualiser, child);
+			// recursive
+			_RecursiveUpdateNetworkVisualiser(visualiser, child);
+		}
 	}
 }
