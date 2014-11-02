@@ -3,12 +3,13 @@ local ContinueText = "Продолжить"
 function RunTutorial_Welcome()
 	-- ToDo: make localizations
 	local text1 =
-		"Добро пожаловать в игру!\n"..
-		"Это альфа-версия игры \"The We\""
+		"Добро пожаловать в систему $Username$!\n"..
+		"На данный момент состояние классифицируется \n"..
+		"как альфа-версия \"The We\"."
 
 	local text2 =
-		"Для начала нажмите на любой город,\n"..
-		"чтобы основать там свою первую ячейку"
+		"Выберите город в котором сделаете свой первый шаг,\n"..
+		"На данный момент выбор города никак не влияет на сложность."
 
 	World:addTutorial(Tutorial(text1, ContinueText))
 	World:addTutorial(Tutorial(text2, ContinueText))
@@ -18,10 +19,10 @@ end
 
 function RunTutorial_AfterCreatingFirstCell()
 	local text =
-		"Отлично!\n\n"..
-		"Сейчас в ячейке совсем не много сотрудников.\n"..
-		"Для действительно великих дел нам\n"..
-		"понадобится больше людей.\n\n"..
+		"Поздравляю!\n\n"..
+		"Но в ячейке недостаточно сотрудников для.\n"..
+		"Полноценного функционирования.\n"..
+		"Рекоммендую начать вербовку.\n\n"..
 		"Нажмите на ячейку и зайдите в меню заданий"
 
 	World:addTutorial(Tutorial(text, ContinueText))
@@ -40,12 +41,12 @@ end
 
 function RunTutorial_StartingFirstTask()
 	local text =
-		"Хорошо. Сейчас мы должны подождать, пока\n"..
-		"ячейка наберёт в свои ряды достойных\n"..
-		"союзников\n\n"..
+		"Хорошо. Ячейке требуется некоторое время,\n"..
+		"для отсеивания кандидатов и их вербовки,\n"..
+		"рекоммендуется подождать.\n\n"..
 		"В зависимости от уровня ячейки и\n"..
 		"напряжённости обстановки, этот процесс\n"..
-		"может занимать разное время"
+		"может занимать различное время"
 
 	World:addTutorial(Tutorial(text, ContinueText))
 
@@ -54,10 +55,10 @@ end
 
 function RunTutorial_AfterFirstTaskFinished()
 	local text =
-		"Ячейка завершила набор сотрудников!\n\n"..
-		"Теперь у нас есть достаточно людей\n"..
-		"чтобы отправить ячейку на первое серьёзное\n"..
-		"задание"
+		"Ячейка завершила набор агентов!\n\n"..
+		"Теперь у нее достаточно людей\n"..
+		"чтобы взяться за первое серьёзное\n"..
+		"задание. Откройте меню заданий."
 
 	World:addTutorial(Tutorial(text, ContinueText))
 
@@ -66,7 +67,10 @@ end
 
 function RunTutorial_StartingFirstRealWork()
 	local text =
-		"Тут надо сказать про бустеры"
+		"Бывают ситуации когда время важнее денег\n"..
+		"Тогда можно используя подкуп определенных людей\n"..
+		"Мгновенно завершить текущее задание ячейки.\n"..
+		"Это для этого потребуются черные кейсы."
 
 	World:addTutorial(Tutorial(text, ContinueText))
 
@@ -75,7 +79,9 @@ end
 
 function RunTutorial_AfterRealWorkDone()
 	local text =
-		"Спинофф"
+		"Сложно укрепить свою власть посредством такого\n"..
+		"малого числа людей. Рекоммендую создать дочернюю ячейку.\n"..
+		"Откройте меню ячейки и выберите пункт \"Спинофф\" \n"
 
 	World:addTutorial(Tutorial(text, ContinueText))
 
@@ -84,14 +90,16 @@ end
 
 function RunTutorial_OnReadyToCreateFirstSpinoff()
 	local text =
-		"Выберите город"
+		"Теперь выберите город в котором вы хотите расположить ее."
 
 	World:addTutorial(Tutorial(text, ContinueText))
 end
 
 function RunTutorial_OnCreateFirstSpinoff()
 	local text =
-		"Создали новую ячейку"
+		"Поздравляю с созданием дочерней ячейки.\n"..
+		"После создания она будет функционировать как\n"..
+		"полценный член вашей сети."
 
 	World:addTutorial(Tutorial(text, ContinueText))
 
@@ -127,7 +135,10 @@ end
 
 function RunTutorial_FirstUncatchedInvestigatorCatched()
 	local text =
-		"Говорим о том что нужно перелинковать сеть"
+		"Для того чтобы оставаться в тени, надо быть\n"..
+		"на шаг впереди любого из ваших преследователей.\n"..
+		"Не забывайте время от времени менять связи между\n"..
+		"Ячейками. Попробуйте сейчас это сделать.\n"
 
 	World:addTutorial(Tutorial(text, ContinueText, "TutorialsLastTutorial"))
 end
