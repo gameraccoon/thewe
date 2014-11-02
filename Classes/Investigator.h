@@ -56,7 +56,8 @@ public:
 
 private:
 	Investigator(unsigned int uid);
-	void CaptureCell(Cell::WeakPtr cellTarget, Cell::WeakPtr cellFrom);
+	int CaptureCellAndReturnNewBranchesCount(Cell::WeakPtr cellTarget, Cell::WeakPtr cellFrom);
+	int GetCountOfCellUsageInBranches(Cell::WeakPtr cell) const;
 
 	Cell::WeakPtr _investigationRoot;
 

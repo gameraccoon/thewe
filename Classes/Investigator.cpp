@@ -3,6 +3,7 @@
 #include "World.h"
 #include "GameInfo.h"
 #include "MessageManager.h"
+#include "Log.h"
 
 Investigator::Investigator(Cell::WeakPtr investigationRoot)
 	: _investigationRoot(investigationRoot)
@@ -116,10 +117,19 @@ void Investigator::UpdateToTime(Utils::GameTime time)
 				}
 				else
 				{
-					Cell::Ptr cell = branch.cellFrom.lock();
-					World::Instance().GetCellsNetwork().RemoveCell(cell);
-					MessageManager::Instance().PutMessage(Message("DeleteCellWidget", branch.cellFrom.lock()->GetUid()));
-					CaptureCell(branch.cellTo, branch.cellFrom);
+					Cell::WeakPtr cell = branch.cellFrom.lock();
+					if (GetCountOfCellUsageInBranches(cell) <= 1)
+					{
+						MessageManager::Instance().PutMessage(Message("DeleteCellWidget", branch.cellFrom.lock()->GetUid()));
+						World::Instance().GetCellsNetwork().RemoveCell(cell);
+					}
+					
+					int createdBranchesCount = CaptureCellAndReturnNewBranchesCount(branch.cellTo, branch.cellFrom);
+					if (createdBranchesCount == 0)
+					{
+						MessageManager::Instance().PutMessage(Message("DeleteCellWidget", branch.cellTo.lock()->GetUid()));
+						World::Instance().GetCellsNetwork().RemoveCell(branch.cellTo);
+					}
 
 					_activeBranches.erase(_activeBranches.begin() + index);
 				}
@@ -134,8 +144,10 @@ void Investigator::UpdateToTime(Utils::GameTime time)
 	}
 }
 
-void Investigator::CaptureCell(Cell::WeakPtr cellTarget, Cell::WeakPtr cellFrom)
+int Investigator::CaptureCellAndReturnNewBranchesCount(Cell::WeakPtr cellTarget, Cell::WeakPtr cellFrom)
 {
+	int count = 0;
+
 	Cell::Ptr cellTargetPtr = cellTarget.lock();
 	cellTargetPtr->GetInfo().state = Cell::State::ARRESTED;
 
@@ -149,6 +161,7 @@ void Investigator::CaptureCell(Cell::WeakPtr cellTarget, Cell::WeakPtr cellFrom)
 		childBranch.timeBegin = Utils::GetGameTime();
 
 		_activeBranches.push_back(childBranch);
+		++count;
 	}
 
 	// add branches to all of the children cells
@@ -167,7 +180,28 @@ void Investigator::CaptureCell(Cell::WeakPtr cellTarget, Cell::WeakPtr cellFrom)
 		childBranch.timeBegin = Utils::GetGameTime();
 
 		_activeBranches.push_back(childBranch);
+		++count;
 	}
+
+	return count;
+}
+
+int Investigator::GetCountOfCellUsageInBranches(Cell::WeakPtr cell) const
+{
+	const Cell::Ptr cellPtr = cell.lock();
+	if (!cellPtr) {
+		Log::Instance().writeWarning("GetCountOfCellUsageInBranches: dead cell pointer in param.");
+		return 0;
+	}
+
+	int counter = 0;
+	for (const Branch &branch : _activeBranches) {
+		if (branch.cellFrom.lock() == cellPtr) {
+			++counter;
+		}
+	}
+
+	return counter;
 }
 
 bool Investigator::IsStateType(Investigator::State state) const
