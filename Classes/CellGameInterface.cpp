@@ -119,7 +119,7 @@ void CellMenuSelector::AppearWithAnimation(Cell::WeakPtr cell, const Vector2 &po
 	_position = position;
 	_isDisappearing = false;
 
-	_menu->setPosition(_position);
+	_menu->setPosition(cocos2d::Vec2(0.0f, 0.0f));
 
 	cocos2d::Vec2 dir(0.0f, 1.0f);
 	const float dist = 45.0f;

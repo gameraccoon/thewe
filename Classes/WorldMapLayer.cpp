@@ -312,8 +312,8 @@ void WorldMapLayer::TouchesEnded(const std::vector<cocos2d::Touch* > &touches, c
 
 			if (size <= tolerance)
 			{
-				Cell::WeakPtr cell = _GetCellUnderPoint(point);
-				if (!cell.expired())
+				Cell::Ptr cell = _GetCellUnderPoint(point).lock();
+				if (cell)
 				{
 					if (!_linkCellChildren.expired())
 					{
@@ -322,14 +322,14 @@ void WorldMapLayer::TouchesEnded(const std::vector<cocos2d::Touch* > &touches, c
 						relinked->GetInfo().stateBegin = 0;
 						relinked->GetInfo().stateDuration = 0;
 
-						World::Instance().GetCellsNetwork().RelinkCells(cell.lock(), relinked);
+						World::Instance().GetCellsNetwork().RelinkCells(cell, relinked);
 						_linkCellChildren.reset();
 
 						_UpdateNetwork();
 					}
 					else
 					{
-						Vector2 cell_pos = cell.lock()->GetInfo().location;
+						Vector2 cell_pos = Vector2(-700, 200);//cell->GetInfo().location;
 						Vector2 menu_pos = _mapProjector->ProjectOnScreen(cell_pos);
 
 						_cellMenu->DisappearImmedaitely();
@@ -481,6 +481,12 @@ Cell::WeakPtr WorldMapLayer::_GetCellUnderPoint(const Vector2& point)
 	{
 		Cell::Ptr cell = widget->GetCell().lock();
 
+		if (!cell)
+		{
+			Log::Instance().writeWarning("Dead cell under point");
+			return Cell::WeakPtr();
+		}
+
 		Vector2 projectedPoint = point - _mapProjector->ProjectOnScreen(cell->GetInfo().location);
 		
 		float xbegin, xend, ybegin, yend;
@@ -492,10 +498,10 @@ Cell::WeakPtr WorldMapLayer::_GetCellUnderPoint(const Vector2& point)
 		if (rect.containsPoint(projectedPoint))
 		{
 			if (cell->IsState(Cell::State::AUTONOMY)) {
-				_linkCellChildren = (Cell::WeakPtr)cell;
+				_linkCellChildren = cell;
 				return Cell::WeakPtr();
 			}
-			else if (!cell || !cell->IsState(Cell::State::READY)) {
+			else if (!cell->IsState(Cell::State::READY)) {
 				return Cell::WeakPtr();	
 			}
 
