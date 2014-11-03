@@ -315,7 +315,10 @@ void WorldMapLayer::TouchesEnded(const std::vector<cocos2d::Touch* > &touches, c
 				Cell::Ptr cell = _GetCellUnderPoint(point).lock();
 				if (cell)
 				{
-					if (!_linkCellChildren.expired() && cell != _linkCellChildren.lock() && cell->IsState(Cell::State::READY))
+					if (  !_linkCellChildren.expired() 
+						&& _linkCellChildren.lock()->IsState(Cell::State::AUTONOMY) 
+						&& cell != _linkCellChildren.lock() 
+						&& cell->IsState(Cell::State::READY))
 					{
 						Cell::Ptr relinked = _linkCellChildren.lock();
 						relinked->GetInfo().state = Cell::State::READY;
