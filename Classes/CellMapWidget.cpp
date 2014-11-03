@@ -195,6 +195,7 @@ void CellMapWidget::update(float dt)
 		{
 			_cellCommonProgressBar->SetProgressImmediately(progress * 100.0f);
 			_cellCommonProgressBar->setVisible(true);
+			_cellMapTaskProgressBar->setVisible(false);
 			_cellMapSprite->setVisible(false);
 		}
 	}
