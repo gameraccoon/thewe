@@ -15,7 +15,8 @@ static const std::string USER_DATA_TABLE = "user_data";
 static const std::string CELLS_TABLE = "cells";
 static const std::string RUNNED_TASKS_TABLE = "runned_tasks";
 static const std::string PROCESSES_TABLE = "cell_processes";
-static const std::string INVESIGATIONS_TABLE = "investigations";
+static const std::string INVESIGATIONS_TABLE = "investigation_branches";
+static const std::string INVESIGATORS_TABLE = "investigators";
 
 struct GameSavesManagerImpl
 {
@@ -123,6 +124,17 @@ void GameSavesManager::FirstInitSave()
 								",'duration' VARCHAR(20) NOT NULL"
 								");");
 	}
+
+	if (!_impl->database.IsTableExists(INVESIGATORS_TABLE))
+	{
+		_impl->database.execSql("CREATE TABLE " + INVESIGATORS_TABLE + " ("
+								"'investigator_uid' INTEGER NOT NULL"
+								",'root_cell' INTEGER NOT NULL"
+								",'catch_time_begin' VARCHAR(20) NOT NULL"
+								",'catch_time_end' VARCHAR(20) NOT NULL"
+								",'state' VARCHAR(100) NOT NULL"
+								");");
+	}
 }
 
 namespace std
@@ -140,6 +152,22 @@ namespace std
 			return "ARRESTED";
 		case Cell::State::AUTONOMY:
 			return "AUTONOMY";
+		default:
+			return "";
+		}
+	}
+
+	string to_string(Investigator::State __val)
+	{
+		switch (__val) {
+		case Investigator::State::ABORTED:
+			return "ABORTED";
+		case Investigator::State::INVESTIGATION:
+			return "INVESTIGATION";
+		case Investigator::State::START_CATCH_DELAY:
+			return "START_CATCH_DELAY";
+		case Investigator::State::STAYING:
+			return "STAYING";
 		default:
 			return "";
 		}
@@ -171,6 +199,30 @@ Cell::State CastCellStateFromString(const std::string& state)
 	else
 	{
 		return Cell::State::READY;
+	}
+}
+
+Investigator::State CastInvestigatorStateFromString(const std::string& state)
+{
+	if (state == "ABORTED")
+	{
+		return Investigator::State::ABORTED;
+	}
+	else if (state == "INVESTIGATION")
+	{
+		return Investigator::State::INVESTIGATION;
+	}
+	else if (state == "START_CATCH_DELAY")
+	{
+		return Investigator::State::START_CATCH_DELAY;
+	}
+	else if (state == "STAYING")
+	{
+		return Investigator::State::STAYING;
+	}
+	else
+	{
+		return Investigator::State::START_CATCH_DELAY;
 	}
 }
 
@@ -338,7 +390,8 @@ static std::string InitCellsAdditionStatement()
 			",town_heart_pounding"
 			",town_influence"
 			",towns_welfare"
-			",experience)"
+			",experience"
+			")"
 			"VALUES";
 }
 
@@ -347,7 +400,8 @@ static std::string InitRunnedTasksAdditionStatement()
 	return "INSERT INTO " + RUNNED_TASKS_TABLE +
 			"(task_id"
 			",cell_uid"
-			",start_time)"
+			",start_time"
+			")"
 			"VALUES";
 }
 
@@ -357,7 +411,8 @@ static std::string InitConstrucrionAdditionStatement()
 			"(cell_uid"
 			",type"
 			",begin_time"
-			",duration)"
+			",duration"
+			")"
 			"VALUES";
 }
 
@@ -368,7 +423,20 @@ static std::string InitInvestigationAdditionStatement()
 			",cellFrom_uid"
 			",cellTo_uid"
 			",begin_time"
-			",duration)"
+			",duration"
+			")"
+			"VALUES";
+}
+
+static std::string InitInvestigatorAdditionStatement()
+{
+	return "INSERT INTO " + INVESIGATORS_TABLE +
+			"(investigator_uid"
+			",catch_time_begin"
+			",catch_time_end"
+			",root_cell"
+			",state"
+			")"
 			"VALUES";
 }
 
@@ -433,6 +501,18 @@ static void AppendInvestigationToQuery(std::string* const query,
 		.append("'").append(std::to_string(branch.cellTo.lock()->GetUid())).append("',")
 		.append("'").append(Utils::TimeToString(branch.timeBegin)).append("',")
 		.append("'").append(Utils::TimeToString(branch.timeDuration)).append("'")
+		.append(")");
+}
+
+static void AppendInvestigatorsToQuery(std::string* const query,
+									   const Investigator::Ptr investigator)
+{
+	query->append("(")
+		.append("'").append(std::to_string(investigator->GetUid())).append("',")
+		.append("'").append(Utils::TimeToString(investigator->GetCatchBeginTime())).append("',")
+		.append("'").append(Utils::TimeToString(investigator->GetCatchEndTime())).append("',")
+		.append("'").append(std::to_string(investigator->GetInvestigationRoot().lock()->GetUid())).append("',")
+		.append("'").append(std::to_string(investigator->GetState())).append("'")
 		.append(")");
 }
 
@@ -522,6 +602,22 @@ static bool FillInvestigationAdditionStatement(std::string* const processesSqlSt
 	return addInvestigations;
 }
 
+static bool FillInvestigatorsAdditionStatement(std::string* const processesSqlStatement)
+{
+	const World::Investigators& investigators = World::Instance().GetInvestigators();
+	bool addInvestigations = false;
+	for (Investigator::Ptr investigator : investigators)
+	{
+		AppendSeparator(processesSqlStatement, addInvestigations);
+		addInvestigations = true;
+
+		AppendInvestigatorsToQuery(processesSqlStatement, investigator);
+	}
+	processesSqlStatement->append(";");
+
+	return addInvestigations;
+}
+
 static std::string GetUserInfoAdditionStatement()
 {
 	World &world = World::Instance();
@@ -545,6 +641,9 @@ void GameSavesManager::SaveGameState(void)
 	std::string investigationsSqlStatement = InitInvestigationAdditionStatement();
 	bool addInvestigations = FillInvestigationAdditionStatement(&investigationsSqlStatement);
 
+	std::string investigatorsSqlStatement = InitInvestigatorAdditionStatement();
+	bool addInvestigators = FillInvestigatorsAdditionStatement(&investigatorsSqlStatement);
+
 	std::string userInfoSqlStatement = GetUserInfoAdditionStatement();
 
 	// begining transaction
@@ -554,12 +653,14 @@ void GameSavesManager::SaveGameState(void)
 							"DELETE FROM " + RUNNED_TASKS_TABLE + ";"
 							"DELETE FROM " + PROCESSES_TABLE + ";"
 							"DELETE FROM " + INVESIGATIONS_TABLE + ";"
+							"DELETE FROM " + INVESIGATORS_TABLE + ";"
 							"DELETE FROM " + USER_DATA_TABLE + ";");
 	// adding new data
 	if (addCells) _impl->database.execSql(cellsAdditionSqlStatement);
 	if (addTasks) _impl->database.execSql(taskAdditionSqlStatement);
 	if (addProcesses) _impl->database.execSql(processesSqlStatement);
 	if (addInvestigations) _impl->database.execSql(investigationsSqlStatement);
+	if (addInvestigators) _impl->database.execSql(investigatorsSqlStatement);
 	_impl->database.execSql(userInfoSqlStatement);
 	// commiting transaction
 	_impl->database.execSql("COMMIT;");

@@ -236,3 +236,13 @@ int Investigator::GetUid(void) const
 {
 	return _uid;
 }
+
+unsigned int Investigator::GetCatchBeginTime() const
+{
+	return _catchTimeBegin;
+}
+
+unsigned int Investigator::GetCatchEndTime() const
+{
+	return _catchTimeEnd;
+}

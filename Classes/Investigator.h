@@ -54,6 +54,9 @@ public:
 
 	int GetUid(void) const;
 
+	unsigned int GetCatchBeginTime() const;
+	unsigned int GetCatchEndTime() const;
+
 private:
 	Investigator(unsigned int uid);
 	int CaptureCellAndReturnNewBranchesCount(Cell::WeakPtr cellTarget, Cell::WeakPtr cellFrom);
