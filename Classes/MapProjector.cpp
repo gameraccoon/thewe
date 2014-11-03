@@ -24,9 +24,9 @@ void MapProjector::SetScale(float scale)
 	{
 		// align view to smaller border
 #ifndef WIN32
-		_viewScale = 2 * ((_screenCenter.y / _mapSize.y) > (_screenCenter.x / _mapSize.x) ? (_screenCenter.y / _mapSize.y) : (_screenCenter.x / _mapSize.x));
+		_viewScale = 2 * std::max(_screenCenter.y / _mapSize.y, _screenCenter.x / _mapSize.x);
 #else
-		_viewScale = 2 * max(_screenCenter.y / _mapSize.y, _screenCenter.x / _mapSize.x);
+		_viewScale = 2 * ((_screenCenter.y / _mapSize.y) > (_screenCenter.x / _mapSize.x) ? (_screenCenter.y / _mapSize.y) : (_screenCenter.x / _mapSize.x));
 #endif
 	}
 	else
