@@ -319,14 +319,22 @@ void GameSavesManager::LoadProcesses()
 
 void GameSavesManager::LoadInvestigations()
 {
-	CellsNetwork &cellsNetwork = World::Instance().GetCellsNetwork();
+	World &world = World::Instance();
+	CellsNetwork &cellsNetwork = world.GetCellsNetwork();
 
 	{
-		SqliteDataReader::Ptr investigatorsReader = _impl->database.execQuery("SELECT DISTINCT investigator_uid FROM "
-																			   + INVESIGATIONS_TABLE);
+		SqliteDataReader::Ptr investigatorsReader = _impl->database.execQuery("SELECT * FROM "
+																			   + INVESIGATORS_TABLE);
 		while (investigatorsReader->next())
 		{
-			// ToDo: creating investigators
+			int investigatorUid = investigatorsReader->getValueByName("investigator_uid")->asInt();
+			Investigator::Ptr investigator = std::make_shared<Investigator>(Investigator(investigatorUid));
+
+			investigator->_catchTimeBegin = Utils::StringToTime(investigatorsReader->getValueByName("catch_time_begin")->asString());
+			investigator->_catchTimeEnd = Utils::StringToTime(investigatorsReader->getValueByName("catch_time_end")->asString());
+			investigator->_investigationRoot = cellsNetwork.GetCellByUid(investigatorsReader->getValueByName("root_cell")->asInt());
+			investigator->_state = CastInvestigatorStateFromString(investigatorsReader->getValueByName("state")->asString());
+			world.AddInvestigator(investigator);
 		}
 	}
 
@@ -338,14 +346,15 @@ void GameSavesManager::LoadInvestigations()
 		while (investigationsReader->next())
 		{
 			int investigatorUid = investigationsReader->getValueByName("investigator_uid")->asInt();
-			unsigned int cellFrom_uid = investigationsReader->getValueByName("cellFrom_uid")->asInt();
-			unsigned int cellTo_uid = investigationsReader->getValueByName("cellTo_uid")->asInt();
-			Cell::Ptr cellFrom = cellsNetwork.GetCellByUid(cellFrom_uid);
-			Cell::Ptr cellTo = cellsNetwork.GetCellByUid(cellTo_uid);
-			Utils::GameTime beginTime = Utils::StringToTime(investigationsReader->getValueByName("begin_time")->asString());
-			Utils::GameTime duration = Utils::StringToTime(investigationsReader->getValueByName("duration")->asString());
 
-			// ToDo: adding to investigators
+			Investigator::Branch investigationBranch;
+			investigationBranch.cellFrom = cellsNetwork.GetCellByUid(investigationsReader->getValueByName("cellFrom_uid")->asInt());
+			investigationBranch.cellTo = cellsNetwork.GetCellByUid(investigationsReader->getValueByName("cellTo_uid")->asInt());
+			investigationBranch.timeBegin = Utils::StringToTime(investigationsReader->getValueByName("begin_time")->asString());
+			investigationBranch.timeDuration = Utils::StringToTime(investigationsReader->getValueByName("duration")->asString());
+
+			Investigator::Ptr investigator = world.GetInvestigatorByUid(investigatorUid);
+			investigator->_activeBranches.push_back(investigationBranch);
 		}
 	}
 }

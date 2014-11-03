@@ -71,6 +71,8 @@ private:
 	Investigator::State _state;
 	
 	unsigned int _uid;
+
+	friend class GameSavesManager;
 };
 
 #endif
