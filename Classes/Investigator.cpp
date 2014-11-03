@@ -100,13 +100,24 @@ void Investigator::UpdateToTime(Utils::GameTime time)
 		{
 			Branch &branch = _activeBranches[index];
 
-			if (time >= (branch.timeBegin + branch.timeDuration) && branch.cellTo.lock()->GetInfo().state != Cell::State::ARRESTED)
+			if (branch.cellTo.expired())
 			{
-				Cell::WeakPtr cell = branch.cellFrom.lock();
-				if (GetCountOfCellUsageInBranches(cell) <= 1)
+				if (GetCountOfCellUsageInBranches(branch.cellFrom) <= 1)
 				{
 					MessageManager::Instance().PutMessage(Message("DeleteCellWidget", branch.cellFrom.lock()->GetUid()));
-					World::Instance().GetCellsNetwork().RemoveCell(cell);
+					World::Instance().GetCellsNetwork().RemoveCell(branch.cellFrom);
+				}
+
+				_activeBranches.erase(_activeBranches.begin() + index);
+				continue;
+			}
+
+			if (time >= (branch.timeBegin + branch.timeDuration) && branch.cellTo.lock()->GetInfo().state != Cell::State::ARRESTED)
+			{
+				if (GetCountOfCellUsageInBranches(branch.cellFrom) <= 1)
+				{
+					MessageManager::Instance().PutMessage(Message("DeleteCellWidget", branch.cellFrom.lock()->GetUid()));
+					World::Instance().GetCellsNetwork().RemoveCell(branch.cellFrom);
 				}
 					
 				int createdBranchesCount = CaptureCellAndReturnNewBranchesCount(branch.cellTo, branch.cellFrom);
