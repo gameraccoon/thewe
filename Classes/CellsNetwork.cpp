@@ -116,6 +116,23 @@ const CellsNetwork::Cells& CellsNetwork::GetOfflineCells() const
 	return _cells;
 }
 
+bool CellsNetwork::IsCellRelinkable(Cell::WeakPtr cell) const
+{
+	if (!cell.expired())
+	{
+		Cell::Ptr cellPtr = cell.lock();
+
+		if (!cellPtr->IsState(Cell::State::AUTONOMY)) {
+			return false;
+		}
+
+		Cell::Ptr parentPtr = cellPtr->GetInfo().parent.lock();
+		return parentPtr == nullptr && cellPtr != _rootCell;
+	}
+
+	return false;
+}
+
 bool CellsNetwork::IsConnectedWithRoot(Cell::WeakPtr cell) const
 {
 	Cell::Ptr rootCell = GetRootCell().lock();

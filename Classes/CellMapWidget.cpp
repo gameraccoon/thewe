@@ -84,6 +84,7 @@ CellMapWidget::CellMapWidget(Cell::WeakPtr cell)
 	, _hitAreaBeginY(0.0f)
 	, _hitAreaEndX(1.0f)
 	, _hitAreaEndY(1.0f)
+	, _relinkMarkYAngle(0.0f)
 	, _projectorUid(-1)
 	, _cellUid(cell.lock()->GetUid())
 	, _lastCellState(Cell::State::READY)
@@ -126,11 +127,17 @@ bool CellMapWidget::init(void)
 	_popupCatchInvestigator = new CellMapPopupButton(s);
 	_popupCatchInvestigator->setPosition(0.0f, 0.0f);
 	_popupCatchInvestigator->setScale(6.0f);
+
+	_relinkableMark = cocos2d::Sprite::create("relink-mark.png");
+	_relinkableMark->setPosition(0.0f, 155.0f);
+	_relinkableMark->setScale(1.0f);
+	_relinkableMark->setVisible(false);
 	
 	addChild(_cellMapSprite, DrawOrder::SPRITE);
 	addChild(_cellMapTaskProgressBar, DrawOrder::PROGRESS);
 	addChild(_cellCommonProgressBar, DrawOrder::PROGRESS);
 	addChild(_popupCatchInvestigator, DrawOrder::BUTTON);
+	addChild(_relinkableMark, DrawOrder::BUTTON);
 	scheduleUpdate();
 
 	return true;
@@ -147,6 +154,9 @@ void CellMapWidget::update(float dt)
 
 	Utils::GameTime currentTime = Utils::GetGameTime();
 	cell->UpdateToTime(currentTime);
+
+	_relinkableMark->setVisible(World::Instance().GetCellsNetwork().IsCellRelinkable(cell));
+
 	if (cell->IsState(Cell::State::CONSTRUCTION))
 	{
 		_cellCommonProgressBar->SetProgressImmediately(cell->GetStateProgress(currentTime) * 100.0f);
@@ -174,6 +184,9 @@ void CellMapWidget::update(float dt)
 			_cellMapTaskProgressBar->SetProgressImmediately(progress * 100.0f);
 			_cellMapTaskProgressBar->setVisible(true);
 		}
+
+		_relinkMarkYAngle += 180.0f * dt;
+		_relinkableMark->setRotation3D(cocos2d::Vec3(0.0f, _relinkMarkYAngle, 0.0f));
 	}
 	else if (cell->IsState(Cell::State::DESTRUCTION))
 	{

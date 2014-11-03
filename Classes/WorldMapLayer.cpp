@@ -315,7 +315,7 @@ void WorldMapLayer::TouchesEnded(const std::vector<cocos2d::Touch* > &touches, c
 				Cell::Ptr cell = _GetCellUnderPoint(point).lock();
 				if (cell)
 				{
-					if (!_linkCellChildren.expired())
+					if (!_linkCellChildren.expired() && cell != _linkCellChildren.lock() && cell->IsState(Cell::State::READY))
 					{
 						Cell::Ptr relinked = _linkCellChildren.lock();
 						relinked->GetInfo().state = Cell::State::READY;
@@ -329,6 +329,10 @@ void WorldMapLayer::TouchesEnded(const std::vector<cocos2d::Touch* > &touches, c
 					}
 					else
 					{
+						if (World::Instance().GetCellsNetwork().IsCellRelinkable(cell) && cell->IsState(Cell::State::AUTONOMY)) {
+							_linkCellChildren = cell;
+						}
+
 						Vector2 cell_pos = Vector2(-700, 200);//cell->GetInfo().location;
 						Vector2 menu_pos = _mapProjector->ProjectOnScreen(cell_pos);
 
@@ -497,11 +501,7 @@ Cell::WeakPtr WorldMapLayer::_GetCellUnderPoint(const Vector2& point)
 
 		if (rect.containsPoint(projectedPoint))
 		{
-			if (cell->IsState(Cell::State::AUTONOMY)) {
-				_linkCellChildren = cell;
-				return Cell::WeakPtr();
-			}
-			else if (!cell->IsState(Cell::State::READY)) {
+			if (!cell->IsState(Cell::State::READY) && !cell->IsState(Cell::State::AUTONOMY)) {
 				return Cell::WeakPtr();	
 			}
 

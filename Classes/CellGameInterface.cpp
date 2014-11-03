@@ -106,37 +106,40 @@ void CellMenuSelector::AppearWithAnimation(Cell::WeakPtr cell, const Vector2 &po
 		return;
 	}
 
-	int numButtonsToShow = CELL_NUM_TAGS;
-	bool mustShowKillButton = World::Instance().IsCellUnderInvestigation(cell.lock());
-	if (mustShowKillButton)
-	{
-		_killButton->setPosition(_position);
-		_killButton->Appear(15.0f, 360.0f/(CELL_NUM_TAGS+1));
-		numButtonsToShow += 1;
-	}
-
 	_cell = cell;
 	_position = position;
 	_isDisappearing = false;
-
 	_menu->setPosition(cocos2d::Vec2(0.0f, 0.0f));
+
+	bool mustShowKillButton = World::Instance().IsCellUnderInvestigation(_cell.lock()) || _cell.lock()->IsState(Cell::State::AUTONOMY);
+	bool mustShowMiscButton = _cell.lock()->IsState(Cell::State::READY);
+	int numButtonsToShow = mustShowMiscButton ? CELL_NUM_TAGS : 0;
+
+	if (mustShowKillButton)
+	{
+		_killButton->setPosition(_position);
+		_killButton->Appear(15.0f, 360.0f/(numButtonsToShow+1));
+		numButtonsToShow += 1;
+	}
 
 	cocos2d::Vec2 dir(0.0f, 1.0f);
 	const float dist = 45.0f;
 	const float angle = 3.14159265f*2.0f / (float)numButtonsToShow;
 	
-	for (Buttons::iterator it = _button.begin(); it != _button.end(); ++it)
-	{
-		cocos2d::MenuItemImage *item = (*it);
-
-		if (it != _button.begin())
+	if (mustShowMiscButton) {
+		for (Buttons::iterator it = _button.begin(); it != _button.end(); ++it)
 		{
-			dir = dir.rotateByAngle(cocos2d::Vec2::ZERO, angle);
-			dir.normalize();
-		}
+			cocos2d::MenuItemImage *item = (*it);
 
-		item->stopAllActions();
-		_PrepearButtonToAppear(item, dir * dist);
+			if (it != _button.begin())
+			{
+				dir = dir.rotateByAngle(cocos2d::Vec2::ZERO, angle);
+				dir.normalize();
+			}
+
+			item->stopAllActions();
+			_PrepearButtonToAppear(item, dir * dist);
+		}
 	}
 
 	setVisible(true);

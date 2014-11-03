@@ -31,6 +31,8 @@ public:
 	Cell::WeakPtr GetRootCell() const;
 	void SetRootCell(Cell::Ptr cell);
 
+	bool IsCellRelinkable(Cell::WeakPtr cell) const;
+
 private:
 	bool IsConnectedWithRoot(Cell::WeakPtr cell) const;
 

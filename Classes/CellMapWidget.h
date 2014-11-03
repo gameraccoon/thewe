@@ -42,9 +42,12 @@ private:
 
 	float _hitAreaBeginX, _hitAreaEndX;
 	float _hitAreaBeginY, _hitAreaEndY;
+	float _relinkMarkYAngle;
 
 	int _projectorUid;
 	const int _cellUid;
+
+	cocos2d::Sprite *_relinkableMark;
 
 	CellMapImage *_cellMapSprite;
 	RoundProgressBar *_cellMapTaskProgressBar;
