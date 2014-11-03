@@ -226,6 +226,12 @@ void World::Update()
 	_cellsNetwork.UpdateToTime(time);
 
 	MessageManager::Instance().CallAcceptMessages();
+
+	if (!_cellsNetwork.GetRootCell().expired()) {
+		if (!_cellsNetwork.GetRootCell().lock()->IsState(Cell::State::READY)) {
+			SetGameOver();
+		}
+	}
 }
 
 void World::SetPause(bool pause)

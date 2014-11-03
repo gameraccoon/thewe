@@ -51,13 +51,6 @@ void Investigator::BeginInvestigation(void)
 	cell->GetInfo().state = Cell::State::ARRESTED;
 	_state = State::INVESTIGATION;
 
-	if (cell == World::Instance().GetCellsNetwork().GetRootCell().lock())
-	{
-		// set game over state to World
-		World::Instance().SetGameOver();
-		return;
-	}
-
 	Investigator::Branch branchToParent;
 	branchToParent.cellFrom = cell;
 	branchToParent.cellTo = cell->GetInfo().parent;
@@ -109,30 +102,21 @@ void Investigator::UpdateToTime(Utils::GameTime time)
 
 			if (time >= (branch.timeBegin + branch.timeDuration) && branch.cellTo.lock()->GetInfo().state != Cell::State::ARRESTED)
 			{
-				if (branch.cellTo.lock() == World::Instance().GetCellsNetwork().GetRootCell().lock())
+				Cell::WeakPtr cell = branch.cellFrom.lock();
+				if (GetCountOfCellUsageInBranches(cell) <= 1)
 				{
-					// We are in the root cell. This is GameOver condition
-					World::Instance().SetGameOver();
-					break;
+					MessageManager::Instance().PutMessage(Message("DeleteCellWidget", branch.cellFrom.lock()->GetUid()));
+					World::Instance().GetCellsNetwork().RemoveCell(cell);
 				}
-				else
-				{
-					Cell::WeakPtr cell = branch.cellFrom.lock();
-					if (GetCountOfCellUsageInBranches(cell) <= 1)
-					{
-						MessageManager::Instance().PutMessage(Message("DeleteCellWidget", branch.cellFrom.lock()->GetUid()));
-						World::Instance().GetCellsNetwork().RemoveCell(cell);
-					}
 					
-					int createdBranchesCount = CaptureCellAndReturnNewBranchesCount(branch.cellTo, branch.cellFrom);
-					if (createdBranchesCount == 0)
-					{
-						MessageManager::Instance().PutMessage(Message("DeleteCellWidget", branch.cellTo.lock()->GetUid()));
-						World::Instance().GetCellsNetwork().RemoveCell(branch.cellTo);
-					}
-
-					_activeBranches.erase(_activeBranches.begin() + index);
+				int createdBranchesCount = CaptureCellAndReturnNewBranchesCount(branch.cellTo, branch.cellFrom);
+				if (createdBranchesCount == 0)
+				{
+					MessageManager::Instance().PutMessage(Message("DeleteCellWidget", branch.cellTo.lock()->GetUid()));
+					World::Instance().GetCellsNetwork().RemoveCell(branch.cellTo);
 				}
+
+				_activeBranches.erase(_activeBranches.begin() + index);
 
 				MessageManager::Instance().PutMessage(Message("SaveGame", 0));
 			}
