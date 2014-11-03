@@ -129,7 +129,7 @@ void GameSavesManager::FirstInitSave()
 	{
 		_impl->database.execSql("CREATE TABLE " + INVESIGATORS_TABLE + " ("
 								"'investigator_uid' INTEGER NOT NULL"
-								",'root_cell' INTEGER NOT NULL"
+								",'root_cell' INTEGER"
 								",'catch_time_begin' VARCHAR(20) NOT NULL"
 								",'catch_time_end' VARCHAR(20) NOT NULL"
 								",'state' VARCHAR(100) NOT NULL"
@@ -332,7 +332,14 @@ void GameSavesManager::LoadInvestigations()
 
 			investigator->_catchTimeBegin = Utils::StringToTime(investigatorsReader->getValueByName("catch_time_begin")->asString());
 			investigator->_catchTimeEnd = Utils::StringToTime(investigatorsReader->getValueByName("catch_time_end")->asString());
-			investigator->_investigationRoot = cellsNetwork.GetCellByUid(investigatorsReader->getValueByName("root_cell")->asInt());
+			if (!investigatorsReader->getValueByName("root_cell")->isNull())
+			{
+				investigator->_investigationRoot = cellsNetwork.GetCellByUid(investigatorsReader->getValueByName("root_cell")->asInt());
+			}
+			else
+			{
+				investigator->_investigationRoot = Cell::WeakPtr();
+			}
 			investigator->_state = CastInvestigatorStateFromString(investigatorsReader->getValueByName("state")->asString());
 			world.AddInvestigator(investigator);
 		}
@@ -519,9 +526,18 @@ static void AppendInvestigatorsToQuery(std::string* const query,
 	query->append("(")
 		.append("'").append(std::to_string(investigator->GetUid())).append("',")
 		.append("'").append(Utils::TimeToString(investigator->GetCatchBeginTime())).append("',")
-		.append("'").append(Utils::TimeToString(investigator->GetCatchEndTime())).append("',")
-		.append("'").append(std::to_string(investigator->GetInvestigationRoot().lock()->GetUid())).append("',")
-		.append("'").append(std::to_string(investigator->GetState())).append("'")
+		.append("'").append(Utils::TimeToString(investigator->GetCatchEndTime())).append("',");
+
+	if (Cell::Ptr investigationRoot = investigator->GetInvestigationRoot().lock())
+	{
+		query->append("'").append(std::to_string(investigationRoot->GetUid())).append("',");
+	}
+	else
+	{
+		query->append("NULL,");
+	}
+
+	query->append("'").append(std::to_string(investigator->GetState())).append("'")
 		.append(")");
 }
 
