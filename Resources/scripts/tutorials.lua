@@ -8,8 +8,9 @@ function RunTutorial_Welcome()
 		"как альфа-версия \"The We\"."
 
 	local text2 =
-		"Выберите город в котором сделаете свой первый шаг,\n"..
-		"На данный момент выбор города никак не влияет на сложность."
+		"Выберите город в котором сделаете\n" ..
+		"свой первый шаг. На данный момент\n"..
+		"выбор города никак не влияет на сложность."
 
 	World:addTutorial(Tutorial(text1, ContinueText))
 	World:addTutorial(Tutorial(text2, ContinueText))
@@ -20,10 +21,10 @@ end
 function RunTutorial_AfterCreatingFirstCell()
 	local text =
 		"Поздравляю!\n\n"..
-		"Но в ячейке недостаточно сотрудников для.\n"..
-		"Полноценного функционирования.\n"..
+		"Но в ячейке недостаточно сотрудников для\n"..
+		"полноценного функционирования.\n"..
 		"Рекоммендую начать вербовку.\n\n"..
-		"Нажмите на ячейку и зайдите в меню заданий"
+		"Нажмите на ячейку и зайдите в меню заданий."
 
 	World:addTutorial(Tutorial(text, ContinueText))
 
@@ -32,7 +33,7 @@ end
 
 function RunTutorial_BeforeStartFirstTask()
 	local text =
-		"Теперь выберите задачу вербовки"
+		"Теперь выберите задачу вербовки."
 
 	World:addTutorial(Tutorial(text, ContinueText))
 
@@ -46,7 +47,7 @@ function RunTutorial_StartingFirstTask()
 		"рекоммендуется подождать.\n\n"..
 		"В зависимости от уровня ячейки и\n"..
 		"напряжённости обстановки, этот процесс\n"..
-		"может занимать различное время"
+		"может занимать различное время."
 
 	World:addTutorial(Tutorial(text, ContinueText))
 
@@ -68,8 +69,9 @@ end
 function RunTutorial_StartingFirstRealWork()
 	local text =
 		"Бывают ситуации когда время важнее денег\n"..
-		"Тогда можно используя подкуп определенных людей\n"..
-		"Мгновенно завершить текущее задание ячейки.\n"..
+		"Тогда можно используя подкуп определенных\n"..
+		"людей. Мгновенно завершить текущее задание\n"..
+		"ячейки.\n"..
 		"Это для этого потребуются черные кейсы."
 
 	World:addTutorial(Tutorial(text, ContinueText))
@@ -79,9 +81,10 @@ end
 
 function RunTutorial_AfterRealWorkDone()
 	local text =
-		"Сложно укрепить свою власть посредством такого\n"..
-		"малого числа людей. Рекоммендую создать дочернюю ячейку.\n"..
-		"Откройте меню ячейки и выберите пункт \"Спинофф\" \n"
+		"Сложно укрепить свою власть посредством\n"..
+		"такого малого числа людей.\n"..
+		"Рекоммендую создать дочернюю ячейку.\n"..
+		"Откройте меню ячейки и выберите пункт \"Spinoff\" \n"
 
 	World:addTutorial(Tutorial(text, ContinueText))
 
@@ -90,7 +93,8 @@ end
 
 function RunTutorial_OnReadyToCreateFirstSpinoff()
 	local text =
-		"Теперь выберите город в котором вы хотите расположить ее."
+		"Теперь выберите город,\n"..
+		"в котором вы хотите расположить ее."
 
 	World:addTutorial(Tutorial(text, ContinueText))
 end
