@@ -19,6 +19,7 @@ public:
 	virtual float asFloat() override;
 	virtual std::string asString() override;
 	virtual const void* asVariant() override;
+	virtual bool isNull() override;
 private:
 	sqlite3_stmt* ppStmt;
 	int columnIndex;

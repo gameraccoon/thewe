@@ -21,6 +21,7 @@ public:
 	virtual float asFloat() = 0;
 	virtual std::string asString() = 0;
 	virtual const void* asVariant() = 0;
+	virtual bool isNull() = 0;
 };
 
 /**

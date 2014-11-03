@@ -50,6 +50,11 @@ SqliteDataReader::SqliteDataReader(const std::string& query, sqlite3* db)
 	}
 }
 
+bool SqliteValue::isNull()
+{
+	return sqlite3_column_type(ppStmt, columnIndex) == SQLITE_NULL;
+}
+
 SqliteDataReader::~SqliteDataReader()
 {
 	sqlite3_finalize(this->ppStmt);
