@@ -22,29 +22,23 @@
     <Filter Include="dependencies\luabind">
       <UniqueIdentifier>{17439e94-e488-4f40-8735-ed246466a291}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Classes\GameCell">
-      <UniqueIdentifier>{abe641f1-5c59-4f4d-87a5-a728536fca69}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Classes\GameMap">
-      <UniqueIdentifier>{4c9702aa-7236-40b2-8d61-838deb53d14c}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Classes\Utils">
       <UniqueIdentifier>{5dfdf271-ecab-40ba-a963-70f89dcc34c1}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Classes\GameInterface">
-      <UniqueIdentifier>{24112e01-a8b7-448a-8d27-f6c22026385b}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Classes\GameCell\Model">
-      <UniqueIdentifier>{178217b1-9fb0-47de-8475-6f91fb755872}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Classes\GameMap\Model">
-      <UniqueIdentifier>{98697692-000d-4656-ad66-55f44742be61}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Classes\DataLoader">
-      <UniqueIdentifier>{f60ce8f2-0857-487a-98ff-7bcc56eb3311}</UniqueIdentifier>
-    </Filter>
     <Filter Include="dependencies\sqlite3">
       <UniqueIdentifier>{25fe8be1-1243-43d7-8e82-ab73407e7ff1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Classes\GameModels">
+      <UniqueIdentifier>{eca03b8e-c3b9-491b-aaa2-00fc91fe4390}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Classes\GameWidgets">
+      <UniqueIdentifier>{3f3d1764-1e9a-4bec-9957-21ddb4342d53}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Classes\FileWork">
+      <UniqueIdentifier>{ff62ceb8-6bcc-4c67-ae50-4072b1eee285}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Classes\GameGui">
+      <UniqueIdentifier>{24112e01-a8b7-448a-8d27-f6c22026385b}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -210,15 +204,6 @@
     <ClCompile Include="..\dependencies\luabind-0.9.1\src\wrapper_base.cpp">
       <Filter>dependencies\luabind</Filter>
     </ClCompile>
-    <ClCompile Include="..\Classes\WorldMapLayer.cpp">
-      <Filter>Classes\GameMap</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Classes\MapProjector.cpp">
-      <Filter>Classes\GameMap</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Classes\MapGuiLayer.cpp">
-      <Filter>Classes\GameMap</Filter>
-    </ClCompile>
     <ClCompile Include="..\Classes\Color.cpp">
       <Filter>Classes\Utils</Filter>
     </ClCompile>
@@ -241,37 +226,10 @@
       <Filter>Classes\Utils</Filter>
     </ClCompile>
     <ClCompile Include="..\Classes\UserMessage.cpp">
-      <Filter>Classes\GameInterface</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Classes\CellGameInterface.cpp">
-      <Filter>Classes\GameCell</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Classes\CellInfoMenu.cpp">
-      <Filter>Classes\GameCell</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Classes\CellSpinoffMenu.cpp">
-      <Filter>Classes\GameCell</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Classes\CellTaskInfoMenu.cpp">
-      <Filter>Classes\GameCell</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Classes\CellTasksMenu.cpp">
-      <Filter>Classes\GameCell</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Classes\Cell.cpp">
-      <Filter>Classes\GameCell\Model</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Classes\Task.cpp">
-      <Filter>Classes\GameCell\Model</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Classes\CellMapWidget.cpp">
-      <Filter>Classes\GameCell</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Classes\TownMapWidget.cpp">
-      <Filter>Classes\GameMap</Filter>
+      <Filter>Classes\GameGui</Filter>
     </ClCompile>
     <ClCompile Include="..\Classes\CellsNetLayer.cpp">
-      <Filter>Classes\GameInterface</Filter>
+      <Filter>Classes\GameGui</Filter>
     </ClCompile>
     <ClCompile Include="..\Classes\GameInfo.cpp">
       <Filter>Classes</Filter>
@@ -279,80 +237,116 @@
     <ClCompile Include="..\Classes\MiscUtils.cpp">
       <Filter>Classes\Utils</Filter>
     </ClCompile>
-    <ClCompile Include="..\Classes\Investigator.cpp">
-      <Filter>Classes\GameCell\Model</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Classes\Region.cpp">
-      <Filter>Classes\GameMap\Model</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Classes\Town.cpp">
-      <Filter>Classes\GameMap\Model</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Classes\World.cpp">
-      <Filter>Classes\GameMap\Model</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Classes\InvestigatorMapWidget.cpp">
-      <Filter>Classes\GameCell</Filter>
-    </ClCompile>
     <ClCompile Include="..\Classes\LuaInstance.cpp">
       <Filter>Classes</Filter>
     </ClCompile>
     <ClCompile Include="..\Classes\LuaBindings.cpp">
       <Filter>Classes</Filter>
     </ClCompile>
-    <ClCompile Include="..\Classes\TaskManager.cpp">
-      <Filter>Classes\GameMap\Model</Filter>
-    </ClCompile>
     <ClCompile Include="..\Classes\SessionEndScreen.cpp">
       <Filter>Classes</Filter>
     </ClCompile>
     <ClCompile Include="..\Classes\CellNetWidget.cpp">
-      <Filter>Classes\GameInterface</Filter>
+      <Filter>Classes\GameGui</Filter>
     </ClCompile>
     <ClCompile Include="..\Classes\TutorialWidget.cpp">
-      <Filter>Classes\GameInterface</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Classes\CellMapPopupButton.cpp">
-      <Filter>Classes\GameCell</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Classes\Tutorial.cpp">
-      <Filter>Classes\GameMap\Model</Filter>
+      <Filter>Classes\GameGui</Filter>
     </ClCompile>
     <ClCompile Include="..\Classes\NotificationMessageLayer.cpp">
-      <Filter>Classes\GameInterface</Filter>
+      <Filter>Classes\GameGui</Filter>
     </ClCompile>
     <ClCompile Include="..\Classes\NotificationMessageWidget.cpp">
-      <Filter>Classes\GameInterface</Filter>
+      <Filter>Classes\GameGui</Filter>
     </ClCompile>
     <ClCompile Include="..\Classes\TutorialLayer.cpp">
-      <Filter>Classes\GameInterface</Filter>
+      <Filter>Classes\GameGui</Filter>
     </ClCompile>
     <ClCompile Include="..\Classes\NotificationMessageManager.cpp">
-      <Filter>Classes\GameInterface</Filter>
+      <Filter>Classes\GameGui</Filter>
     </ClCompile>
     <ClCompile Include="..\Classes\MessageManager.cpp">
       <Filter>Classes</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Classes\CellsNetwork.cpp">
-      <Filter>Classes\GameMap\Model</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Classes\WorldLoader.cpp">
-      <Filter>Classes\DataLoader</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Classes\GameSavesManager.cpp">
-      <Filter>Classes\DataLoader</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Classes\SqliteConnection.cpp">
-      <Filter>Classes\DataLoader</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Classes\SqliteDataReader.cpp">
-      <Filter>Classes\DataLoader</Filter>
     </ClCompile>
     <ClCompile Include="..\dependencies\sqlite3-3.8.7\shell.c">
       <Filter>dependencies\sqlite3</Filter>
     </ClCompile>
     <ClCompile Include="..\dependencies\sqlite3-3.8.7\sqlite3.c">
       <Filter>dependencies\sqlite3</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\Cell.cpp">
+      <Filter>Classes\GameModels</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\Investigator.cpp">
+      <Filter>Classes\GameModels</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\Task.cpp">
+      <Filter>Classes\GameModels</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\CellsNetwork.cpp">
+      <Filter>Classes\GameModels</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\Region.cpp">
+      <Filter>Classes\GameModels</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\TaskManager.cpp">
+      <Filter>Classes\GameModels</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\Town.cpp">
+      <Filter>Classes\GameModels</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\Tutorial.cpp">
+      <Filter>Classes\GameModels</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\World.cpp">
+      <Filter>Classes\GameModels</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\MapGuiLayer.cpp">
+      <Filter>Classes\GameWidgets</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\MapProjector.cpp">
+      <Filter>Classes\GameWidgets</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\TownMapWidget.cpp">
+      <Filter>Classes\GameWidgets</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\WorldMapLayer.cpp">
+      <Filter>Classes\GameWidgets</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\InvestigatorMapWidget.cpp">
+      <Filter>Classes\GameWidgets</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\CellTasksMenu.cpp">
+      <Filter>Classes\GameWidgets</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\CellTaskInfoMenu.cpp">
+      <Filter>Classes\GameWidgets</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\CellSpinoffMenu.cpp">
+      <Filter>Classes\GameWidgets</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\CellMapWidget.cpp">
+      <Filter>Classes\GameWidgets</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\CellMapPopupButton.cpp">
+      <Filter>Classes\GameWidgets</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\CellInfoMenu.cpp">
+      <Filter>Classes\GameWidgets</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\CellGameInterface.cpp">
+      <Filter>Classes\GameWidgets</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\GameSavesManager.cpp">
+      <Filter>Classes\FileWork</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\SqliteConnection.cpp">
+      <Filter>Classes\FileWork</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\SqliteDataReader.cpp">
+      <Filter>Classes\FileWork</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\WorldLoader.cpp">
+      <Filter>Classes\FileWork</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -449,15 +443,6 @@
     <ClInclude Include="..\dependencies\lua-5.1.5\lzio.h">
       <Filter>dependencies\lua</Filter>
     </ClInclude>
-    <ClInclude Include="..\Classes\WorldMapLayer.h">
-      <Filter>Classes\GameMap</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Classes\MapProjector.h">
-      <Filter>Classes\GameMap</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Classes\MapGuiLayer.h">
-      <Filter>Classes\GameMap</Filter>
-    </ClInclude>
     <ClInclude Include="..\Classes\ArbitraryHull.h">
       <Filter>Classes\Utils</Filter>
     </ClInclude>
@@ -483,37 +468,10 @@
       <Filter>Classes\Utils</Filter>
     </ClInclude>
     <ClInclude Include="..\Classes\UserMessage.h">
-      <Filter>Classes\GameInterface</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Classes\CellGameInterface.h">
-      <Filter>Classes\GameCell</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Classes\CellInfoMenu.h">
-      <Filter>Classes\GameCell</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Classes\CellSpinoffMenu.h">
-      <Filter>Classes\GameCell</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Classes\CellTaskInfoMenu.h">
-      <Filter>Classes\GameCell</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Classes\CellTasksMenu.h">
-      <Filter>Classes\GameCell</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Classes\Cell.h">
-      <Filter>Classes\GameCell\Model</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Classes\Task.h">
-      <Filter>Classes\GameCell\Model</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Classes\CellMapWidget.h">
-      <Filter>Classes\GameCell</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Classes\TownMapWidget.h">
-      <Filter>Classes\GameMap</Filter>
+      <Filter>Classes\GameGui</Filter>
     </ClInclude>
     <ClInclude Include="..\Classes\CellsNetLayer.h">
-      <Filter>Classes\GameInterface</Filter>
+      <Filter>Classes\GameGui</Filter>
     </ClInclude>
     <ClInclude Include="..\Classes\GameInfo.h">
       <Filter>Classes</Filter>
@@ -521,83 +479,119 @@
     <ClInclude Include="..\Classes\MiscUtils.h">
       <Filter>Classes\Utils</Filter>
     </ClInclude>
-    <ClInclude Include="..\Classes\Investigator.h">
-      <Filter>Classes\GameCell\Model</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Classes\InvestigatorMapWidget.h">
-      <Filter>Classes\GameCell</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Classes\Region.h">
-      <Filter>Classes\GameMap\Model</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Classes\Town.h">
-      <Filter>Classes\GameMap\Model</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Classes\World.h">
-      <Filter>Classes\GameMap\Model</Filter>
-    </ClInclude>
     <ClInclude Include="..\Classes\LuaInstance.h">
       <Filter>Classes</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Classes\TaskManager.h">
-      <Filter>Classes\GameMap\Model</Filter>
     </ClInclude>
     <ClInclude Include="..\Classes\SessionEndScreen.h">
       <Filter>Classes</Filter>
     </ClInclude>
     <ClInclude Include="..\Classes\CellNetWidget.h">
-      <Filter>Classes\GameInterface</Filter>
+      <Filter>Classes\GameGui</Filter>
     </ClInclude>
     <ClInclude Include="..\Classes\TutorialWidget.h">
-      <Filter>Classes\GameInterface</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Classes\CellMapPopupButton.h">
-      <Filter>Classes\GameCell</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Classes\Tutorial.h">
-      <Filter>Classes\GameMap\Model</Filter>
+      <Filter>Classes\GameGui</Filter>
     </ClInclude>
     <ClInclude Include="..\Classes\NotificationMessageLayer.h">
-      <Filter>Classes\GameInterface</Filter>
+      <Filter>Classes\GameGui</Filter>
     </ClInclude>
     <ClInclude Include="..\Classes\NotificationMessageWidget.h">
-      <Filter>Classes\GameInterface</Filter>
+      <Filter>Classes\GameGui</Filter>
     </ClInclude>
     <ClInclude Include="..\Classes\TutorialLayer.h">
-      <Filter>Classes\GameInterface</Filter>
+      <Filter>Classes\GameGui</Filter>
     </ClInclude>
     <ClInclude Include="..\Classes\NotificationMessageManager.h">
-      <Filter>Classes\GameInterface</Filter>
+      <Filter>Classes\GameGui</Filter>
     </ClInclude>
     <ClInclude Include="..\Classes\MessageManager.h">
       <Filter>Classes</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Classes\CellsNetwork.h">
-      <Filter>Classes\GameMap\Model</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Classes\WorldLoader.h">
-      <Filter>Classes\DataLoader</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Classes\DbConnection.h">
-      <Filter>Classes\DataLoader</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Classes\GameSavesManager.h">
-      <Filter>Classes\DataLoader</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Classes\SqlDataReader.h">
-      <Filter>Classes\DataLoader</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Classes\SqliteConnection.h">
-      <Filter>Classes\DataLoader</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Classes\SqliteDataReader.h">
-      <Filter>Classes\DataLoader</Filter>
     </ClInclude>
     <ClInclude Include="..\dependencies\sqlite3-3.8.7\sqlite3.h">
       <Filter>dependencies\sqlite3</Filter>
     </ClInclude>
     <ClInclude Include="..\dependencies\sqlite3-3.8.7\sqlite3ext.h">
       <Filter>dependencies\sqlite3</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Cell.h">
+      <Filter>Classes\GameModels</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Investigator.h">
+      <Filter>Classes\GameModels</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Task.h">
+      <Filter>Classes\GameModels</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\CellsNetwork.h">
+      <Filter>Classes\GameModels</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Region.h">
+      <Filter>Classes\GameModels</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\TaskManager.h">
+      <Filter>Classes\GameModels</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Town.h">
+      <Filter>Classes\GameModels</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Tutorial.h">
+      <Filter>Classes\GameModels</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\World.h">
+      <Filter>Classes\GameModels</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\MapGuiLayer.h">
+      <Filter>Classes\GameWidgets</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\MapProjector.h">
+      <Filter>Classes\GameWidgets</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\TownMapWidget.h">
+      <Filter>Classes\GameWidgets</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\WorldMapLayer.h">
+      <Filter>Classes\GameWidgets</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\InvestigatorMapWidget.h">
+      <Filter>Classes\GameWidgets</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\CellTasksMenu.h">
+      <Filter>Classes\GameWidgets</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\CellTaskInfoMenu.h">
+      <Filter>Classes\GameWidgets</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\CellSpinoffMenu.h">
+      <Filter>Classes\GameWidgets</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\CellMapWidget.h">
+      <Filter>Classes\GameWidgets</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\CellMapPopupButton.h">
+      <Filter>Classes\GameWidgets</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\CellInfoMenu.h">
+      <Filter>Classes\GameWidgets</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\CellGameInterface.h">
+      <Filter>Classes\GameWidgets</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\DbConnection.h">
+      <Filter>Classes\FileWork</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\GameSavesManager.h">
+      <Filter>Classes\FileWork</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\SqlDataReader.h">
+      <Filter>Classes\FileWork</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\SqliteConnection.h">
+      <Filter>Classes\FileWork</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\SqliteDataReader.h">
+      <Filter>Classes\FileWork</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\WorldLoader.h">
+      <Filter>Classes\FileWork</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
