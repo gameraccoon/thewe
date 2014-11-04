@@ -615,7 +615,7 @@ void WorldMapLayer::_OnTownSelect(Town::WeakPtr town)
 				parent->GetInfo().membersCount -= GameInfo::Instance().GetInt("CELL_SPINOFF_MEMBERS_PRICE");
 
 				info.stateBegin = Utils::GetGameTime();
-				info.stateDuration = GameInfo::Instance().GetFloat("CELL_CONSTRUCTION_TIME");
+				info.stateDuration = GameInfo::Instance().GetTime("CELL_CONSTRUCTION_TIME");
 
 				CreateCell(info, Cell::State::CONSTRUCTION);
 

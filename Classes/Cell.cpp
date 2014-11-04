@@ -86,7 +86,7 @@ void Cell::BeginDestruction(void)
 	// ToDo: make some checks
 	_info.state = State::DESTRUCTION;
 	_info.stateBegin = Utils::GetGameTime();
-	_info.stateDuration = GameInfo::Instance().GetFloat("CELL_DESTRUCTION_TIME");
+	_info.stateDuration = GameInfo::Instance().GetTime("CELL_DESTRUCTION_TIME");
 }
 
 void Cell::BeginAutonomy(void)
@@ -94,7 +94,7 @@ void Cell::BeginAutonomy(void)
 	// ToDo: make some checks
 	_info.state = State::AUTONOMY;
 	_info.stateBegin = Utils::GetGameTime();
-	_info.stateDuration = GameInfo::Instance().GetFloat("CELL_AUTONOMY_LIFE_TIME");
+	_info.stateDuration = GameInfo::Instance().GetTime("CELL_AUTONOMY_LIFE_TIME");
 }
 
 void Cell::SetParent(Cell::WeakPtr cell)

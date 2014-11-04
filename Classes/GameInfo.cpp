@@ -52,6 +52,11 @@ bool GameInfo::ParseXml(const std::string &filename)
 				std::string value = node.attribute("value").as_string();
 				_strMap.insert(std::pair<std::string, std::string>(name, value));
 			}
+			else if (type == "time")
+			{
+				Utils::GameTime value = Utils::StringToTime(node.attribute("value").as_string());
+				_timeMap.insert(std::pair<std::string, Utils::GameTime>(name, value));
+			}
 			else
 			{
 				std::string message = "Failed to read global constant of name: " + name + ", type: " + type;
@@ -96,4 +101,11 @@ std::string GameInfo::GetString(const std::string &name, std::string def) const
 	std::map<std::string, std::string>::const_iterator it;
 	it = _strMap.find(name);
 	return it != _strMap.end() ? (*it).second : def;
+}
+
+Utils::GameTime GameInfo::GetTime(const std::string &name, Utils::GameTime def) const
+{
+	std::map<std::string, Utils::GameTime>::const_iterator it;
+	it = _timeMap.find(name);
+	return it != _timeMap.end() ? (*it).second : def;
 }

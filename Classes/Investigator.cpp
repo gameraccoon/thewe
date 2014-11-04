@@ -54,7 +54,7 @@ void Investigator::BeginInvestigation(void)
 	Investigator::Branch branchToParent;
 	branchToParent.cellFrom = cell;
 	branchToParent.cellTo = cell->GetInfo().parent;
-	branchToParent.timeDuration = GameInfo::Instance().GetFloat("INVESTIGATION_DURATION");
+	branchToParent.timeDuration = GameInfo::Instance().GetTime("INVESTIGATION_DURATION");
 	branchToParent.timeBegin = Utils::GetGameTime();
 	_activeBranches.push_back(branchToParent);
 
@@ -63,7 +63,7 @@ void Investigator::BeginInvestigation(void)
 		Investigator::Branch branch;
 		branch.cellFrom = cell;
 		branch.cellTo = child;
-		branch.timeDuration = GameInfo::Instance().GetFloat("INVESTIGATION_DURATION");
+		branch.timeDuration = GameInfo::Instance().GetTime("INVESTIGATION_DURATION");
 		branch.timeBegin = Utils::GetGameTime();
 
 		_activeBranches.push_back(branch);
@@ -152,7 +152,7 @@ int Investigator::CaptureCellAndReturnNewBranchesCount(Cell::WeakPtr cellTarget,
 		Investigator::Branch childBranch;
 		childBranch.cellFrom = cellTargetPtr;
 		childBranch.cellTo = cellTargetPtr->GetInfo().parent;
-		childBranch.timeDuration = GameInfo::Instance().GetFloat("INVESTIGATION_DURATION");
+		childBranch.timeDuration = GameInfo::Instance().GetTime("INVESTIGATION_DURATION");
 		childBranch.timeBegin = Utils::GetGameTime();
 
 		_activeBranches.push_back(childBranch);
@@ -171,7 +171,7 @@ int Investigator::CaptureCellAndReturnNewBranchesCount(Cell::WeakPtr cellTarget,
 		Investigator::Branch childBranch;
 		childBranch.cellFrom = cellTargetPtr;
 		childBranch.cellTo = child;
-		childBranch.timeDuration = GameInfo::Instance().GetFloat("INVESTIGATION_DURATION");
+		childBranch.timeDuration = GameInfo::Instance().GetTime("INVESTIGATION_DURATION");
 		childBranch.timeBegin = Utils::GetGameTime();
 
 		_activeBranches.push_back(childBranch);
