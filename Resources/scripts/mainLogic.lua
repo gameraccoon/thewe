@@ -70,6 +70,10 @@ function GetInvestigationChance(cell)
 		investigationChance = investigationChance * 0.3
 	end
 
+	if distanceToRoot == 0 then
+		investigationChance = 0
+	end
+
 	investigationChance = investigationChance * math.min(connectivity / 5.0, 1.0)
 
 	return investigationChance

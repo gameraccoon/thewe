@@ -8,16 +8,16 @@
 	<Const name="CELL_STARTUP_TECH_UNITS_COUNT" type="int" value="0" />
 	<Const name="CELL_STARTUP_MONEY" type="int" value="1000" />
 	<Const name="CELL_STARTUP_MORALE" type="float" value="0.5" />
-	<Const name="CELL_STARTUP_DEVOTION" type="float" value="1.0" />
+	<Const name="CELL_STARTUP_DEVOTION" type="float" value="0.5" />
 	<Const name="CELL_STARTUP_TOWN_HEART_POUNDING" type="float" value="0.0" />
 	<Const name="CELL_STARTUP_TOWN_INFLUENCE" type="float" value="0.0" />
 	<Const name="CELL_STARTUP_TOWN_WELFARE" type="float" value="0.5" />
 
-	<Const name="CELL_CONSTRUCTION_TIME" type="time" value="60" />
-	<Const name="CELL_DESTRUCTION_TIME" type="time" value="30" />
+	<Const name="CELL_CONSTRUCTION_TIME" type="time" value="3" />
+	<Const name="CELL_DESTRUCTION_TIME" type="time" value="3" />
 	<const name="CELL_AUTONOMY_LIFE_TIME" type="time" value="60" />
 
-	<Const name="INVESTIGATION_DURATION" type="time" value="600" />
+	<Const name="INVESTIGATION_DURATION" type="time" value="25" />
 	<Const name="INVESTIGATOR_CATCH_TIME" type="time" value="5" />
 	<Const name="INVESTIGATOR_TUTORIAL_CATCH_TIME" type="time" value="311040000" /> <!-- ждем 10 лет -->
 </GameInfo>
