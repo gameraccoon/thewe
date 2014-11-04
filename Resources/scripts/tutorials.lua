@@ -112,7 +112,11 @@ end
 
 function RunTutorial_FirstInvestigationStarted()
 	local text =
-		"Запущен инвестигейтор"
+		"Наши ребята облажались и теперь\n"..
+		"спецслужбы начали расследование.\n\n"..
+		"Мы должны замести следы -\n"..
+		"Жми на красную кнопку,\n"..
+		"чтобы уничтожить ячейку."
 
 	World:addTutorial(Tutorial(text, ContinueText))
 
@@ -121,7 +125,9 @@ end
 
 function RunTutorial_FirstInvestigationCatched()
 	local text =
-		"Закрыли инвестигейтора"
+		"Если не уничтожить ячейку, то до неё\n"..
+		"всё равно доберутся и, будь уверен, расколят.\n\n"..
+		"Это небольшая жертва ради нашей цели."
 
 	World:addTutorial(Tutorial(text, ContinueText))
 
@@ -130,7 +136,11 @@ end
 
 function RunTutorial_FirstUncatchedInvestigator()
 	local text =
-		"Профукали инвестигейтора"
+		"Спецслужбы добрались до наших парней\n"..
+		"и уже раскалывают их.\n\n"..
+		"Мы должны зачистить ячейки о которых\n"..
+		"знали эти ребята, чтобы остановить\n"..
+		"расследование и защитить остальную сеть."
 
 	World:addTutorial(Tutorial(text, ContinueText))
 
@@ -139,10 +149,10 @@ end
 
 function RunTutorial_FirstUncatchedInvestigatorCatched()
 	local text =
-		"Для того чтобы оставаться в тени, надо быть\n"..
-		"на шаг впереди любого из ваших преследователей.\n"..
-		"Не забывайте время от времени менять связи между\n"..
-		"Ячейками. Попробуйте сейчас это сделать.\n"
+		"После того, как мы избавились от расследования\n"..
+		"спецслужб, могут остатся ячейки,\n"..
+		"не связанные с корневой. Самое вермя проверить\n"..
+		"это и изменить связи\n"
 
 	World:addTutorial(Tutorial(text, ContinueText, "TutorialsLastTutorial"))
 end

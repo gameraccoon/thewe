@@ -151,6 +151,11 @@ bool World::RemoveInvestigator(Investigator::Ptr investigator)
 	{
 		if ((*it) == investigator)
 		{
+			if (GetTutorialState() == "WaitForCatchUncatchedInvestigator")
+			{
+				RunTutorialFunction("FirstUncatchedInvestigatorCatched");
+			}
+
 			MessageManager::Instance().PutMessage(Message("DeleteInvestigatorWidget", investigator->GetUid()));
 			it = _investigators.erase(it);
 			return true;
@@ -230,6 +235,15 @@ void World::Update()
 	if (!_cellsNetwork.GetRootCell().expired()) {
 		if (!_cellsNetwork.GetRootCell().lock()->IsState(Cell::State::READY)) {
 			SetGameOver();
+		}
+	}
+
+	for (Investigators::iterator it = _investigators.begin(); it != _investigators.end(); ++it) {
+		Investigator::Ptr ptr = (*it);
+		if (ptr->IsStateType(Investigator::State::FINISHED))
+		{
+			RemoveInvestigator(ptr);
+			break;
 		}
 	}
 }

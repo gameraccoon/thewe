@@ -60,17 +60,23 @@ void InvestigatorMapWidget::update(float dt)
 		_investigationDrawer->clear();
 		for (const Investigator::Branch &branch : _investigator->GetBranches())
 		{
-			cocos2d::Vec2 from = branch.cellFrom.lock()->GetInfo().location;
-			cocos2d::Vec2 goal = branch.cellTo.lock()->GetInfo().location;
+			Cell::Ptr cellFromPtr = branch.cellFrom.lock();
+			Cell::Ptr cellToPtr = branch.cellTo.lock();
 
-			float dist = from.getDistance(goal) * CalcInvestigationBranchDuration(branch);
+			if (cellFromPtr && cellToPtr)
+			{	
+				cocos2d::Vec2 from = cellFromPtr->GetInfo().location;
+				cocos2d::Vec2 goal = cellToPtr->GetInfo().location;
 
-			cocos2d::Vec2 end = from + (goal - from).getNormalized() * dist;
+				float dist = from.getDistance(goal) * CalcInvestigationBranchDuration(branch);
 
-			from = _projector->ProjectOnScreen(from);
-			end = _projector->ProjectOnScreen(end);
+				cocos2d::Vec2 end = from + (goal - from).getNormalized() * dist;
 
-			_investigationDrawer->drawSegment(from, end, 5.0f, cocos2d::Color4F(1.0f, 0.1f, 0.1f, 0.5f));
+				from = _projector->ProjectOnScreen(from);
+				end = _projector->ProjectOnScreen(end);
+
+				_investigationDrawer->drawSegment(from, end, 5.0f, cocos2d::Color4F(1.0f, 0.1f, 0.1f, 0.5f));
+			}
 		}
 	}
 }

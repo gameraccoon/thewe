@@ -28,7 +28,8 @@ public:
 		START_CATCH_DELAY,
 		INVESTIGATION,
 		STAYING,
-		ABORTED
+		ABORTED,
+		FINISHED
 	};
 
 public:

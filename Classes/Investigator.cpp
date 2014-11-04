@@ -132,6 +132,11 @@ void Investigator::UpdateToTime(Utils::GameTime time)
 				MessageManager::Instance().PutMessage(Message("SaveGame", 0));
 			}
 		}
+
+		if (_activeBranches.empty())
+		{
+			_state = State::FINISHED;
+		}
 	}
 	else if (IsStateType(State::ABORTED))
 	{
