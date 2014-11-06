@@ -3,6 +3,7 @@
 #include <fstream>
 #include <ctime>
 #include <assert.h>
+#include <cocos2d.h>
 
 #include "MiscUtils.h"
 
@@ -81,6 +82,7 @@ void Log::writeError(const std::string& text)
 	this->writeLine(std::string("<font color=\"red\"><b>Error</b>: ").append(text).append("</font><br/>"));
 
 #ifdef _DEBUG
+	cocos2d::log("Error: %s", text.c_str());
 	assert(false);
 #endif
 }
@@ -90,6 +92,7 @@ void Log::writeWarning(const std::string& text)
 	this->writeLine(std::string("<font color=\"orange\"><b>Warning</b>: ").append(text).append("</font><br/>"));
 
 #ifdef _DEBUG
+	cocos2d::log("Warning: %s", text.c_str());
 	assert(false);
 #endif
 }
@@ -97,6 +100,10 @@ void Log::writeWarning(const std::string& text)
 void Log::writeLog(const std::string& text)
 {
 	this->writeLine(std::string("<b>Log</b>: ").append(text).append("<br/>"));
+
+#ifdef _DEBUG
+	cocos2d::log("Log: %s", text.c_str());
+#endif
 }
 
 void Log::writeInit(const std::string& text)
