@@ -16,7 +16,9 @@ class CellMenuSelector : public cocos2d::Layer
 {
 public:
 	CellMenuSelector(MapProjector *proj, WorldMapLayer *map);
-		
+
+	static CellMenuSelector* create(MapProjector *proj, WorldMapLayer *map);
+
 	virtual bool init() override;
 	virtual void update(float dt) override;
 
@@ -26,40 +28,37 @@ public:
 	void AppearWithAnimation(Cell::WeakPtr cell, const Vector2 &position);
 	void DisappearImmedaitely(void);
 	void DisappearWithAnimation(void);
+	void InitButtons(Cell::Ptr cell);
 
-	void OnCellMenuClosed(void);
-
-private:
-	enum CELL_MENU_TAGS
-	{
-		CELL_OPEN_TASKS = 0,
-		CELL_OPEN_INFO,
-		CELL_OPEN_SPINOFF,
-		CELL_NUM_TAGS
-	};
-
-	typedef std::vector<cocos2d::MenuItemImage *> Buttons;
+	void OnMenuClosed(void);
 
 private:
-	void _PrepearButtonToAppear(cocos2d::MenuItemImage *item, Vector2 pos);
-	void _PrepearButtonToDisappear(cocos2d::MenuItemImage *item);
-	void _MenuInputListener(cocos2d::Ref *sender);
-	void OnKillButtonPressed(cocos2d::Ref *sender);
+	typedef cocos2d::Vector<cocos2d::MenuItem*> Buttons;
+
+private:
+	void _PrepareButtonToAppear(cocos2d::MenuItem* item, Vector2 pos);
+	void _PrepareButtonToDisappear(cocos2d::MenuItem* item);
 	bool _IsAnimationFinished(void);
+	void CreateMenu(cocos2d::Layer* menu);
+	// listeners
+	void OnKillButtonPressed(cocos2d::Ref *sender);
+	void OnCellInfoButtonPressed(cocos2d::Ref *sender);
+	void OnTasksButtonPressed(cocos2d::Ref *sender);
+	void OnSpinoffButtonPressed(cocos2d::Ref *sender);
 
 private:
 	WorldMapLayer *_worldMapLayer;
 	MapProjector *_projector;
-	CellMapPopupButton *_killButton;
 
 	cocos2d::Menu *_menu;
 
 	Cell::WeakPtr _cell;
 	Vector2 _position;
-	Buttons _button;
 
 	bool _isDisappearing;
 	const std::string _menuNodeName;
+
+	Buttons _buttons;
 };
 
 #endif

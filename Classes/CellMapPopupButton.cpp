@@ -4,7 +4,20 @@ CellMapPopupButton::CellMapPopupButton(const Settings &settings)
 	: _settings(settings)
 	, _jumpHeight(1.0f)
 {
-	init();
+}
+
+CellMapPopupButton* CellMapPopupButton::create(const Settings &settings)
+{
+	CellMapPopupButton* ret = new CellMapPopupButton(settings);
+	if (ret && ret->init())
+	{
+		ret->autorelease();
+	}
+	else
+	{
+		CC_SAFE_DELETE(ret);
+	}
+	return ret;
 }
 
 bool CellMapPopupButton::init(void)

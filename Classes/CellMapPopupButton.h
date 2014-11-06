@@ -15,6 +15,7 @@ public:
 
 public:
 	CellMapPopupButton(const Settings &settings);
+	static CellMapPopupButton* create(const Settings &settings);
 
 	virtual bool init(void) override;
 

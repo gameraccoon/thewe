@@ -86,8 +86,7 @@ bool WorldMapLayer::init(void)
 	// set scale to first time
 	_mapProjector->SetScale(0.01f);
 
-	_cellMenu = new CellMenuSelector(_mapProjector, this);
-	_cellMenu->autorelease();
+	_cellMenu = CellMenuSelector::create(_mapProjector, this);
 	addChild(_cellMenu, Z_CELL_MENU);
 
 	scheduleUpdate();
@@ -288,7 +287,7 @@ void WorldMapLayer::TouchesBegan(const std::vector<cocos2d::Touch* > &touches, c
 		_touchLastPoint = touch->getLocation();
 		_touchFirstPos = touch->getLocation();
 
-        if (_cellMenu->isVisible())
+		if (_cellMenu->isVisible())
 		{
 			_cellMenu->DisappearWithAnimation();
 		}
