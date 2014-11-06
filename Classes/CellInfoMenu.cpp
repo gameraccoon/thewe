@@ -107,12 +107,12 @@ bool CellInfoMenu::init(void)
 										  0.0f);
 	_devotionProgressBar->SetBorderColor(Color(0.5f, 0.5f, 0.5f, 1.0f));
 
-	info_y -= 30.0f;
+	/*info_y -= 30.0f;
 	CreateTTFLabel(this, "Town influence", Vector2(info_x + 170.0f, info_y), Vector2(1.0f, 0.0f));
 	_townInfluenceProgressBar = CreateProgressBar(this, Vector2(info_x + 180.0f, info_y + 4.0f),
 										  Vector2(200.0f, 15.0f), Color(0.0f, 0.5f, 0.0f, 1.0f),
 										  0.0f);
-	_townInfluenceProgressBar->SetBorderColor(Color(0.5f, 0.5f, 0.5f, 1.0f));
+	_townInfluenceProgressBar->SetBorderColor(Color(0.5f, 0.5f, 0.5f, 1.0f));*/
 
 	Cell::Ptr cell = _cell.lock();
 	_cellCurrentTask = cell->getCurrentTask();
@@ -210,7 +210,7 @@ void CellInfoMenu::UpdateInfoBy(Cell::Ptr cell)
 
 	_moraleProgressBar->SetProgressPercentage(info.morale * 100.0f);
 	_devotionProgressBar->SetProgressPercentage(info.devotion * 100.0f);
-	_townInfluenceProgressBar->SetProgressPercentage(info.townInfluence * 100.0f);
+	//_townInfluenceProgressBar->SetProgressPercentage(info.townInfluence * 100.0f);
 }
 
 void CellInfoMenu::_OnCloseCallback(cocos2d::Ref *sender)
