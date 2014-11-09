@@ -92,6 +92,8 @@ void InvestigatorMapWidget::OnCatchInFirstCell(cocos2d::Ref *sender)
 	}
 
 	World::Instance().RemoveInvestigator(_investigator);
+
+	_invesRootCellWidget->GetCell().lock()->BeginDestruction();
 }
 
 Investigator::Ptr InvestigatorMapWidget::GetInvestigator(void) const
