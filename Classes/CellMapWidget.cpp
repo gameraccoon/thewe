@@ -124,7 +124,7 @@ bool CellMapWidget::init(void)
 	CellMapPopupButton::Settings s;
 	s.normalStateImage = "marker_crosshair.png";
 	s.pressedStateImage = "marker_crosshair_pressed.png";
-	_popupCatchInvestigator = new CellMapPopupButton(s);
+	_popupCatchInvestigator = CellMapPopupButton::create(s);
 	_popupCatchInvestigator->setPosition(0.0f, 0.0f);
 	_popupCatchInvestigator->setScale(6.0f);
 

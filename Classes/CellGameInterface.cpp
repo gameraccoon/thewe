@@ -100,27 +100,24 @@ void CellMenuSelector::AppearWithAnimation(Cell::WeakPtr cell, const Vector2 &po
 	_isDisappearing = false;
 	_menu->setPosition(cocos2d::Vec2(0.0f, 0.0f));
 
-	bool mustShowMiscButton = _cell.lock()->IsState(Cell::State::READY);
 	int numButtonsToShow = _buttons.size();
 
 	cocos2d::Vec2 dir(0.0f, 1.0f);
 	const float dist = 45.0f;
 	const float angle = 3.14159265f*2.0f / (float)numButtonsToShow;
 	
-	if (mustShowMiscButton) {
-		for (Buttons::iterator it = _buttons.begin(); it != _buttons.end(); ++it)
+	for (Buttons::iterator it = _buttons.begin(); it != _buttons.end(); ++it)
+	{
+		cocos2d::MenuItem *item = (*it);
+
+		if (it != _buttons.begin())
 		{
-			cocos2d::MenuItem *item = (*it);
-
-			if (it != _buttons.begin())
-			{
-				dir = dir.rotateByAngle(cocos2d::Vec2::ZERO, angle);
-				dir.normalize();
-			}
-
-			item->stopAllActions();
-			_PrepareButtonToAppear(item, dir * dist);
+			dir = dir.rotateByAngle(cocos2d::Vec2::ZERO, angle);
+			dir.normalize();
 		}
+
+		item->stopAllActions();
+		_PrepareButtonToAppear(item, dir * dist);
 	}
 
 	setVisible(true);
@@ -163,13 +160,30 @@ void CellMenuSelector::InitButtons(Cell::Ptr cell)
 	bool mustShowKillButton = World::Instance().IsCellUnderInvestigation(cell) || cell->IsState(Cell::State::AUTONOMY);
 
 	using namespace cocos2d;
-	if (mustShowKillButton) {
-		_buttons.pushBack(MenuItemImage::create("marker_crosshair.png", "marker_pressed.png", CC_CALLBACK_1(CellMenuSelector::OnKillButtonPressed, this)));
+	if (mustShowKillButton)
+	{
+		cocos2d::MenuItemImage *btn;
+		btn = MenuItemImage::create("marker_crosshair.png", "marker_crosshair_pressed.png", CC_CALLBACK_1(CellMenuSelector::OnKillButtonPressed, this));
+		btn->setScale(1.3f, 1.3f);
+
+		_buttons.pushBack(btn);
 	}
 
-	_buttons.pushBack(MenuItemImage::create("1_norm.png", "1_press.png", CC_CALLBACK_1(CellMenuSelector::OnSpinoffButtonPressed, this)));
-	_buttons.pushBack(MenuItemImage::create("2_norm.png", "2_press.png", CC_CALLBACK_1(CellMenuSelector::OnCellInfoButtonPressed, this)));
-	_buttons.pushBack(MenuItemImage::create("3_norm.png", "3_press.png", CC_CALLBACK_1(CellMenuSelector::OnTasksButtonPressed, this)));
+	if (!cell->IsState(Cell::State::AUTONOMY))
+	{
+		cocos2d::MenuItemImage *btn1, *btn2, *btn3;
+
+		btn1 = MenuItemImage::create("1_norm.png", "1_press.png", CC_CALLBACK_1(CellMenuSelector::OnSpinoffButtonPressed, this));
+		btn1->setScale(0.85f, 0.85f);
+		btn2 = MenuItemImage::create("2_norm.png", "2_press.png", CC_CALLBACK_1(CellMenuSelector::OnCellInfoButtonPressed, this));
+		btn2->setScale(0.85f, 0.85f);
+		btn3 = MenuItemImage::create("3_norm.png", "3_press.png", CC_CALLBACK_1(CellMenuSelector::OnTasksButtonPressed, this));
+		btn3->setScale(0.85f, 0.85f);
+
+		_buttons.pushBack(btn1);
+		_buttons.pushBack(btn2);
+		_buttons.pushBack(btn3);
+	}
 
 	_menu = cocos2d::Menu::createWithArray(_buttons);
 	_menu->setPosition(_position);
@@ -196,12 +210,15 @@ void CellMenuSelector::_PrepareButtonToAppear(cocos2d::MenuItem *item, Vector2 p
 		return;
 	}
 
+	float initialScaleX = item->getScaleX();
+	float initialScaleY = item->getScaleY();
+
 	item->setPosition(cocos2d::Vec2::ZERO);
 	item->setScale(0.4f);
 	item->setOpacity(0);
-
+	
 	cocos2d::MoveTo *move = cocos2d::MoveTo::create(1.0f, pos);
-	cocos2d::ScaleTo *scale = cocos2d::ScaleTo::create(1.0f, 0.85f, 0.85f);
+	cocos2d::ScaleTo *scale = cocos2d::ScaleTo::create(1.0f, initialScaleX, initialScaleY);
 	cocos2d::FadeIn *fade = cocos2d::FadeIn::create(0.25f);
 
 	cocos2d::EaseElasticOut *ease_move = cocos2d::EaseElasticOut::create(move, 0.35f);
