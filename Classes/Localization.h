@@ -11,7 +11,7 @@
 class Localization
 {
 private:	
-	std::string current_Locale;
+	std::string current_Localization;
 	std::map<std::string, std::string> LocalizationTable;
 	
 public:
