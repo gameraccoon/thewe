@@ -3,39 +3,40 @@
 
 
 
-Localization::Localization()
+LocalizationManager::LocalizationManager()
 {
 	
 }
 
-Localization::~Localization()
+LocalizationManager::~LocalizationManager()
 {
 }
 
-bool Localization::InitWithLocale(const char * Locale)
+bool LocalizationManager::InitWithLocale(const char * Locale)
 {	
 	unsigned char * XMLSource;
 	ssize_t  XMLSourceSize;
 
 	pugi::xml_parse_result parsedXML;
-	pugi::xml_node  
-			Head_node, 
-			Child_node;
-	int  
-		Loc_count, 
-		Pos_count;		
-	
-	pugi::xml_document * XMLDoc = new pugi::xml_document();
 
-	auto fileUtil = cocos2d::FileUtils::getInstance();
-	XMLSource = // unload XML from ODS to buffer
-		fileUtil->getFileDataFromZip("localization.ods", "content.xml", &XMLSourceSize);
+	pugi::xml_document  XMLDoc;
+
+	pugi::xml_node Head_node;
+	pugi::xml_node Child_node;
+
+	int	Loc_count,	// localizations count (columns = DefalutLocColumn + others)
+	int Pos_count;	// positions count (rows)	
+
+	cocos2d::FileUtils * fileUtil = cocos2d::FileUtils::getInstance();
+
+	// unload XML from ODS to buffer
+	XMLSource = fileUtil->getFileDataFromZip("localization.ods", "content.xml", &XMLSourceSize);
 	fileUtil->destroyInstance();
 
-	parsedXML = XMLDoc->load_buffer(XMLSource, XMLSourceSize);
+	parsedXML = XMLDoc.load_buffer(XMLSource, XMLSourceSize);
 
 	// XML statistics
-	Head_node = XMLDoc->child("office:document-content").child("office:body").child("office:spreadsheet").find_child_by_attribute("table:name", "Sheet1");
+	Head_node = XMLDoc.child("office:document-content").child("office:body").child("office:spreadsheet").find_child_by_attribute("table:name", "Sheet1");
 	Child_node = Head_node.child("table:table-row");
 	Pos_count = Child_node.child("table:table-cell").attribute("office:value").as_int();
 	Loc_count = Child_node.child("table:table-cell").next_sibling().attribute("office:value").as_int();
@@ -44,42 +45,46 @@ bool Localization::InitWithLocale(const char * Locale)
 
 	std::vector<std::string> LocaleSet;
 
-	int Locale_pos = 0; // Default
+	int Current_pos = 0; // "Default" column
+	int Locale_pos = 0;
 
 	for (auto locale_node = Child_node.child("table:table-cell").next_sibling(); locale_node; locale_node = locale_node.next_sibling())
 	{
-		Locale_pos++;
+		Current_pos++;
 		if (locale_node.child("text:p").text().as_string() == std::string(Locale))
-			break;		
+		{
+			Locale_pos = Current_pos;
+			break;
+		}				
 	}
+	if (!Locale_pos) return false; // if no Locale
 
-	if (!Locale_pos) // if no Locale
-		return false;
-
-	Child_node = Child_node.next_sibling(); // load XML data
+	Child_node = Child_node.next_sibling(); // load XML records (rows)
 
 	for (int i = 0; i < Pos_count; i++)
 	{
 		auto locale_node = Child_node.child("table:table-cell");
 		std::pair<std::string, std::string> LocaleWord;
+
 		LocaleWord.first = locale_node.child("text:p").text().as_string(); // key
-		for (int j = 0; j < Locale_pos; j++) // finding locale by Locale_pos
-			locale_node = locale_node.next_sibling();
+
+		// finding locale by Locale_pos
+		for (int j = 0; j < Locale_pos; j++) locale_node = locale_node.next_sibling();
+
 		LocaleWord.second = locale_node.child("text:p").text().as_string(); // word
+
 		LocalizationTable.insert(LocaleWord);	
+
 		Child_node = Child_node.next_sibling(); // next row
 	}
 
 	return true;
 }
 
-std::string Localization::getText(const char * key)
+std::string LocalizationManager::getText(const char * key)
 {
 	auto it = LocalizationTable.find(std::string(key));
-	if (it != LocalizationTable.end())
-		return it->second;
-	else
-		return std::string(key);
+	return (it != LocalizationTable.end() ? it->second : std::string(key));
 }
 
 

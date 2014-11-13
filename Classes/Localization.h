@@ -8,15 +8,15 @@
 #include <functional>
 
 
-class Localization
+class LocalizationManager
 {
 private:	
 	std::string current_Localization;
 	std::map<std::string, std::string> LocalizationTable;
 	
 public:
-	Localization();
-	virtual ~Localization();
+	LocalizationManager();
+	virtual ~LocalizationManager();
 
 	/**
 	*  Load the localization with locality
