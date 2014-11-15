@@ -1,8 +1,6 @@
 #include "Localization.h"
 
 
-
-
 LocalizationManager::LocalizationManager()
 {
 	
@@ -24,7 +22,7 @@ bool LocalizationManager::InitWithLocale(const char * Locale)
 	pugi::xml_node Head_node;
 	pugi::xml_node Child_node;
 
-	int	Loc_count,	// localizations count (columns = DefalutLocColumn + others)
+	int	Loc_count;	// localizations count (columns = DefalutLocColumn + others)
 	int Pos_count;	// positions count (rows)	
 
 	cocos2d::FileUtils * fileUtil = cocos2d::FileUtils::getInstance();
@@ -42,8 +40,6 @@ bool LocalizationManager::InitWithLocale(const char * Locale)
 	Loc_count = Child_node.child("table:table-cell").next_sibling().attribute("office:value").as_int();
 
 	Child_node = Child_node.next_sibling(); // load XML columns
-
-	std::vector<std::string> LocaleSet;
 
 	int Current_pos = 0; // "Default" column
 	int Locale_pos = 0;

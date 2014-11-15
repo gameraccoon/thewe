@@ -27,9 +27,6 @@ public:
 	*  Return the word of determined locality
 	*/
 	std::string getText(const char * key);
-
-
-
 };
 
 #endif //LOCALIZATION_H

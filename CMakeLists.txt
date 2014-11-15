@@ -82,6 +82,7 @@ set(GAME_SRC
 	Classes/Log.cpp
 	Classes/LuaBindings.cpp
 	Classes/LuaInstance.cpp
+	Classes/Localization.cpp
 	Classes/MainMenuScene.cpp
 	Classes/MapGuiLayer.cpp
 	Classes/MapProjector.cpp
