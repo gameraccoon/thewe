@@ -12,7 +12,7 @@ public:
 	/**
 	*  Load the localization with locality
 	*/
-	bool InitWithLocale(const char* localizationFile, const char * locality);
+	bool InitWithLocale(const char* localizationFile, const char * locale);
 
 	/**
 	*  Return the word of determined locality

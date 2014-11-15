@@ -24,7 +24,7 @@ LocalizationManager& LocalizationManager::Instance()
 	return singleInstance;
 }
 
-bool LocalizationManager::InitWithLocale(const char * localizationFile, const char * Locale)
+bool LocalizationManager::InitWithLocale(const char * localizationFile, const char * locale)
 {	
 	unsigned char * xmlSource;
 	ssize_t xmlSourceSize;
@@ -35,9 +35,6 @@ bool LocalizationManager::InitWithLocale(const char * localizationFile, const ch
 
 	pugi::xml_node headNode;
 	pugi::xml_node childNode;
-
-	int	localeCount;	// localizations count (columns = DefalutLocColumn + others)
-	int positionsCount;	// positions count (rows)
 
 	cocos2d::FileUtils * fileUtils = cocos2d::FileUtils::getInstance();
 
@@ -53,28 +50,30 @@ bool LocalizationManager::InitWithLocale(const char * localizationFile, const ch
 	// XML statistics
 	headNode = xmlDocument.child("office:document-content").child("office:body").child("office:spreadsheet").find_child_by_attribute("table:name", "Sheet1");
 	childNode = headNode.child("table:table-row");
-	positionsCount = childNode.child("table:table-cell").attribute("office:value").as_int();
-	localeCount = childNode.child("table:table-cell").next_sibling().attribute("office:value").as_int();
-
-	childNode = childNode.next_sibling(); // load XML columns
 
 	int currentPos = 0; // "Default" column
 	int localePos = 0;
 
-	for (auto locale_node = childNode.child("table:table-cell").next_sibling(); locale_node; locale_node = locale_node.next_sibling())
+	for (auto locale_node = childNode.child("table:table-cell"); locale_node; locale_node = locale_node.next_sibling())
 	{
-		currentPos++;
-		if (locale_node.child("text:p").text().as_string() == std::string(Locale))
+		if (locale_node.child("text:p").text().as_string() == std::string(locale))
 		{
 			localePos = currentPos;
 			break;
-		}				
+		}
+		currentPos++;
 	}
-	if (!localePos) return false; // if no Locale
+
+	// if no locale found
+	if (localePos == 0)
+	{
+		Log::Instance().writeWarning(std::string("Locale \"").append(locale).append("\" not found."));
+		return false;
+	}
 
 	childNode = childNode.next_sibling(); // load XML records (rows)
 
-	for (int i = 0; i < positionsCount; i++)
+	while (childNode)
 	{
 		auto locale_node = childNode.child("table:table-cell");
 		std::pair<std::string, std::string> localeWord;
@@ -82,7 +81,10 @@ bool LocalizationManager::InitWithLocale(const char * localizationFile, const ch
 		localeWord.first = locale_node.child("text:p").text().as_string(); // key
 
 		// finding locale by Locale_pos
-		for (int j = 0; j < localePos; j++) locale_node = locale_node.next_sibling();
+		for (int j = 0; j < localePos; j++)
+		{
+			locale_node = locale_node.next_sibling();
+		}
 
 		localeWord.second = locale_node.child("text:p").text().as_string(); // word
 
