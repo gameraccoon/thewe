@@ -1,22 +1,13 @@
 #ifndef LOCALIZATION_H
 #define LOCALIZATION_H
 
-#include <memory>
-#include "pugixml.hpp"
-#include "cocos2d.h"
 #include <string>
-#include <functional>
-
+#include <map>
 
 class LocalizationManager
 {
-private:	
-	std::string current_Localization;
-	std::map<std::string, std::string> LocalizationTable;
-	
 public:
-	LocalizationManager();
-	virtual ~LocalizationManager();
+	static LocalizationManager& Instance();
 
 	/**
 	*  Load the localization with locality
@@ -27,6 +18,15 @@ public:
 	*  Return the word of determined locality
 	*/
 	std::string getText(const char * key);
+
+private:
+	std::string _currentLocale;
+	std::map<std::string, std::string> _texts;
+
+	LocalizationManager();
+	~LocalizationManager();
+	LocalizationManager(const LocalizationManager&);
+	void operator=(const LocalizationManager&);
 };
 
 #endif //LOCALIZATION_H
