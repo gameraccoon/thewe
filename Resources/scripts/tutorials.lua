@@ -2,9 +2,11 @@ local ContinueText = "Продолжить"
 
 function RunTutorial_Welcome()
 	-- ToDo: make localizations
-	local text1 =
-		"Добро пожаловать в центр управления\n"..
-		"Вашей тайной организацией!"
+	local text1 = GetLocalizedString("Tutorial_Welcome_Step1")
+		-- "Добро пожаловать в центр управления\n"..
+		-- "Вашей тайной организацией!"
+
+	Log:log(text1)
 
 	local text2 =
 		"Выберите город в котором сделаете\n" ..

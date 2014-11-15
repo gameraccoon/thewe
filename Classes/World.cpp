@@ -3,6 +3,7 @@
 #include "TaskManager.h"
 #include "NotificationMessageManager.h"
 #include "Log.h"
+#include "LuaBindings.h"
 #include "LuaInstance.h"
 #include "GameInfo.h"
 #include "World.h"
@@ -62,20 +63,9 @@ void World::InitLuaContext()
 	{
 		_isLuaInited = true;
 
-		_luaScript->BindClass<Log>();
-		_luaScript->BindClass<NotificationMessageManager>();
-		_luaScript->BindClass<GameInfo>();
-		_luaScript->BindClass<World>();
-		_luaScript->BindClass<Cell::Info>();
-		_luaScript->BindClass<Cell>();
-		_luaScript->BindClass<const Task::Info>();
-		_luaScript->BindClass<Vector2>();
-		_luaScript->BindClass<Tutorial>();
-
-		_luaScript->RegisterVariable("Log", &(Log::Instance()));
-		_luaScript->RegisterVariable("MessageManager", &(_messageManager));
-		_luaScript->RegisterVariable("GameInfo", &(GameInfo::Instance()));
-		_luaScript->RegisterVariable("World", &(World::Instance()));
+		lua::BindGameClasses(_luaScript);
+		lua::BindFunctions(_luaScript);
+		lua::BindGlobalData(_luaScript);
 
 		ExecScript(_luaScript, "mainLogic.lua");
 		ExecScript(_luaScript, "tasks.lua");

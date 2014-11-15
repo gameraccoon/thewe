@@ -1,6 +1,8 @@
-#include "LuaInstance.h"
+#include "LuaBindings.h"
 
 #include <luabind/luabind.hpp>
+
+#include "LuaInstance.h"
 
 #include "Log.h"
 #include "NotificationMessageManager.h"
@@ -9,6 +11,7 @@
 #include "Task.h"
 #include "GameInfo.h"
 #include "World.h"
+#include "Localization.h"
 
 template<>
 void LuaInstance::BindClass<Cell>()
@@ -151,4 +154,41 @@ template<>
 void LuaInstance::RegisterVariable<World>(const char* name, World* value)
 {
 	luabind::globals(_luaState)[name] = value;
+}
+
+namespace lua
+{
+	std::string GetLocalizedString(std::string id)
+	{
+		return LocalizationManager::Instance().getText(id.c_str());
+	}
+
+	void BindGameClasses(LuaInstance *luaInstance)
+	{
+		luaInstance->BindClass<Log>();
+		luaInstance->BindClass<NotificationMessageManager>();
+		luaInstance->BindClass<GameInfo>();
+		luaInstance->BindClass<World>();
+		luaInstance->BindClass<Cell::Info>();
+		luaInstance->BindClass<Cell>();
+		luaInstance->BindClass<const Task::Info>();
+		luaInstance->BindClass<Vector2>();
+		luaInstance->BindClass<Tutorial>();
+	}
+
+	void BindFunctions(LuaInstance* luaInstance)
+	{
+		luabind::module(luaInstance->GetLuaState())
+		[
+			luabind::def("GetLocalizedString", &GetLocalizedString)
+		];
+	}
+
+	void BindGlobalData(LuaInstance* luaInstance)
+	{
+		luaInstance->RegisterVariable("Log", &(Log::Instance()));
+		luaInstance->RegisterVariable("MessageManager", &(World::Instance().GetMessageManager()));
+		luaInstance->RegisterVariable("GameInfo", &(GameInfo::Instance()));
+		luaInstance->RegisterVariable("World", &(World::Instance()));
+	}
 }
