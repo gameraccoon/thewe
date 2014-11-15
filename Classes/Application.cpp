@@ -35,6 +35,7 @@ bool AppDelegate::applicationDidFinishLaunching()
 	std::string resourcesPath = Utils::GetResourcesPath();
 
 	cocos2d::FileUtils::getInstance()->addSearchPath(resourcesPath + "textures");
+	cocos2d::FileUtils::getInstance()->addSearchPath(resourcesPath + "gui");
 	cocos2d::FileUtils::getInstance()->addSearchPath(resourcesPath + "worldinfo");
 	cocos2d::FileUtils::getInstance()->addSearchPath(resourcesPath + "saves");
 	cocos2d::FileUtils::getInstance()->addSearchPath(resourcesPath + "scripts");

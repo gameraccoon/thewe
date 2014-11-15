@@ -80,3 +80,5 @@ proj.win32/Binaries/
 proj.win32/Intermediate_Debug.win32/
 proj.win32/Intermediate_Release.win32/
 Resources/saves/
+Backup
+Ruler

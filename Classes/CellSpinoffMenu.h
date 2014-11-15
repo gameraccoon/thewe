@@ -13,18 +13,17 @@ public:
 	void UpdateSpinoffState(const Cell::Info &info);
 
 private:
-	void _OnCloseCallback(cocos2d::Ref *sender);
-	void _OnCreateNewCell(cocos2d::Ref *sender);
-	void _SelfClose(void);
+	void OnCloseCallback(cocos2d::Ref *sender, cocos2d::ui::Widget::TouchEventType eventType);
+	void OnSpinoffCallback(cocos2d::Ref *sender, cocos2d::ui::Widget::TouchEventType eventType);
+	void SelfClose(void);
 	void KeyReleased(cocos2d::EventKeyboard::KeyCode key, cocos2d::Event *event);
 
 private:
 	bool _isCellCreationPossible;
 
-	cocos2d::Label *_necessaryMembers;
-	cocos2d::Label *_necessaryCash;
-	cocos2d::MenuItemImage *_createCellButton;
-
+	cocos2d::ui::Layout *_widget;
+	cocos2d::ui::Text *_cachTextWidget;
+	cocos2d::ui::Text *_membersTextWidget;
 	WorldMapLayer *_worldMapLayer;
 
 	Cell::WeakPtr _cell;
