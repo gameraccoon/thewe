@@ -24,7 +24,7 @@ GameScene::~GameScene(void)
 
 bool GameScene::init(void)
 {
-	if (!cocos2d::CCScene::init())
+	if (!cocos2d::Scene::init())
 	{
 		return false;
 	}
