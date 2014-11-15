@@ -348,6 +348,9 @@
     <ClCompile Include="..\Classes\WorldLoader.cpp">
       <Filter>Classes\FileWork</Filter>
     </ClCompile>
+    <ClCompile Include="..\Classes\Localization.cpp">
+      <Filter>Classes</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="main.h">
@@ -592,6 +595,9 @@
     </ClInclude>
     <ClInclude Include="..\Classes\WorldLoader.h">
       <Filter>Classes\FileWork</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Localization.h">
+      <Filter>Classes</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
