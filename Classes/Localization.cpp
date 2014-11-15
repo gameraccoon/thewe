@@ -6,6 +6,9 @@
 #include "pugixml.hpp"
 #include "cocos2d.h"
 
+#include "Log.h"
+#include "MiscUtils.h"
+
 LocalizationManager::LocalizationManager()
 {
 	
@@ -21,7 +24,7 @@ LocalizationManager& LocalizationManager::Instance()
 	return singleInstance;
 }
 
-bool LocalizationManager::InitWithLocale(const char * Locale)
+bool LocalizationManager::InitWithLocale(const char * localizationFile, const char * Locale)
 {	
 	unsigned char * xmlSource;
 	ssize_t xmlSourceSize;
@@ -36,11 +39,14 @@ bool LocalizationManager::InitWithLocale(const char * Locale)
 	int	localeCount;	// localizations count (columns = DefalutLocColumn + others)
 	int positionsCount;	// positions count (rows)
 
-	cocos2d::FileUtils * fileUtil = cocos2d::FileUtils::getInstance();
+	cocos2d::FileUtils * fileUtils = cocos2d::FileUtils::getInstance();
 
 	// unload XML from ODS to buffer
-	xmlSource = fileUtil->getFileDataFromZip("localization.ods", "content.xml", &xmlSourceSize);
-	fileUtil->destroyInstance();
+	xmlSource = fileUtils->getFileDataFromZip(fileUtils->fullPathForFilename(localizationFile), "content.xml", &xmlSourceSize);
+	if (!xmlSource)
+	{
+		Log::Instance().writeWarning(std::string("File \"").append(localizationFile).append("\" not found"));
+	}
 
 	parsedXml = xmlDocument.load_buffer(xmlSource, xmlSourceSize);
 

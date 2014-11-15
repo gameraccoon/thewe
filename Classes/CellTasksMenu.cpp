@@ -2,6 +2,8 @@
 
 #include "World.h"
 
+#include "Localization.h"
+
 class CellTaskMenuItem : public cocos2d::Node
 {
 public:
@@ -122,7 +124,8 @@ bool CellTasksScreen::init(void)
 	menuBackground->setPosition(center);
 	
 	cocos2d::TTFConfig ttfConfig("arial.ttf", 18);
-	cocos2d::Label *labelTitle = cocos2d::Label::createWithTTF(ttfConfig, "Cell Avaliable Tasks", cocos2d::TextHAlignment::CENTER);
+	std::string titleText = LocalizationManager::Instance().getText("CellTasksMenu_Header");
+	cocos2d::Label *labelTitle = cocos2d::Label::createWithTTF(ttfConfig, titleText, cocos2d::TextHAlignment::CENTER);
 	
 	float close_x = menuBackground->getContentSize().width  / 2 - closeButton->getContentSize().width  + 23.0f;
 	float close_y = menuBackground->getContentSize().height / 2 - closeButton->getContentSize().height + 17.0f;

@@ -8,6 +8,7 @@
 #include "Log.h"
 #include "WorldLoader.h"
 #include "GameSavesManager.h"
+#include "Localization.h"
 
 AppDelegate::AppDelegate()
 {
@@ -31,13 +32,14 @@ bool AppDelegate::applicationDidFinishLaunching()
 	float dr_w = 800;
 	float dr_h = 480;
 
-	std::string basePath = Utils::GetResourcesPath();
+	std::string resourcesPath = Utils::GetResourcesPath();
 
-	cocos2d::FileUtils::getInstance()->addSearchPath(basePath + "textures");
-	cocos2d::FileUtils::getInstance()->addSearchPath(basePath + "worldinfo");
-	cocos2d::FileUtils::getInstance()->addSearchPath(basePath + "saves");
-	cocos2d::FileUtils::getInstance()->addSearchPath(basePath + "scripts");
-	cocos2d::FileUtils::getInstance()->addSearchPath(basePath + "fonts");
+	cocos2d::FileUtils::getInstance()->addSearchPath(resourcesPath + "textures");
+	cocos2d::FileUtils::getInstance()->addSearchPath(resourcesPath + "worldinfo");
+	cocos2d::FileUtils::getInstance()->addSearchPath(resourcesPath + "saves");
+	cocos2d::FileUtils::getInstance()->addSearchPath(resourcesPath + "scripts");
+	cocos2d::FileUtils::getInstance()->addSearchPath(resourcesPath + "fonts");
+	cocos2d::FileUtils::getInstance()->addSearchPath(resourcesPath + "texts");
 	
 	director->setOpenGLView(glview);
 	director->setAnimationInterval(1.0 / 60.0);
@@ -68,6 +70,9 @@ bool AppDelegate::applicationDidFinishLaunching()
 	World::Instance().InitLuaContext();
 	WorldLoader::LoadGameInfo();
 	GameSavesManager::Instance().LoadGameState();
+
+	// load localizations
+	LocalizationManager::Instance().InitWithLocale("localizations.ods", "EN");
 
 	// initialize graphics after all data is loaded
 	mainMenuScene->init();
