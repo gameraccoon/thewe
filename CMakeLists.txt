@@ -334,8 +334,9 @@ target_link_libraries(${APP_NAME}
 	spine
 	cocostudio
 	cocosbuilder
-	extensions
 	audio
+	ui # костыльно созданная либа (может перестать работать после смены версии cocos2d)
+	extensions
 	cocos2d
 	# библиотеки для ogl и x11
 	glfw3
