@@ -2,6 +2,9 @@
 #define MAIN_MENU_H
 
 #include <cocos2d.h>
+#include <cocostudio/CCSGUIReader.h>
+#include <ui/CocosGUI.h>
+
 #include "Vector2.h"
 
 class MainMenuScene : public cocos2d::Scene
@@ -13,22 +16,10 @@ public:
 	virtual bool init() override;
 
 private:
-	enum class MenuItemTag
-	{
-		MAP,
-		SETTINGS,
-		MAILBOX,
-		TEAM,
-		CHAT
-	};
+	cocos2d::ui::Layout *_widget;
 
 private:
-	std::map<MenuItemTag, cocos2d::MenuItem*> _buttons;
-	cocos2d::Menu *_mainMenu;
-
-private:
-	void _AddButton(std::string imgNormal, std::string imgPressed, Vector2 position, MenuItemTag tag);
-	void _MenuInputListener(cocos2d::Ref *sender);
+	void MenuInputListener(cocos2d::Ref *sender, cocos2d::ui::Widget::TouchEventType eventType);
 	cocos2d::Scene* _gameScene;
 };
 
