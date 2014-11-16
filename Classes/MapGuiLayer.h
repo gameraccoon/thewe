@@ -2,6 +2,9 @@
 #define MAP_GUI_H
 
 #include <cocos2d.h>
+#include <cocostudio/CCSGUIReader.h>
+#include <ui/CocosGUI.h>
+
 #include "MapProjector.h"
 #include "ProgressBar.h"
 #include "CellsNetLayer.h"
@@ -26,19 +29,15 @@ private:
 	};
 
 private:
-	void _MenuInputListener(cocos2d::Ref *sender);
+	void MenuInputListener(cocos2d::Ref *sender, cocos2d::ui::Widget::TouchEventType eventType);
 
 	void ToggleCellsNetMenu();
 
 private:
-	cocos2d::MenuItemImage *_btnZoomIn;
-	cocos2d::MenuItemImage *_btnZoomOut;
-	cocos2d::MenuItemImage *_btnEditor;
-	cocos2d::MenuItemImage *_btnMenu;
+	cocos2d::ui::Layout *_widget;
+	cocos2d::ui::LoadingBar *_worldCapturingBar;
 
 	MapProjector *_mapProjector;
-
-	SquareProgressBar *_worldCaptureProgressBar;
 
 	CellsNetLayer* _cellsNetLayer;
 };
