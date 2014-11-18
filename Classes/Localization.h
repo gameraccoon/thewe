@@ -12,12 +12,12 @@ public:
 	/**
 	*  Load the localization with locality
 	*/
-	bool InitWithLocale(const char* localizationFile, const char * locale);
+	bool InitWithLocale(const std::string& localizationFile, const std::string& locale);
 
 	/**
 	*  Return the word of determined locality
 	*/
-	std::string getText(const char * key);
+	std::string getText(const std::string& key);
 
 private:
 	std::string _currentLocale;

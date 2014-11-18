@@ -24,7 +24,7 @@ LocalizationManager& LocalizationManager::Instance()
 	return singleInstance;
 }
 
-bool LocalizationManager::InitWithLocale(const char * localizationFile, const char * locale)
+bool LocalizationManager::InitWithLocale(const std::string& localizationFile, const std::string& locale)
 {
 	pugi::xml_parse_result parsedXml;
 
@@ -48,7 +48,7 @@ bool LocalizationManager::InitWithLocale(const char * localizationFile, const ch
 
 	for (auto locale_node = childNode.child("table:table-cell"); locale_node; locale_node = locale_node.next_sibling())
 	{
-		if (locale_node.child("text:p").text().as_string() == std::string(locale))
+		if (locale_node.child("text:p").text().as_string() == locale)
 		{
 			localePos = currentPos;
 			break;
@@ -88,8 +88,8 @@ bool LocalizationManager::InitWithLocale(const char * localizationFile, const ch
 	return true;
 }
 
-std::string LocalizationManager::getText(const char * key)
+std::string LocalizationManager::getText(const std::string& key)
 {
-	auto it = _texts.find(std::string(key));
-	return (it != _texts.end() ? it->second : std::string(key));
+	auto it = _texts.find(key);
+	return (it != _texts.end() ? it->second : key);
 }
