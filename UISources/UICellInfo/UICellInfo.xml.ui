@@ -1,0 +1,29 @@
+<?xml version="1.0"?>
+<UIProject xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <ProjectDir>D:\Projects\TheWe\UISources\UICellInfo</ProjectDir>
+  <Version>1.6.0.0</Version>
+  <Resources>D:\Projects\TheWe\UISources\UICellInfo\Resources</Resources>
+  <Name>UICellInfo</Name>
+  <JsonFileName>UICellInfo.json</JsonFileName>
+  <JsonFolder>D:\Projects\TheWe\UISources\UICellInfo\Json</JsonFolder>
+  <JsonList>
+    <string>UICellInfo.json</string>
+  </JsonList>
+  <CanvasSize>
+    <Width>435</Width>
+    <Height>284</Height>
+  </CanvasSize>
+  <filePath>D:\Projects\TheWe\UISources\UICellInfo\UICellInfo.xml.ui</filePath>
+  <ProjectType>UIProject</ProjectType>
+  <ResRelativePath />
+  <imageFileList />
+  <imagePngList>
+    <string>cell-tasks-menu.png</string>
+    <string>prog-bar-panel.png</string>
+    <string>prog-bar-line.png</string>
+    <string>cell-tasks-menu-close-normal.png</string>
+    <string>cell-tasks-menu-close-pressed.png</string>
+  </imagePngList>
+  <JsonSuffix>.json</JsonSuffix>
+  <CurrentUIJson>UICellInfo.json</CurrentUIJson>
+</UIProject>

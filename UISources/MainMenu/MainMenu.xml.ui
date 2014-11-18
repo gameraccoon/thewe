@@ -10,8 +10,8 @@
     <string>MainMenu_1.json</string>
   </JsonList>
   <CanvasSize>
-    <Width>0</Width>
-    <Height>0</Height>
+    <Width>800</Width>
+    <Height>480</Height>
   </CanvasSize>
   <filePath>D:\Projects\TheWe\UISources\MainMenu\MainMenu.xml.ui</filePath>
   <ProjectType>UIProject</ProjectType>
@@ -19,5 +19,5 @@
   <imageFileList />
   <imagePngList />
   <JsonSuffix>.json</JsonSuffix>
-  <CurrentUIJson>MainMenu_1.json</CurrentUIJson>
+  <CurrentUIJson />
 </UIProject>
