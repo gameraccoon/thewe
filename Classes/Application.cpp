@@ -73,7 +73,7 @@ bool AppDelegate::applicationDidFinishLaunching()
 	GameSavesManager::Instance().LoadGameState();
 
 	// load localizations
-	LocalizationManager::Instance().InitWithLocale("localizations.ods", "EN");
+	LocalizationManager::Instance().InitWithLocale("content.xml", "EN");
 
 	// initialize graphics after all data is loaded
 	mainMenuScene->init();

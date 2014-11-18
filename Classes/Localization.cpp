@@ -25,10 +25,7 @@ LocalizationManager& LocalizationManager::Instance()
 }
 
 bool LocalizationManager::InitWithLocale(const char * localizationFile, const char * locale)
-{	
-	unsigned char * xmlSource;
-	ssize_t xmlSourceSize;
-
+{
 	pugi::xml_parse_result parsedXml;
 
 	pugi::xml_document xmlDocument;
@@ -37,15 +34,10 @@ bool LocalizationManager::InitWithLocale(const char * localizationFile, const ch
 	pugi::xml_node childNode;
 
 	cocos2d::FileUtils * fileUtils = cocos2d::FileUtils::getInstance();
+	std::string fullName = fileUtils->fullPathForFilename(localizationFile);
+	std::string fileBuff = fileUtils->getStringFromFile(fullName);
 
-	// unload XML from ODS to buffer
-	xmlSource = fileUtils->getFileDataFromZip(fileUtils->fullPathForFilename(localizationFile), "content.xml", &xmlSourceSize);
-	if (!xmlSource)
-	{
-		Log::Instance().writeWarning(std::string("File \"").append(localizationFile).append("\" not found"));
-	}
-
-	parsedXml = xmlDocument.load_buffer(xmlSource, xmlSourceSize);
+	parsedXml = xmlDocument.load_buffer(fileBuff.c_str(), fileBuff.size());
 
 	// XML statistics
 	headNode = xmlDocument.child("office:document-content").child("office:body").child("office:spreadsheet").find_child_by_attribute("table:name", "Sheet1");
