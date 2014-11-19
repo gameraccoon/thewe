@@ -56,7 +56,9 @@ public:
 	const Region::WeakPtr GetRegionByName(const std::string &name) const;
 	const Town::WeakPtr GetTownByName(const std::string &name) const;
 
-	void Update();
+	void Update(float deltaTime);
+	Utils::GameTime GetCurrentTime() const;
+	void InitTime(Utils::GameTime time);
 
 	void SetPause(bool pause);
 	void SetFirstLaunch(bool newGame);
@@ -111,6 +113,8 @@ private:
 
 	std::queue<Tutorial::Ptr> _tutorials;
 	std::string _tutorialState;
+
+	float _currentTime;
 
 	unsigned int _uid;
 

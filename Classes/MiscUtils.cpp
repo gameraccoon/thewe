@@ -2,7 +2,8 @@
 
 #include <cocos2d.h>
 #include <string>
-//#include <strstream>
+
+#include "World.h"
 
 std::string Utils::GetResourcesPath()
 {
@@ -25,7 +26,7 @@ std::string Utils::GetWritablePath()
 
 Utils::GameTime Utils::GetGameTime(void)
 {
-	return std::time(0);
+	return World::Instance().GetCurrentTime();
 }
 
 std::string Utils::TimeToString(Utils::GameTime time)
@@ -35,5 +36,5 @@ std::string Utils::TimeToString(Utils::GameTime time)
 
 Utils::GameTime Utils::StringToTime(const std::string& stringTime)
 {
-	return std::stoll(stringTime);
+	return std::stof(stringTime);
 }

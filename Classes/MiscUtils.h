@@ -6,7 +6,7 @@
 
 namespace Utils
 {
-	typedef std::time_t GameTime;
+	typedef float GameTime;
 
 	std::string GetResourcesPath();
 	std::string GetDocumentsPath();

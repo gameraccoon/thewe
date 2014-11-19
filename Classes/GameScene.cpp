@@ -43,8 +43,7 @@ bool GameScene::init(void)
 
 void GameScene::update(float delta)
 {
-	(void)delta;
-	World::Instance().Update();
+	World::Instance().Update(delta);
 }
 
 void GameScene::ShowMap()

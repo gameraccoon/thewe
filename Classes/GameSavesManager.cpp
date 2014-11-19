@@ -68,6 +68,7 @@ void GameSavesManager::FirstInitSave()
 		_impl->database.execSql("CREATE TABLE " + USER_DATA_TABLE + " ("
 								"last_uid INTEGER NOT NULL"
 								",root_cell INTEGER NOT NULL"
+								",current_time VARCHAR(20) NOT NULL"
 								",tutorial_state VARCHAR(255) NOT NULL"
 								");");
 	}
@@ -377,6 +378,8 @@ void GameSavesManager::LoadUserInfo()
 		World::Instance().GetCellsNetwork().SetRootCell(rootCell);
 
 		World::Instance().SetTutorialState(reader->getValueByName("tutorial_state")->asString());
+
+		World::Instance().InitTime(Utils::StringToTime(reader->getValueByName("current_time")->asString()));
 	}
 }
 
@@ -646,8 +649,10 @@ static bool FillInvestigatorsAdditionStatement(std::string* const processesSqlSt
 static std::string GetUserInfoAdditionStatement()
 {
 	World &world = World::Instance();
-	return std::string("INSERT INTO ").append(USER_DATA_TABLE).append(" (last_uid, root_cell, tutorial_state) VALUES (")
+	return std::string("INSERT INTO ").append(USER_DATA_TABLE).append(" (last_uid, current_time,"
+																	  "root_cell, tutorial_state) VALUES (")
 			.append(std::to_string(world.GetLastUid())).append(",")
+			.append(Utils::TimeToString(world.GetCurrentTime())).append(",")
 			.append(std::to_string(world.GetCellsNetwork().GetRootCell().lock()->GetUid())).append(",")
 			.append("'").append(world.GetTutorialState()).append("');");
 }

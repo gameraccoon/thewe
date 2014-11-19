@@ -20,6 +20,7 @@ World::World()
 	, _isGameOver(false)
 	, _tutorialState("NotInitialized")
 	, _uid(0)
+	, _currentTime(0)
 {
 	_luaScript = new LuaInstance();
 }
@@ -206,19 +207,19 @@ const World::Investigators& World::GetInvestigators(void) const
 	return _investigators;
 }
 
-void World::Update()
+void World::Update(float deltaTime)
 {
-	Utils::GameTime time = Utils::GetGameTime();
+	_currentTime += deltaTime;
 
 	CalcWorldCapturingState();
 
 	for (Investigator::Ptr investigator : _investigators)
 	{
-		investigator->UpdateToTime(time);
+		investigator->UpdateToTime(_currentTime);
 	}
 
-	_taskManager.UpdateToTime(time);
-	_cellsNetwork.UpdateToTime(time);
+	_taskManager.UpdateToTime(_currentTime);
+	_cellsNetwork.UpdateToTime(_currentTime);
 
 	MessageManager::Instance().CallAcceptMessages();
 
@@ -236,6 +237,21 @@ void World::Update()
 			break;
 		}
 	}
+}
+
+Utils::GameTime World::GetCurrentTime() const
+{
+	return _currentTime;
+}
+
+void World::InitTime(Utils::GameTime time)
+{
+	if (_currentTime != 0)
+	{
+		Log::Instance().writeWarning("Trying to init time twice");
+	}
+
+	_currentTime = time;
 }
 
 void World::SetPause(bool pause)
