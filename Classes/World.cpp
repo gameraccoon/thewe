@@ -239,7 +239,7 @@ void World::Update(float deltaTime)
 	}
 }
 
-Utils::GameTime World::GetCurrentTime() const
+Utils::GameTime World::GetTimeCurrent() const
 {
 	return _currentTime;
 }

@@ -652,7 +652,7 @@ static std::string GetUserInfoAdditionStatement()
 	return std::string("INSERT INTO ").append(USER_DATA_TABLE).append(" (last_uid, current_time,"
 																	  "root_cell, tutorial_state) VALUES (")
 			.append(std::to_string(world.GetLastUid())).append(",")
-			.append(Utils::TimeToString(world.GetCurrentTime())).append(",")
+			.append(Utils::TimeToString(world.GetTimeCurrent())).append(",")
 			.append(std::to_string(world.GetCellsNetwork().GetRootCell().lock()->GetUid())).append(",")
 			.append("'").append(world.GetTutorialState()).append("');");
 }

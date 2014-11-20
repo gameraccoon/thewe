@@ -26,7 +26,7 @@ std::string Utils::GetWritablePath()
 
 Utils::GameTime Utils::GetGameTime(void)
 {
-	return World::Instance().GetCurrentTime();
+	return World::Instance().GetTimeCurrent();
 }
 
 std::string Utils::TimeToString(Utils::GameTime time)
