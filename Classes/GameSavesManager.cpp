@@ -31,6 +31,7 @@ public:
 };
 
 GameSavesManager::GameSavesManager()
+	:_isWorking(false)
 {
 	std::string dbPath = cocos2d::FileUtils::getInstance()->getWritablePath();
 	dbPath.append("userdata.db");
@@ -58,6 +59,10 @@ void GameSavesManager::AcceptMessage(const Message &msg)
 	if (msg.name == "SaveGame")
 	{
 		SaveGameState();
+	}
+	else if (msg.name == "SaveTime")
+	{
+		SaveGameTime();
 	}
 }
 
@@ -385,11 +390,16 @@ void GameSavesManager::LoadUserInfo()
 
 void GameSavesManager::LoadGameState(void)
 {
+	if (_isWorking)
+		return;
+
+	_isWorking = true;
 	LoadCellsState();
 	LoadRunnedTasks();
 	LoadProcesses();
 	LoadInvestigations();
 	LoadUserInfo();
+	_isWorking = false;
 }
 
 static std::string InitCellsAdditionStatement()
@@ -659,6 +669,11 @@ static std::string GetUserInfoAdditionStatement()
 
 void GameSavesManager::SaveGameState(void)
 {
+	if (_isWorking)
+		return;
+
+	_isWorking = true;
+
 	std::string cellsAdditionSqlStatement = InitCellsAdditionStatement();
 	bool addCells = FillCellsAdditionStatement(&cellsAdditionSqlStatement);
 
@@ -694,4 +709,18 @@ void GameSavesManager::SaveGameState(void)
 	_impl->database.execSql(userInfoSqlStatement);
 	// commiting transaction
 	_impl->database.execSql("COMMIT;");
+
+	_isWorking = false;
+}
+
+void GameSavesManager::SaveGameTime()
+{
+	if (_isWorking)
+		return;
+
+	_isWorking = true;
+
+	_impl->database.execSql("UPDATE user_data SET current_time = '" + Utils::TimeToString(Utils::GetGameTime()) + "';");
+
+	_isWorking = false;
 }

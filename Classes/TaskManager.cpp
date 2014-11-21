@@ -22,7 +22,7 @@ void TaskManager::RunTask(Cell::WeakPtr cell, const Task::Info* info, Utils::Gam
 
 	_runnedTasks.push_back(runnedTaskInfo);
 
-	MessageManager::Instance().PutMessage(Message("SaveGame", 0));
+	MessageManager::Instance().PutMessage(Message("SaveGame"));
 }
 
 void TaskManager::RunTask(Cell::WeakPtr cell, const std::string& id, Utils::GameTime startTime)

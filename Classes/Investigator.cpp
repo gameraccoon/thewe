@@ -91,7 +91,7 @@ void Investigator::UpdateToTime(Utils::GameTime time)
 		if (progress >= 1.0f)
 		{
 			BeginInvestigation();
-			MessageManager::Instance().PutMessage(Message("SaveGame", 0));
+			MessageManager::Instance().PutMessage(Message("SaveGame"));
 		}
 	}
 	else if (IsStateType(State::INVESTIGATION))
@@ -129,7 +129,7 @@ void Investigator::UpdateToTime(Utils::GameTime time)
 
 				_activeBranches.erase(_activeBranches.begin() + index);
 
-				MessageManager::Instance().PutMessage(Message("SaveGame", 0));
+				MessageManager::Instance().PutMessage(Message("SaveGame"));
 			}
 		}
 

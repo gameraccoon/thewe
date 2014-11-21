@@ -580,7 +580,7 @@ void WorldMapLayer::_OnTownSelect(Town::WeakPtr town)
 				World::Instance().RunTutorialFunction("AfterCreatingFirstCell");
 			}
 
-			MessageManager::Instance().PutMessage(Message("SaveGame", 0));
+			MessageManager::Instance().PutMessage(Message("SaveGame"));
 		}
 		else if (Cell::Ptr parent = _nextCellParent.lock())
 		{
@@ -618,7 +618,7 @@ void WorldMapLayer::_OnTownSelect(Town::WeakPtr town)
 
 				CreateCell(info, Cell::State::CONSTRUCTION);
 
-				MessageManager::Instance().PutMessage(Message("SaveGame", 0));
+				MessageManager::Instance().PutMessage(Message("SaveGame"));
 			}
 
 			_nextCellParent = Cell::Ptr();

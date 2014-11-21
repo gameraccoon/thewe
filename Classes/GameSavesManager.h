@@ -15,6 +15,7 @@ public:
 	static GameSavesManager& Instance();
 
 	void LoadGameState();
+	void SaveGameTime();
 
 	virtual void AcceptMessage(const Message &msg) override;
 
@@ -29,6 +30,7 @@ private:
 
 private:
 	GameSavesManagerImpl* _impl;
+	bool _isWorking;
 
 	/*
 	 * Turn off useless operations

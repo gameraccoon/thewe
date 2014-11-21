@@ -15,6 +15,8 @@ namespace Utils
 	GameTime GetGameTime(void);
 	std::string TimeToString(GameTime time);
 	GameTime StringToTime(const std::string& stringTime);
+
+	bool IsPlatformDesktop();
 }
 
 #endif // MISC_UTILS_H

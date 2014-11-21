@@ -121,7 +121,7 @@ void World::AddInvestigatorByCell(Cell::WeakPtr investigationRoot)
 
 	AddInvestigator(investigator);
 
-	MessageManager::Instance().PutMessage(Message("SaveGame", 0));
+	MessageManager::Instance().PutMessage(Message("SaveGame"));
 }
 
 void World::AddInvestigatorByCellUid(unsigned int celluid)

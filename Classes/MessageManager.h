@@ -12,6 +12,9 @@ struct Message
 	Message(const std::string &n, int p)
 		: name(n), param(p)
 	{}
+	Message(const std::string &n)
+		: name(n), param(0)
+	{}
 };
 
 class MessageReceiver

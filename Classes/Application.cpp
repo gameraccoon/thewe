@@ -45,7 +45,7 @@ bool AppDelegate::applicationDidFinishLaunching()
 	director->setOpenGLView(glview);
 	director->setAnimationInterval(1.0 / 60.0);
 
-#if CC_TARGET_PLATFORM != CC_PLATFORM_ANDROID && CC_TARGET_PLATFORM != CC_PLATFORM_IOS
+#if CC_TARGET_PLATFORM != CC_PLATFORM_ANDROID && CC_TARGET_PLATFORM != CC_PLATFORM_IOS && CC_TARGET_PLATFORM != CC_PLATFORM_WP8
 	glview->setFrameZoomFactor(1.0f);
 	glview->setFrameSize(dr_w, dr_h);
 
@@ -72,13 +72,18 @@ bool AppDelegate::applicationDidFinishLaunching()
 	WorldLoader::LoadGameInfo();
 	GameSavesManager::Instance().LoadGameState();
 
-#if CC_TARGET_PLATFORM != CC_PLATFORM_ANDROID && CC_TARGET_PLATFORM != CC_PLATFORM_IOS
-	std::string languageCode = GameInfo::Instance().GetString("DESKTOP_LOCALE");
-#else
-	std::string languageCode = getCurrentLanguageCode();
-#endif
 	// load localizations
-	LocalizationManager::Instance().InitWithLocale("content.xml", languageCode);
+	if (Utils::IsPlatformDesktop())
+	{
+		std::string languageCode = GameInfo::Instance().GetString("DESKTOP_LOCALE");
+		LocalizationManager::Instance().InitWithLocale("content.xml", languageCode);
+	}
+	else
+	{
+		// use system language
+		LocalizationManager::Instance().InitWithLocale("content.xml", getCurrentLanguageCode());
+	}
+
 	// initialize graphics after all data is loaded
 	mainMenuScene->init();
 
@@ -93,6 +98,8 @@ bool AppDelegate::applicationDidFinishLaunching()
 
 void AppDelegate::applicationDidEnterBackground()
 {
+	GameSavesManager::Instance().SaveGameTime();
+	//MessageManager::Instance().PutMessage(Message("SaveTime"));
 }
 
 void AppDelegate::applicationWillEnterForeground()

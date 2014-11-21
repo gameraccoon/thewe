@@ -5,36 +5,49 @@
 
 #include "World.h"
 
-std::string Utils::GetResourcesPath()
+namespace Utils
 {
-#if CC_TARGET_PLATFORM == CC_PLATFORM_WIN32
-	return "../../Resources/";
-#else
-	return "";
-#endif
-}
+	std::string GetResourcesPath()
+	{
+	#if CC_TARGET_PLATFORM == CC_PLATFORM_WIN32
+		return "../../Resources/";
+	#else
+		return "";
+	#endif
+	}
 
-std::string Utils::GetDocumentsPath()
-{
-	return cocos2d::FileUtils::getInstance()->getWritablePath();
-}
+	std::string GetDocumentsPath()
+	{
+		return cocos2d::FileUtils::getInstance()->getWritablePath();
+	}
 
-std::string Utils::GetWritablePath()
-{
-	return cocos2d::FileUtils::getInstance()->getWritablePath();
-}
+	std::string GetWritablePath()
+	{
+		return cocos2d::FileUtils::getInstance()->getWritablePath();
+	}
 
-Utils::GameTime Utils::GetGameTime(void)
-{
-	return World::Instance().GetTimeCurrent();
-}
+	GameTime GetGameTime(void)
+	{
+		return World::Instance().GetTimeCurrent();
+	}
 
-std::string Utils::TimeToString(Utils::GameTime time)
-{
-	return std::to_string(time);
-}
+	std::string TimeToString(GameTime time)
+	{
+		return std::to_string(time);
+	}
 
-Utils::GameTime Utils::StringToTime(const std::string& stringTime)
-{
-	return std::stof(stringTime);
-}
+	GameTime StringToTime(const std::string& stringTime)
+	{
+		return std::stof(stringTime);
+	}
+
+	bool IsPlatformDesktop()
+	{
+		cocos2d::Application::Platform platform = cocos2d::Application::getInstance()->getTargetPlatform();
+		return platform == cocos2d::Application::Platform::OS_WINDOWS
+				||
+				platform == cocos2d::Application::Platform::OS_LINUX
+				||
+				platform == cocos2d::Application::Platform::OS_MAC;
+	}
+} // namespace Utils
