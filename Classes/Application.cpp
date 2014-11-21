@@ -72,9 +72,13 @@ bool AppDelegate::applicationDidFinishLaunching()
 	WorldLoader::LoadGameInfo();
 	GameSavesManager::Instance().LoadGameState();
 
+#if CC_TARGET_PLATFORM != CC_PLATFORM_ANDROID && CC_TARGET_PLATFORM != CC_PLATFORM_IOS
+	std::string languageCode = GameInfo::Instance().GetString("DESKTOP_LOCALE");
+#else
+	std::string languageCode = getCurrentLanguageCode();
+#endif
 	// load localizations
-	LocalizationManager::Instance().InitWithLocale("content.xml", "EN");
-
+	LocalizationManager::Instance().InitWithLocale("content.xml", languageCode);
 	// initialize graphics after all data is loaded
 	mainMenuScene->init();
 

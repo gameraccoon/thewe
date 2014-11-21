@@ -10,9 +10,10 @@ public:
 	static LocalizationManager& Instance();
 
 	/**
-	*  Load the localization with locality
+	* Load the texts for the locale
+	* Sets dafault locale if doesn't find requested locale
 	*/
-	bool InitWithLocale(const std::string& localizationFile, const std::string& locale);
+	void InitWithLocale(const std::string& localizationFile, const std::string& locale);
 
 	/**
 	*  Return the word of determined locality

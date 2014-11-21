@@ -114,7 +114,7 @@ private:
 	std::queue<Tutorial::Ptr> _tutorials;
 	std::string _tutorialState;
 
-	float _currentTime;
+	Utils::GameTime _currentTime;
 
 	unsigned int _uid;
 

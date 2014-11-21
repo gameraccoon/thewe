@@ -9,6 +9,8 @@
 #include "Log.h"
 #include "MiscUtils.h"
 
+#include "GameInfo.h"
+
 LocalizationManager::LocalizationManager()
 {
 	
@@ -24,7 +26,7 @@ LocalizationManager& LocalizationManager::Instance()
 	return singleInstance;
 }
 
-bool LocalizationManager::InitWithLocale(const std::string& localizationFile, const std::string& locale)
+void LocalizationManager::InitWithLocale(const std::string& localizationFile, const std::string& locale)
 {
 	pugi::xml_parse_result parsedXml;
 
@@ -59,8 +61,19 @@ bool LocalizationManager::InitWithLocale(const std::string& localizationFile, co
 	// if no locale found
 	if (localePos == 0)
 	{
-		Log::Instance().writeWarning(std::string("Locale \"").append(locale).append("\" not found."));
-		return false;
+		std::string defaultLocale = GameInfo::Instance().GetString("DEFAULT_LOCALE");
+		if (locale != defaultLocale)
+		{
+			Log::Instance().writeLog(std::string("Locale \"").append(locale).append("\" not found. Trying to use default locale"));
+			// Warning: recursive call
+			InitWithLocale(localizationFile, defaultLocale);
+			return;
+		}
+		else
+		{
+			Log::Instance().writeError(std::string("Default locale \"").append(locale).append("\" not found."));
+			return;
+		}
 	}
 
 	childNode = childNode.next_sibling(); // load XML records (rows)
@@ -84,8 +97,6 @@ bool LocalizationManager::InitWithLocale(const std::string& localizationFile, co
 
 		childNode = childNode.next_sibling(); // next row
 	}
-
-	return true;
 }
 
 std::string LocalizationManager::getText(const std::string& key)
