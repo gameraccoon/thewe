@@ -1,97 +1,12 @@
 #include "CellTasksMenu.h"
 
 #include "World.h"
-
 #include "Localization.h"
-
-class CellTaskMenuItem : public cocos2d::Node
-{
-public:
-	CellTaskMenuItem(CellTasksScreen *menu, Cell::WeakPtr cell, const Task::Info *taskInfo)
-		: _tasksScreen(menu)
-		, _cell(cell)
-		, _taskInfo(taskInfo)
-	{
-		init();
-	}
-
-	virtual bool init(void) override
-	{
-		cocos2d::MenuItemImage *startBtn;
-		{
-			using namespace cocos2d;
-			startBtn = MenuItemImage::create("TasksStartBtn_active.png", "TasksStartBtn_pressed.png",
-				CC_CALLBACK_1(CellTaskMenuItem::_OnStartPressed, this));
-		}
-
-		cocos2d::Sprite *bkg = cocos2d::Sprite::create("TasksLine.png");
-		cocos2d::Menu *menu = cocos2d::Menu::create(startBtn, nullptr);
-		cocos2d::Size size = bkg->getContentSize();
-		addChild(bkg, 0);
-
-		menu->setPosition(0.0f, 0.0f);
-		startBtn->setPosition(-size.width / 2.0 + startBtn->getContentSize().width / 2.0f, 0.0f);
-		addChild(menu, 1);
-
-		cocos2d::TTFConfig ttfConfig("arial.ttf");
-		cocos2d::Label *labelStart = cocos2d::Label::createWithTTF(ttfConfig, "Start", cocos2d::TextHAlignment::CENTER);
-		labelStart->setColor(cocos2d::Color3B(0, 0, 0));	
-		labelStart->setPosition(startBtn->getPosition());
-		addChild(labelStart, 2);
-
-		cocos2d::Label *labelDesc = cocos2d::Label::createWithBMFont("arial-26-en-ru.fnt",
-																	 _taskInfo->title, cocos2d::TextHAlignment::CENTER);
-		labelDesc->setPosition(50.0f, 15.0f);
-		addChild(labelDesc, 1);
-
-		std::string durationText = cocos2d::StringUtils::format("Duration: %.1d", (int)_taskInfo->duration);
-		cocos2d::Label *labelDuraion = cocos2d::Label::createWithBMFont("arial-26-en-ru.fnt",
-																		durationText, cocos2d::TextHAlignment::LEFT);
-		labelDuraion->setPosition(-30.0f, -15.0f);
-		addChild(labelDuraion, 1);
-
-		std::string chanceText = cocos2d::StringUtils::format("Chance: %.1f",
-			World::Instance().GetTaskManager().CalcTaskSuccessChance(_cell.lock()->GetInfo(), _taskInfo));
-		cocos2d::Label *labelChance = cocos2d::Label::createWithBMFont("arial-26-en-ru.fnt",
-																	   chanceText, cocos2d::TextHAlignment::RIGHT);
-		labelChance->setPosition(130.0f, -15.0f);
-		addChild(labelChance, 1);
-
-		setContentSize(size);
-
-		return true;
-	}
-
-private:
-	void _OnStartPressed(cocos2d::Ref *sender)
-	{
-		if (_cell.lock()->GetInfo().state == Cell::State::READY)
-		{
-			World::Instance().GetTaskManager().RunTask(_cell, _taskInfo, Utils::GetGameTime());
-			_tasksScreen->CloseMenu();
-
-			if (World::Instance().GetTutorialState() == "WaitingForStartFirstTask")
-			{
-				World::Instance().RemoveCurrentTutorial();
-				World::Instance().RunTutorialFunction("StartingFirstTask");
-			}
-			else if (World::Instance().GetTutorialState() == "ReadyToFirstRealWork")
-			{
-				World::Instance().RemoveCurrentTutorial();
-				World::Instance().RunTutorialFunction("StartingFirstRealWork");
-			}
-		}
-	}
-
-	CellTasksScreen *_tasksScreen;
-	Cell::WeakPtr _cell;
-	const Task::Info *_taskInfo;
-};
+#include "Log.h"
 
 CellTasksScreen::CellTasksScreen(Cell::WeakPtr cell, CellMenuSelector *cellMenu)
 	: _cell(cell)
 	, _cellMenu(cellMenu)
-	, _scrollTasksView(nullptr)
 {
 	init();
 }
@@ -109,61 +24,48 @@ bool CellTasksScreen::init(void)
 	
 	cocos2d::Point screen = cocos2d::Director::getInstance()->getVisibleSize();
 	cocos2d::Point origin = cocos2d::Director::getInstance()->getVisibleOrigin();
-	cocos2d::Point center = origin + screen / 2.0f;
-
-	cocos2d::MenuItemImage *closeButton;
-	{
-		using namespace cocos2d;
-		closeButton = MenuItemImage::create("cell-tasks-menu-close-normal.png",
-			"cell-tasks-menu-close-pressed.png", CC_CALLBACK_1(CellTasksScreen::_OnCloseCallback, this));
-	}
-
-	cocos2d::Menu *menu = cocos2d::Menu::create(closeButton, nullptr);
-	menu->setPosition(center);
-	cocos2d::Sprite *menuBackground = cocos2d::Sprite::create("cell-tasks-menu.png");
-	menuBackground->setPosition(center);
-	
-	cocos2d::TTFConfig ttfConfig("arial.ttf", 18);
-	std::string titleText = LocalizationManager::Instance().getText("CellTasksMenu_Header");
-	cocos2d::Label *labelTitle = cocos2d::Label::createWithTTF(ttfConfig, titleText, cocos2d::TextHAlignment::CENTER);
-	
-	float close_x = menuBackground->getContentSize().width  / 2 - closeButton->getContentSize().width  + 23.0f;
-	float close_y = menuBackground->getContentSize().height / 2 - closeButton->getContentSize().height + 17.0f;
-	closeButton->setAnchorPoint(Vector2(0.5f, 0.5f));
-	closeButton->setPosition(close_x, close_y);
-
-	float title_x = center.x;
-	float title_y = center.y + menuBackground->getContentSize().height / 2 - 16.0f;
-	labelTitle->setPosition(title_x, title_y);
-	labelTitle->setColor(cocos2d::Color3B(255, 255, 255));
-
-	float offset_top = 47.0f;
-	float offset_btm = 14.0f;
-	cocos2d::Size menu_size = menuBackground->getContentSize();
-	cocos2d::Vec2 menu_pos = center - menu_size / 2.0f;
-
-	menu_pos.y += offset_btm;
-	menu_size.height -= offset_top;
-
-	if (World::Instance().GetTutorialState() == "StartFirstTask")
-	{
-		World::Instance().RunTutorialFunction("BeforeStartFirstTask");
-	}
-
-	_CreateTasksScrollViewMenu(World::Instance().GetTaskManager().GetAvailableTasks(_cell), menu_pos, menu_size);
 
 	cocos2d::ScaleTo *scale = cocos2d::ScaleTo::create(0.8f, 1.0f, 1.0f);
 	cocos2d::FadeIn *fade = cocos2d::FadeIn::create(0.5f);
 	cocos2d::EaseElasticOut *elastic_scale = cocos2d::EaseElasticOut::create(scale, 5.0f);
 
-	setScale(0.01f);
-	setOpacity(0);	
-	runAction(elastic_scale);
-	runAction(fade);
-	addChild(menuBackground, 0);
-	addChild(menu, 1);
-	addChild(labelTitle, 1);
-	addChild(_scrollTasksView, 2);
+	_widget = dynamic_cast<cocos2d::ui::Layout *>(cocostudio::GUIReader::getInstance()->widgetFromJsonFile("UICellTaskSelect/UICellTaskSelect.json"));
+	_widget->setAnchorPoint(cocos2d::Vec2(0.5f, 0.5f));
+	_widget->setPosition(origin + screen / 2.0f);
+	_widget->setScale(0.01f);
+	_widget->setOpacity(0);
+	_widget->runAction(cocos2d::Spawn::create(elastic_scale, fade, nullptr));
+	
+	cocos2d::ui::Text *txtHeader = dynamic_cast<cocos2d::ui::Text *>(_widget->getChildByName("Header"));
+	cocos2d::ui::Button *btnClose = dynamic_cast<cocos2d::ui::Button *>(_widget->getChildByName("Close"));
+	cocos2d::ui::ScrollView *scroller = dynamic_cast<cocos2d::ui::ScrollView *>(_widget->getChildByName("Scroller"));
+	
+	if (!txtHeader) {Log::Instance().writeWarning("Failed to get widget with Header name from UICellTaskSelect widget"); return false;}
+	if (!btnClose) {Log::Instance().writeWarning("Failed to get widget with Close name from UICellTaskSelect widget"); return false;}
+	if (!scroller) {Log::Instance().writeWarning("Failed to get widget with Scroller name from UICellTaskSelect widget"); return false;}
+
+	txtHeader->setString(LocalizationManager::Instance().getText("CellTaskMenu_Header"));
+	btnClose->addTouchEventListener(CC_CALLBACK_2(CellTasksScreen::OnCloseCallback, this));
+	scroller->setInertiaScrollEnabled(true);
+	scroller->setBounceEnabled(true);
+	
+	_avaliableTasks = World::Instance().GetTaskManager().GetAvailableTasks(_cell);
+	float item_h = 0.0f, total_h = 0.0f;
+	
+	for (std::size_t index = 0; index < _avaliableTasks.size(); ++index)
+	{
+		cocos2d::ui::Widget *item = CreateScrollerItem(_avaliableTasks[index]);
+		item_h = item->getContentSize().height;
+		total_h = item_h * index;
+
+		item->setPosition(cocos2d::Vec2(0.0f, total_h));
+		scroller->addChild(item);
+	}
+
+	cocos2d::Size size = scroller->getInnerContainerSize();
+	scroller->setInnerContainerSize(cocos2d::Size(size.width, item_h * _avaliableTasks.size()));
+
+	addChild(_widget);
 
 	return true;
 }
@@ -177,47 +79,75 @@ void CellTasksScreen::CloseMenu(void)
 	runAction(cocos2d::Sequence::create(elastic_scale, func, nullptr));
 }
 
-void CellTasksScreen::_OnCloseCallback(cocos2d::Ref *sender)
+cocos2d::ui::Widget* CellTasksScreen::CreateScrollerItem(const Task::Info *info)
 {
-	CloseMenu();
+	cocos2d::ui::Widget *widget = cocostudio::GUIReader::getInstance()->widgetFromJsonFile("UICellTaskSelect/ScrollTaskItem.json");
+
+	cocos2d::ui::TextBMFont *taskTitle = dynamic_cast<cocos2d::ui::TextBMFont *>(widget->getChildByName("TaskTitle"));
+	cocos2d::ui::TextBMFont *taskDuration = dynamic_cast<cocos2d::ui::TextBMFont *>(widget->getChildByName("Duration"));
+	cocos2d::ui::TextBMFont *taskChanse = dynamic_cast<cocos2d::ui::TextBMFont *>(widget->getChildByName("Chanse"));
+	cocos2d::ui::Text *startLalbel = dynamic_cast<cocos2d::ui::Text *>(widget->getChildByName("StartBtn")->getChildByName("StartBtnLabel"));
+	cocos2d::ui::Button *startBtn = dynamic_cast<cocos2d::ui::Button *>(widget->getChildByName("StartBtn"));
+
+	if (!taskTitle) {Log::Instance().writeWarning("Failed to get widget with TaskTitle name from ScrollTaskItem widget"); return widget;}
+	if (!taskDuration) {Log::Instance().writeWarning("Failed to get widget with Duration name from ScrollTaskItem widget"); return widget;}
+	if (!taskChanse) {Log::Instance().writeWarning("Failed to get widget with Chanse name from ScrollTaskItem widget"); return widget;}
+	if (!startLalbel) {Log::Instance().writeWarning("Failed to get widget with StartBtnLabel name from ScrollTaskItem widget"); return widget;}
+	if (!startBtn) {Log::Instance().writeWarning("Failed to get widget with StartBtn name from ScrollTaskItem widget"); return widget;}
+
+	startBtn->setUserData((void *)info);
+	startBtn->addTouchEventListener(CC_CALLBACK_2(CellTasksScreen::OnStartTaskCallback, this));
+
+	taskTitle->setString(info->title);
+	startLalbel->setString(LocalizationManager::Instance().getText("CellTaskMenuItem_Start"));
+	taskDuration->setString(cocos2d::StringUtils::format("%s %.1f", LocalizationManager::Instance().getText("CellTaskMenuItem_Duration").c_str(), info->duration));
+	taskChanse->setString(cocos2d::StringUtils::format("%s %.1f",
+		LocalizationManager::Instance().getText("CellTaskMenuItem_Chanse").c_str(),
+		World::Instance().GetTaskManager().CalcTaskSuccessChance(_cell.lock()->GetInfo(), info)));
+
+	return widget;
 }
 
-void CellTasksScreen::_CreateTasksScrollViewMenu(const TaskManager::Tasks &tasks, const cocos2d::Vec2 &pos, const cocos2d::Size &size)
+void CellTasksScreen::OnCloseCallback(cocos2d::Ref *sender, cocos2d::ui::Widget::TouchEventType eventType)
 {
-	_scrollTasksView = cocos2d::extension::ScrollView::create(size);
-	_scrollTasksView->setPosition(pos);
-	_scrollTasksView->setDirection(cocos2d::extension::ScrollView::Direction::VERTICAL);
-
-	float itemOffsetY = 1.0f;
-	float itemContentWidth = 75.0f;
-	float contentSizeY = tasks.size() * (itemContentWidth - itemOffsetY);
-
-	if (contentSizeY * itemContentWidth > size.height)
+	if (eventType == cocos2d::ui::Widget::TouchEventType::ENDED)
 	{
-		_scrollTasksView->setContentSize(cocos2d::Size(size.width, contentSizeY - 3.0f));
+		CloseMenu();
 	}
-	else
+}
+
+void CellTasksScreen::OnStartTaskCallback(cocos2d::Ref *sender, cocos2d::ui::Widget::TouchEventType eventType)
+{
+	if (eventType == cocos2d::ui::Widget::TouchEventType::ENDED)
 	{
-		_scrollTasksView->setContentSize(size);
+		if (_cell.lock()->GetInfo().state == Cell::State::READY)
+		{
+			cocos2d::ui::Button *btn = dynamic_cast<cocos2d::ui::Button *>(sender);
+			if (!btn) {
+				Log::Instance().writeWarning("Failed to cast from sender to button type in StartTaskCallback.");
+				return;
+			}
+			const Task::Info *task_info = (const Task::Info *)btn->getUserData();
+			if (!task_info) {
+				Log::Instance().writeWarning("Failed to get pointer to a task info from sender object in StartTaskCallback");
+				return;
+			}
+
+			World::Instance().GetTaskManager().RunTask(_cell, task_info, Utils::GetGameTime());
+			CloseMenu();
+
+			if (World::Instance().GetTutorialState() == "WaitingForStartFirstTask")
+			{
+				World::Instance().RemoveCurrentTutorial();
+				World::Instance().RunTutorialFunction("StartingFirstTask");
+			}
+			else if (World::Instance().GetTutorialState() == "ReadyToFirstRealWork")
+			{
+				World::Instance().RemoveCurrentTutorial();
+				World::Instance().RunTutorialFunction("StartingFirstRealWork");
+			}
+		}
 	}
-
-	float y = _scrollTasksView->getContentSize().height - itemContentWidth / 2.0f;
-
-	int index = 0;
-	for (TaskManager::Tasks::const_iterator it = tasks.begin(); it != tasks.end(); it++, ++index)
-	{
-		const Task::Info *info = (*it);
-		CellTaskMenuItem *item = new CellTaskMenuItem(this, _cell, info);
-
-		item->setPosition(item->getContentSize().width / 2.0f, y);
-		item->autorelease();
-
-		y -= item->getContentSize().height - itemOffsetY;
-
-		_scrollTasksView->addChild(item);
-	}
-
-	_scrollTasksView->setContentOffset(_scrollTasksView->minContainerOffset());
 }
 
 void CellTasksScreen::KeyReleased(cocos2d::EventKeyboard::KeyCode key, cocos2d::Event *event)

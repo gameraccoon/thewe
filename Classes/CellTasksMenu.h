@@ -13,13 +13,16 @@ public:
 	void CloseMenu(void);
 	
 private:
-	void _OnCloseCallback(cocos2d::Ref *sender);
-	void _CreateTasksScrollViewMenu(const TaskManager::Tasks &tasks, const cocos2d::Vec2 &pos, const cocos2d::Size &size);
+	void OnCloseCallback(cocos2d::Ref *sender, cocos2d::ui::Widget::TouchEventType eventType);
+	void OnStartTaskCallback(cocos2d::Ref *sender, cocos2d::ui::Widget::TouchEventType eventType);
 	void KeyReleased(cocos2d::EventKeyboard::KeyCode key, cocos2d::Event *event);
+	cocos2d::ui::Widget* CreateScrollerItem(const Task::Info *info);
 
+	cocos2d::ui::Layout *_widget;
+
+	TaskManager::Tasks _avaliableTasks;
 	Cell::WeakPtr _cell;
 	CellMenuSelector *_cellMenu;
-	cocos2d::extension::ScrollView *_scrollTasksView;
 };
 
 #endif // CELL_TASKS_MENU_H

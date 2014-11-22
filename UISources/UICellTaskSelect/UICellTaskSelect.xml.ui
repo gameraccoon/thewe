@@ -1,0 +1,31 @@
+<?xml version="1.0"?>
+<UIProject xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <ProjectDir>D:\Projects\TheWe\UISources\UICellTaskSelect</ProjectDir>
+  <Version>1.6.0.0</Version>
+  <Resources>D:\Projects\TheWe\UISources\UICellTaskSelect\Resources</Resources>
+  <Name>UICellTaskSelect</Name>
+  <JsonFileName>UICellTaskSelect.json</JsonFileName>
+  <JsonFolder>D:\Projects\TheWe\UISources\UICellTaskSelect\Json</JsonFolder>
+  <JsonList>
+    <string>UICellTaskSelect.json</string>
+    <string>ScrollTaskItem.json</string>
+  </JsonList>
+  <CanvasSize>
+    <Width>435</Width>
+    <Height>75</Height>
+  </CanvasSize>
+  <filePath>D:\Projects\TheWe\UISources\UICellTaskSelect\UICellTaskSelect.xml.ui</filePath>
+  <ProjectType>UIProject</ProjectType>
+  <ResRelativePath />
+  <imageFileList />
+  <imagePngList>
+    <string>cell-tasks-menu.png</string>
+    <string>cell-tasks-menu-close-normal.png</string>
+    <string>cell-tasks-menu-close-pressed.png</string>
+    <string>TasksLine.png</string>
+    <string>TasksStartBtn_active.png</string>
+    <string>TasksStartBtn_pressed.png</string>
+  </imagePngList>
+  <JsonSuffix>.json</JsonSuffix>
+  <CurrentUIJson>ScrollTaskItem.json</CurrentUIJson>
+</UIProject>

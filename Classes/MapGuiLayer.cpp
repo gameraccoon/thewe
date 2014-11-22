@@ -48,8 +48,7 @@ bool MapGuiLayer::init(void)
 	btnZoomOut->addTouchEventListener(CC_CALLBACK_2(MapGuiLayer::MenuInputListener, this));
 	btnZoomIn->addTouchEventListener(CC_CALLBACK_2(MapGuiLayer::MenuInputListener, this));
 
-	_worldCapturingBar->setScale9Enabled(true);
-	_worldCapturingBar->setPercent(50.0f);
+	_worldCapturingBar->setPercent(0.0f);
 
 #if CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID || CC_TARGET_PLATFORM == CC_PLATFORM_IOS
 	btnEdit->setVisible(false);

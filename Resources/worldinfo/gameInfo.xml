@@ -22,5 +22,5 @@
 	<Const name="INVESTIGATOR_TUTORIAL_CATCH_TIME" type="time" value="311040000" /> <!-- ждем 10 лет -->
 
 	<Const name="DEFAULT_LOCALE" type="string" value="en" />
-	<Const name="DESKTOP_LOCALE" type="string" value="en" />
+	<Const name="DESKTOP_LOCALE" type="string" value="ru" />
 </GameInfo>
