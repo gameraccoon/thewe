@@ -1,0 +1,345 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{76A39BB2-9B84-4C65-98A5-654D86B86F2A}</ProjectGuid>
+    <RootNamespace>test_win32</RootNamespace>
+    <Keyword>Win32Proj</Keyword>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <CharacterSet>Unicode</CharacterSet>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <PlatformToolset Condition="'$(VisualStudioVersion)' == '10.0'">v100</PlatformToolset>
+    <PlatformToolset Condition="'$(VisualStudioVersion)' == '11.0'">v110</PlatformToolset>
+    <PlatformToolset Condition="'$(VisualStudioVersion)' == '11.0' and exists('$(MSBuildProgramFiles32)\Microsoft SDKs\Windows\v7.1A')">v110_xp</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <CharacterSet>Unicode</CharacterSet>
+    <PlatformToolset Condition="'$(VisualStudioVersion)' == '10.0'">v100</PlatformToolset>
+    <PlatformToolset Condition="'$(VisualStudioVersion)' == '11.0'">v110</PlatformToolset>
+    <PlatformToolset Condition="'$(VisualStudioVersion)' == '11.0' and exists('$(MSBuildProgramFiles32)\Microsoft SDKs\Windows\v7.1A')">v110_xp</PlatformToolset>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="..\cocos2d\cocos\2d\cocos2dx.props" />
+    <Import Project="..\cocos2d\cocos\2d\cocos2d_headers.props" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="..\cocos2d\cocos\2d\cocos2dx.props" />
+    <Import Project="..\cocos2d\cocos\2d\cocos2d_headers.props" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup>
+    <_ProjectFileVersion>10.0.40219.1</_ProjectFileVersion>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(SolutionDir)Binaries\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Intermediate_$(Configuration).win32\</IntDir>
+    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</LinkIncremental>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(SolutionDir)Binaries\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Intermediate_$(Configuration).win32\</IntDir>
+    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</LinkIncremental>
+    <CodeAnalysisRuleSet Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">AllRules.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRules Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" />
+    <CodeAnalysisRuleAssemblies Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" />
+    <CodeAnalysisRuleSet Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">AllRules.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRules Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" />
+    <CodeAnalysisRuleAssemblies Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" />
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <LibraryPath>$(MSBuildProgramFiles32)\Microsoft SDKs\Windows\v7.1A\lib;$(LibraryPath)</LibraryPath>
+    <TargetName>TheWe_debug</TargetName>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <LibraryPath>$(MSBuildProgramFiles32)\Microsoft SDKs\Windows\v7.1A\lib;$(LibraryPath)</LibraryPath>
+    <TargetName>TheWe</TargetName>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <Optimization>Disabled</Optimization>
+      <AdditionalIncludeDirectories>../dependencies/luabind-0.9.1;../dependencies/lua-5.1.5;../dependencies/pugixml-1.4;../dependencies/boost-1.55.0;../dependencies/sqlite3-3.8.7;$(EngineRoot)cocos\audio\include;$(EngineRoot)external;$(EngineRoot)external\chipmunk\include\chipmunk;$(EngineRoot);$(EngineRoot)extensions;..\Classes;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>LUA_COMPAT_ALL;WIN32;_DEBUG;_WINDOWS;_USE_MATH_DEFINES;GL_GLEXT_PROTOTYPES;CC_ENABLE_CHIPMUNK_INTEGRATION=1;COCOS2D_DEBUG=1;_CRT_SECURE_NO_WARNINGS;_SCL_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <MinimalRebuild>false</MinimalRebuild>
+      <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
+      <DisableSpecificWarnings>4267;4251;4244;%(DisableSpecificWarnings)</DisableSpecificWarnings>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+    </ClCompile>
+    <Link>
+      <AdditionalDependencies>libExtensions.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <OutputFile>$(OutDir)TheWe_debug.exe</OutputFile>
+      <AdditionalLibraryDirectories>$(SolutionDir)Libraries_$(Configuration).win32\;$(OutDir);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <SubSystem>Windows</SubSystem>
+      <TargetMachine>MachineX86</TargetMachine>
+    </Link>
+    <PostBuildEvent>
+      <Command>
+      </Command>
+    </PostBuildEvent>
+    <PreLinkEvent>
+      <Command>if not exist "$(OutDir)" mkdir "$(OutDir)"
+xcopy /Y /Q "$(EngineRoot)external\websockets\prebuilt\win32\*.lib" "$(SolutionDir)Libraries_$(Configuration).win32\"</Command>
+    </PreLinkEvent>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <Optimization>MaxSpeed</Optimization>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <AdditionalIncludeDirectories>../dependencies/luabind-0.9.1;../dependencies/lua-5.1.5;../dependencies/pugixml-1.4;../dependencies/boost-1.55.0;../dependencies/sqlite3-3.8.7;$(EngineRoot)cocos\audio\include;$(EngineRoot)external;$(EngineRoot)external\chipmunk\include\chipmunk;$(EngineRoot);$(EngineRoot)extensions;..\Classes;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;_USE_MATH_DEFINES;GL_GLEXT_PROTOTYPES;CC_ENABLE_CHIPMUNK_INTEGRATION=1;_CRT_SECURE_NO_WARNINGS;_SCL_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <DisableSpecificWarnings>4267;4251;4244;%(DisableSpecificWarnings)</DisableSpecificWarnings>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+    </ClCompile>
+    <Link>
+      <AdditionalDependencies>libcurl_imp.lib;websockets.lib;libExtensions.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <OutputFile>$(OutDir)TheWe.exe</OutputFile>
+      <AdditionalLibraryDirectories>$(SolutionDir)Libraries_$(Configuration).win32\;$(OutDir);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <SubSystem>Windows</SubSystem>
+      <OptimizeReferences>true</OptimizeReferences>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <TargetMachine>MachineX86</TargetMachine>
+    </Link>
+    <PostBuildEvent>
+      <Command>
+      </Command>
+    </PostBuildEvent>
+    <PreLinkEvent>
+      <Command>if not exist "$(OutDir)" mkdir "$(OutDir)"
+xcopy /Y /Q "$(EngineRoot)external\websockets\prebuilt\win32\*.lib" "$(SolutionDir)Libraries_$(Configuration).win32\"</Command>
+    </PreLinkEvent>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include="..\Classes\Application.cpp" />
+    <ClCompile Include="..\Classes\ArbitraryHull.cpp" />
+    <ClCompile Include="..\Classes\Cell.cpp" />
+    <ClCompile Include="..\Classes\CellGameInterface.cpp" />
+    <ClCompile Include="..\Classes\CellInfoMenu.cpp" />
+    <ClCompile Include="..\Classes\CellMapPopupButton.cpp" />
+    <ClCompile Include="..\Classes\CellMapWidget.cpp" />
+    <ClCompile Include="..\Classes\CellNetWidget.cpp" />
+    <ClCompile Include="..\Classes\CellsNetLayer.cpp" />
+    <ClCompile Include="..\Classes\CellsNetwork.cpp" />
+    <ClCompile Include="..\Classes\CellSpinoffMenu.cpp" />
+    <ClCompile Include="..\Classes\CellTaskInfoMenu.cpp" />
+    <ClCompile Include="..\Classes\CellTasksMenu.cpp" />
+    <ClCompile Include="..\Classes\Color.cpp" />
+    <ClCompile Include="..\Classes\Drawable.cpp" />
+    <ClCompile Include="..\Classes\EditorLayer.cpp" />
+    <ClCompile Include="..\Classes\GameSavesManager.cpp" />
+    <ClCompile Include="..\Classes\Investigator.cpp" />
+    <ClCompile Include="..\Classes\InvestigatorMapWidget.cpp" />
+    <ClCompile Include="..\Classes\MessageManager.cpp" />
+    <ClCompile Include="..\Classes\MiscUtils.cpp" />
+    <ClCompile Include="..\Classes\GameInfo.cpp" />
+    <ClCompile Include="..\Classes\GameScene.cpp" />
+    <ClCompile Include="..\Classes\Log.cpp" />
+    <ClCompile Include="..\Classes\LuaBindings.cpp" />
+    <ClCompile Include="..\Classes\LuaInstance.cpp" />
+    <ClCompile Include="..\Classes\MainMenuScene.cpp" />
+    <ClCompile Include="..\Classes\MapGuiLayer.cpp" />
+    <ClCompile Include="..\Classes\MapProjector.cpp" />
+    <ClCompile Include="..\Classes\NotificationMessageLayer.cpp" />
+    <ClCompile Include="..\Classes\NotificationMessageManager.cpp" />
+    <ClCompile Include="..\Classes\NotificationMessageWidget.cpp" />
+    <ClCompile Include="..\Classes\ProgressBar.cpp" />
+    <ClCompile Include="..\Classes\Region.cpp" />
+    <ClCompile Include="..\Classes\SessionEndScreen.cpp" />
+    <ClCompile Include="..\Classes\SplashScreenScene.cpp" />
+    <ClCompile Include="..\Classes\SqliteConnection.cpp" />
+    <ClCompile Include="..\Classes\SqliteDataReader.cpp" />
+    <ClCompile Include="..\Classes\Task.cpp" />
+    <ClCompile Include="..\Classes\TaskManager.cpp" />
+    <ClCompile Include="..\Classes\Town.cpp" />
+    <ClCompile Include="..\Classes\TownMapWidget.cpp" />
+    <ClCompile Include="..\Classes\TransitionZoomFade.cpp" />
+    <ClCompile Include="..\Classes\Tutorial.cpp" />
+    <ClCompile Include="..\Classes\TutorialLayer.cpp" />
+    <ClCompile Include="..\Classes\TutorialWidget.cpp" />
+    <ClCompile Include="..\Classes\UserMessage.cpp" />
+    <ClCompile Include="..\Classes\Vector2.cpp" />
+    <ClCompile Include="..\Classes\World.cpp" />
+    <ClCompile Include="..\Classes\WorldLoader.cpp" />
+    <ClCompile Include="..\Classes\WorldMapLayer.cpp" />
+    <ClCompile Include="..\dependencies\lua-5.1.5\lapi.c" />
+    <ClCompile Include="..\dependencies\lua-5.1.5\lauxlib.c" />
+    <ClCompile Include="..\dependencies\lua-5.1.5\lbaselib.c" />
+    <ClCompile Include="..\dependencies\lua-5.1.5\lcode.c" />
+    <ClCompile Include="..\dependencies\lua-5.1.5\ldblib.c" />
+    <ClCompile Include="..\dependencies\lua-5.1.5\ldebug.c" />
+    <ClCompile Include="..\dependencies\lua-5.1.5\ldo.c" />
+    <ClCompile Include="..\dependencies\lua-5.1.5\ldump.c" />
+    <ClCompile Include="..\dependencies\lua-5.1.5\lfunc.c" />
+    <ClCompile Include="..\dependencies\lua-5.1.5\lgc.c" />
+    <ClCompile Include="..\dependencies\lua-5.1.5\linit.c" />
+    <ClCompile Include="..\dependencies\lua-5.1.5\liolib.c" />
+    <ClCompile Include="..\dependencies\lua-5.1.5\llex.c" />
+    <ClCompile Include="..\dependencies\lua-5.1.5\lmathlib.c" />
+    <ClCompile Include="..\dependencies\lua-5.1.5\lmem.c" />
+    <ClCompile Include="..\dependencies\lua-5.1.5\loadlib.c" />
+    <ClCompile Include="..\dependencies\lua-5.1.5\lobject.c" />
+    <ClCompile Include="..\dependencies\lua-5.1.5\lopcodes.c" />
+    <ClCompile Include="..\dependencies\lua-5.1.5\loslib.c" />
+    <ClCompile Include="..\dependencies\lua-5.1.5\lparser.c" />
+    <ClCompile Include="..\dependencies\lua-5.1.5\lstate.c" />
+    <ClCompile Include="..\dependencies\lua-5.1.5\lstring.c" />
+    <ClCompile Include="..\dependencies\lua-5.1.5\lstrlib.c" />
+    <ClCompile Include="..\dependencies\lua-5.1.5\ltable.c" />
+    <ClCompile Include="..\dependencies\lua-5.1.5\ltablib.c" />
+    <ClCompile Include="..\dependencies\lua-5.1.5\ltm.c" />
+    <ClCompile Include="..\dependencies\lua-5.1.5\lundump.c" />
+    <ClCompile Include="..\dependencies\lua-5.1.5\lvm.c" />
+    <ClCompile Include="..\dependencies\lua-5.1.5\lzio.c" />
+    <ClCompile Include="..\dependencies\lua-5.1.5\print.c" />
+    <ClCompile Include="..\dependencies\luabind-0.9.1\src\class.cpp" />
+    <ClCompile Include="..\dependencies\luabind-0.9.1\src\class_info.cpp" />
+    <ClCompile Include="..\dependencies\luabind-0.9.1\src\class_registry.cpp" />
+    <ClCompile Include="..\dependencies\luabind-0.9.1\src\class_rep.cpp" />
+    <ClCompile Include="..\dependencies\luabind-0.9.1\src\create_class.cpp" />
+    <ClCompile Include="..\dependencies\luabind-0.9.1\src\error.cpp" />
+    <ClCompile Include="..\dependencies\luabind-0.9.1\src\exception_handler.cpp" />
+    <ClCompile Include="..\dependencies\luabind-0.9.1\src\function.cpp" />
+    <ClCompile Include="..\dependencies\luabind-0.9.1\src\inheritance.cpp" />
+    <ClCompile Include="..\dependencies\luabind-0.9.1\src\link_compatibility.cpp" />
+    <ClCompile Include="..\dependencies\luabind-0.9.1\src\object_rep.cpp" />
+    <ClCompile Include="..\dependencies\luabind-0.9.1\src\open.cpp" />
+    <ClCompile Include="..\dependencies\luabind-0.9.1\src\pcall.cpp" />
+    <ClCompile Include="..\dependencies\luabind-0.9.1\src\scope.cpp" />
+    <ClCompile Include="..\dependencies\luabind-0.9.1\src\stack_content_by_name.cpp" />
+    <ClCompile Include="..\dependencies\luabind-0.9.1\src\weak_ref.cpp" />
+    <ClCompile Include="..\dependencies\luabind-0.9.1\src\wrapper_base.cpp" />
+    <ClCompile Include="..\dependencies\pugixml-1.4\pugixml.cpp" />
+    <ClCompile Include="..\dependencies\sqlite3-3.8.7\shell.c" />
+    <ClCompile Include="..\dependencies\sqlite3-3.8.7\sqlite3.c" />
+    <ClCompile Include="main.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\Classes\Application.h" />
+    <ClInclude Include="..\Classes\ArbitraryHull.h" />
+    <ClInclude Include="..\Classes\Cell.h" />
+    <ClInclude Include="..\Classes\CellGameInterface.h" />
+    <ClInclude Include="..\Classes\CellInfoMenu.h" />
+    <ClInclude Include="..\Classes\CellMapPopupButton.h" />
+    <ClInclude Include="..\Classes\CellMapWidget.h" />
+    <ClInclude Include="..\Classes\CellNetWidget.h" />
+    <ClInclude Include="..\Classes\CellsNetLayer.h" />
+    <ClInclude Include="..\Classes\CellsNetwork.h" />
+    <ClInclude Include="..\Classes\CellSpinoffMenu.h" />
+    <ClInclude Include="..\Classes\CellTaskInfoMenu.h" />
+    <ClInclude Include="..\Classes\CellTasksMenu.h" />
+    <ClInclude Include="..\Classes\Color.h" />
+    <ClInclude Include="..\Classes\DbConnection.h" />
+    <ClInclude Include="..\Classes\Drawable.h" />
+    <ClInclude Include="..\Classes\EditorLayer.h" />
+    <ClInclude Include="..\Classes\GameSavesManager.h" />
+    <ClInclude Include="..\Classes\Investigator.h" />
+    <ClInclude Include="..\Classes\InvestigatorMapWidget.h" />
+    <ClInclude Include="..\Classes\MessageManager.h" />
+    <ClInclude Include="..\Classes\MiscUtils.h" />
+    <ClInclude Include="..\Classes\GameInfo.h" />
+    <ClInclude Include="..\Classes\GameScene.h" />
+    <ClInclude Include="..\Classes\Log.h" />
+    <ClInclude Include="..\Classes\LuaInstance.h" />
+    <ClInclude Include="..\Classes\MainMenuScene.h" />
+    <ClInclude Include="..\Classes\MapGuiLayer.h" />
+    <ClInclude Include="..\Classes\MapProjector.h" />
+    <ClInclude Include="..\Classes\NotificationMessageLayer.h" />
+    <ClInclude Include="..\Classes\NotificationMessageManager.h" />
+    <ClInclude Include="..\Classes\NotificationMessageWidget.h" />
+    <ClInclude Include="..\Classes\ProgressBar.h" />
+    <ClInclude Include="..\Classes\Region.h" />
+    <ClInclude Include="..\Classes\SessionEndScreen.h" />
+    <ClInclude Include="..\Classes\SettingsManager.h" />
+    <ClInclude Include="..\Classes\SplashScreenScene.h" />
+    <ClInclude Include="..\Classes\SqlDataReader.h" />
+    <ClInclude Include="..\Classes\SqliteConnection.h" />
+    <ClInclude Include="..\Classes\SqliteDataReader.h" />
+    <ClInclude Include="..\Classes\Task.h" />
+    <ClInclude Include="..\Classes\TaskManager.h" />
+    <ClInclude Include="..\Classes\Town.h" />
+    <ClInclude Include="..\Classes\TownMapWidget.h" />
+    <ClInclude Include="..\Classes\TransitionZoomFade.h" />
+    <ClInclude Include="..\Classes\Tutorial.h" />
+    <ClInclude Include="..\Classes\TutorialLayer.h" />
+    <ClInclude Include="..\Classes\TutorialWidget.h" />
+    <ClInclude Include="..\Classes\UserMessage.h" />
+    <ClInclude Include="..\Classes\Vector2.h" />
+    <ClInclude Include="..\Classes\World.h" />
+    <ClInclude Include="..\Classes\WorldLoader.h" />
+    <ClInclude Include="..\Classes\WorldMapLayer.h" />
+    <ClInclude Include="..\dependencies\lua-5.1.5\lapi.h" />
+    <ClInclude Include="..\dependencies\lua-5.1.5\lauxlib.h" />
+    <ClInclude Include="..\dependencies\lua-5.1.5\lcode.h" />
+    <ClInclude Include="..\dependencies\lua-5.1.5\ldebug.h" />
+    <ClInclude Include="..\dependencies\lua-5.1.5\ldo.h" />
+    <ClInclude Include="..\dependencies\lua-5.1.5\lfunc.h" />
+    <ClInclude Include="..\dependencies\lua-5.1.5\lgc.h" />
+    <ClInclude Include="..\dependencies\lua-5.1.5\llex.h" />
+    <ClInclude Include="..\dependencies\lua-5.1.5\llimits.h" />
+    <ClInclude Include="..\dependencies\lua-5.1.5\lmem.h" />
+    <ClInclude Include="..\dependencies\lua-5.1.5\lobject.h" />
+    <ClInclude Include="..\dependencies\lua-5.1.5\lopcodes.h" />
+    <ClInclude Include="..\dependencies\lua-5.1.5\lparser.h" />
+    <ClInclude Include="..\dependencies\lua-5.1.5\lstate.h" />
+    <ClInclude Include="..\dependencies\lua-5.1.5\lstring.h" />
+    <ClInclude Include="..\dependencies\lua-5.1.5\ltable.h" />
+    <ClInclude Include="..\dependencies\lua-5.1.5\ltm.h" />
+    <ClInclude Include="..\dependencies\lua-5.1.5\lua.h" />
+    <ClInclude Include="..\dependencies\lua-5.1.5\luaconf.h" />
+    <ClInclude Include="..\dependencies\lua-5.1.5\lualib.h" />
+    <ClInclude Include="..\dependencies\lua-5.1.5\lundump.h" />
+    <ClInclude Include="..\dependencies\lua-5.1.5\lvm.h" />
+    <ClInclude Include="..\dependencies\lua-5.1.5\lzio.h" />
+    <ClInclude Include="..\dependencies\pugixml-1.4\pugiconfig.hpp" />
+    <ClInclude Include="..\dependencies\pugixml-1.4\pugixml.hpp" />
+    <ClInclude Include="..\dependencies\sqlite3-3.8.7\sqlite3.h" />
+    <ClInclude Include="..\dependencies\sqlite3-3.8.7\sqlite3ext.h" />
+    <ClInclude Include="main.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\cocos2d\cocos\2d\cocos2d.vcxproj">
+      <Project>{98a51ba8-fc3a-415b-ac8f-8c7bd464e93e}</Project>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+    </ProjectReference>
+    <ProjectReference Include="..\cocos2d\cocos\audio\proj.win32\CocosDenshion.vcxproj">
+      <Project>{f8edd7fa-9a51-4e80-baeb-860825d2eac6}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\cocos2d\external\chipmunk\proj.win32\chipmunk.vcxproj">
+      <Project>{207bc7a9-ccf1-4f2f-a04d-45f72242ae25}</Project>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="game.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\dependencies\lua-5.1.5\Makefile" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

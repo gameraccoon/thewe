@@ -1,0 +1,6 @@
+[submodule "cocos2d"]
+	path = cocos2d
+	url = git@github.com:RuWhyNot/thewe-engine.git
+[submodule "dependencies"]
+	path = dependencies
+	url = git@github.com:RuWhyNot/thewe-deps.git

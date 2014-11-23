@@ -1,0 +1,82 @@
+*.suo
+*.exe
+*.obj
+*.tlog
+*.log
+*.lastbuildstate
+*.idb
+*.pdb
+*.sdf
+*.opensdf
+*.ilk
+proj.android/bin/
+proj.android/assets/
+CMakeLists.txt.user
+
+;для очистки
+; *.class
+; *.cpp
+; *.c
+; *.txt
+; *.project
+; *.prefs
+; *.xml
+; *.java
+; *.mk
+; *.gitignore
+; *.jar
+; *.a
+; *.dll
+; *.lib
+; *.gyp
+; *.gypi
+; *.settings
+; *.png
+; *.hlsl
+; *.inl
+; *.am
+; *.angle
+; *.appxmanifest
+; *.bak
+; *.bat
+; *.cproject
+; *.def
+; *.filters
+; *.frag
+; *.in
+; *.jpg
+; *.ogg
+; *.y
+; *.vs
+; *.vert
+; *.vcxproj
+; *.vcproj
+; *.user
+; *.ttf
+; *.tga
+; *.sln
+; *.sh
+; *.rtf
+; *.rc
+; *.py
+; *.ps
+; *.pri
+; *.pfx
+; *.pch
+; *.pbxproj
+; *.patch
+; *.mkf
+; *.l
+; *.cc
+log.txt
+/proj.win32/Debug.win32
+/proj.win32/Release.win32
+*.apk
+*.o
+*.d
+/proj.android/obj
+/proj.android/libs
+proj.win32/Binaries/
+proj.win32/Intermediate_Debug.win32/
+proj.win32/Intermediate_Release.win32/
+Resources/saves/

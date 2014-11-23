@@ -1,0 +1,607 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="win32">
+      <UniqueIdentifier>{84a8ebd7-7cf0-47f6-b75e-d441df67da40}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Classes">
+      <UniqueIdentifier>{bb6c862e-70e9-49d9-81b7-3829a6f50471}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="resource">
+      <UniqueIdentifier>{715254bc-d70b-4ec5-bf29-467dd3ace079}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="dependencies">
+      <UniqueIdentifier>{afa8f829-887f-44a1-81dc-5f87c708fcee}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="dependencies\pugixml">
+      <UniqueIdentifier>{f87ad588-1cb6-446f-8e84-090547919cbf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="dependencies\lua">
+      <UniqueIdentifier>{add7b705-d304-47e4-ad4b-ac26cf2e061c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="dependencies\luabind">
+      <UniqueIdentifier>{17439e94-e488-4f40-8735-ed246466a291}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Classes\Utils">
+      <UniqueIdentifier>{5dfdf271-ecab-40ba-a963-70f89dcc34c1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="dependencies\sqlite3">
+      <UniqueIdentifier>{25fe8be1-1243-43d7-8e82-ab73407e7ff1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Classes\GameModels">
+      <UniqueIdentifier>{eca03b8e-c3b9-491b-aaa2-00fc91fe4390}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Classes\GameWidgets">
+      <UniqueIdentifier>{3f3d1764-1e9a-4bec-9957-21ddb4342d53}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Classes\FileWork">
+      <UniqueIdentifier>{ff62ceb8-6bcc-4c67-ae50-4072b1eee285}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Classes\GameGui">
+      <UniqueIdentifier>{24112e01-a8b7-448a-8d27-f6c22026385b}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="main.cpp">
+      <Filter>win32</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\Application.cpp">
+      <Filter>Classes</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\EditorLayer.cpp">
+      <Filter>Classes</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\GameScene.cpp">
+      <Filter>Classes</Filter>
+    </ClCompile>
+    <ClCompile Include="..\dependencies\pugixml-1.4\pugixml.cpp">
+      <Filter>dependencies\pugixml</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\MainMenuScene.cpp">
+      <Filter>Classes</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\SplashScreenScene.cpp">
+      <Filter>Classes</Filter>
+    </ClCompile>
+    <ClCompile Include="..\dependencies\lua-5.1.5\lapi.c">
+      <Filter>dependencies\lua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\dependencies\lua-5.1.5\lauxlib.c">
+      <Filter>dependencies\lua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\dependencies\lua-5.1.5\lbaselib.c">
+      <Filter>dependencies\lua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\dependencies\lua-5.1.5\lcode.c">
+      <Filter>dependencies\lua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\dependencies\lua-5.1.5\ldblib.c">
+      <Filter>dependencies\lua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\dependencies\lua-5.1.5\ldebug.c">
+      <Filter>dependencies\lua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\dependencies\lua-5.1.5\ldo.c">
+      <Filter>dependencies\lua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\dependencies\lua-5.1.5\ldump.c">
+      <Filter>dependencies\lua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\dependencies\lua-5.1.5\lfunc.c">
+      <Filter>dependencies\lua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\dependencies\lua-5.1.5\lgc.c">
+      <Filter>dependencies\lua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\dependencies\lua-5.1.5\linit.c">
+      <Filter>dependencies\lua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\dependencies\lua-5.1.5\liolib.c">
+      <Filter>dependencies\lua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\dependencies\lua-5.1.5\llex.c">
+      <Filter>dependencies\lua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\dependencies\lua-5.1.5\lmathlib.c">
+      <Filter>dependencies\lua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\dependencies\lua-5.1.5\lmem.c">
+      <Filter>dependencies\lua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\dependencies\lua-5.1.5\loadlib.c">
+      <Filter>dependencies\lua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\dependencies\lua-5.1.5\lobject.c">
+      <Filter>dependencies\lua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\dependencies\lua-5.1.5\lopcodes.c">
+      <Filter>dependencies\lua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\dependencies\lua-5.1.5\loslib.c">
+      <Filter>dependencies\lua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\dependencies\lua-5.1.5\lparser.c">
+      <Filter>dependencies\lua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\dependencies\lua-5.1.5\lstate.c">
+      <Filter>dependencies\lua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\dependencies\lua-5.1.5\lstring.c">
+      <Filter>dependencies\lua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\dependencies\lua-5.1.5\lstrlib.c">
+      <Filter>dependencies\lua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\dependencies\lua-5.1.5\ltable.c">
+      <Filter>dependencies\lua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\dependencies\lua-5.1.5\ltablib.c">
+      <Filter>dependencies\lua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\dependencies\lua-5.1.5\ltm.c">
+      <Filter>dependencies\lua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\dependencies\lua-5.1.5\lundump.c">
+      <Filter>dependencies\lua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\dependencies\lua-5.1.5\lvm.c">
+      <Filter>dependencies\lua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\dependencies\lua-5.1.5\lzio.c">
+      <Filter>dependencies\lua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\dependencies\lua-5.1.5\print.c">
+      <Filter>dependencies\lua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\dependencies\luabind-0.9.1\src\class.cpp">
+      <Filter>dependencies\luabind</Filter>
+    </ClCompile>
+    <ClCompile Include="..\dependencies\luabind-0.9.1\src\class_info.cpp">
+      <Filter>dependencies\luabind</Filter>
+    </ClCompile>
+    <ClCompile Include="..\dependencies\luabind-0.9.1\src\class_registry.cpp">
+      <Filter>dependencies\luabind</Filter>
+    </ClCompile>
+    <ClCompile Include="..\dependencies\luabind-0.9.1\src\class_rep.cpp">
+      <Filter>dependencies\luabind</Filter>
+    </ClCompile>
+    <ClCompile Include="..\dependencies\luabind-0.9.1\src\create_class.cpp">
+      <Filter>dependencies\luabind</Filter>
+    </ClCompile>
+    <ClCompile Include="..\dependencies\luabind-0.9.1\src\error.cpp">
+      <Filter>dependencies\luabind</Filter>
+    </ClCompile>
+    <ClCompile Include="..\dependencies\luabind-0.9.1\src\exception_handler.cpp">
+      <Filter>dependencies\luabind</Filter>
+    </ClCompile>
+    <ClCompile Include="..\dependencies\luabind-0.9.1\src\function.cpp">
+      <Filter>dependencies\luabind</Filter>
+    </ClCompile>
+    <ClCompile Include="..\dependencies\luabind-0.9.1\src\inheritance.cpp">
+      <Filter>dependencies\luabind</Filter>
+    </ClCompile>
+    <ClCompile Include="..\dependencies\luabind-0.9.1\src\link_compatibility.cpp">
+      <Filter>dependencies\luabind</Filter>
+    </ClCompile>
+    <ClCompile Include="..\dependencies\luabind-0.9.1\src\object_rep.cpp">
+      <Filter>dependencies\luabind</Filter>
+    </ClCompile>
+    <ClCompile Include="..\dependencies\luabind-0.9.1\src\open.cpp">
+      <Filter>dependencies\luabind</Filter>
+    </ClCompile>
+    <ClCompile Include="..\dependencies\luabind-0.9.1\src\pcall.cpp">
+      <Filter>dependencies\luabind</Filter>
+    </ClCompile>
+    <ClCompile Include="..\dependencies\luabind-0.9.1\src\scope.cpp">
+      <Filter>dependencies\luabind</Filter>
+    </ClCompile>
+    <ClCompile Include="..\dependencies\luabind-0.9.1\src\stack_content_by_name.cpp">
+      <Filter>dependencies\luabind</Filter>
+    </ClCompile>
+    <ClCompile Include="..\dependencies\luabind-0.9.1\src\weak_ref.cpp">
+      <Filter>dependencies\luabind</Filter>
+    </ClCompile>
+    <ClCompile Include="..\dependencies\luabind-0.9.1\src\wrapper_base.cpp">
+      <Filter>dependencies\luabind</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\Color.cpp">
+      <Filter>Classes\Utils</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\ArbitraryHull.cpp">
+      <Filter>Classes\Utils</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\Drawable.cpp">
+      <Filter>Classes\Utils</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\Log.cpp">
+      <Filter>Classes\Utils</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\ProgressBar.cpp">
+      <Filter>Classes\Utils</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\Vector2.cpp">
+      <Filter>Classes\Utils</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\TransitionZoomFade.cpp">
+      <Filter>Classes\Utils</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\UserMessage.cpp">
+      <Filter>Classes\GameGui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\CellsNetLayer.cpp">
+      <Filter>Classes\GameGui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\GameInfo.cpp">
+      <Filter>Classes</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\MiscUtils.cpp">
+      <Filter>Classes\Utils</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\LuaInstance.cpp">
+      <Filter>Classes</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\LuaBindings.cpp">
+      <Filter>Classes</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\SessionEndScreen.cpp">
+      <Filter>Classes</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\CellNetWidget.cpp">
+      <Filter>Classes\GameGui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\TutorialWidget.cpp">
+      <Filter>Classes\GameGui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\NotificationMessageLayer.cpp">
+      <Filter>Classes\GameGui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\NotificationMessageWidget.cpp">
+      <Filter>Classes\GameGui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\TutorialLayer.cpp">
+      <Filter>Classes\GameGui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\NotificationMessageManager.cpp">
+      <Filter>Classes\GameGui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\MessageManager.cpp">
+      <Filter>Classes</Filter>
+    </ClCompile>
+    <ClCompile Include="..\dependencies\sqlite3-3.8.7\shell.c">
+      <Filter>dependencies\sqlite3</Filter>
+    </ClCompile>
+    <ClCompile Include="..\dependencies\sqlite3-3.8.7\sqlite3.c">
+      <Filter>dependencies\sqlite3</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\Cell.cpp">
+      <Filter>Classes\GameModels</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\Investigator.cpp">
+      <Filter>Classes\GameModels</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\Task.cpp">
+      <Filter>Classes\GameModels</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\CellsNetwork.cpp">
+      <Filter>Classes\GameModels</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\Region.cpp">
+      <Filter>Classes\GameModels</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\TaskManager.cpp">
+      <Filter>Classes\GameModels</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\Town.cpp">
+      <Filter>Classes\GameModels</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\Tutorial.cpp">
+      <Filter>Classes\GameModels</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\World.cpp">
+      <Filter>Classes\GameModels</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\MapGuiLayer.cpp">
+      <Filter>Classes\GameWidgets</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\MapProjector.cpp">
+      <Filter>Classes\GameWidgets</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\TownMapWidget.cpp">
+      <Filter>Classes\GameWidgets</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\WorldMapLayer.cpp">
+      <Filter>Classes\GameWidgets</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\InvestigatorMapWidget.cpp">
+      <Filter>Classes\GameWidgets</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\CellTasksMenu.cpp">
+      <Filter>Classes\GameWidgets</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\CellTaskInfoMenu.cpp">
+      <Filter>Classes\GameWidgets</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\CellSpinoffMenu.cpp">
+      <Filter>Classes\GameWidgets</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\CellMapWidget.cpp">
+      <Filter>Classes\GameWidgets</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\CellMapPopupButton.cpp">
+      <Filter>Classes\GameWidgets</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\CellInfoMenu.cpp">
+      <Filter>Classes\GameWidgets</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\CellGameInterface.cpp">
+      <Filter>Classes\GameWidgets</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\GameSavesManager.cpp">
+      <Filter>Classes\FileWork</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\SqliteConnection.cpp">
+      <Filter>Classes\FileWork</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\SqliteDataReader.cpp">
+      <Filter>Classes\FileWork</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\WorldLoader.cpp">
+      <Filter>Classes\FileWork</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="main.h">
+      <Filter>win32</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Application.h">
+      <Filter>Classes</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\EditorLayer.h">
+      <Filter>Classes</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\GameScene.h">
+      <Filter>Classes</Filter>
+    </ClInclude>
+    <ClInclude Include="..\dependencies\pugixml-1.4\pugiconfig.hpp">
+      <Filter>dependencies\pugixml</Filter>
+    </ClInclude>
+    <ClInclude Include="..\dependencies\pugixml-1.4\pugixml.hpp">
+      <Filter>dependencies\pugixml</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\MainMenuScene.h">
+      <Filter>Classes</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\SplashScreenScene.h">
+      <Filter>Classes</Filter>
+    </ClInclude>
+    <ClInclude Include="..\dependencies\lua-5.1.5\lapi.h">
+      <Filter>dependencies\lua</Filter>
+    </ClInclude>
+    <ClInclude Include="..\dependencies\lua-5.1.5\lauxlib.h">
+      <Filter>dependencies\lua</Filter>
+    </ClInclude>
+    <ClInclude Include="..\dependencies\lua-5.1.5\lcode.h">
+      <Filter>dependencies\lua</Filter>
+    </ClInclude>
+    <ClInclude Include="..\dependencies\lua-5.1.5\ldebug.h">
+      <Filter>dependencies\lua</Filter>
+    </ClInclude>
+    <ClInclude Include="..\dependencies\lua-5.1.5\ldo.h">
+      <Filter>dependencies\lua</Filter>
+    </ClInclude>
+    <ClInclude Include="..\dependencies\lua-5.1.5\lfunc.h">
+      <Filter>dependencies\lua</Filter>
+    </ClInclude>
+    <ClInclude Include="..\dependencies\lua-5.1.5\lgc.h">
+      <Filter>dependencies\lua</Filter>
+    </ClInclude>
+    <ClInclude Include="..\dependencies\lua-5.1.5\llex.h">
+      <Filter>dependencies\lua</Filter>
+    </ClInclude>
+    <ClInclude Include="..\dependencies\lua-5.1.5\llimits.h">
+      <Filter>dependencies\lua</Filter>
+    </ClInclude>
+    <ClInclude Include="..\dependencies\lua-5.1.5\lmem.h">
+      <Filter>dependencies\lua</Filter>
+    </ClInclude>
+    <ClInclude Include="..\dependencies\lua-5.1.5\lobject.h">
+      <Filter>dependencies\lua</Filter>
+    </ClInclude>
+    <ClInclude Include="..\dependencies\lua-5.1.5\lopcodes.h">
+      <Filter>dependencies\lua</Filter>
+    </ClInclude>
+    <ClInclude Include="..\dependencies\lua-5.1.5\lparser.h">
+      <Filter>dependencies\lua</Filter>
+    </ClInclude>
+    <ClInclude Include="..\dependencies\lua-5.1.5\lstate.h">
+      <Filter>dependencies\lua</Filter>
+    </ClInclude>
+    <ClInclude Include="..\dependencies\lua-5.1.5\lstring.h">
+      <Filter>dependencies\lua</Filter>
+    </ClInclude>
+    <ClInclude Include="..\dependencies\lua-5.1.5\ltable.h">
+      <Filter>dependencies\lua</Filter>
+    </ClInclude>
+    <ClInclude Include="..\dependencies\lua-5.1.5\ltm.h">
+      <Filter>dependencies\lua</Filter>
+    </ClInclude>
+    <ClInclude Include="..\dependencies\lua-5.1.5\lua.h">
+      <Filter>dependencies\lua</Filter>
+    </ClInclude>
+    <ClInclude Include="..\dependencies\lua-5.1.5\luaconf.h">
+      <Filter>dependencies\lua</Filter>
+    </ClInclude>
+    <ClInclude Include="..\dependencies\lua-5.1.5\lualib.h">
+      <Filter>dependencies\lua</Filter>
+    </ClInclude>
+    <ClInclude Include="..\dependencies\lua-5.1.5\lundump.h">
+      <Filter>dependencies\lua</Filter>
+    </ClInclude>
+    <ClInclude Include="..\dependencies\lua-5.1.5\lvm.h">
+      <Filter>dependencies\lua</Filter>
+    </ClInclude>
+    <ClInclude Include="..\dependencies\lua-5.1.5\lzio.h">
+      <Filter>dependencies\lua</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\ArbitraryHull.h">
+      <Filter>Classes\Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Color.h">
+      <Filter>Classes\Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Drawable.h">
+      <Filter>Classes\Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Log.h">
+      <Filter>Classes\Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\ProgressBar.h">
+      <Filter>Classes\Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\SettingsManager.h">
+      <Filter>Classes\Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Vector2.h">
+      <Filter>Classes\Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\TransitionZoomFade.h">
+      <Filter>Classes\Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\UserMessage.h">
+      <Filter>Classes\GameGui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\CellsNetLayer.h">
+      <Filter>Classes\GameGui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\GameInfo.h">
+      <Filter>Classes</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\MiscUtils.h">
+      <Filter>Classes\Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\LuaInstance.h">
+      <Filter>Classes</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\SessionEndScreen.h">
+      <Filter>Classes</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\CellNetWidget.h">
+      <Filter>Classes\GameGui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\TutorialWidget.h">
+      <Filter>Classes\GameGui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\NotificationMessageLayer.h">
+      <Filter>Classes\GameGui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\NotificationMessageWidget.h">
+      <Filter>Classes\GameGui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\TutorialLayer.h">
+      <Filter>Classes\GameGui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\NotificationMessageManager.h">
+      <Filter>Classes\GameGui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\MessageManager.h">
+      <Filter>Classes</Filter>
+    </ClInclude>
+    <ClInclude Include="..\dependencies\sqlite3-3.8.7\sqlite3.h">
+      <Filter>dependencies\sqlite3</Filter>
+    </ClInclude>
+    <ClInclude Include="..\dependencies\sqlite3-3.8.7\sqlite3ext.h">
+      <Filter>dependencies\sqlite3</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Cell.h">
+      <Filter>Classes\GameModels</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Investigator.h">
+      <Filter>Classes\GameModels</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Task.h">
+      <Filter>Classes\GameModels</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\CellsNetwork.h">
+      <Filter>Classes\GameModels</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Region.h">
+      <Filter>Classes\GameModels</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\TaskManager.h">
+      <Filter>Classes\GameModels</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Town.h">
+      <Filter>Classes\GameModels</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Tutorial.h">
+      <Filter>Classes\GameModels</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\World.h">
+      <Filter>Classes\GameModels</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\MapGuiLayer.h">
+      <Filter>Classes\GameWidgets</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\MapProjector.h">
+      <Filter>Classes\GameWidgets</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\TownMapWidget.h">
+      <Filter>Classes\GameWidgets</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\WorldMapLayer.h">
+      <Filter>Classes\GameWidgets</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\InvestigatorMapWidget.h">
+      <Filter>Classes\GameWidgets</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\CellTasksMenu.h">
+      <Filter>Classes\GameWidgets</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\CellTaskInfoMenu.h">
+      <Filter>Classes\GameWidgets</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\CellSpinoffMenu.h">
+      <Filter>Classes\GameWidgets</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\CellMapWidget.h">
+      <Filter>Classes\GameWidgets</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\CellMapPopupButton.h">
+      <Filter>Classes\GameWidgets</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\CellInfoMenu.h">
+      <Filter>Classes\GameWidgets</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\CellGameInterface.h">
+      <Filter>Classes\GameWidgets</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\DbConnection.h">
+      <Filter>Classes\FileWork</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\GameSavesManager.h">
+      <Filter>Classes\FileWork</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\SqlDataReader.h">
+      <Filter>Classes\FileWork</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\SqliteConnection.h">
+      <Filter>Classes\FileWork</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\SqliteDataReader.h">
+      <Filter>Classes\FileWork</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\WorldLoader.h">
+      <Filter>Classes\FileWork</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="game.rc">
+      <Filter>resource</Filter>
+    </ResourceCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\dependencies\lua-5.1.5\Makefile">
+      <Filter>dependencies\lua</Filter>
+    </None>
+  </ItemGroup>
+</Project>
