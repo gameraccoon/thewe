@@ -280,7 +280,11 @@ void CellMenuSelector::OnTasksButtonPressed(cocos2d::Ref *sender)
 {
 	if (!getChildByName(_menuNodeName))
 	{
-		CreateMenu(new CellTasksScreen(_cell, this));
+		if (_cell.lock()->getCurrentTask().expired()) {
+			CreateMenu(new CellTasksScreen(_cell, this));
+		} else {
+			CreateMenu(new CellTaskInfoMenu(_cell, this));
+		}
 	}
 }
 

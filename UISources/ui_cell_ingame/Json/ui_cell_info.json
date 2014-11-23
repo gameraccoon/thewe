@@ -9,8 +9,16 @@
   "dataScale": 1,
   "designHeight": 480,
   "designWidth": 800,
-  "textures": [],
-  "texturesPng": [],
+  "textures": [
+    "ui_cell_ingame0.plist"
+  ],
+  "texturesPng": [
+    "ui_cell_ingame0.png",
+    "ui_cell_ingame0.png",
+    "ui_cell_ingame0.png",
+    "ui_cell_ingame0.png",
+    "ui_cell_ingame0.png"
+  ],
   "version": "1.6.0.0",
   "widgetTree": {
     "classname": "Panel",

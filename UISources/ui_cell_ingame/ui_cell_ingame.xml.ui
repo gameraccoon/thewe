@@ -7,15 +7,15 @@
   <JsonFileName>ui_cell_ingame.json</JsonFileName>
   <JsonFolder>D:\Projects\TheWe\UISources\ui_cell_ingame\Json</JsonFolder>
   <JsonList>
-    <string>ui_cell_spinoff.json</string>
+    <string>ui_cell_current_task.json</string>
     <string>ui_cell_info.json</string>
     <string>ui_cell_select_task.json</string>
+    <string>ui_cell_spinoff.json</string>
     <string>ui_cell_task_item.json</string>
-    <string>ui_cell_current_task.json</string>
   </JsonList>
   <CanvasSize>
-    <Width>0</Width>
-    <Height>0</Height>
+    <Width>435</Width>
+    <Height>75</Height>
   </CanvasSize>
   <filePath>D:\Projects\TheWe\UISources\ui_cell_ingame\ui_cell_ingame.xml.ui</filePath>
   <ProjectType>UIProject</ProjectType>
@@ -31,5 +31,5 @@
     <string>ui_cell_ingame0.png</string>
   </imagePngList>
   <JsonSuffix>.json</JsonSuffix>
-  <CurrentUIJson>ui_cell_select_task.json</CurrentUIJson>
+  <CurrentUIJson>ui_cell_current_task.json</CurrentUIJson>
 </UIProject>

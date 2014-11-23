@@ -12,16 +12,15 @@ public:
 	virtual void update(float dt) override;
 
 private:
-	void _OnCloseCallback(cocos2d::Ref *sender);
-	void _CloseMenu(void);
-	void _OnCancel(cocos2d::Ref *sender);
+	void CloseMenu(void);
 	void KeyReleased(cocos2d::EventKeyboard::KeyCode key, cocos2d::Event *event);
+	void OnCloseCallback(cocos2d::Ref *sender, cocos2d::ui::Widget::TouchEventType eventType);
+	void OnAbortCallback(cocos2d::Ref *sender, cocos2d::ui::Widget::TouchEventType eventType);
 
 private:
-	cocos2d::Label *_taskProgressLabel;
-
-	SquareProgressBar *_taskProgressBar;
-	cocos2d::MenuItemImage *_cancelButton;
+	cocos2d::ui::Layout *_widget;
+	cocos2d::ui::LoadingBar *_progressBar;
+	cocos2d::ui::TextBMFont *_textPercentage;
 
 	Cell::WeakPtr _cell;
 	Task::WeakPtr _cellCurrentTask;
