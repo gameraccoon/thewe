@@ -25,7 +25,7 @@ bool MapGuiLayer::init(void)
 	Vector2 screen = director->getVisibleSize();
 	Vector2 origin = director->getVisibleOrigin();
 
-	_widget = dynamic_cast<cocos2d::ui::Layout *>(cocostudio::GUIReader::getInstance()->widgetFromJsonFile("GameHud/GameHud.json"));
+	_widget = dynamic_cast<cocos2d::ui::Layout *>(cocostudio::GUIReader::getInstance()->widgetFromJsonFile("ui_hud/ui_hud.ExportJson"));
 	_widget->setAnchorPoint(cocos2d::Vec2(0.5f, 0.5f));
 	_widget->setPosition(origin + screen / 2.0f);
 	

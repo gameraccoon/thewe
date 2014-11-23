@@ -7,8 +7,8 @@
     "actionlist": []
   },
   "dataScale": 1,
-  "designHeight": 480,
-  "designWidth": 800,
+  "designHeight": 0,
+  "designWidth": 0,
   "textures": [
     "tutorial0.plist"
   ],
@@ -71,7 +71,7 @@
           "sizeType": 0,
           "tag": 80,
           "touchAble": false,
-          "useMergedTexture": false,
+          "useMergedTexture": true,
           "visible": true,
           "width": 106,
           "x": 400,
@@ -138,7 +138,7 @@
           "sizeType": 0,
           "tag": 81,
           "touchAble": true,
-          "useMergedTexture": false,
+          "useMergedTexture": true,
           "visible": true,
           "width": 401,
           "x": 400,
@@ -151,7 +151,7 @@
           "disabledData": {
             "path": "new-cell-button-disabled.png",
             "plistFile": "",
-            "resourceType": 0
+            "resourceType": 1
           },
           "fontName": "微软雅黑",
           "fontSize": 50,
@@ -160,13 +160,13 @@
           "normalData": {
             "path": "new-cell-button-active.png",
             "plistFile": "",
-            "resourceType": 0
+            "resourceType": 1
           },
           "pressed": null,
           "pressedData": {
             "path": "new-cell-button-pressed.png",
             "plistFile": "",
-            "resourceType": 0
+            "resourceType": 1
           },
           "scale9Enable": false,
           "scale9Height": 115,
@@ -208,7 +208,7 @@
       "sizeType": 0,
       "tag": 79,
       "touchAble": true,
-      "useMergedTexture": false,
+      "useMergedTexture": true,
       "visible": true,
       "width": 800,
       "x": 0,
@@ -218,7 +218,7 @@
       "backGroundImageData": {
         "path": "custom-white-menu.png",
         "plistFile": "",
-        "resourceType": 0
+        "resourceType": 1
       },
       "backGroundScale9Enable": false,
       "bgColorB": 255,

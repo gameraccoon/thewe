@@ -32,7 +32,7 @@ bool CellSpinoffMenu::init(void)
 	cocos2d::Spawn *motion = cocos2d::Spawn::create(elastic_scale, fade, nullptr);
 
 	_widget = dynamic_cast<cocos2d::ui::Layout *>
-		(cocostudio::GUIReader::getInstance()->widgetFromJsonFile("UICellSpinoff/UICellSpinoff.json"));
+		(cocostudio::GUIReader::getInstance()->widgetFromJsonFile("ui_cell_ingame/ui_cell_spinoff.ExportJson"));
 	_widget->setAnchorPoint(cocos2d::Vec2(0.5f, 0.5f));
 	_widget->setPosition(origin + screen / 2.0f);
 	_widget->setScale(0.01f);

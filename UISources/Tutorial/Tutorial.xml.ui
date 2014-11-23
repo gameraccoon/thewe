@@ -1,28 +1,27 @@
 <?xml version="1.0"?>
 <UIProject xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-  <ProjectDir>D:\Projects\TheWe\UISources\Tutorial</ProjectDir>
+  <ProjectDir>D:\Projects\TheWe\UISources\tutorial</ProjectDir>
   <Version>1.6.0.0</Version>
-  <Resources>D:\Projects\TheWe\UISources\Tutorial\Resources</Resources>
-  <Name>Tutorial</Name>
-  <JsonFileName>Tutorial.json</JsonFileName>
-  <JsonFolder>D:\Projects\TheWe\UISources\Tutorial\Json</JsonFolder>
+  <Resources>D:\Projects\TheWe\UISources\tutorial\Resources</Resources>
+  <Name>tutorial</Name>
+  <JsonFileName>tutorial.json</JsonFileName>
+  <JsonFolder>D:\Projects\TheWe\UISources\tutorial\Json</JsonFolder>
   <JsonList>
-    <string>Tutorial.json</string>
+    <string>tutorial.json</string>
   </JsonList>
   <CanvasSize>
     <Width>0</Width>
     <Height>0</Height>
   </CanvasSize>
-  <filePath>D:\Projects\TheWe\UISources\Tutorial\Tutorial.xml.ui</filePath>
+  <filePath>D:\Projects\TheWe\UISources\tutorial\tutorial.xml.ui</filePath>
   <ProjectType>UIProject</ProjectType>
   <ResRelativePath />
-  <imageFileList />
+  <imageFileList>
+    <string>tutorial0.plist</string>
+  </imageFileList>
   <imagePngList>
-    <string>custom-white-menu.png</string>
-    <string>new-cell-button-active.png</string>
-    <string>new-cell-button-disabled.png</string>
-    <string>new-cell-button-pressed.png</string>
+    <string>tutorial0.png</string>
   </imagePngList>
   <JsonSuffix>.json</JsonSuffix>
-  <CurrentUIJson>Tutorial.json</CurrentUIJson>
+  <CurrentUIJson>tutorial.json</CurrentUIJson>
 </UIProject>

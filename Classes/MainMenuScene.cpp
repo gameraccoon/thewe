@@ -30,7 +30,7 @@ bool MainMenuScene::init(void)
 	Vector2 origin = director->getVisibleOrigin();
 	Vector2 center(origin.x + client.x / 2.0f, origin.y + client.y - 100.0f);
 
-	_widget = dynamic_cast<cocos2d::ui::Layout *>(cocostudio::GUIReader::getInstance()->widgetFromJsonFile("MainMenu/MainMenu_1.json"));
+	_widget = dynamic_cast<cocos2d::ui::Layout *>(cocostudio::GUIReader::getInstance()->widgetFromJsonFile("ui_main_menu/ui_main_menu.ExportJson"));
 	_widget->setAnchorPoint(cocos2d::Vec2(0.5f, 0.5f));
 	_widget->setPosition(origin + client / 2.0f);
 

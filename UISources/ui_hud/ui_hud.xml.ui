@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<UIProject xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <ProjectDir>D:\Projects\TheWe\UISources\ui_hud</ProjectDir>
+  <Version>1.6.0.0</Version>
+  <Resources>D:\Projects\TheWe\UISources\ui_hud\Resources</Resources>
+  <Name>ui_hud</Name>
+  <JsonFileName>ui_hud.json</JsonFileName>
+  <JsonFolder>D:\Projects\TheWe\UISources\ui_hud\Json</JsonFolder>
+  <JsonList>
+    <string>ui_hud.json</string>
+    <string>ui_message.json</string>
+  </JsonList>
+  <CanvasSize>
+    <Width>170</Width>
+    <Height>89</Height>
+  </CanvasSize>
+  <filePath>D:\Projects\TheWe\UISources\ui_hud\ui_hud.xml.ui</filePath>
+  <ProjectType>UIProject</ProjectType>
+  <ResRelativePath />
+  <imageFileList />
+  <imagePngList />
+  <JsonSuffix>.json</JsonSuffix>
+  <CurrentUIJson>ui_hud.json</CurrentUIJson>
+</UIProject>

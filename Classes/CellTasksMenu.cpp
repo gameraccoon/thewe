@@ -29,7 +29,7 @@ bool CellTasksScreen::init(void)
 	cocos2d::FadeIn *fade = cocos2d::FadeIn::create(0.5f);
 	cocos2d::EaseElasticOut *elastic_scale = cocos2d::EaseElasticOut::create(scale, 5.0f);
 
-	_widget = dynamic_cast<cocos2d::ui::Layout *>(cocostudio::GUIReader::getInstance()->widgetFromJsonFile("UICellTaskSelect/UICellTaskSelect.json"));
+	_widget = dynamic_cast<cocos2d::ui::Layout *>(cocostudio::GUIReader::getInstance()->widgetFromJsonFile("ui_cell_ingame/ui_cell_select_task.ExportJson"));
 	_widget->setAnchorPoint(cocos2d::Vec2(0.5f, 0.5f));
 	_widget->setPosition(origin + screen / 2.0f);
 	_widget->setScale(0.01f);
@@ -81,25 +81,23 @@ void CellTasksScreen::CloseMenu(void)
 
 cocos2d::ui::Widget* CellTasksScreen::CreateScrollerItem(const Task::Info *info)
 {
-	cocos2d::ui::Widget *widget = cocostudio::GUIReader::getInstance()->widgetFromJsonFile("UICellTaskSelect/ScrollTaskItem.json");
+	cocos2d::ui::Widget *widget = cocostudio::GUIReader::getInstance()->widgetFromJsonFile("ui_cell_ingame/ui_cell_task_item.ExportJson");
 
 	cocos2d::ui::TextBMFont *taskTitle = dynamic_cast<cocos2d::ui::TextBMFont *>(widget->getChildByName("TaskTitle"));
 	cocos2d::ui::TextBMFont *taskDuration = dynamic_cast<cocos2d::ui::TextBMFont *>(widget->getChildByName("Duration"));
 	cocos2d::ui::TextBMFont *taskChanse = dynamic_cast<cocos2d::ui::TextBMFont *>(widget->getChildByName("Chanse"));
-	cocos2d::ui::Text *startLalbel = dynamic_cast<cocos2d::ui::Text *>(widget->getChildByName("StartBtn")->getChildByName("StartBtnLabel"));
 	cocos2d::ui::Button *startBtn = dynamic_cast<cocos2d::ui::Button *>(widget->getChildByName("StartBtn"));
 
 	if (!taskTitle) {Log::Instance().writeWarning("Failed to get widget with TaskTitle name from ScrollTaskItem widget"); return widget;}
 	if (!taskDuration) {Log::Instance().writeWarning("Failed to get widget with Duration name from ScrollTaskItem widget"); return widget;}
 	if (!taskChanse) {Log::Instance().writeWarning("Failed to get widget with Chanse name from ScrollTaskItem widget"); return widget;}
-	if (!startLalbel) {Log::Instance().writeWarning("Failed to get widget with StartBtnLabel name from ScrollTaskItem widget"); return widget;}
 	if (!startBtn) {Log::Instance().writeWarning("Failed to get widget with StartBtn name from ScrollTaskItem widget"); return widget;}
 
 	startBtn->setUserData((void *)info);
 	startBtn->addTouchEventListener(CC_CALLBACK_2(CellTasksScreen::OnStartTaskCallback, this));
+	startBtn->setTitleText(LocalizationManager::Instance().getText("CellTaskMenuItem_Start"));
 
 	taskTitle->setString(info->title);
-	startLalbel->setString(LocalizationManager::Instance().getText("CellTaskMenuItem_Start"));
 	taskDuration->setString(cocos2d::StringUtils::format("%s %.1f", LocalizationManager::Instance().getText("CellTaskMenuItem_Duration").c_str(), info->duration));
 	taskChanse->setString(cocos2d::StringUtils::format("%s %.1f",
 		LocalizationManager::Instance().getText("CellTaskMenuItem_Chanse").c_str(),

@@ -30,7 +30,7 @@ bool CellInfoMenu::init(void)
 	cocos2d::EaseElasticOut *elastic_scale = cocos2d::EaseElasticOut::create(scale, 5.0f);
 
 	_widget = dynamic_cast<cocos2d::ui::Layout *>(cocostudio::GUIReader::getInstance()->
-		widgetFromJsonFile("UICellInfo/UICellInfo.json"));
+		widgetFromJsonFile("ui_cell_ingame/ui_cell_info.ExportJson"));
 	_widget->setAnchorPoint(cocos2d::Vec2(0.5f, 0.5f));
 	_widget->setPosition(origin + screen / 2.0f);
 	_widget->setScale(0.01f);
