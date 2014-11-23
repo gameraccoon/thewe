@@ -25,5 +25,5 @@
     <string>ui_hud0.png</string>
   </imagePngList>
   <JsonSuffix>.json</JsonSuffix>
-  <CurrentUIJson>ui_message.json</CurrentUIJson>
+  <CurrentUIJson>ui_hud.json</CurrentUIJson>
 </UIProject>

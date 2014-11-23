@@ -12,7 +12,13 @@
   "textures": [
     "ui_cell_ingame0.plist"
   ],
-  "texturesPng": [],
+  "texturesPng": [
+    "ui_cell_ingame0.png",
+    "ui_cell_ingame0.png",
+    "ui_cell_ingame0.png",
+    "ui_cell_ingame0.png",
+    "ui_cell_ingame0.png"
+  ],
   "version": "1.6.0.0",
   "widgetTree": {
     "classname": "Panel",

@@ -31,5 +31,5 @@
     <string>ui_cell_ingame0.png</string>
   </imagePngList>
   <JsonSuffix>.json</JsonSuffix>
-  <CurrentUIJson>ui_cell_current_task.json</CurrentUIJson>
+  <CurrentUIJson>ui_cell_info.json</CurrentUIJson>
 </UIProject>

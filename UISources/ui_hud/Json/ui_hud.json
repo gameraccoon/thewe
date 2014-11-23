@@ -9,8 +9,13 @@
   "dataScale": 1,
   "designHeight": 480,
   "designWidth": 800,
-  "textures": [],
-  "texturesPng": [],
+  "textures": [
+    "ui_hud0.plist"
+  ],
+  "texturesPng": [
+    "ui_hud0.png",
+    "ui_hud0.png"
+  ],
   "version": "1.6.0.0",
   "widgetTree": {
     "classname": "Panel",
@@ -33,9 +38,9 @@
               "anchorPointX": 0.5,
               "anchorPointY": 0.5,
               "classType": "CocoStudio.EngineAdapterWrap.CSLoadingBar",
-              "colorB": 255,
-              "colorG": 255,
-              "colorR": 255,
+              "colorB": 189,
+              "colorG": 189,
+              "colorR": 189,
               "customProperty": "",
               "flipX": false,
               "flipY": false,
@@ -68,7 +73,7 @@
               "scale9Enable": false,
               "texture": null,
               "textureData": {
-                "path": "prog-bar-line.png",
+                "path": "progress-bar_full.png",
                 "plistFile": "",
                 "resourceType": 0
               }
@@ -105,14 +110,14 @@
             "marginDown": 0,
             "marginLeft": -2,
             "marginRight": 0,
-            "marginTop": 401,
+            "marginTop": 400,
             "relativeName": "WorldCapturingState",
             "relativeToName": "MainPanel",
             "type": 2
           },
           "opacity": 255,
           "positionPercentX": 0.5,
-          "positionPercentY": 0.0270833336,
+          "positionPercentY": 0.0291666668,
           "positionType": 0,
           "rotation": 0,
           "scaleX": 0.85,
@@ -126,14 +131,14 @@
           "visible": true,
           "width": 849,
           "x": 400,
-          "y": 13,
+          "y": 14,
           "capInsetsHeight": 1,
           "capInsetsWidth": 1,
           "capInsetsX": 0,
           "capInsetsY": 0,
           "fileName": null,
           "fileNameData": {
-            "path": "prog-bar-panel.png",
+            "path": "progress-bar-empty.png",
             "plistFile": "",
             "resourceType": 0
           },

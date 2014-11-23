@@ -323,7 +323,7 @@
               "scale9Enable": false,
               "texture": null,
               "textureData": {
-                "path": "prog-bar-line.png",
+                "path": "progress-bar_full.png",
                 "plistFile": "",
                 "resourceType": 0
               }
@@ -435,7 +435,7 @@
           "capInsetsY": 0,
           "fileName": null,
           "fileNameData": {
-            "path": "prog-bar-panel.png",
+            "path": "progress-bar-empty.png",
             "plistFile": "",
             "resourceType": 0
           },

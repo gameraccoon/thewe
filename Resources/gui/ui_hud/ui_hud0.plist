@@ -4,7 +4,7 @@
 	<dict>
 		<key>frames</key>
 		<dict>
-			<key>prog-bar-panel.png</key>
+			<key>progress-bar-empty.png</key>
 			<dict>
 				<key>width</key>
 				<integer>849</integer>
@@ -23,7 +23,7 @@
 				<key>offsetY</key>
 				<real>0</real>
 			</dict>
-			<key>prog-bar-line.png</key>
+			<key>progress-bar_full.png</key>
 			<dict>
 				<key>width</key>
 				<integer>849</integer>

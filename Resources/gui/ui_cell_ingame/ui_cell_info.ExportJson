@@ -195,9 +195,9 @@
               "anchorPointX": 0.5,
               "anchorPointY": 0.5,
               "classType": "CocoStudio.EngineAdapterWrap.CSLoadingBar",
-              "colorB": 39,
-              "colorG": 33,
-              "colorR": 255,
+              "colorB": 91,
+              "colorG": 90,
+              "colorR": 92,
               "customProperty": "",
               "flipX": false,
               "flipY": false,
@@ -230,7 +230,7 @@
               "scale9Enable": false,
               "texture": null,
               "textureData": {
-                "path": "prog-bar-line.png",
+                "path": "progress-bar_full.png",
                 "plistFile": "",
                 "resourceType": 1
               }
@@ -342,7 +342,7 @@
           "capInsetsY": 0,
           "fileName": null,
           "fileNameData": {
-            "path": "prog-bar-panel.png",
+            "path": "progress-bar-empty.png",
             "plistFile": "",
             "resourceType": 1
           },
@@ -560,9 +560,9 @@
               "anchorPointX": 0.5,
               "anchorPointY": 0.5,
               "classType": "CocoStudio.EngineAdapterWrap.CSLoadingBar",
-              "colorB": 39,
-              "colorG": 33,
-              "colorR": 255,
+              "colorB": 79,
+              "colorG": 79,
+              "colorR": 79,
               "customProperty": "",
               "flipX": false,
               "flipY": false,
@@ -570,7 +570,7 @@
               "ignoreSize": true,
               "layoutParameter": null,
               "opacity": 255,
-              "positionPercentX": 0.03415783,
+              "positionPercentX": -0.00117785635,
               "positionPercentY": 0,
               "positionType": 0,
               "rotation": 0,
@@ -584,7 +584,7 @@
               "useMergedTexture": false,
               "visible": true,
               "width": 849,
-              "x": 29,
+              "x": -1,
               "y": 0,
               "capInsetsHeight": 1,
               "capInsetsWidth": 1,
@@ -595,7 +595,7 @@
               "scale9Enable": false,
               "texture": null,
               "textureData": {
-                "path": "prog-bar-line.png",
+                "path": "progress-bar_full.png",
                 "plistFile": "",
                 "resourceType": 1
               }
@@ -630,7 +630,7 @@
             "layoutParentHorizontal": 0,
             "layoutParentVertical": 0,
             "marginDown": 0,
-            "marginLeft": 21,
+            "marginLeft": 29,
             "marginRight": 0,
             "marginTop": 228,
             "relativeName": "MoraleLevel",
@@ -638,7 +638,7 @@
             "type": 2
           },
           "opacity": 255,
-          "positionPercentX": 0.556875,
+          "positionPercentX": 0.566875,
           "positionPercentY": 0.3875,
           "positionType": 0,
           "rotation": 0,
@@ -652,7 +652,7 @@
           "useMergedTexture": true,
           "visible": true,
           "width": 849,
-          "x": 445,
+          "x": 453,
           "y": 186,
           "capInsetsHeight": 1,
           "capInsetsWidth": 1,
@@ -660,7 +660,7 @@
           "capInsetsY": 0,
           "fileName": null,
           "fileNameData": {
-            "path": "prog-bar-panel.png",
+            "path": "progress-bar-empty.png",
             "plistFile": "",
             "resourceType": 1
           },
@@ -750,9 +750,9 @@
               "anchorPointX": 0.5,
               "anchorPointY": 0.5,
               "classType": "CocoStudio.EngineAdapterWrap.CSLoadingBar",
-              "colorB": 39,
-              "colorG": 33,
-              "colorR": 255,
+              "colorB": 87,
+              "colorG": 87,
+              "colorR": 87,
               "customProperty": "",
               "flipX": false,
               "flipY": false,
@@ -760,7 +760,7 @@
               "ignoreSize": true,
               "layoutParameter": null,
               "opacity": 255,
-              "positionPercentX": 0.03415783,
+              "positionPercentX": 0,
               "positionPercentY": 0,
               "positionType": 0,
               "rotation": 0,
@@ -774,7 +774,7 @@
               "useMergedTexture": false,
               "visible": true,
               "width": 849,
-              "x": 29,
+              "x": 0,
               "y": 0,
               "capInsetsHeight": 1,
               "capInsetsWidth": 1,
@@ -785,7 +785,7 @@
               "scale9Enable": false,
               "texture": null,
               "textureData": {
-                "path": "prog-bar-line.png",
+                "path": "progress-bar_full.png",
                 "plistFile": "",
                 "resourceType": 1
               }
@@ -820,7 +820,7 @@
             "layoutParentHorizontal": 0,
             "layoutParentVertical": 0,
             "marginDown": 0,
-            "marginLeft": 21,
+            "marginLeft": 29,
             "marginRight": 0,
             "marginTop": 263,
             "relativeName": "DevotionLevel",
@@ -828,7 +828,7 @@
             "type": 2
           },
           "opacity": 255,
-          "positionPercentX": 0.556875,
+          "positionPercentX": 0.566875,
           "positionPercentY": 0.314583331,
           "positionType": 0,
           "rotation": 0,
@@ -842,7 +842,7 @@
           "useMergedTexture": true,
           "visible": true,
           "width": 849,
-          "x": 445,
+          "x": 453,
           "y": 151,
           "capInsetsHeight": 1,
           "capInsetsWidth": 1,
@@ -850,7 +850,7 @@
           "capInsetsY": 0,
           "fileName": null,
           "fileNameData": {
-            "path": "prog-bar-panel.png",
+            "path": "progress-bar-empty.png",
             "plistFile": "",
             "resourceType": 1
           },

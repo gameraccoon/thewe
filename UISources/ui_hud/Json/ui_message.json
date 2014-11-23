@@ -12,10 +12,7 @@
   "textures": [
     "ui_hud0.plist"
   ],
-  "texturesPng": [
-    "ui_hud0.png",
-    "ui_hud0.png"
-  ],
+  "texturesPng": [],
   "version": "1.6.0.0",
   "widgetTree": {
     "classname": "Panel",
