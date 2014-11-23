@@ -82,7 +82,7 @@
           "fontFile": null,
           "fontName": "微软雅黑",
           "fontSize": 18,
-          "hAlignment": 0,
+          "hAlignment": 1,
           "text": "MessageText",
           "touchScaleEnable": false,
           "vAlignment": 0

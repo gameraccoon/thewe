@@ -40,39 +40,21 @@ bool TutorialWidget::init()
 		return true;
 	}
 
-	cocos2d::Sprite *background = cocos2d::Sprite::create("custom-white-menu.png");
-	background->setPosition(0.0f, 0.0f);
-	background->setAnchorPoint(cocos2d::Vec2(0.5f, 0.5f));
-	background->setColor(Color(0x000000));
-	addChild(background);
+	cocos2d::ui::Widget *widget = cocostudio::GUIReader::getInstance()->widgetFromJsonFile("tutorial/tutorial.ExportJson");
+	widget->setAnchorPoint(cocos2d::Vec2(0.5f, 0.5f));
+	widget->setPosition(cocos2d::Vec2(0.0f, 0.0f));
 
-	cocos2d::TTFConfig ttfConfig("arial.ttf", 18);
-	cocos2d::Label *text = cocos2d::Label::createWithTTF(ttfConfig, tutorial->text, cocos2d::TextHAlignment::CENTER);
-	Vector2 center = Vector2(0.0f, 15.0f);
-	text->setPosition(center);
-	addChild(text);
+	cocos2d::ui::Button *btnContinue = dynamic_cast<cocos2d::ui::Button *>(widget->getChildByName("ContinueBtn"));
+	cocos2d::ui::Text *tutorialText = dynamic_cast<cocos2d::ui::Text *>(widget->getChildByName("Text"));
+	
+	if (!btnContinue) {Log::Instance().writeWarning("Failed to get element with name ContinueBtn from tutorial widget."); return false;}
+	if (!tutorialText) {Log::Instance().writeWarning("Failed to get element with name Text from tutorial widget."); return false;}
+	
+	btnContinue->addTouchEventListener(CC_CALLBACK_2(TutorialWidget::OnContinueCallback, this));
+	btnContinue->setTitleText(_tutorial.lock()->buttonText);
+	tutorialText->setString(_tutorial.lock()->text);
 
-	setContentSize(background->getContentSize());
-
-	cocos2d::MenuItemImage *closeButton;
-	{
-		using namespace cocos2d;
-		closeButton = MenuItemImage::create("new-cell-button-active.png", "new-cell-button-pressed.png",
-			"new-cell-button-disabled.png", CC_CALLBACK_1(TutorialWidget::_OnCloseCallback, this));
-		closeButton->setPosition(center * 2.0 + Vector2(0.0f, -getContentSize().height / 2));
-		closeButton->setScale(0.3f);
-	}
-
-	cocos2d::Menu *menu = cocos2d::Menu::create(closeButton, nullptr);
-	menu->setPosition(0.0, 0.0f);
-	addChild(menu);
-
-	cocos2d::TTFConfig ttfBtnConfig("arial.ttf", 12);
-	cocos2d::Label *buttonLabel = cocos2d::Label::createWithTTF(ttfBtnConfig, tutorial->buttonText, cocos2d::TextHAlignment::CENTER);
-	buttonLabel->setPosition(closeButton->getPosition());
-	buttonLabel->setScale(1.2f);
-	addChild(buttonLabel);
-
+	addChild(widget);
 	scheduleUpdate();
 
 	return true;
@@ -83,7 +65,10 @@ bool TutorialWidget::IsReadyToClose() const
 	return _tutorial.expired();
 }
 
-void TutorialWidget::_OnCloseCallback(cocos2d::Ref *sender)
+void TutorialWidget::OnContinueCallback(cocos2d::Ref *sender, cocos2d::ui::Widget::TouchEventType eventType)
 {
-	World::Instance().RemoveCurrentTutorial();
+	if (eventType == cocos2d::ui::Widget::TouchEventType::ENDED)
+	{
+		World::Instance().RemoveCurrentTutorial();
+	}
 }

@@ -9,8 +9,13 @@
   "dataScale": 1,
   "designHeight": 89,
   "designWidth": 170,
-  "textures": [],
-  "texturesPng": [],
+  "textures": [
+    "ui_hud0.plist"
+  ],
+  "texturesPng": [
+    "ui_hud0.png",
+    "ui_hud0.png"
+  ],
   "version": "1.6.0.0",
   "widgetTree": {
     "classname": "Panel",
@@ -77,7 +82,7 @@
           "fontFile": null,
           "fontName": "微软雅黑",
           "fontSize": 18,
-          "hAlignment": 0,
+          "hAlignment": 1,
           "text": "MessageText",
           "touchScaleEnable": false,
           "vAlignment": 0

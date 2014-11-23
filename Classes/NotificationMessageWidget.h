@@ -2,6 +2,9 @@
 #define NOTIFICATION_MESSAGE_WIDGET_H
 
 #include <cocos2d.h>
+#include <cocostudio/CCSGUIReader.h>
+#include <ui/CocosGUI.h>
+
 #include "UserMessage.h"
 
 class NotificationMessageWidget : public cocos2d::Node
