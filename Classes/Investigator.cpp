@@ -104,7 +104,10 @@ void Investigator::UpdateToTime(Utils::GameTime time)
 			{
 				if (GetCountOfCellUsageInBranches(branch.cellFrom) <= 1)
 				{
-					MessageManager::Instance().PutMessage(Message("DeleteCellWidget", branch.cellFrom.lock()->GetUid()));
+					Message message("DeleteCellWidget");
+					message.variables.SetInt("UID", branch.cellFrom.lock()->GetUid());
+					MessageManager::Instance().PutMessage(message);
+
 					World::Instance().GetCellsNetwork().RemoveCell(branch.cellFrom);
 				}
 
@@ -115,15 +118,23 @@ void Investigator::UpdateToTime(Utils::GameTime time)
 			if (time >= (branch.timeBegin + branch.timeDuration) && branch.cellTo.lock()->GetInfo().state != Cell::State::ARRESTED)
 			{
 				if (GetCountOfCellUsageInBranches(branch.cellFrom) <= 1)
-				{
-					MessageManager::Instance().PutMessage(Message("DeleteCellWidget", branch.cellFrom.lock()->GetUid()));
+				{					
+					Message message("DeleteCellWidget");
+					message.variables.SetInt("UID", branch.cellFrom.lock()->GetUid());
+					MessageManager::Instance().PutMessage(message);
+
+					MessageManager::Instance().PutMessage(message);
 					World::Instance().GetCellsNetwork().RemoveCell(branch.cellFrom);
 				}
 					
 				int createdBranchesCount = CaptureCellAndReturnNewBranchesCount(branch.cellTo, branch.cellFrom);
 				if (createdBranchesCount == 0)
 				{
-					MessageManager::Instance().PutMessage(Message("DeleteCellWidget", branch.cellTo.lock()->GetUid()));
+					Message message("DeleteCellWidget");
+					message.variables.SetInt("UID", branch.cellFrom.lock()->GetUid());
+					MessageManager::Instance().PutMessage(message);
+
+					MessageManager::Instance().PutMessage(message);
 					World::Instance().GetCellsNetwork().RemoveCell(branch.cellTo);
 				}
 

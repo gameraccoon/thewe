@@ -5,15 +5,14 @@
 #include <vector>
 #include <queue>
 
+#include "MiscUtils.h"
+
 struct Message
 {
-	std::string name;
-	int param;
-	Message(const std::string &n, int p)
-		: name(n), param(p)
-	{}
+	const std::string name;
+	Utils::VariablesSet variables;
 	Message(const std::string &n)
-		: name(n), param(0)
+		: name(n)
 	{}
 };
 

@@ -103,7 +103,7 @@ void TaskManager::UpdateToTime(Utils::GameTime worldTime)
 			// release smart ptr
 			iterator = _runnedTasks.erase(iterator);
 
-			MessageManager::Instance().PutMessage(Message("SaveGame", 0));
+			MessageManager::Instance().PutMessage(Message("SaveGame"));
 		}
 		else
 		{

@@ -111,7 +111,9 @@ void World::AddInvestigator(Investigator::Ptr investigator)
 
 	_investigators.push_back(investigator);
 	
-	MessageManager::Instance().PutMessage(Message("AddInvestigatorWidget", investigator->GetUid()));
+	Message message("AddInvestigatorWidget");
+	message.variables.SetInt("UID", investigator->GetUid());
+	MessageManager::Instance().PutMessage(message);
 }
 
 void World::AddInvestigatorByCell(Cell::WeakPtr investigationRoot)
@@ -147,7 +149,9 @@ bool World::RemoveInvestigator(Investigator::Ptr investigator)
 				RunTutorialFunction("FirstUncatchedInvestigatorCatched");
 			}
 
-			MessageManager::Instance().PutMessage(Message("DeleteInvestigatorWidget", investigator->GetUid()));
+			Message message("DeleteInvestigatorWidget");
+			message.variables.SetInt("UID", investigator->GetUid());
+			MessageManager::Instance().PutMessage(message);
 			it = _investigators.erase(it);
 			return true;
 		}

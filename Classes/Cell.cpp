@@ -127,7 +127,10 @@ void Cell::UpdateToTime(Utils::GameTime time)
 	{
 		Cell::Ptr ptr = World::Instance().GetCellsNetwork().GetCellByUid(_uid);
 		World::Instance().GetCellsNetwork().RemoveCell(ptr);
-		MessageManager::Instance().PutMessage(Message("DeleteCellWidget", _uid));
+		
+		Message message("DeleteCellWidget");
+		message.variables.SetInt("UID", _uid);
+		MessageManager::Instance().PutMessage(message);
 	}
 	else if (_info.state == State::AUTONOMY && time > _info.stateBegin + _info.stateDuration)
 	{

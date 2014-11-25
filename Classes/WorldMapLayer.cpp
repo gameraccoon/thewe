@@ -120,7 +120,7 @@ void WorldMapLayer::AcceptMessage(const Message &msg)
 {
 	if (msg.name == "AddInvestigatorWidget")
 	{
-		Investigator::Ptr investigator = World::Instance().GetInvestigatorByUid(msg.param);
+		Investigator::Ptr investigator = World::Instance().GetInvestigatorByUid(msg.variables.GetInt("UID"));
 		if (investigator)
 		{
 			InvestigatorMapWidget *widget = _CreateInvestigatorWidget(investigator);
@@ -140,7 +140,7 @@ void WorldMapLayer::AcceptMessage(const Message &msg)
 		for (InvestigatorWidgetsIter it = _investigatorWidgets.begin(); it != _investigatorWidgets.end(); ++it)
 		{
 			InvestigatorMapWidget *widget = (*it);
-			if (widget->GetInvestigatorUid() == msg.param)
+			if (widget->GetInvestigatorUid() == msg.variables.GetInt("UID"))
 			{
 				removeChild(widget);
 				it = _investigatorWidgets.erase(it);
@@ -153,7 +153,7 @@ void WorldMapLayer::AcceptMessage(const Message &msg)
 		for (CellWidgetsIter it = _cellWidgets.begin(); it != _cellWidgets.end(); ++it)
 		{
 			CellMapWidget *widget = (*it);
-			if (widget->GetCellUid() == msg.param)
+			if (widget->GetCellUid() == msg.variables.GetInt("UID"))
 			{
 				removeChild(widget);
 				_mapProjector->RemoveMapPart(widget->GetProjectorUid());
