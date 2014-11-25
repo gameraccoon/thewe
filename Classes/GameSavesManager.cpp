@@ -17,6 +17,7 @@ static const std::string RUNNED_TASKS_TABLE = "runned_tasks";
 static const std::string PROCESSES_TABLE = "cell_processes";
 static const std::string INVESIGATIONS_TABLE = "investigation_branches";
 static const std::string INVESIGATORS_TABLE = "investigators";
+static const std::string TUTORIAL_STATES_TABLE = "tutorial_states";
 
 struct GameSavesManagerImpl
 {
@@ -138,6 +139,13 @@ void GameSavesManager::FirstInitSave()
 								",'catch_time_begin' VARCHAR(20) NOT NULL"
 								",'catch_time_end' VARCHAR(20) NOT NULL"
 								",'state' VARCHAR(100) NOT NULL"
+								");");
+	}
+
+	if (!_impl->database.IsTableExists(TUTORIAL_STATES_TABLE))
+	{
+		_impl->database.execSql("CREATE TABLE " + TUTORIAL_STATES_TABLE + " ("
+								"'state' VARCHAR(100) NOT NULL"
 								");");
 	}
 }
@@ -385,6 +393,15 @@ void GameSavesManager::LoadUserInfo()
 	}
 }
 
+void GameSavesManager::LoadTutorialStates()
+{
+	SqliteDataReader::Ptr reader = _impl->database.execQuery("SELECT * FROM " + TUTORIAL_STATES_TABLE);
+	if (reader->next())
+	{
+		World::Instance().AddTutorialState(reader->getValueByName("state")->asString());
+	}
+}
+
 void GameSavesManager::LoadGameState(void)
 {
 	if (_isWorking)
@@ -396,6 +413,7 @@ void GameSavesManager::LoadGameState(void)
 	LoadProcesses();
 	LoadInvestigations();
 	LoadUserInfo();
+	LoadTutorialStates();
 	_isWorking = false;
 }
 
@@ -462,6 +480,14 @@ static std::string InitInvestigatorAdditionStatement()
 			",catch_time_end"
 			",root_cell"
 			",state"
+			")"
+			"VALUES";
+}
+
+static std::string InitTutoraialStatesAdditionStatement()
+{
+	return "INSERT INTO " + TUTORIAL_STATES_TABLE +
+			"(state"
 			")"
 			"VALUES";
 }
@@ -551,15 +577,11 @@ static void AppendInvestigatorsToQuery(std::string* const query,
 		.append(")");
 }
 
-static void AppendSeparator(std::string* const taskAdditionSqlStatement, bool addTasks)
+static void AppendSeparator(std::string* const sqlStatement, bool notFirst)
 {
-	if (addTasks)
+	if (notFirst)
 	{
-		taskAdditionSqlStatement->append(",");
-	}
-	else
-	{
-		addTasks = true;
+		sqlStatement->append(",");
 	}
 }
 
@@ -663,6 +685,22 @@ static std::string GetUserInfoAdditionStatement()
 			.append(std::to_string(world.GetCellsNetwork().GetRootCell().lock()->GetUid())).append(");");
 }
 
+static bool FillTutorialStatesAdditionStatement(std::string* const tutorialStatesSqlStatement)
+{
+	const World& world = World::Instance();
+	bool addTutorialStates = false;
+	for (auto& tutorialState : world.GetTutorialStatements())
+	{
+		AppendSeparator(tutorialStatesSqlStatement, addTutorialStates);
+		addTutorialStates = true;
+
+		tutorialStatesSqlStatement->append("('").append(tutorialState).append("')");
+	}
+	tutorialStatesSqlStatement->append(";");
+
+	return addTutorialStates;
+}
+
 void GameSavesManager::SaveGameState(void)
 {
 	if (_isWorking)
@@ -687,6 +725,9 @@ void GameSavesManager::SaveGameState(void)
 
 	std::string userInfoSqlStatement = GetUserInfoAdditionStatement();
 
+	std::string tutorialStatesSqlStatement = InitTutoraialStatesAdditionStatement();
+	bool addTutorialStates = FillTutorialStatesAdditionStatement(&tutorialStatesSqlStatement);
+
 	// begining transaction
 	_impl->database.execSql("BEGIN;");
 	// clearing tables
@@ -703,6 +744,7 @@ void GameSavesManager::SaveGameState(void)
 	if (addInvestigations) _impl->database.execSql(investigationsSqlStatement);
 	if (addInvestigators) _impl->database.execSql(investigatorsSqlStatement);
 	_impl->database.execSql(userInfoSqlStatement);
+	if (addTutorialStates) _impl->database.execSql(tutorialStatesSqlStatement);
 	// commiting transaction
 	_impl->database.execSql("COMMIT;");
 

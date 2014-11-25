@@ -82,10 +82,11 @@ public:
 	bool IsHaveTutorial();
 	Tutorial::WeakPtr GetCurrentTutorial();
 	void RemoveCurrentTutorial();
-	bool IsTutorialStateAvailable(const std::string& state);
+	bool IsTutorialStateAvailable(const std::string& state) const;
 	void AddTutorialState(const std::string& state);
 	void RemoveTutorialState(const std::string& state);
 	void RunTutorialFunction(const std::string& function);
+	const std::set<std::string>& GetTutorialStatements() const;
 
 	// calculated parameters of cells
 	int GetExperienceForLevel(int level) const;
@@ -127,8 +128,6 @@ private:
 	~World();
 	World(const World&);
 	void operator=(const World&);
-
-	friend class GameSavesManager;
 };
 
 #endif // WORLD_MAP_H

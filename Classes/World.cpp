@@ -381,7 +381,7 @@ void World::RemoveCurrentTutorial()
 	}
 }
 
-bool World::IsTutorialStateAvailable(const std::string& state)
+bool World::IsTutorialStateAvailable(const std::string& state) const
 {
 	return _availableTutorialStates.find(state) != _availableTutorialStates.end();
 }
@@ -401,6 +401,11 @@ void World::RunTutorialFunction(const std::string& function)
 	luabind::call_function<void>(_luaScript->GetLuaState()
 		, std::string("RunTutorial_" + function).c_str()
 		, 0);
+}
+
+const std::set<std::string>& World::GetTutorialStatements() const
+{
+	return _availableTutorialStates;
 }
 
 int World::GetExperienceForLevel(int level) const
