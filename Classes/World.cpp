@@ -18,7 +18,6 @@ World::World()
 	, _isFirstLaunch(true)
 	, _isLuaInited(false)
 	, _isGameOver(false)
-	, _tutorialState("NotInitialized")
 	, _uid(0)
 	, _currentTime(0)
 {
@@ -103,7 +102,7 @@ void World::AddTown(Town::Ptr cell)
 
 void World::AddInvestigator(Investigator::Ptr investigator)
 {
-	if (World::Instance().GetTutorialState() == "WaitForFirstInvestigator")
+	if (World::Instance().IsTutorialStateAvailable("WaitForFirstInvestigator"))
 	{
 		investigator->BeginCatchTime(GameInfo::Instance().GetTime("INVESTIGATOR_TUTORIAL_CATCH_TIME"));
 		World::Instance().RunTutorialFunction("FirstInvestigationStarted");
@@ -144,7 +143,7 @@ bool World::RemoveInvestigator(Investigator::Ptr investigator)
 	{
 		if ((*it) == investigator)
 		{
-			if (GetTutorialState() == "WaitForCatchUncatchedInvestigator")
+			if (IsTutorialStateAvailable("WaitForCatchUncatchedInvestigator"))
 			{
 				RunTutorialFunction("FirstUncatchedInvestigatorCatched");
 			}
@@ -382,14 +381,19 @@ void World::RemoveCurrentTutorial()
 	}
 }
 
-std::string World::GetTutorialState()
+bool World::IsTutorialStateAvailable(const std::string& state)
 {
-	return _tutorialState;
+	return _availableTutorialStates.find(state) != _availableTutorialStates.end();
 }
 
-void World::SetTutorialState(const std::string& state)
+void World::AddTutorialState(const std::string& state)
 {
-	_tutorialState = state;
+	_availableTutorialStates.insert(state);
+}
+
+void World::RemoveTutorialState(const std::string& state)
+{
+	_availableTutorialStates.erase(_availableTutorialStates.find(state));
 }
 
 void World::RunTutorialFunction(const std::string& function)

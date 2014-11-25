@@ -86,7 +86,7 @@ void InvestigatorMapWidget::OnCatchInFirstCell(cocos2d::Ref *sender)
 	_invesRootCellWidget->HideInvestigatorLaunchButton(false);
 	_investigator->AbortInvestigation();
 
-	if (World::Instance().GetTutorialState() == "WaitForCatchingFirstInvestigator")
+	if (World::Instance().IsTutorialStateAvailable("WaitForCatchingFirstInvestigator"))
 	{
 		World::Instance().RunTutorialFunction("FirstInvestigationCatched");
 	}

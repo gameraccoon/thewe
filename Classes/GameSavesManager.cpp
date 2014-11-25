@@ -74,7 +74,6 @@ void GameSavesManager::FirstInitSave()
 								"last_uid INTEGER NOT NULL"
 								",root_cell INTEGER NOT NULL"
 								",current_time VARCHAR(20) NOT NULL"
-								",tutorial_state VARCHAR(255) NOT NULL"
 								");");
 	}
 
@@ -382,8 +381,6 @@ void GameSavesManager::LoadUserInfo()
 		Cell::Ptr rootCell = World::Instance().GetCellsNetwork().GetCellByUid(reader->getValueByName("root_cell")->asInt());
 		World::Instance().GetCellsNetwork().SetRootCell(rootCell);
 
-		World::Instance().SetTutorialState(reader->getValueByName("tutorial_state")->asString());
-
 		World::Instance().InitTime(Utils::StringToTime(reader->getValueByName("current_time")->asString()));
 	}
 }
@@ -660,11 +657,10 @@ static std::string GetUserInfoAdditionStatement()
 {
 	World &world = World::Instance();
 	return std::string("INSERT INTO ").append(USER_DATA_TABLE).append(" (last_uid, current_time,"
-																	  "root_cell, tutorial_state) VALUES (")
+																	  "root_cell) VALUES (")
 			.append(std::to_string(world.GetLastUid())).append(",")
 			.append(Utils::TimeToString(Utils::GetGameTime())).append(",")
-			.append(std::to_string(world.GetCellsNetwork().GetRootCell().lock()->GetUid())).append(",")
-			.append("'").append(world.GetTutorialState()).append("');");
+			.append(std::to_string(world.GetCellsNetwork().GetRootCell().lock()->GetUid())).append(");");
 }
 
 void GameSavesManager::SaveGameState(void)

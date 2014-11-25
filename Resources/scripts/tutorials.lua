@@ -15,7 +15,8 @@ function RunTutorial_Welcome()
 	World:addTutorial(Tutorial(text1, ContinueText))
 	World:addTutorial(Tutorial(text2, ContinueText))
 
-	World:setTutorialState("FirstCell")
+	World:addTutorialState("FirstCell")
+	World:addTutorialState("WaitForFirstInvestigator");
 end
 
 function RunTutorial_AfterCreatingFirstCell()
@@ -29,7 +30,8 @@ function RunTutorial_AfterCreatingFirstCell()
 
 	World:addTutorial(Tutorial(text, ContinueText))
 
-	World:setTutorialState("StartFirstTask");
+	World:addTutorialState("StartFirstTask");
+	World:removeTutorialState("FirstCell");
 end
 
 function RunTutorial_BeforeStartFirstTask()
@@ -38,7 +40,8 @@ function RunTutorial_BeforeStartFirstTask()
 
 	World:addTutorial(Tutorial(text, ContinueText))
 
-	World:setTutorialState("WaitingForStartFirstTask");
+	World:addTutorialState("WaitingForStartFirstTask");
+	World:removeTutorialState("StartFirstTask");
 end
 
 function RunTutorial_StartingFirstTask()
@@ -51,7 +54,8 @@ function RunTutorial_StartingFirstTask()
 
 	World:addTutorial(Tutorial(text, ContinueText))
 
-	World:setTutorialState("WaitingForFinishFirstTask");
+	World:addTutorialState("WaitingForFinishFirstTask");
+	World:removeTutorialState("WaitingForStartFirstTask");
 end
 
 function RunTutorial_AfterFirstTaskFinished()
@@ -64,7 +68,8 @@ function RunTutorial_AfterFirstTaskFinished()
 
 	World:addTutorial(Tutorial(text, ContinueText))
 
-	World:setTutorialState("ReadyToFirstRealWork");
+	World:addTutorialState("ReadyToFirstRealWork");
+	World:removeTutorialState("WaitingForFinishFirstTask");
 end
 
 function RunTutorial_StartingFirstRealWork()
@@ -76,7 +81,8 @@ function RunTutorial_StartingFirstRealWork()
 	-- пока отключаем туториал про бустеры
 	--World:addTutorial(Tutorial(text, ContinueText))
 
-	World:setTutorialState("ReadyToFinishFirstRealWork");
+	World:addTutorialState("ReadyToFinishFirstRealWork");
+	World:removeTutorialState("ReadyToFirstRealWork");
 end
 
 function RunTutorial_AfterRealWorkDone()
@@ -91,7 +97,8 @@ function RunTutorial_AfterRealWorkDone()
 
 	World:addTutorial(Tutorial(text, ContinueText))
 
-	World:setTutorialState("ReadyToCreateSpinoff");
+	World:addTutorialState("ReadyToCreateSpinoff");
+	World:removeTutorialState("ReadyToFinishFirstRealWork");
 end
 
 function RunTutorial_OnReadyToCreateFirstSpinoff()
@@ -119,7 +126,8 @@ function RunTutorial_OnCreateFirstSpinoff()
 	World:addTutorial(Tutorial(text1, ContinueText))
 	World:addTutorial(Tutorial(text2, ContinueText))
 
-	World:setTutorialState("WaitForFirstInvestigator");
+	-- конец цепочки
+	World:removeTutorialState("ReadyToCreateSpinoff");
 end
 
 function RunTutorial_FirstInvestigationStarted()
@@ -132,7 +140,8 @@ function RunTutorial_FirstInvestigationStarted()
 
 	World:addTutorial(Tutorial(text, ContinueText))
 
-	World:setTutorialState("WaitForCatchingFirstInvestigator");
+	World:addTutorialState("WaitForCatchingFirstInvestigator");
+	World:removeTutorialState("WaitForFirstInvestigator");
 end
 
 function RunTutorial_FirstInvestigationCatched()
@@ -143,7 +152,8 @@ function RunTutorial_FirstInvestigationCatched()
 
 	World:addTutorial(Tutorial(text, ContinueText))
 
-	World:setTutorialState("WaitForUncatchedInvestigator");
+	World:addTutorialState("WaitForUncatchedInvestigator");
+	World:removeTutorialState("WaitForCatchingFirstInvestigator");
 end
 
 function RunTutorial_FirstUncatchedInvestigator()
@@ -156,7 +166,8 @@ function RunTutorial_FirstUncatchedInvestigator()
 
 	World:addTutorial(Tutorial(text, ContinueText))
 
-	World:setTutorialState("WaitForCatchUncatchedInvestigator");
+	World:addTutorialState("WaitForCatchUncatchedInvestigator");
+	World:removeTutorialState("WaitForUncatchedInvestigator");
 end
 
 function RunTutorial_FirstUncatchedInvestigatorCatched()
@@ -168,9 +179,12 @@ function RunTutorial_FirstUncatchedInvestigatorCatched()
 		"Самое вермя проверить это и изменить связи\n"
 
 	World:addTutorial(Tutorial(text, ContinueText, "TutorialsLastTutorial"))
+
+	-- конец цепочки
+	World:removeTutorialState("WaitForCatchUncatchedInvestigator");
 end
 
--- продолжить туториал после перезапуска игры (для особых случаев, которые не разрешатся простой загрузкой состояния)
+-- продолжить туториал после перезапуска игры (для особых случаев, которые не разрешаются простой загрузкой состояния)
 function ContinueTutorial()
 	local tutorialState = World:getTutorialState()
 	if tutorialState == "FirstCell" then
@@ -179,5 +193,4 @@ function ContinueTutorial()
 end
 
 function TutorialsLastTutorial()
-	World:setTutorialState("TutorialsEnd");
 end

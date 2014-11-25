@@ -67,6 +67,11 @@ bool CellTasksScreen::init(void)
 
 	addChild(_widget);
 
+	if (World::Instance().IsTutorialStateAvailable("StartFirstTask"))
+	{
+		World::Instance().RunTutorialFunction("BeforeStartFirstTask");
+	}
+
 	return true;
 }
 
@@ -134,14 +139,12 @@ void CellTasksScreen::OnStartTaskCallback(cocos2d::Ref *sender, cocos2d::ui::Wid
 			World::Instance().GetTaskManager().RunTask(_cell, task_info, Utils::GetGameTime());
 			CloseMenu();
 
-			if (World::Instance().GetTutorialState() == "WaitingForStartFirstTask")
+			if (World::Instance().IsTutorialStateAvailable("WaitingForStartFirstTask"))
 			{
-				World::Instance().RemoveCurrentTutorial();
 				World::Instance().RunTutorialFunction("StartingFirstTask");
 			}
-			else if (World::Instance().GetTutorialState() == "ReadyToFirstRealWork")
+			else if (World::Instance().IsTutorialStateAvailable("ReadyToFirstRealWork"))
 			{
-				World::Instance().RemoveCurrentTutorial();
 				World::Instance().RunTutorialFunction("StartingFirstRealWork");
 			}
 		}

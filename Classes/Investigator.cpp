@@ -42,7 +42,7 @@ void Investigator::BeginCatchTime(float time)
 
 void Investigator::BeginInvestigation(void)
 {
-	if (World::Instance().GetTutorialState() == "WaitForUncatchedInvestigator")
+	if (World::Instance().IsTutorialStateAvailable("WaitForUncatchedInvestigator"))
 	{
 		World::Instance().RunTutorialFunction("FirstUncatchedInvestigator");
 	}

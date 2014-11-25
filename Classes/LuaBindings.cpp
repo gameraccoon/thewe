@@ -126,8 +126,9 @@ void LuaInstance::BindClass<World>()
 		.def("getCurrentTutorial", &World::GetCurrentTutorial)
 		.def("removeCurrentTutorial", &World::RemoveCurrentTutorial)
 		.def("isFirstLaunch", &World::IsFirstLaunch)
-		.def("getTutorialState", &World::GetTutorialState)
-		.def("setTutorialState", &World::SetTutorialState)
+		.def("addTutorialState", &World::AddTutorialState)
+		.def("removeTutorialState", &World::RemoveTutorialState)
+		.def("isTutorialStateAvailable", &World::IsTutorialStateAvailable)
 		.def("runTutorialFuncton", &World::RunTutorialFunction)
 	];
 }

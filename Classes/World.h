@@ -3,6 +3,7 @@
 
 #include <string>
 #include <queue>
+#include <set>
 
 #include "Region.h"
 #include "Cell.h"
@@ -81,8 +82,9 @@ public:
 	bool IsHaveTutorial();
 	Tutorial::WeakPtr GetCurrentTutorial();
 	void RemoveCurrentTutorial();
-	std::string GetTutorialState();
-	void SetTutorialState(const std::string& state);
+	bool IsTutorialStateAvailable(const std::string& state);
+	void AddTutorialState(const std::string& state);
+	void RemoveTutorialState(const std::string& state);
 	void RunTutorialFunction(const std::string& function);
 
 	// calculated parameters of cells
@@ -112,7 +114,7 @@ private:
 	float _worldCapturingState;
 
 	std::queue<Tutorial::Ptr> _tutorials;
-	std::string _tutorialState;
+	std::set<std::string> _availableTutorialStates;
 
 	Utils::GameTime _currentTime;
 
@@ -125,6 +127,8 @@ private:
 	~World();
 	World(const World&);
 	void operator=(const World&);
+
+	friend class GameSavesManager;
 };
 
 #endif // WORLD_MAP_H

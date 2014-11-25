@@ -107,7 +107,7 @@ void CellSpinoffMenu::OnSpinoffCallback(cocos2d::Ref *sender, cocos2d::ui::Widge
 			_worldMapLayer->SetNextCellParent(_cell);
 			SelfClose();
 
-			if (World::Instance().GetTutorialState() == "ReadyToCreateSpinoff")
+			if (World::Instance().IsTutorialStateAvailable("ReadyToCreateSpinoff"))
 			{
 				World::Instance().RunTutorialFunction("OnReadyToCreateFirstSpinoff");
 			}

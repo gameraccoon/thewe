@@ -7,10 +7,8 @@ local CashedTableOfLevels = {}
 function StartGame()
 	if World:isFirstLaunch() then
 		FirstLaunch()
-	elseif World:getTutorialState() ~= "TutorialsEnd" then
-		if not StartWithoutTutorial then
-			ContinueTutorial()
-		end
+	elseif World:isTutorialStateAvailable("TutorialsEnd") then
+		ContinueTutorial()
 	end
 end
 

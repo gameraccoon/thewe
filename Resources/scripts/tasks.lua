@@ -21,7 +21,7 @@ function IsShowTaskInList(cell, taskInfo)
 	local cellInfo = cell:getInfo()
 
 	-- задачи для туториала
-	if World:getTutorialState() == "WaitingForStartFirstTask" then
+	if World:isTutorialStateAvailable("StartFirstTask") then
 		if taskInfo.id == "tutorial_Recrutment" then
 			return true
 		else
@@ -31,7 +31,7 @@ function IsShowTaskInList(cell, taskInfo)
 		return false
 	end
 
-	if World:getTutorialState() == "ReadyToFirstRealWork" then
+	if World:isTutorialStateAvailable("ReadyToFirstRealWork") then
 		if taskInfo.id == "tutorial_RealWork" then
 			return true
 		else
