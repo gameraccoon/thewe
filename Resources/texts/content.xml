@@ -1,14 +1,275 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<office:document-content xmlns:office="urn:oasis:names:tc:opendocument:xmlns:office:1.0" xmlns:style="urn:oasis:names:tc:opendocument:xmlns:style:1.0" xmlns:text="urn:oasis:names:tc:opendocument:xmlns:text:1.0" xmlns:table="urn:oasis:names:tc:opendocument:xmlns:table:1.0" xmlns:draw="urn:oasis:names:tc:opendocument:xmlns:drawing:1.0" xmlns:fo="urn:oasis:names:tc:opendocument:xmlns:xsl-fo-compatible:1.0" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:meta="urn:oasis:names:tc:opendocument:xmlns:meta:1.0" xmlns:number="urn:oasis:names:tc:opendocument:xmlns:datastyle:1.0" xmlns:presentation="urn:oasis:names:tc:opendocument:xmlns:presentation:1.0" xmlns:svg="urn:oasis:names:tc:opendocument:xmlns:svg-compatible:1.0" xmlns:chart="urn:oasis:names:tc:opendocument:xmlns:chart:1.0" xmlns:dr3d="urn:oasis:names:tc:opendocument:xmlns:dr3d:1.0" xmlns:math="http://www.w3.org/1998/Math/MathML" xmlns:form="urn:oasis:names:tc:opendocument:xmlns:form:1.0" xmlns:script="urn:oasis:names:tc:opendocument:xmlns:script:1.0" xmlns:config="urn:oasis:names:tc:opendocument:xmlns:config:1.0" xmlns:ooo="http://openoffice.org/2004/office" xmlns:ooow="http://openoffice.org/2004/writer" xmlns:oooc="http://openoffice.org/2004/calc" xmlns:dom="http://www.w3.org/2001/xml-events" xmlns:xforms="http://www.w3.org/2002/xforms" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:rpt="http://openoffice.org/2005/report" xmlns:of="urn:oasis:names:tc:opendocument:xmlns:of:1.2" xmlns:xhtml="http://www.w3.org/1999/xhtml" xmlns:grddl="http://www.w3.org/2003/g/data-view#" xmlns:tableooo="http://openoffice.org/2009/table" xmlns:drawooo="http://openoffice.org/2010/draw" xmlns:calcext="urn:org:documentfoundation:names:experimental:calc:xmlns:calcext:1.0" xmlns:loext="urn:org:documentfoundation:names:experimental:office:xmlns:loext:1.0" xmlns:field="urn:openoffice:names:experimental:ooo-ms-interop:xmlns:field:1.0" xmlns:formx="urn:openoffice:names:experimental:ooxml-odf-interop:xmlns:form:1.0" xmlns:css3t="http://www.w3.org/TR/css3-text/" xmlns:gnm="http://www.gnumeric.org/odf-extension/1.0" office:version="1.2"><office:scripts/><office:font-face-decls><style:font-face style:name="Sans" svg:font-family="Sans"/><style:font-face style:name="Liberation Sans" svg:font-family="&apos;Liberation Sans&apos;" style:font-family-generic="swiss" style:font-pitch="variable"/><style:font-face style:name="Mangal" svg:font-family="Mangal" style:font-family-generic="system" style:font-pitch="variable"/><style:font-face style:name="Microsoft YaHei" svg:font-family="&apos;Microsoft YaHei&apos;" style:font-family-generic="system" style:font-pitch="variable"/><style:font-face style:name="Segoe UI" svg:font-family="&apos;Segoe UI&apos;" style:font-family-generic="system" style:font-pitch="variable"/><style:font-face style:name="Tahoma" svg:font-family="Tahoma" style:font-family-generic="system" style:font-pitch="variable"/></office:font-face-decls><office:automatic-styles><style:style style:name="ACOL-5" style:family="table-column"><style:table-column-properties fo:break-before="auto" style:column-width="2.267cm"/></style:style><style:style style:name="ACOL-0" style:family="table-column"><style:table-column-properties fo:break-before="auto" style:column-width="1.693cm"/></style:style><style:style style:name="co3" style:family="table-column"><style:table-column-properties fo:break-before="auto" style:column-width="10.007cm"/></style:style><style:style style:name="co4" style:family="table-column"><style:table-column-properties fo:break-before="auto" style:column-width="8.017cm"/></style:style><style:style style:name="co5" style:family="table-column"><style:table-column-properties fo:break-before="auto" style:column-width="7.726cm"/></style:style><style:style style:name="co6" style:family="table-column"><style:table-column-properties fo:break-before="auto" style:column-width="2.258cm"/></style:style><style:style style:name="AROW-8" style:family="table-row"><style:table-row-properties style:row-height="0.453cm" fo:break-before="auto" style:use-optimal-row-height="true"/></style:style><style:style style:name="AROW-7" style:family="table-row"><style:table-row-properties style:row-height="0.45cm" fo:break-before="auto" style:use-optimal-row-height="true"/></style:style><style:style style:name="ro3" style:family="table-row"><style:table-row-properties style:row-height="0.476cm" fo:break-before="auto" style:use-optimal-row-height="true"/></style:style><style:style style:name="ro4" style:family="table-row"><style:table-row-properties style:row-height="0.452cm" fo:break-before="auto" style:use-optimal-row-height="true"/></style:style><style:style style:name="ro5" style:family="table-row"><style:table-row-properties style:row-height="0.631cm" fo:break-before="auto" style:use-optimal-row-height="false"/></style:style><style:style style:name="ro6" style:family="table-row"><style:table-row-properties style:row-height="0.709cm" fo:break-before="auto" style:use-optimal-row-height="false"/></style:style><style:style style:name="ro7" style:family="table-row"><style:table-row-properties style:row-height="0.767cm" fo:break-before="auto" style:use-optimal-row-height="false"/></style:style><style:style style:name="ta-0x7f831b440210" style:family="table" style:master-page-name="Sheet2"><style:table-properties table:display="true" style:writing-mode="lr-tb"/></style:style><style:style style:name="ta-0x7f831b440400" style:family="table" style:master-page-name="Sheet3"><style:table-properties table:display="true" style:writing-mode="lr-tb"/></style:style><style:style style:name="ta3" style:family="table" style:master-page-name="Sheet1"><style:table-properties table:display="true" style:writing-mode="lr-tb"/></style:style><style:style style:name="ACE-0x7f831b441130" style:family="table-cell" style:parent-style-name="Default"><style:table-cell-properties style:glyph-orientation-vertical="auto" style:cell-protect="protected" style:print-content="true" style:diagonal-bl-tr="none" style:diagonal-tl-br="none" style:text-align-source="value-type" style:repeat-content="false" fo:background-color="transparent" fo:wrap-option="no-wrap" fo:border="none" style:rotation-angle="0" style:rotation-align="none" style:shrink-to-fit="false" gnm:GnmHAlign="1" style:vertical-align="bottom"/><style:text-properties fo:color="#000000" style:text-line-through-style="none" style:text-line-through-type="none" style:text-position="" style:font-name="Sans" fo:font-size="10pt" fo:font-style="normal" style:text-underline-style="none" fo:font-weight="normal"/></style:style><style:style style:name="ACE-0x7f831b441258" style:family="table-cell" style:parent-style-name="Default"><style:table-cell-properties style:glyph-orientation-vertical="auto" style:cell-protect="protected" style:print-content="true" style:diagonal-bl-tr="none" style:diagonal-tl-br="none" style:text-align-source="value-type" style:repeat-content="false" fo:background-color="transparent" fo:wrap-option="no-wrap" fo:border="none" style:rotation-angle="0" style:rotation-align="none" style:shrink-to-fit="false" gnm:GnmHAlign="1" style:vertical-align="bottom"/><style:text-properties fo:color="#000000" style:text-line-through-style="none" style:text-line-through-type="none" style:text-position="" style:font-name="Sans" fo:font-size="10pt" fo:font-style="normal" style:text-underline-style="none" fo:font-weight="normal"/></style:style><style:style style:name="ce3" style:family="table-cell" style:parent-style-name="Default"><style:table-cell-properties style:glyph-orientation-vertical="auto" style:cell-protect="protected" style:print-content="true" style:diagonal-bl-tr="none" style:diagonal-tl-br="none" style:text-align-source="value-type" style:repeat-content="false" fo:background-color="transparent" fo:wrap-option="no-wrap" fo:border="none" style:rotation-angle="0" style:rotation-align="none" style:shrink-to-fit="false" gnm:GnmHAlign="1" style:vertical-align="bottom"/><style:text-properties fo:color="#000000" style:text-line-through-style="none" style:text-line-through-type="none" style:font-name="Sans" fo:font-size="10pt" fo:font-style="normal" style:text-underline-style="none" fo:font-weight="normal"/></style:style></office:automatic-styles><office:body><office:spreadsheet><table:calculation-settings table:case-sensitive="false" table:automatic-find-labels="false" table:use-regular-expressions="false"><table:iteration table:status="enable"/></table:calculation-settings><table:table table:name="Sheet1" table:style-name="ta3" table:print="false"><office:forms form:automatic-focus="false" form:apply-design-mode="false"/><table:table-column table:style-name="co3" table:default-cell-style-name="Default"/><table:table-column table:style-name="co4" table:default-cell-style-name="Default"/><table:table-column table:style-name="co5" table:default-cell-style-name="Default"/><table:table-column table:style-name="ACOL-0" table:number-columns-repeated="125" table:default-cell-style-name="Default"/><table:table-row table:style-name="ro3"><table:table-cell table:style-name="Gnumeric-default" office:value-type="string" calcext:value-type="string"><text:p>Id</text:p></table:table-cell><table:table-cell table:style-name="Gnumeric-default" office:value-type="string" calcext:value-type="string"><text:p>en</text:p></table:table-cell><table:table-cell table:style-name="Gnumeric-default" office:value-type="string" calcext:value-type="string"><text:p>ru</text:p></table:table-cell><table:table-cell table:style-name="Gnumeric-default" table:number-columns-repeated="125"/></table:table-row><table:table-row table:style-name="ro4"><table:table-cell table:style-name="Gnumeric-default" office:value-type="string" calcext:value-type="string"><text:p>CellTasksMenu_Header</text:p></table:table-cell><table:table-cell table:style-name="Gnumeric-default" office:value-type="string" calcext:value-type="string"><text:p>Tasks</text:p></table:table-cell><table:table-cell table:style-name="Gnumeric-default" office:value-type="string" calcext:value-type="string"><text:p>Задания</text:p></table:table-cell><table:table-cell table:style-name="Gnumeric-default" table:number-columns-repeated="125"/></table:table-row><table:table-row table:style-name="ro5"><table:table-cell table:style-name="Gnumeric-default" office:value-type="string" calcext:value-type="string"><text:p>CellInfoMenu_Header</text:p></table:table-cell><table:table-cell table:style-name="Gnumeric-default" office:value-type="string" calcext:value-type="string"><text:p>Cell Info</text:p></table:table-cell><table:table-cell table:style-name="Gnumeric-default" office:value-type="string" calcext:value-type="string"><text:p>Информация</text:p></table:table-cell><table:table-cell table:style-name="Gnumeric-default" table:number-columns-repeated="125"/></table:table-row><table:table-row table:style-name="ro5"><table:table-cell table:style-name="Gnumeric-default" office:value-type="string" calcext:value-type="string"><text:p>CellInfoMenu_Level</text:p></table:table-cell><table:table-cell table:style-name="Gnumeric-default" office:value-type="string" calcext:value-type="string"><text:p>Level</text:p></table:table-cell><table:table-cell table:style-name="Gnumeric-default" office:value-type="string" calcext:value-type="string"><text:p>Уровень</text:p></table:table-cell><table:table-cell table:style-name="Gnumeric-default" table:number-columns-repeated="125"/></table:table-row><table:table-row table:style-name="ro5"><table:table-cell table:style-name="Gnumeric-default" office:value-type="string" calcext:value-type="string"><text:p>CellInfoMenu_Members</text:p></table:table-cell><table:table-cell table:style-name="Gnumeric-default" office:value-type="string" calcext:value-type="string"><text:p>Members:</text:p></table:table-cell><table:table-cell table:style-name="Gnumeric-default" office:value-type="string" calcext:value-type="string"><text:p>Персонал:</text:p></table:table-cell><table:table-cell table:style-name="Gnumeric-default" table:number-columns-repeated="125"/></table:table-row><table:table-row table:style-name="ro5"><table:table-cell table:style-name="Gnumeric-default" office:value-type="string" calcext:value-type="string"><text:p>CellInfoMenu_Cach</text:p></table:table-cell><table:table-cell table:style-name="Gnumeric-default" office:value-type="string" calcext:value-type="string"><text:p>Cach:</text:p></table:table-cell><table:table-cell table:style-name="Gnumeric-default" office:value-type="string" calcext:value-type="string"><text:p>Деньги:</text:p></table:table-cell><table:table-cell table:style-name="Gnumeric-default" table:number-columns-repeated="125"/></table:table-row><table:table-row table:style-name="ro5"><table:table-cell table:style-name="Gnumeric-default" office:value-type="string" calcext:value-type="string"><text:p>CellInfoMenu_PursuedLow</text:p></table:table-cell><table:table-cell table:style-name="Gnumeric-default" office:value-type="string" calcext:value-type="string"><text:p>Low pursued level</text:p></table:table-cell><table:table-cell table:style-name="Gnumeric-default" office:value-type="string" calcext:value-type="string"><text:p>Низкий уровень известности</text:p></table:table-cell><table:table-cell table:style-name="Gnumeric-default" table:number-columns-repeated="125"/></table:table-row><table:table-row table:style-name="ro5"><table:table-cell table:style-name="Gnumeric-default" office:value-type="string" calcext:value-type="string"><text:p>CellInfoMenu_PursuedMid</text:p></table:table-cell><table:table-cell table:style-name="Gnumeric-default" office:value-type="string" calcext:value-type="string"><text:p>Middle pursued level</text:p></table:table-cell><table:table-cell table:style-name="Gnumeric-default" office:value-type="string" calcext:value-type="string"><text:p>Средний уровень ищвестности</text:p></table:table-cell><table:table-cell table:style-name="Gnumeric-default" table:number-columns-repeated="125"/></table:table-row><table:table-row table:style-name="ro6"><table:table-cell table:style-name="Gnumeric-default" office:value-type="string" calcext:value-type="string"><text:p>CellInfoMenu_PursuedHigh</text:p></table:table-cell><table:table-cell table:style-name="Gnumeric-default" office:value-type="string" calcext:value-type="string"><text:p>High pursued level</text:p></table:table-cell><table:table-cell table:style-name="Gnumeric-default" office:value-type="string" calcext:value-type="string"><text:p>Высокий уровень ищвестности</text:p></table:table-cell><table:table-cell table:style-name="Gnumeric-default" table:number-columns-repeated="125"/></table:table-row><table:table-row table:style-name="ro5"><table:table-cell table:style-name="Gnumeric-default" office:value-type="string" calcext:value-type="string"><text:p>CellInfoMenu_Morale</text:p></table:table-cell><table:table-cell table:style-name="Gnumeric-default" office:value-type="string" calcext:value-type="string"><text:p>Morale:</text:p></table:table-cell><table:table-cell table:style-name="Gnumeric-default" office:value-type="string" calcext:value-type="string"><text:p>Мораль:</text:p></table:table-cell><table:table-cell table:style-name="Gnumeric-default" table:number-columns-repeated="125"/></table:table-row><table:table-row table:style-name="ro5"><table:table-cell table:style-name="Gnumeric-default" office:value-type="string" calcext:value-type="string"><text:p>CellInfoMenu_Devotion</text:p></table:table-cell><table:table-cell table:style-name="Gnumeric-default" office:value-type="string" calcext:value-type="string"><text:p>Devotion:</text:p></table:table-cell><table:table-cell table:style-name="Gnumeric-default" office:value-type="string" calcext:value-type="string"><text:p>Довольство:</text:p></table:table-cell><table:table-cell table:style-name="Gnumeric-default" table:number-columns-repeated="125"/></table:table-row><table:table-row table:style-name="ro5"><table:table-cell table:style-name="Gnumeric-default" office:value-type="string" calcext:value-type="string"><text:p>CellTaskMenu_Header</text:p></table:table-cell><table:table-cell table:style-name="Gnumeric-default" office:value-type="string" calcext:value-type="string"><text:p>Cell Avaliable Tasks</text:p></table:table-cell><table:table-cell table:style-name="Gnumeric-default" office:value-type="string" calcext:value-type="string"><text:p>Доступные задания</text:p></table:table-cell><table:table-cell table:style-name="Gnumeric-default" table:number-columns-repeated="125"/></table:table-row><table:table-row table:style-name="ro5"><table:table-cell table:style-name="Gnumeric-default" office:value-type="string" calcext:value-type="string"><text:p>CellTaskMenuItem_Start</text:p></table:table-cell><table:table-cell table:style-name="Gnumeric-default" office:value-type="string" calcext:value-type="string"><text:p>Start</text:p></table:table-cell><table:table-cell table:style-name="Gnumeric-default" office:value-type="string" calcext:value-type="string"><text:p>Начать</text:p></table:table-cell><table:table-cell table:style-name="Gnumeric-default" table:number-columns-repeated="125"/></table:table-row><table:table-row table:style-name="ro5"><table:table-cell table:style-name="Gnumeric-default" office:value-type="string" calcext:value-type="string"><text:p>CellTaskMenuItem_Duration</text:p></table:table-cell><table:table-cell table:style-name="Gnumeric-default" office:value-type="string" calcext:value-type="string"><text:p>Duration:</text:p></table:table-cell><table:table-cell table:style-name="Gnumeric-default" office:value-type="string" calcext:value-type="string"><text:p>Вермя:</text:p></table:table-cell><table:table-cell table:style-name="Gnumeric-default" table:number-columns-repeated="125"/></table:table-row><table:table-row table:style-name="ro5"><table:table-cell table:style-name="Gnumeric-default" office:value-type="string" calcext:value-type="string"><text:p>CellTaskMenuItem_Chanse</text:p></table:table-cell><table:table-cell table:style-name="Gnumeric-default" office:value-type="string" calcext:value-type="string"><text:p>Chanse:</text:p></table:table-cell><table:table-cell table:style-name="Gnumeric-default" office:value-type="string" calcext:value-type="string"><text:p>Шанс:</text:p></table:table-cell><table:table-cell table:style-name="Gnumeric-default" table:number-columns-repeated="125"/></table:table-row><table:table-row table:style-name="ro7"><table:table-cell table:style-name="Gnumeric-default" office:value-type="string" calcext:value-type="string"><text:p>Tutorial_Welcome_Step1</text:p></table:table-cell><table:table-cell table:style-name="Gnumeric-default" office:value-type="string" calcext:value-type="string"><text:p>Welcome to control centerof your secret organization</text:p></table:table-cell><table:table-cell table:style-name="Gnumeric-default" office:value-type="string" calcext:value-type="string"><text:p>Добро пожаловать в центр управленияВашей тайной организацией!</text:p></table:table-cell><table:table-cell table:style-name="Gnumeric-default" table:number-columns-repeated="125"/></table:table-row><table:table-row table:style-name="AROW-7" table:number-rows-repeated="115"><table:table-cell table:number-columns-repeated="128"/></table:table-row><table:table-row table:style-name="AROW-7"><table:table-cell table:number-columns-repeated="128"/></table:table-row><table:named-expressions><table:named-expression table:name="Print_Area" table:base-cell-address="$Sheet1.$A$1" table:expression="#REF!"/><table:named-expression table:name="Sheet_Title" table:base-cell-address="$Sheet1.$A$1" table:expression="&quot;Sheet1&quot;"/></table:named-expressions></table:table><table:table table:name="Sheet2" table:style-name="ta-0x7f831b440210" table:print="false">
+
+<office:document-content xmlns:office="urn:oasis:names:tc:opendocument:xmlns:office:1.0" xmlns:style="urn:oasis:names:tc:opendocument:xmlns:style:1.0" xmlns:text="urn:oasis:names:tc:opendocument:xmlns:text:1.0" xmlns:table="urn:oasis:names:tc:opendocument:xmlns:table:1.0" xmlns:draw="urn:oasis:names:tc:opendocument:xmlns:drawing:1.0" xmlns:fo="urn:oasis:names:tc:opendocument:xmlns:xsl-fo-compatible:1.0" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:meta="urn:oasis:names:tc:opendocument:xmlns:meta:1.0" xmlns:number="urn:oasis:names:tc:opendocument:xmlns:datastyle:1.0" xmlns:svg="urn:oasis:names:tc:opendocument:xmlns:svg-compatible:1.0" xmlns:chart="urn:oasis:names:tc:opendocument:xmlns:chart:1.0" xmlns:dr3d="urn:oasis:names:tc:opendocument:xmlns:dr3d:1.0" xmlns:config="urn:oasis:names:tc:opendocument:xmlns:config:1.0" xmlns:math="http://www.w3.org/1998/Math/MathML" xmlns:form="urn:oasis:names:tc:opendocument:xmlns:form:1.0" xmlns:script="urn:oasis:names:tc:opendocument:xmlns:script:1.0" xmlns:ooo="http://openoffice.org/2004/office" xmlns:ooow="http://openoffice.org/2004/writer" xmlns:oooc="http://openoffice.org/2004/calc" xmlns:tableooo="http://openoffice.org/2009/table" xmlns:of="urn:oasis:names:tc:opendocument:xmlns:of:1.2" xmlns:dom="http://www.w3.org/2001/xml-events" xmlns:xforms="http://www.w3.org/2002/xforms" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:gnm="http://www.gnumeric.org/odf-extension/1.0" office:version="1.2">
+  <office:scripts/>
+  <office:font-face-decls/>
+  <office:automatic-styles>
+    <style:style style:name="ta-0x7fe20398d000" style:family="table" style:master-page-name="ta-mp-0x7fe20398d000">
+      <style:table-properties table:display="true" style:writing-mode="lr-tb"/>
+    </style:style>
+    <style:style style:name="ta-0x7fe20398d1f0" style:family="table" style:master-page-name="ta-mp-0x7fe20398d1f0">
+      <style:table-properties table:display="true" style:writing-mode="lr-tb"/>
+    </style:style>
+    <style:style style:name="ta-0x7fe20398d3e0" style:family="table" style:master-page-name="ta-mp-0x7fe20398d3e0">
+      <style:table-properties table:display="true" style:writing-mode="lr-tb"/>
+    </style:style>
+    <style:style style:name="AC-weight100" style:family="text">
+      <style:text-properties fo:font-weight="100"/>
+    </style:style>
+    <style:style style:name="AC-weight200" style:family="text">
+      <style:text-properties fo:font-weight="200"/>
+    </style:style>
+    <style:style style:name="AC-weight300" style:family="text">
+      <style:text-properties fo:font-weight="300"/>
+    </style:style>
+    <style:style style:name="AC-weight400" style:family="text">
+      <style:text-properties fo:font-weight="normal"/>
+    </style:style>
+    <style:style style:name="AC-weight500" style:family="text">
+      <style:text-properties fo:font-weight="500"/>
+    </style:style>
+    <style:style style:name="AC-weight600" style:family="text">
+      <style:text-properties fo:font-weight="600"/>
+    </style:style>
+    <style:style style:name="AC-weight700" style:family="text">
+      <style:text-properties fo:font-weight="bold"/>
+    </style:style>
+    <style:style style:name="AC-weight800" style:family="text">
+      <style:text-properties fo:font-weight="800"/>
+    </style:style>
+    <style:style style:name="AC-weight900" style:family="text">
+      <style:text-properties fo:font-weight="900"/>
+    </style:style>
+    <style:style style:name="AC-weight1000" style:family="text">
+      <style:text-properties fo:font-weight="900"/>
+    </style:style>
+    <style:style style:name="AC-italic" style:family="text">
+      <style:text-properties fo:font-style="italic"/>
+    </style:style>
+    <style:style style:name="AC-roman" style:family="text">
+      <style:text-properties fo:font-style="normal"/>
+    </style:style>
+    <style:style style:name="AC-subscript" style:family="text">
+      <style:text-properties style:text-position="sub 83%"/>
+    </style:style>
+    <style:style style:name="AC-superscript" style:family="text">
+      <style:text-properties style:text-position="super 83%"/>
+    </style:style>
+    <style:style style:name="AC-script" style:family="text">
+      <style:text-properties style:text-position="0% 100%"/>
+    </style:style>
+    <style:style style:name="AC-strikethrough-solid" style:family="text">
+      <style:text-properties style:text-line-through-type="single" style:text-line-through-style="solid"/>
+    </style:style>
+    <style:style style:name="AC-strikethrough-none" style:family="text">
+      <style:text-properties style:text-line-through-type="none" style:text-line-through-style="none"/>
+    </style:style>
+    <style:style style:name="AC-underline-none" style:family="text">
+      <style:text-properties style:text-underline-type="none" style:text-underline-style="none" style:text-underline-width="auto"/>
+    </style:style>
+    <style:style style:name="AC-underline-single" style:family="text">
+      <style:text-properties style:text-underline-type="single" style:text-underline-style="solid" style:text-underline-width="auto"/>
+    </style:style>
+    <style:style style:name="AC-underline-double" style:family="text">
+      <style:text-properties style:text-underline-type="double" style:text-underline-style="solid" style:text-underline-width="auto"/>
+    </style:style>
+    <style:style style:name="AC-underline-low" style:family="text">
+      <style:text-properties style:text-underline-type="single" style:text-underline-style="solid" style:text-underline-width="bold"/>
+    </style:style>
+    <style:style style:name="AC-underline-error" style:family="text">
+      <style:text-properties style:text-underline-type="single" style:text-underline-style="wave" style:text-underline-width="auto"/>
+    </style:style>
+    <style:style style:name="AROW-0" style:family="table-row">
+      <style:table-row-properties style:row-height="12.75pt" style:use-optimal-row-height="true"/>
+    </style:style>
+    <style:style style:name="ACOL-0" style:family="table-column">
+      <style:table-column-properties style:column-width="47.99pt" style:use-optimal-column-width="true"/>
+    </style:style>
+    <style:style style:name="ACE-0x7fe2039f9ee8" style:family="table-cell" style:data-style-name="General">
+      <style:table-cell-properties fo:background-color="transparent" fo:border-top="0.000cm none #c7c7c7" fo:border-bottom="0.000cm none #c7c7c7" fo:border-left="0.000cm none #c7c7c7" fo:border-right="0.000cm none #c7c7c7" style:diagonal-bl-tr="0.000cm none #c7c7c7" style:diagonal-tl-br="0.000cm none #c7c7c7" style:vertical-align="bottom" fo:wrap-option="no-wrap" style:shrink-to-fit="false" style:writing-mode="page" style:glyph-orientation-vertical="auto" style:cell-protect="protected" style:rotation-align="none" style:rotation-angle="0" style:print-content="true" style:decimal-places="13" style:text-align-source="value-type" style:repeat-content="false"/>
+      <style:paragraph-properties style:writing-mode-automatic="true" gnm:GnmHAlign="1" fo:text-indent="0.00pt"/>
+      <style:text-properties text:display="true" fo:font-weight="normal" fo:font-style="normal" style:text-line-through-type="none" style:text-line-through-style="none" style:text-underline-type="none" style:text-underline-style="none" style:text-underline-width="auto" style:text-position="0% 100%" fo:font-size="10.00pt" fo:color="#000000" fo:font-family="Sans"/>
+    </style:style>
+    <style:style style:name="ACE-0x7fe2039fa010" style:family="table-cell" style:data-style-name="General">
+      <style:table-cell-properties fo:background-color="transparent" fo:border-top="0.000cm none #c7c7c7" fo:border-bottom="0.000cm none #c7c7c7" fo:border-left="0.000cm none #c7c7c7" fo:border-right="0.000cm none #c7c7c7" style:diagonal-bl-tr="0.000cm none #c7c7c7" style:diagonal-tl-br="0.000cm none #c7c7c7" style:vertical-align="bottom" fo:wrap-option="no-wrap" style:shrink-to-fit="false" style:writing-mode="page" style:glyph-orientation-vertical="auto" style:cell-protect="protected" style:rotation-align="none" style:rotation-angle="0" style:print-content="true" style:decimal-places="13" style:text-align-source="value-type" style:repeat-content="false"/>
+      <style:paragraph-properties style:writing-mode-automatic="true" gnm:GnmHAlign="1" fo:text-indent="0.00pt"/>
+      <style:text-properties text:display="true" fo:font-weight="normal" fo:font-style="normal" style:text-line-through-type="none" style:text-line-through-style="none" style:text-underline-type="none" style:text-underline-style="none" style:text-underline-width="auto" style:text-position="0% 100%" fo:font-size="10.00pt" fo:color="#000000" fo:font-family="Sans"/>
+    </style:style>
+    <style:style style:name="ACE-0x7fe2039fa138" style:family="table-cell" style:data-style-name="General">
+      <style:table-cell-properties fo:background-color="transparent" fo:border-top="0.000cm none #c7c7c7" fo:border-bottom="0.000cm none #c7c7c7" fo:border-left="0.000cm none #c7c7c7" fo:border-right="0.000cm none #c7c7c7" style:diagonal-bl-tr="0.000cm none #c7c7c7" style:diagonal-tl-br="0.000cm none #c7c7c7" style:vertical-align="bottom" fo:wrap-option="no-wrap" style:shrink-to-fit="false" style:writing-mode="page" style:glyph-orientation-vertical="auto" style:cell-protect="protected" style:rotation-align="none" style:rotation-angle="0" style:print-content="true" style:decimal-places="13" style:text-align-source="value-type" style:repeat-content="false"/>
+      <style:paragraph-properties style:writing-mode-automatic="true" gnm:GnmHAlign="1" fo:text-indent="0.00pt"/>
+      <style:text-properties text:display="true" fo:font-weight="normal" fo:font-style="normal" style:text-line-through-type="none" style:text-line-through-style="none" style:text-underline-type="none" style:text-underline-style="none" style:text-underline-width="auto" style:text-position="0% 100%" fo:font-size="10.00pt" fo:color="#000000" fo:font-family="Sans"/>
+    </style:style>
+    <style:style style:name="ACOL-1" style:family="table-column">
+      <style:table-column-properties style:column-width="283.66pt" style:use-optimal-column-width="true"/>
+    </style:style>
+    <style:style style:name="ACOL-2" style:family="table-column">
+      <style:table-column-properties style:column-width="227.25pt" style:use-optimal-column-width="true"/>
+    </style:style>
+    <style:style style:name="ACOL-3" style:family="table-column">
+      <style:table-column-properties style:column-width="219.00pt" style:use-optimal-column-width="true"/>
+    </style:style>
+    <style:style style:name="ACOL-4" style:family="table-column"/>
+    <style:style style:name="ACOL-5" style:family="table-column">
+      <style:table-column-properties style:column-width="64.26pt" style:use-optimal-column-width="true"/>
+    </style:style>
+    <style:style style:name="AROW-1" style:family="table-row">
+      <style:table-row-properties style:row-height="13.49pt" style:use-optimal-row-height="true"/>
+    </style:style>
+    <style:style style:name="AROW-2" style:family="table-row">
+      <style:table-row-properties style:row-height="12.81pt" style:use-optimal-row-height="true"/>
+    </style:style>
+    <style:style style:name="AROW-3" style:family="table-row">
+      <style:table-row-properties style:row-height="17.89pt" style:use-optimal-row-height="false"/>
+    </style:style>
+    <style:style style:name="AROW-4" style:family="table-row">
+      <style:table-row-properties style:row-height="20.10pt" style:use-optimal-row-height="false"/>
+    </style:style>
+    <style:style style:name="AROW-5" style:family="table-row">
+      <style:table-row-properties style:row-height="21.74pt" style:use-optimal-row-height="false"/>
+    </style:style>
+    <style:style style:name="AROW-6" style:family="table-row">
+      <style:table-row-properties style:row-height="12.76pt" style:use-optimal-row-height="true"/>
+    </style:style>
+    <style:style style:name="AROW-7" style:family="table-row"/>
+    <style:style style:name="AROW-8" style:family="table-row">
+      <style:table-row-properties style:row-height="12.84pt" style:use-optimal-row-height="true"/>
+    </style:style>
+  </office:automatic-styles>
+  <office:body>
+    <office:spreadsheet>
+      <table:calculation-settings table:null-year="1930" table:automatic-find-labels="false" table:case-sensitive="false" table:precision-as-shown="false" table:search-criteria-must-apply-to-whole-cell="true" table:use-regular-expressions="false" table:use-wildcards="false">
+        <table:null-date table:date-value="1899-12-30" table:value-type="date"/>
+        <table:iteration table:maximum-difference="0.001" table:status="enable" table:steps="100"/>
+      </table:calculation-settings>
+      <table:table table:name="Sheet1" table:style-name="ta-0x7fe20398d000" table:print="false">
         <office:forms form:automatic-focus="false" form:apply-design-mode="false">
           <form:form/>
         </office:forms>
-        <table:table-column table:default-cell-style-name="ACE-0x7f831b441130" table:style-name="ACOL-5"/>
-        <table:table-column table:default-cell-style-name="ACE-0x7f831b441130" table:style-name="ACOL-0" table:number-columns-repeated="127"/>
+        <table:table-column table:style-name="ACOL-1"/>
+        <table:table-column table:style-name="ACOL-2"/>
+        <table:table-column table:style-name="ACOL-3"/>
+        <table:table-column table:style-name="ACOL-0" table:number-columns-repeated="125"/>
+        <table:table-row table:style-name="AROW-1">
+          <table:table-cell table:style-name="Gnumeric-default" office:value-type="string"><text:p>Id</text:p>          </table:table-cell>
+          <table:table-cell table:style-name="Gnumeric-default" office:value-type="string"><text:p>en</text:p>          </table:table-cell>
+          <table:table-cell table:style-name="Gnumeric-default" office:value-type="string"><text:p>ru</text:p>          </table:table-cell>
+          <table:table-cell table:number-columns-repeated="125" table:style-name="Gnumeric-default"/>
+        </table:table-row>
+        <table:table-row table:style-name="AROW-2">
+          <table:table-cell table:style-name="Gnumeric-default" office:value-type="string"><text:p>CellTasksMenu_Header</text:p>          </table:table-cell>
+          <table:table-cell table:style-name="Gnumeric-default" office:value-type="string"><text:p>Tasks</text:p>          </table:table-cell>
+          <table:table-cell table:style-name="Gnumeric-default" office:value-type="string"><text:p>Задания</text:p>          </table:table-cell>
+          <table:table-cell table:number-columns-repeated="125" table:style-name="Gnumeric-default"/>
+        </table:table-row>
+        <table:table-row table:style-name="AROW-3">
+          <table:table-cell table:style-name="Gnumeric-default" office:value-type="string"><text:p>CellInfoMenu_Header</text:p>          </table:table-cell>
+          <table:table-cell table:style-name="Gnumeric-default" office:value-type="string"><text:p>Cell Info</text:p>          </table:table-cell>
+          <table:table-cell table:style-name="Gnumeric-default" office:value-type="string"><text:p>Информация</text:p>          </table:table-cell>
+          <table:table-cell table:number-columns-repeated="125" table:style-name="Gnumeric-default"/>
+        </table:table-row>
+        <table:table-row table:style-name="AROW-3">
+          <table:table-cell table:style-name="Gnumeric-default" office:value-type="string"><text:p>CellInfoMenu_Level</text:p>          </table:table-cell>
+          <table:table-cell table:style-name="Gnumeric-default" office:value-type="string"><text:p>Level</text:p>          </table:table-cell>
+          <table:table-cell table:style-name="Gnumeric-default" office:value-type="string"><text:p>Уровень</text:p>          </table:table-cell>
+          <table:table-cell table:number-columns-repeated="125" table:style-name="Gnumeric-default"/>
+        </table:table-row>
+        <table:table-row table:style-name="AROW-3">
+          <table:table-cell table:style-name="Gnumeric-default" office:value-type="string"><text:p>CellInfoMenu_Members</text:p>          </table:table-cell>
+          <table:table-cell table:style-name="Gnumeric-default" office:value-type="string"><text:p>Members:</text:p>          </table:table-cell>
+          <table:table-cell table:style-name="Gnumeric-default" office:value-type="string"><text:p>Персонал:</text:p>          </table:table-cell>
+          <table:table-cell table:number-columns-repeated="125" table:style-name="Gnumeric-default"/>
+        </table:table-row>
+        <table:table-row table:style-name="AROW-3">
+          <table:table-cell table:style-name="Gnumeric-default" office:value-type="string"><text:p>CellInfoMenu_Cach</text:p>          </table:table-cell>
+          <table:table-cell table:style-name="Gnumeric-default" office:value-type="string"><text:p>Cach:</text:p>          </table:table-cell>
+          <table:table-cell table:style-name="Gnumeric-default" office:value-type="string"><text:p>Деньги:</text:p>          </table:table-cell>
+          <table:table-cell table:number-columns-repeated="125" table:style-name="Gnumeric-default"/>
+        </table:table-row>
+        <table:table-row table:style-name="AROW-3">
+          <table:table-cell table:style-name="Gnumeric-default" office:value-type="string"><text:p>CellInfoMenu_PursuedLow</text:p>          </table:table-cell>
+          <table:table-cell table:style-name="Gnumeric-default" office:value-type="string"><text:p>Low pursued level</text:p>          </table:table-cell>
+          <table:table-cell table:style-name="Gnumeric-default" office:value-type="string"><text:p>Низкий уровень известности</text:p>          </table:table-cell>
+          <table:table-cell table:number-columns-repeated="125" table:style-name="Gnumeric-default"/>
+        </table:table-row>
+        <table:table-row table:style-name="AROW-3">
+          <table:table-cell table:style-name="Gnumeric-default" office:value-type="string"><text:p>CellInfoMenu_PursuedMid</text:p>          </table:table-cell>
+          <table:table-cell table:style-name="Gnumeric-default" office:value-type="string"><text:p>Middle pursued level</text:p>          </table:table-cell>
+          <table:table-cell table:style-name="Gnumeric-default" office:value-type="string"><text:p>Средний уровень ищвестности</text:p>          </table:table-cell>
+          <table:table-cell table:number-columns-repeated="125" table:style-name="Gnumeric-default"/>
+        </table:table-row>
+        <table:table-row table:style-name="AROW-4">
+          <table:table-cell table:style-name="Gnumeric-default" office:value-type="string"><text:p>CellInfoMenu_PursuedHigh</text:p>          </table:table-cell>
+          <table:table-cell table:style-name="Gnumeric-default" office:value-type="string"><text:p>High pursued level</text:p>          </table:table-cell>
+          <table:table-cell table:style-name="Gnumeric-default" office:value-type="string"><text:p>Высокий уровень ищвестности</text:p>          </table:table-cell>
+          <table:table-cell table:number-columns-repeated="125" table:style-name="Gnumeric-default"/>
+        </table:table-row>
+        <table:table-row table:style-name="AROW-3">
+          <table:table-cell table:style-name="Gnumeric-default" office:value-type="string"><text:p>CellInfoMenu_Morale</text:p>          </table:table-cell>
+          <table:table-cell table:style-name="Gnumeric-default" office:value-type="string"><text:p>Morale:</text:p>          </table:table-cell>
+          <table:table-cell table:style-name="Gnumeric-default" office:value-type="string"><text:p>Мораль:</text:p>          </table:table-cell>
+          <table:table-cell table:number-columns-repeated="125" table:style-name="Gnumeric-default"/>
+        </table:table-row>
+        <table:table-row table:style-name="AROW-3">
+          <table:table-cell table:style-name="Gnumeric-default" office:value-type="string"><text:p>CellInfoMenu_Devotion</text:p>          </table:table-cell>
+          <table:table-cell table:style-name="Gnumeric-default" office:value-type="string"><text:p>Devotion:</text:p>          </table:table-cell>
+          <table:table-cell table:style-name="Gnumeric-default" office:value-type="string"><text:p>Преданность:</text:p>          </table:table-cell>
+          <table:table-cell table:number-columns-repeated="125" table:style-name="Gnumeric-default"/>
+        </table:table-row>
+        <table:table-row table:style-name="AROW-3">
+          <table:table-cell table:style-name="Gnumeric-default" office:value-type="string"><text:p>CellTaskMenu_Header</text:p>          </table:table-cell>
+          <table:table-cell table:style-name="Gnumeric-default" office:value-type="string"><text:p>Cell Avaliable Tasks</text:p>          </table:table-cell>
+          <table:table-cell table:style-name="Gnumeric-default" office:value-type="string"><text:p>Доступные задания</text:p>          </table:table-cell>
+          <table:table-cell table:number-columns-repeated="125" table:style-name="Gnumeric-default"/>
+        </table:table-row>
+        <table:table-row table:style-name="AROW-3">
+          <table:table-cell table:style-name="Gnumeric-default" office:value-type="string"><text:p>CellTaskMenuItem_Start</text:p>          </table:table-cell>
+          <table:table-cell table:style-name="Gnumeric-default" office:value-type="string"><text:p>Start</text:p>          </table:table-cell>
+          <table:table-cell table:style-name="Gnumeric-default" office:value-type="string"><text:p>Начать</text:p>          </table:table-cell>
+          <table:table-cell table:number-columns-repeated="125" table:style-name="Gnumeric-default"/>
+        </table:table-row>
+        <table:table-row table:style-name="AROW-3">
+          <table:table-cell table:style-name="Gnumeric-default" office:value-type="string"><text:p>CellTaskMenuItem_Duration</text:p>          </table:table-cell>
+          <table:table-cell table:style-name="Gnumeric-default" office:value-type="string"><text:p>Duration:</text:p>          </table:table-cell>
+          <table:table-cell table:style-name="Gnumeric-default" office:value-type="string"><text:p>Вермя:</text:p>          </table:table-cell>
+          <table:table-cell table:number-columns-repeated="125" table:style-name="Gnumeric-default"/>
+        </table:table-row>
+        <table:table-row table:style-name="AROW-3">
+          <table:table-cell table:style-name="Gnumeric-default" office:value-type="string"><text:p>CellTaskMenuItem_Chanse</text:p>          </table:table-cell>
+          <table:table-cell table:style-name="Gnumeric-default" office:value-type="string"><text:p>Chanse:</text:p>          </table:table-cell>
+          <table:table-cell table:style-name="Gnumeric-default" office:value-type="string"><text:p>Шанс:</text:p>          </table:table-cell>
+          <table:table-cell table:number-columns-repeated="125" table:style-name="Gnumeric-default"/>
+        </table:table-row>
+        <table:table-row table:style-name="AROW-5">
+          <table:table-cell table:style-name="Gnumeric-default" office:value-type="string"><text:p>Tutorial_Welcome_Step1</text:p>          </table:table-cell>
+          <table:table-cell table:style-name="Gnumeric-default" office:value-type="string"><text:p>Welcome to control centerof your secret organization</text:p>          </table:table-cell>
+          <table:table-cell table:style-name="Gnumeric-default" office:value-type="string"><text:p>Добро пожаловать в центр управленияВашей тайной организацией!</text:p>          </table:table-cell>
+          <table:table-cell table:number-columns-repeated="125" table:style-name="Gnumeric-default"/>
+        </table:table-row>
+        <table:table-row table:style-name="AROW-6" table:number-rows-repeated="116">
+          <table:table-cell table:number-columns-repeated="128"/>
+        </table:table-row>
+        <table:table-row table:style-name="AROW-0" table:number-rows-repeated="124">
+          <table:table-cell table:number-columns-repeated="128"/>
+        </table:table-row>
+        <table:named-expressions>
+          <table:named-expression table:name="Print_Area" table:expression="of:=#REF!" table:base-cell-address="$'Sheet1'.$A$1"/>
+          <table:named-expression table:name="Sheet_Title" table:expression="of:=&quot;Sheet1&quot;" table:base-cell-address="$'Sheet1'.$A$1"/>
+        </table:named-expressions>
+        <gnm:selections gnm:cursor-col="2" gnm:cursor-row="10">
+          <gnm:selection gnm:start-col="2" gnm:start-row="10" gnm:end-col="2" gnm:end-row="10"/>
+        </gnm:selections>
+      </table:table>
+      <table:table table:name="Sheet2" table:style-name="ta-0x7fe20398d1f0" table:print="false">
+        <office:forms form:automatic-focus="false" form:apply-design-mode="false">
+          <form:form/>
+        </office:forms>
+        <table:table-column table:default-cell-style-name="ACE-0x7fe2039fa010" table:style-name="ACOL-5"/>
+        <table:table-column table:default-cell-style-name="ACE-0x7fe2039fa010" table:style-name="ACOL-0" table:number-columns-repeated="127"/>
         <table:table-row table:style-name="AROW-8">
           <table:table-cell table:number-columns-repeated="128"/>
         </table:table-row>
-        <table:table-row table:style-name="AROW-7" table:number-rows-repeated="127">
+        <table:table-row table:style-name="AROW-6" table:number-rows-repeated="127">
           <table:table-cell table:number-columns-repeated="128"/>
         </table:table-row>
         <table:named-expressions>
@@ -18,16 +279,17 @@
         <gnm:selections gnm:cursor-col="0" gnm:cursor-row="0">
           <gnm:selection gnm:start-col="0" gnm:start-row="0" gnm:end-col="0" gnm:end-row="0"/>
         </gnm:selections>
-      </table:table><table:table table:name="Sheet3" table:style-name="ta-0x7f831b440400" table:print="false">
+      </table:table>
+      <table:table table:name="Sheet3" table:style-name="ta-0x7fe20398d3e0" table:print="false">
         <office:forms form:automatic-focus="false" form:apply-design-mode="false">
           <form:form/>
         </office:forms>
-        <table:table-column table:default-cell-style-name="ACE-0x7f831b441258" table:style-name="ACOL-5"/>
-        <table:table-column table:default-cell-style-name="ACE-0x7f831b441258" table:style-name="ACOL-0" table:number-columns-repeated="127"/>
+        <table:table-column table:default-cell-style-name="ACE-0x7fe2039fa138" table:style-name="ACOL-5"/>
+        <table:table-column table:default-cell-style-name="ACE-0x7fe2039fa138" table:style-name="ACOL-0" table:number-columns-repeated="127"/>
         <table:table-row table:style-name="AROW-8">
           <table:table-cell table:number-columns-repeated="128"/>
         </table:table-row>
-        <table:table-row table:style-name="AROW-7" table:number-rows-repeated="127">
+        <table:table-row table:style-name="AROW-6" table:number-rows-repeated="127">
           <table:table-cell table:number-columns-repeated="128"/>
         </table:table-row>
         <table:named-expressions>
@@ -37,4 +299,8 @@
         <gnm:selections gnm:cursor-col="0" gnm:cursor-row="0">
           <gnm:selection gnm:start-col="0" gnm:start-row="0" gnm:end-col="0" gnm:end-row="0"/>
         </gnm:selections>
-      </table:table><table:named-expressions/></office:spreadsheet></office:body></office:document-content>
+      </table:table>
+      <table:named-expressions/>
+    </office:spreadsheet>
+  </office:body>
+</office:document-content>
