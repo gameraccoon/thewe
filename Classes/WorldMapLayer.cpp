@@ -118,7 +118,7 @@ void WorldMapLayer::update(float dt)
 
 void WorldMapLayer::AcceptMessage(const Message &msg)
 {
-	if (msg.name == "AddInvestigatorWidget")
+	if (msg.is("AddInvestigatorWidget"))
 	{
 		Investigator::Ptr investigator = World::Instance().GetInvestigatorByUid(msg.variables.GetInt("UID"));
 		if (investigator)
@@ -135,7 +135,7 @@ void WorldMapLayer::AcceptMessage(const Message &msg)
 			}
 		}
 	}
-	else if (msg.name == "DeleteInvestigatorWidget")
+	else if (msg.is("DeleteInvestigatorWidget"))
 	{
 		for (InvestigatorWidgetsIter it = _investigatorWidgets.begin(); it != _investigatorWidgets.end(); ++it)
 		{
@@ -148,7 +148,7 @@ void WorldMapLayer::AcceptMessage(const Message &msg)
 			}
 		}
 	}
-	else if (msg.name == "DeleteCellWidget")
+	else if (msg.is("DeleteCellWidget"))
 	{
 		for (CellWidgetsIter it = _cellWidgets.begin(); it != _cellWidgets.end(); ++it)
 		{

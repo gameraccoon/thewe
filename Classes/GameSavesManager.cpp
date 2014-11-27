@@ -57,11 +57,11 @@ GameSavesManager& GameSavesManager::Instance()
 
 void GameSavesManager::AcceptMessage(const Message &msg)
 {
-	if (msg.name == "SaveGame")
+	if (msg.is("SaveGame"))
 	{
 		SaveGameState();
 	}
-	else if (msg.name == "SaveTime")
+	else if (msg.is("SaveTime"))
 	{
 		SaveGameTime();
 	}

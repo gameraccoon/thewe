@@ -9,11 +9,17 @@
 
 struct Message
 {
+private:
 	const std::string name;
+public:
 	Utils::VariablesSet variables;
+public:
 	Message(const std::string &n)
 		: name(n)
 	{}
+	bool is(const std::string &n) const {
+		return name == n;
+	}
 };
 
 class MessageReceiver
