@@ -396,7 +396,7 @@ void GameSavesManager::LoadUserInfo()
 void GameSavesManager::LoadTutorialStates()
 {
 	SqliteDataReader::Ptr reader = _impl->database.execQuery("SELECT * FROM " + TUTORIAL_STATES_TABLE);
-	if (reader->next())
+	while (reader->next())
 	{
 		World::Instance().AddTutorialState(reader->getValueByName("state")->asString());
 	}
@@ -736,6 +736,7 @@ void GameSavesManager::SaveGameState(void)
 							"DELETE FROM " + PROCESSES_TABLE + ";"
 							"DELETE FROM " + INVESIGATIONS_TABLE + ";"
 							"DELETE FROM " + INVESIGATORS_TABLE + ";"
+							"DELETE FROM " + TUTORIAL_STATES_TABLE + ";"
 							"DELETE FROM " + USER_DATA_TABLE + ";");
 	// adding new data
 	if (addCells) _impl->database.execSql(cellsAdditionSqlStatement);

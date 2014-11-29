@@ -125,6 +125,15 @@ void CellTasksScreen::OnStartTaskCallback(cocos2d::Ref *sender, cocos2d::ui::Wid
 	{
 		if (_cell.lock()->GetInfo().state == Cell::State::READY)
 		{
+			if (World::Instance().IsTutorialStateAvailable("WaitingForStartFirstTask"))
+			{
+				World::Instance().RunTutorialFunction("StartingFirstTask");
+			}
+			else if (World::Instance().IsTutorialStateAvailable("ReadyToFirstRealWork"))
+			{
+				World::Instance().RunTutorialFunction("StartingFirstRealWork");
+			}
+
 			cocos2d::ui::Button *btn = dynamic_cast<cocos2d::ui::Button *>(sender);
 			if (!btn) {
 				Log::Instance().writeWarning("Failed to cast from sender to button type in StartTaskCallback.");
@@ -138,15 +147,6 @@ void CellTasksScreen::OnStartTaskCallback(cocos2d::Ref *sender, cocos2d::ui::Wid
 
 			World::Instance().GetTaskManager().RunTask(_cell, task_info, Utils::GetGameTime());
 			CloseMenu();
-
-			if (World::Instance().IsTutorialStateAvailable("WaitingForStartFirstTask"))
-			{
-				World::Instance().RunTutorialFunction("StartingFirstTask");
-			}
-			else if (World::Instance().IsTutorialStateAvailable("ReadyToFirstRealWork"))
-			{
-				World::Instance().RunTutorialFunction("StartingFirstRealWork");
-			}
 		}
 	}
 }
