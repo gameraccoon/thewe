@@ -4,7 +4,6 @@
 #include "CellTasksMenu.h"
 #include "CellTaskInfoMenu.h"
 #include "CellInfoMenu.h"
-#include "CellSpinoffMenu.h"
 
 CellMenuSelector::CellMenuSelector(MapProjector *proj, WorldMapLayer *map)
 	: _projector(proj)
@@ -288,11 +287,21 @@ void CellMenuSelector::OnTasksButtonPressed(cocos2d::Ref *sender)
 	}
 }
 
-void CellMenuSelector::OnSpinoffButtonPressed(cocos2d::Ref *sender)
+void CellMenuSelector::OnSpinoffButtonPressed(cocos2d::Ref*)
 {
 	if (!getChildByName(_menuNodeName))
 	{
-		CreateMenu(new CellSpinoffMenu(_cell, this, _worldMapLayer));
+		Cell::Ptr cell = _cell.lock();
+		if (cell && cell->IsReadyToCreateSpinoff())
+		{
+			_worldMapLayer->SetNextCellParent(_cell);
+			DisappearWithAnimation();
+
+			if (World::Instance().IsTutorialStateAvailable("ReadyToCreateSpinoff"))
+			{
+				World::Instance().RunTutorialFunction("OnReadyToCreateFirstSpinoff");
+			}
+		}
 	}
 }
 

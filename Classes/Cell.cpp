@@ -274,3 +274,10 @@ bool Cell::IsInTemporaryState() const
 {
 	return (_info.state != State::READY && _info.state != State::ARRESTED);
 }
+
+bool Cell::IsReadyToCreateSpinoff() const
+{
+	bool isMembersEnough = _info.membersCount >= GameInfo::Instance().GetInt("CELL_SPINOFF_MEMBERS_PRICE") * 2;
+	bool isCashEnough = _info.cash >= GameInfo::Instance().GetInt("CELL_SPINOFF_CASH_PRICE");
+	return isMembersEnough && isCashEnough;
+}

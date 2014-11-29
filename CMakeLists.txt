@@ -67,7 +67,6 @@ set(GAME_SRC
 	Classes/CellMapWidget.cpp
 	Classes/CellNetWidget.cpp
 	Classes/CellsNetwork.cpp
-	Classes/CellSpinoffMenu.cpp
 	Classes/CellTasksMenu.cpp
 	Classes/CellTaskInfoMenu.cpp
 	Classes/CellsNetLayer.cpp

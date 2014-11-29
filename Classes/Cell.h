@@ -107,6 +107,8 @@ public:
 
 	bool IsInTemporaryState() const;
 
+	bool IsReadyToCreateSpinoff() const;
+
 private:
 	Cell(const Info &info, unsigned int uid);
 	/** Set parent for the cell */
