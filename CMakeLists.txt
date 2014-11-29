@@ -99,6 +99,7 @@ set(GAME_SRC
 	Classes/SqliteDataReader.cpp
 	Classes/Task.cpp
 	Classes/TaskManager.cpp
+	Classes/TaskRewardMapWidget.cpp
 	Classes/Town.cpp
 	Classes/TownMapWidget.cpp
 	Classes/TransitionZoomFade.cpp
