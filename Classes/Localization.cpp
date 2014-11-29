@@ -91,7 +91,18 @@ void LocalizationManager::InitWithLocale(const std::string& localizationFile, co
 			locale_node = locale_node.next_sibling();
 		}
 
-		localeWord.second = locale_node.child("text:p").text().as_string(); // word
+		std::string word;
+		bool set_newline = false;
+		pugi::xml_node text_node = locale_node.first_child();
+
+		while (text_node) {
+			if (set_newline) {word += '\n';}
+			word.append(text_node.text().as_string());
+			text_node = text_node.next_sibling();
+			set_newline = true;
+		}
+
+		localeWord.second = word; // word
 
 		_texts.insert(localeWord);
 
