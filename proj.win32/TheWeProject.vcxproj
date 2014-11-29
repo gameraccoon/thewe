@@ -145,7 +145,6 @@ xcopy /Y /Q "$(EngineRoot)external\websockets\prebuilt\win32\*.lib" "$(SolutionD
     <ClCompile Include="..\Classes\CellNetWidget.cpp" />
     <ClCompile Include="..\Classes\CellsNetLayer.cpp" />
     <ClCompile Include="..\Classes\CellsNetwork.cpp" />
-    <ClCompile Include="..\Classes\CellSpinoffMenu.cpp" />
     <ClCompile Include="..\Classes\CellTaskInfoMenu.cpp" />
     <ClCompile Include="..\Classes\CellTasksMenu.cpp" />
     <ClCompile Include="..\Classes\Color.cpp" />
@@ -251,7 +250,6 @@ xcopy /Y /Q "$(EngineRoot)external\websockets\prebuilt\win32\*.lib" "$(SolutionD
     <ClInclude Include="..\Classes\CellNetWidget.h" />
     <ClInclude Include="..\Classes\CellsNetLayer.h" />
     <ClInclude Include="..\Classes\CellsNetwork.h" />
-    <ClInclude Include="..\Classes\CellSpinoffMenu.h" />
     <ClInclude Include="..\Classes\CellTaskInfoMenu.h" />
     <ClInclude Include="..\Classes\CellTasksMenu.h" />
     <ClInclude Include="..\Classes\Color.h" />

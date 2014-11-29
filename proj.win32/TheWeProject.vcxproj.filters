@@ -321,9 +321,6 @@
     <ClCompile Include="..\Classes\CellTaskInfoMenu.cpp">
       <Filter>Classes\GameWidgets</Filter>
     </ClCompile>
-    <ClCompile Include="..\Classes\CellSpinoffMenu.cpp">
-      <Filter>Classes\GameWidgets</Filter>
-    </ClCompile>
     <ClCompile Include="..\Classes\CellMapWidget.cpp">
       <Filter>Classes\GameWidgets</Filter>
     </ClCompile>
@@ -564,9 +561,6 @@
       <Filter>Classes\GameWidgets</Filter>
     </ClInclude>
     <ClInclude Include="..\Classes\CellTaskInfoMenu.h">
-      <Filter>Classes\GameWidgets</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Classes\CellSpinoffMenu.h">
       <Filter>Classes\GameWidgets</Filter>
     </ClInclude>
     <ClInclude Include="..\Classes\CellMapWidget.h">
