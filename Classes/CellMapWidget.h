@@ -3,11 +3,13 @@
 
 #include "CellGameInterface.h"
 #include "CellMapPopupButton.h"
+#include "MessageManager.h"
 #include "InvestigatorMapWidget.h"
+#include "TaskRewardMapWidget.h"
 
 class CellMapImage;
 
-class CellMapWidget : public cocos2d::Node
+class CellMapWidget : public cocos2d::Node, public MessageReceiver
 {
 public:
 	CellMapWidget(Cell::WeakPtr cell);
@@ -15,6 +17,8 @@ public:
 
 	virtual bool init(void) override;
 	virtual void update(float dt) override;
+
+	void AcceptMessage(const Message &message) override;
 	
 	void ShowInvestigatorLaunchButton(cocos2d::ccMenuCallback onCatchCallback);
 	void HideInvestigatorLaunchButton(bool hideWithWarning);
@@ -37,6 +41,8 @@ private:
 		,BUTTON
 	};
 
+	typedef std::vector<TaskRewardMapWidget *> TaskRewards;
+
 private:
 	Cell::WeakPtr _cell;
 
@@ -48,6 +54,8 @@ private:
 	const int _cellUid;
 
 	cocos2d::Sprite *_relinkableMark;
+
+	TaskRewards _taskRewardsOnMap;
 
 	CellMapImage *_cellMapSprite;
 	RoundProgressBar *_cellMapTaskProgressBar;

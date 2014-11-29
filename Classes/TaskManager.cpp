@@ -38,6 +38,29 @@ void TaskManager::RunTask(Cell::WeakPtr cell, const std::string& id, Utils::Game
 	}
 }
 
+void TaskManager::CallCuccessfulCompletition(Cell::WeakPtr cell, const Task::Info *info)
+{
+	if (!info || cell.expired()) {
+		Log::Instance().writeWarning("TaskManager::CallCuccessfulCompletition wrong params");
+		return;
+	}
+
+	luabind::call_function<bool>(World::Instance().GetLuaInst()->GetLuaState()
+								, info->successFn.c_str()
+								, cell.lock().get()
+								, info
+								, 0);
+}
+
+Task::Info TaskManager::FindTaskById(const std::string &id) const
+{
+	Task::Info def;
+
+	std::map<const std::string, const Task::Info>::const_iterator it;
+	it = _allTasks.find(id);
+	return it != _allTasks.end() ? (*it).second : def;
+}
+
 void TaskManager::UpdateToTime(Utils::GameTime worldTime)
 {
 	std::vector<RunnedTaskInfo>::iterator iterator = _runnedTasks.begin();
@@ -74,8 +97,13 @@ void TaskManager::UpdateToTime(Utils::GameTime worldTime)
 
 					if (isSuccess)
 					{
-						funcName = taskInfo->successFn;
-						info.status = Task::Status::Successed;
+						//funcName = taskInfo->successFn;
+						//info.status = Task::Status::Successed;
+
+						Message message("PushTaskRewardOnMap");
+						message.variables.SetInt("CELL_UID", cell->GetUid());
+						message.variables.SetString("TASK_ID", taskInfo->id);
+						MessageManager::Instance().PutMessage(message);
 					}
 					else
 					{
@@ -89,12 +117,15 @@ void TaskManager::UpdateToTime(Utils::GameTime worldTime)
 					info.status = Task::Status::Aborted;
 				}
 
-				// call task end function (success, fail, abort)
-				luabind::call_function<bool>(World::Instance().GetLuaInst()->GetLuaState()
-											 , funcName.c_str()
-											 , cell.get()
-											 , taskInfo
-											 , 0);
+				if (!funcName.empty())
+				{
+					// call task end function (success, fail, abort)
+					luabind::call_function<bool>(World::Instance().GetLuaInst()->GetLuaState()
+												 , funcName.c_str()
+												 , cell.get()
+												 , taskInfo
+												 , 0);
+				}
 
 				// adds information of the completed task to the cell
 				cell->AddCompletedTask(info);

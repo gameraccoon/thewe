@@ -24,6 +24,9 @@ public:
 	void RunTask(Cell::WeakPtr cell, const Task::Info* info, Utils::GameTime startTime);
 	void RunTask(Cell::WeakPtr cell, const std::string& info, Utils::GameTime startTime);
 
+	void CallCuccessfulCompletition(Cell::WeakPtr cell, const Task::Info *info);
+	Task::Info FindTaskById(const std::string &id) const;
+
 	/**
 	 * Returns tasks that available for current cell for now
 	 */

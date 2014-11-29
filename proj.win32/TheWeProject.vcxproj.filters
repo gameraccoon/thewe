@@ -351,6 +351,9 @@
     <ClCompile Include="..\Classes\Localization.cpp">
       <Filter>Classes</Filter>
     </ClCompile>
+    <ClCompile Include="..\Classes\TaskRewardMapWidget.cpp">
+      <Filter>Classes\GameWidgets</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="main.h">
@@ -598,6 +601,9 @@
     </ClInclude>
     <ClInclude Include="..\Classes\Localization.h">
       <Filter>Classes</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\TaskRewardMapWidget.h">
+      <Filter>Classes\GameWidgets</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

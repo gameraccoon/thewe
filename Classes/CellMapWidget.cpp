@@ -1,6 +1,7 @@
 #include "CellMapWidget.h"
 
 #include "World.h"
+#include "GameInfo.h"
 #include "Log.h"
 
 class CellMapImage : public cocos2d::Node
@@ -96,6 +97,7 @@ CellMapWidget::CellMapWidget(Cell::WeakPtr cell)
 
 CellMapWidget::~CellMapWidget(void)
 {
+	MessageManager::Instance().UnregisterReceiver(dynamic_cast<MessageReceiver *>(this));
 }
 
 bool CellMapWidget::init(void)
@@ -104,6 +106,8 @@ bool CellMapWidget::init(void)
 	{
 		return false;
 	}
+
+	MessageManager::Instance().RegisterReceiver(dynamic_cast<MessageReceiver *>(this));
 
 	_cellMapSprite = new CellMapImage(_cell.lock()->GetInfo().state);
 	_cellMapSprite->setPosition(0.0f, 0.0f);
@@ -214,6 +218,43 @@ void CellMapWidget::update(float dt)
 		else
 		{
 			_cellMapTaskProgressBar->setVisible(false);
+		}
+	}
+}
+
+void CellMapWidget::AcceptMessage(const Message &message)
+{
+	if (message.is("PushTaskRewardOnMap") && message.variables.GetInt("CELL_UID") == _cell.lock()->GetUid())
+	{
+		Task::Info task_info = World::Instance().GetTaskManager().FindTaskById(message.variables.GetString("TASK_ID"));
+
+		TaskRewardMapWidget *reward = new TaskRewardMapWidget(
+			_cell,
+			task_info,
+			GameInfo::Instance().GetTime("TASK_REWARD_WAIT_TIME"),
+			cocos2d::Vec2(0.0f, 185.0f),
+			2.7f);
+
+		reward->autorelease();
+		addChild(reward);
+
+		_taskRewardsOnMap.push_back(reward);
+	}
+	else if (message.is("DeleteTaskRewardWidget") && message.variables.GetInt("CELL_UID") == _cell.lock()->GetUid())
+	{
+		for (TaskRewards::iterator it = _taskRewardsOnMap.begin(); it != _taskRewardsOnMap.end();)
+		{
+			std::string id = message.variables.GetString("TASK_ID");
+			TaskRewardMapWidget *reward = (*it);
+			
+			if (reward->IsTaskId(id))
+			{
+				removeChild(reward);
+				it = _taskRewardsOnMap.erase(it);
+				break;
+			}
+			else
+				++it;
 		}
 	}
 }
