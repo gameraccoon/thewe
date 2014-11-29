@@ -228,9 +228,12 @@ void CellMapWidget::update(float dt)
 
 void CellMapWidget::TouchEnded(const std::vector<cocos2d::Touch *> &touches, cocos2d::Event *event)
 {
-	for (TaskRewardMapWidget *reward : _taskRewardsOnMap)
-	{
-		reward->PickReward();
+	Vector2 location = convertTouchToNodeSpace(touches.at(0));
+	if (_cellMapSprite->getBoundingBox().containsPoint(location)) {
+		for (TaskRewardMapWidget *reward : _taskRewardsOnMap)
+		{
+			reward->PickReward();
+		}
 	}
 }
 

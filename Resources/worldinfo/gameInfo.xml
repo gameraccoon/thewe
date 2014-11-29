@@ -21,7 +21,8 @@
 	<Const name="INVESTIGATOR_CATCH_TIME" type="time" value="3" />
 	<Const name="INVESTIGATOR_TUTORIAL_CATCH_TIME" type="time" value="311040000" /> <!-- ждем 10 лет -->
 
-	<Const name="TASK_REWARD_WAIT_TIME" type="time" value="15" />
+	<Const name="TASK_REWARD_WAIT_TIME" type="time" value="30" />
+	<Const name="TASK_REWARD_ACCENT_PERIOD" type="float" value="8.0" />
 	<Const name="TASK_REWARD_TUTORIAL_WAIT_TIME" type="time" value="311040000" /> <!-- ждем 10 лет -->
 
 	<Const name="DEFAULT_LOCALE" type="string" value="en" />
