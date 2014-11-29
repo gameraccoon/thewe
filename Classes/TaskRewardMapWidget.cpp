@@ -41,6 +41,12 @@ void TaskRewardMapWidget::update(float dt)
 	}
 }
 
+void TaskRewardMapWidget::PickReward(void)
+{
+	World::Instance().GetTaskManager().CallCuccessfulCompletition(_cell, &_task);
+	SendMessageAboutDelete();
+}
+
 bool TaskRewardMapWidget::IsTaskId(const std::string &id) const
 {
 	return _task.id == id;
@@ -49,13 +55,9 @@ bool TaskRewardMapWidget::IsTaskId(const std::string &id) const
 void TaskRewardMapWidget::TouchEnded(const std::vector<cocos2d::Touch *> &touches, cocos2d::Event *event)
 {
 	Vector2 location = convertTouchToNodeSpace(touches.at(0));
-
-	if (_texture)
-	{
-		if (_texture->getBoundingBox().containsPoint(location))
-		{
-			World::Instance().GetTaskManager().CallCuccessfulCompletition(_cell, &_task);
-			SendMessageAboutDelete();
+	if (_texture) {
+		if (_texture->getBoundingBox().containsPoint(location)) {
+			PickReward();
 		}
 	}
 }

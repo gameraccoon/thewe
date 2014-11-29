@@ -109,6 +109,10 @@ bool CellMapWidget::init(void)
 
 	MessageManager::Instance().RegisterReceiver(dynamic_cast<MessageReceiver *>(this));
 
+	cocos2d::EventListenerTouchAllAtOnce *touch = cocos2d::EventListenerTouchAllAtOnce::create();
+	touch->onTouchesEnded = CC_CALLBACK_2(CellMapWidget::TouchEnded, this);
+	cocos2d::Director::getInstance()->getEventDispatcher()->addEventListenerWithSceneGraphPriority(touch, this);
+
 	_cellMapSprite = new CellMapImage(_cell.lock()->GetInfo().state);
 	_cellMapSprite->setPosition(0.0f, 0.0f);
 	_cellMapSprite->setScale(1.0f);
@@ -219,6 +223,14 @@ void CellMapWidget::update(float dt)
 		{
 			_cellMapTaskProgressBar->setVisible(false);
 		}
+	}
+}
+
+void CellMapWidget::TouchEnded(const std::vector<cocos2d::Touch *> &touches, cocos2d::Event *event)
+{
+	for (TaskRewardMapWidget *reward : _taskRewardsOnMap)
+	{
+		reward->PickReward();
 	}
 }
 

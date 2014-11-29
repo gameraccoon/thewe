@@ -97,9 +97,6 @@ void TaskManager::UpdateToTime(Utils::GameTime worldTime)
 
 					if (isSuccess)
 					{
-						//funcName = taskInfo->successFn;
-						//info.status = Task::Status::Successed;
-
 						Message message("PushTaskRewardOnMap");
 						message.variables.SetInt("CELL_UID", cell->GetUid());
 						message.variables.SetString("TASK_ID", taskInfo->id);

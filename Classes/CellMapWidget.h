@@ -18,6 +18,8 @@ public:
 	virtual bool init(void) override;
 	virtual void update(float dt) override;
 
+	void TouchEnded(const std::vector<cocos2d::Touch *> &touches, cocos2d::Event *event);
+
 	void AcceptMessage(const Message &message) override;
 	
 	void ShowInvestigatorLaunchButton(cocos2d::ccMenuCallback onCatchCallback);

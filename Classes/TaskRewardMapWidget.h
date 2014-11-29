@@ -20,7 +20,7 @@ public:
 	void update(float dt) override;
 
 	bool IsTaskId(const std::string &id) const;
-
+	void PickReward(void);
 	void TouchEnded(const std::vector<cocos2d::Touch *> &touches, cocos2d::Event *event);
 
 private:
