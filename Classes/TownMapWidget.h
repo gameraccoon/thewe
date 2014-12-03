@@ -2,19 +2,25 @@
 #define TOWN_MAP_WIDGET_H
 
 #include "Town.h"
+#include "MessageManager.h"
+#include "BonusMapWidget.h"
 
 #include <cocos2d.h>
 
-class TownMapWidget : public cocos2d::Node
+class TownMapWidget : public cocos2d::Node, public MessageReceiver
 {
 public:
 	TownMapWidget(Town::Ptr town);
+	~TownMapWidget(void);
 
 	virtual bool init(void) override;
+
+	void AcceptMessage(const Message &message) override;
 
 	void SetHitArea(float beginX, float beginY, float endX, float endY);
 	void GetHitArea(float &beginX, float &beginY, float &endX, float &endY) const;
 
+	void SetTownImageVisible(bool visible);
 	void SetProjectorUid(int uid);
 	int GetProjectorUid(void) const;
 
@@ -22,14 +28,19 @@ public:
 	const cocos2d::Rect& GetTownRect(void) const;
 
 private:
+	typedef std::vector<BonusMapWidget *> Bonuses;
+
+private:
 	Town::Ptr _town;
+	
+	cocos2d::Sprite *_townMapSprite;
+
+	Bonuses _bonuses;
 
 	int _projectorUid;
 
 	float _hitAreaBeginX, _hitAreaEndX;
 	float _hitAreaBeginY, _hitAreaEndY;
-
-	cocos2d::Sprite *_townMapSprite;
 };
 
 #endif

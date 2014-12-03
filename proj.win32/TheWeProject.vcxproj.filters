@@ -351,6 +351,12 @@
     <ClCompile Include="..\Classes\TaskRewardMapWidget.cpp">
       <Filter>Classes\GameWidgets</Filter>
     </ClCompile>
+    <ClCompile Include="..\Classes\BonusOnMap.cpp">
+      <Filter>Classes\GameModels</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\BonusMapWidget.cpp">
+      <Filter>Classes\GameWidgets</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="main.h">
@@ -597,6 +603,12 @@
       <Filter>Classes</Filter>
     </ClInclude>
     <ClInclude Include="..\Classes\TaskRewardMapWidget.h">
+      <Filter>Classes\GameWidgets</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\BonusOnMap.h">
+      <Filter>Classes\GameModels</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\BonusMapWidget.h">
       <Filter>Classes\GameWidgets</Filter>
     </ClInclude>
   </ItemGroup>

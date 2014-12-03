@@ -12,7 +12,7 @@ Town::Town(const Info &info)
 	, _location(info.location)
 	, _spriteScale(info.spriteScale)
 	, _isCellPresented(false)
-	, _uid(GetUid())
+	, _uid(GenerateUid())
 {
 	_CheckValues();
 }
@@ -20,6 +20,12 @@ Town::Town(const Info &info)
 Town::Ptr Town::Create(const Info &info)
 {
 	return std::make_shared<Town>(info);
+}
+
+unsigned int Town::GenerateUid()
+{
+	static unsigned int uid = 0;
+	return ++uid;
 }
 
 Town::Info Town::GetInfo(void) const
@@ -95,7 +101,7 @@ bool Town::IsCellPresented(void)
 	return _isCellPresented;
 }
 
-unsigned int Town::GetUid() const
+unsigned int Town::GetUid(void) const
 {
 	return _uid;
 }

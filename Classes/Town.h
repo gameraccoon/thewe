@@ -37,13 +37,14 @@ public:
 
 	bool IsCellPresented(void);
 
-	unsigned int GetUid() const;
-
+	unsigned int GetUid(void) const;
 	void _CheckValues() const;
 
 	Town& operator= (const Town & other);
 
 private:
+	static unsigned int GenerateUid();
+
 	Region::WeakPtr _region;
 
 	const unsigned int _uid;

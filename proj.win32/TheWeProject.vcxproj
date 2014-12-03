@@ -137,6 +137,8 @@ xcopy /Y /Q "$(EngineRoot)external\websockets\prebuilt\win32\*.lib" "$(SolutionD
   <ItemGroup>
     <ClCompile Include="..\Classes\Application.cpp" />
     <ClCompile Include="..\Classes\ArbitraryHull.cpp" />
+    <ClCompile Include="..\Classes\BonusMapWidget.cpp" />
+    <ClCompile Include="..\Classes\BonusOnMap.cpp" />
     <ClCompile Include="..\Classes\Cell.cpp" />
     <ClCompile Include="..\Classes\CellGameInterface.cpp" />
     <ClCompile Include="..\Classes\CellInfoMenu.cpp" />
@@ -242,6 +244,8 @@ xcopy /Y /Q "$(EngineRoot)external\websockets\prebuilt\win32\*.lib" "$(SolutionD
   <ItemGroup>
     <ClInclude Include="..\Classes\Application.h" />
     <ClInclude Include="..\Classes\ArbitraryHull.h" />
+    <ClInclude Include="..\Classes\BonusMapWidget.h" />
+    <ClInclude Include="..\Classes\BonusOnMap.h" />
     <ClInclude Include="..\Classes\Cell.h" />
     <ClInclude Include="..\Classes\CellGameInterface.h" />
     <ClInclude Include="..\Classes\CellInfoMenu.h" />

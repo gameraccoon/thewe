@@ -251,7 +251,7 @@ void CellMapWidget::AcceptMessage(const Message &message)
 			2.7f);
 
 		reward->autorelease();
-		addChild(reward);
+		addChild(reward, DrawOrder::REWARD);
 
 		_taskRewardsOnMap.push_back(reward);
 	}

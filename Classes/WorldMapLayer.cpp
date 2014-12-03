@@ -46,11 +46,6 @@ bool WorldMapLayer::init(void)
 	touches->onTouchesEnded = CC_CALLBACK_2(WorldMapLayer::TouchesEnded, this);
 	cocos2d::Director::getInstance()->getEventDispatcher()->addEventListenerWithSceneGraphPriority(touches, this);
 
-	_townsDrawLayer = cocos2d::Layer::create();
-	_townsDrawLayer->setPosition(0.0f, 0.0f);
-	_townsDrawLayer->setVisible(true);
-	addChild(_townsDrawLayer, Z_TOWN);
-
 	_networkVisualiser = cocos2d::DrawNode::create();
 	addChild(_networkVisualiser, Z_LINKS);
 
@@ -76,7 +71,7 @@ bool WorldMapLayer::init(void)
 	{
 		TownMapWidget *widget = _CreateTownWidget(town);
 		_townWidgets.push_back(widget);
-		_townsDrawLayer->addChild(widget, 0);
+		addChild(widget, Z_TOWN);
 	}
 	
 	// say where is screen center
@@ -113,7 +108,7 @@ void WorldMapLayer::update(float dt)
 	}
 
 	// allow to draw towns olny if cell spinoff creation enabled
-	_townsDrawLayer->setVisible(!_nextCellParent.expired() || World::Instance().IsFirstLaunch());
+	SetTownsVisibility(!_nextCellParent.expired() || World::Instance().IsFirstLaunch());
 }
 
 void WorldMapLayer::AcceptMessage(const Message &msg)
@@ -623,6 +618,13 @@ void WorldMapLayer::_OnTownSelect(Town::WeakPtr town)
 
 			_nextCellParent = Cell::Ptr();
 		}
+	}
+}
+
+void WorldMapLayer::SetTownsVisibility(bool visibility)
+{
+	for (TownMapWidget *widget : _townWidgets) {
+		widget->SetTownImageVisible(visibility);
 	}
 }
 

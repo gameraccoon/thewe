@@ -82,6 +82,7 @@ private:
 	void _UpdateNetwork();
 	void _RecursiveUpdateNetworkVisualiser(cocos2d::DrawNode *visualiser, Cell::WeakPtr cell);
 	void _OnTownSelect(Town::WeakPtr town);
+	void SetTownsVisibility(bool visibility);
 	void RecalculateTouches(const std::vector<cocos2d::Touch* > &touches, bool updateView);
 	void ResetTouches();
 	void BackToMainMenuCallback(cocos2d::Ref *sender);
@@ -92,7 +93,6 @@ private:
 
 	CellMenuSelector *_cellMenu;
 	cocos2d::Layer *_cellGameInterface;
-	cocos2d::Layer *_townsDrawLayer;
 
 	Vector2 _touchLastPoint;
 	Vector2 _touchFirstPos;

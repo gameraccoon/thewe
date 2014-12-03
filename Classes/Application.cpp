@@ -54,6 +54,8 @@ bool AppDelegate::applicationDidFinishLaunching()
 
 	glview->setDesignResolutionSize(dr_w, dr_h, ResolutionPolicy::FIXED_HEIGHT);
 
+	srand(time(nullptr));
+
 	MainMenuScene* mainMenuScene = new MainMenuScene(nullptr); // there is no automatic init()
 	SplashScreenScene* splashScreenScene = new SplashScreenScene();
 

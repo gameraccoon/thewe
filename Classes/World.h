@@ -11,6 +11,7 @@
 #include "Investigator.h"
 #include "CellsNetwork.h"
 #include "TaskManager.h"
+#include "BonusOnMap.h"
 #include "NotificationMessageManager.h"
 #include "TutorialManager.h"
 #include "LuaInstance.h"
@@ -92,6 +93,7 @@ private:
 	TaskManager _taskManager;
 	NotificationMessageManager _messageManager;
 	TutorialManager _tutorialManager;
+	BonusOnMap _bonusOnMap;
 
 	Regions _regions;
 	Towns _towns;

@@ -25,6 +25,10 @@
 	<Const name="TASK_REWARD_ACCENT_PERIOD" type="float" value="8.0" />
 	<Const name="TASK_REWARD_TUTORIAL_WAIT_TIME" type="time" value="311040000" /> <!-- ждем 10 лет -->
 
+	<Const name="BONUS_BORN_TIME_DELAY" type="time" value="5" />
+	<Const name="BONUS_BORN_TIME_OFFSET" type="time" value="2" />
+	<Const name="BONUS_LIVE_TIME" type="time" value="5" />
+
 	<Const name="DEFAULT_LOCALE" type="string" value="en" />
 	<Const name="DESKTOP_LOCALE" type="string" value="ru" />
 </GameInfo>

@@ -40,6 +40,7 @@ private:
 	{
 		SPRITE = 0
 		,PROGRESS
+		,REWARD
 		,BUTTON
 	};
 
