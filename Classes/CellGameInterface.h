@@ -10,6 +10,7 @@
 #include "TaskManager.h"
 #include "ProgressBar.h"
 #include "World.h"
+#include "CircleMenu.h"
 
 class WorldMapLayer;
 class CellMapPopupButton;
@@ -23,8 +24,6 @@ public:
 
 	virtual bool init() override;
 	virtual void update(float dt) override;
-
-	bool IsCursorOnMenu(const Vector2 &cursorPos) const;
 	
 	void AppearImmediately(Cell::WeakPtr cell, const Vector2 &position);
 	void AppearWithAnimation(Cell::WeakPtr cell, const Vector2 &position);
@@ -34,14 +33,13 @@ public:
 
 	void OnMenuClosed(void);
 
-private:
-	typedef cocos2d::Vector<cocos2d::MenuItem*> Buttons;
+	bool isOpened() const;
 
 private:
-	void _PrepareButtonToAppear(cocos2d::MenuItem* item, Vector2 pos);
-	void _PrepareButtonToDisappear(cocos2d::MenuItem* item);
-	bool _IsAnimationFinished(void);
+	void PrepareButtonToAppear(cocos2d::Node* item, Vector2 pos);
+	void PrepareButtonToDisappear(cocos2d::Node* item);
 	void CreateMenu(cocos2d::Layer* menu);
+	void RemoveMenu();
 	// listeners
 	void OnKillButtonPressed(cocos2d::Ref *sender);
 	void OnCellInfoButtonPressed(cocos2d::Ref *sender);
@@ -52,15 +50,10 @@ private:
 	WorldMapLayer *_worldMapLayer;
 	MapProjector *_projector;
 
-	cocos2d::Menu *_menu;
-
 	Cell::WeakPtr _cell;
-	Vector2 _position;
 
-	bool _isDisappearing;
+	CircleMenu *_circleMenu;
 	const std::string _menuNodeName;
-
-	Buttons _buttons;
 };
 
 #endif

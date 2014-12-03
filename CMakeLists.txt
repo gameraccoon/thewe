@@ -70,6 +70,7 @@ set(GAME_SRC
 	Classes/CellTasksMenu.cpp
 	Classes/CellTaskInfoMenu.cpp
 	Classes/CellsNetLayer.cpp
+	Classes/CircleMenu.cpp
 	Classes/Color.cpp
 	Classes/Drawable.cpp
 	Classes/EditorLayer.cpp
@@ -91,6 +92,7 @@ set(GAME_SRC
 	Classes/NotificationMessageWidget.cpp
 	Classes/MiscUtils.cpp
 	Classes/ProgressBar.cpp
+	Classes/ProgressTapWidget.cpp
 	Classes/Region.cpp
 	Classes/SessionEndScreen.cpp
 	Classes/SplashScreenScene.cpp

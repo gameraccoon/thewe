@@ -2,7 +2,7 @@
 #define PROGRESS_TAP_WIDGET_H
 
 #include <cocos2d.h>
-#include <ProgressBar.h>
+#include "ProgressBar.h"
 
 
 /** @brief ProgressTapWidget is a widget which includes a RoundProgressBar and 

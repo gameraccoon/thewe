@@ -8,8 +8,8 @@
 CellMenuSelector::CellMenuSelector(MapProjector *proj, WorldMapLayer *map)
 	: _projector(proj)
 	, _worldMapLayer(map)
-	, _isDisappearing(false)
 	, _menuNodeName("CellMenu")
+	, _circleMenu(nullptr)
 {
 }
 
@@ -34,127 +34,77 @@ bool CellMenuSelector::init()
 		return false;
 	}
 
-	scheduleUpdate();
-	setVisible(false);
-
 	return true;
-}
-
-void CellMenuSelector::update(float dt)
-{
-	if (_IsAnimationFinished() && _isDisappearing)
-	{
-		OnMenuClosed();
-		setVisible(false);
-		_isDisappearing = false;
-	}
-
-	if (isVisible())
-	{
-		if (!_cell.expired())
-		{
-			Vector2 initialPos = _cell.lock()->GetInfo().location;
-			Vector2 updatedPos = _projector->ProjectOnScreen(initialPos);
-
-			_menu->setPosition(updatedPos);
-		}
-	}
-}
-
-bool CellMenuSelector::IsCursorOnMenu(const Vector2 &cursorPos) const
-{
-	for (Buttons::const_iterator it = _buttons.begin(); it != _buttons.end(); ++it)
-	{
-		if ((*it)->getBoundingBox().containsPoint(cursorPos))
-		{
-			return true;
-		}
-	}
-	
-	return false;
 }
 	
 void CellMenuSelector::AppearImmediately(Cell::WeakPtr cell, const Vector2 &position)
 {
 	InitButtons(cell.lock());
+	_circleMenu->setPosition(position);
+	_circleMenu->AppearImmediately();
 
 	_cell = cell;
-	_position = position;
-	_isDisappearing = false;
+}
 
-	setVisible(true);
+void CellMenuSelector::update(float)
+{
+	if (_circleMenu)
+	{
+		Cell::Ptr cell = _cell.lock();
+		if (cell)
+		{
+			Vector2 initialPos = cell->GetInfo().location;
+			Vector2 updatedPos = _projector->ProjectOnScreen(initialPos);
+
+			_circleMenu->setPosition(updatedPos);
+		}
+	}
 }
 
 void CellMenuSelector::AppearWithAnimation(Cell::WeakPtr cell, const Vector2 &position)
 {
-	if (!_IsAnimationFinished())
-	{
-		return;
-	}
-
 	InitButtons(cell.lock());
-
+	_circleMenu->setPosition(position);
+	_circleMenu->AppearWithAnimation();
 	_cell = cell;
-	_position = position;
-	_isDisappearing = false;
-	_menu->setPosition(cocos2d::Vec2(0.0f, 0.0f));
-
-	int numButtonsToShow = _buttons.size();
-
-	cocos2d::Vec2 dir(0.0f, 1.0f);
-	const float dist = 45.0f;
-	const float angle = 3.14159265f*2.0f / (float)numButtonsToShow;
-	
-	for (Buttons::iterator it = _buttons.begin(); it != _buttons.end(); ++it)
-	{
-		cocos2d::MenuItem *item = (*it);
-
-		if (it != _buttons.begin())
-		{
-			dir = dir.rotateByAngle(cocos2d::Vec2::ZERO, angle);
-			dir.normalize();
-		}
-
-		item->stopAllActions();
-		_PrepareButtonToAppear(item, dir * dist);
-	}
-
-	setVisible(true);
 }
 
 void CellMenuSelector::DisappearImmedaitely(void)
 {
-	for (Buttons::iterator it = _buttons.begin(); it != _buttons.end(); ++it)
+	if (_circleMenu)
 	{
-		(*it)->stopAllActions();
+		_circleMenu->DisappearImmedaitely();
+		RemoveMenu();
 	}
+}
 
-	OnMenuClosed();
-
-	setVisible(false);
+void CellMenuSelector::RemoveMenu()
+{
+	removeChild(_circleMenu);
+	_circleMenu = nullptr;
 }
 
 void CellMenuSelector::DisappearWithAnimation(void)
 {
-	for (Buttons::iterator it = _buttons.begin(); it != _buttons.end(); ++it)
+	if (_circleMenu)
 	{
-		cocos2d::MenuItem *item = (*it);
-
-		item->stopAllActions();
-		_PrepareButtonToDisappear(item);
+		_circleMenu->DisappearWithAnimation([this]()
+			{
+				OnMenuClosed();
+				RemoveMenu();
+			});
 	}
-
-	_isDisappearing = true;
 }
 
 void CellMenuSelector::InitButtons(Cell::Ptr cell)
 {
-	if (_menu)
+	if (_circleMenu)
 	{
-		removeChild(_menu);
+		RemoveMenu();
 	}
 
-	_buttons.clear();
+	_circleMenu = CircleMenu::create();
+	addChild(_circleMenu, 0);
 
 	bool mustShowKillButton = World::Instance().IsCellUnderInvestigation(cell) || cell->IsState(Cell::State::AUTONOMY);
 
@@ -165,28 +115,27 @@ void CellMenuSelector::InitButtons(Cell::Ptr cell)
 		btn = MenuItemImage::create("marker_crosshair.png", "marker_crosshair_pressed.png", CC_CALLBACK_1(CellMenuSelector::OnKillButtonPressed, this));
 		btn->setScale(1.3f, 1.3f);
 
-		_buttons.pushBack(btn);
+		_circleMenu->AddMenuItem(btn);
 	}
 
 	if (!cell->IsState(Cell::State::AUTONOMY))
 	{
 		cocos2d::MenuItemImage *btn1, *btn2, *btn3;
 
-		btn1 = MenuItemImage::create("1_norm.png", "1_press.png", CC_CALLBACK_1(CellMenuSelector::OnSpinoffButtonPressed, this));
+		btn1 = MenuItemImage::create("1_norm.png", "1_press.png", "1_disabled.png", CC_CALLBACK_1(CellMenuSelector::OnSpinoffButtonPressed, this));
 		btn1->setScale(0.85f, 0.85f);
+		btn1->setEnabled(cell->IsReadyToCreateSpinoff());
 		btn2 = MenuItemImage::create("2_norm.png", "2_press.png", CC_CALLBACK_1(CellMenuSelector::OnCellInfoButtonPressed, this));
 		btn2->setScale(0.85f, 0.85f);
 		btn3 = MenuItemImage::create("3_norm.png", "3_press.png", CC_CALLBACK_1(CellMenuSelector::OnTasksButtonPressed, this));
 		btn3->setScale(0.85f, 0.85f);
 
-		_buttons.pushBack(btn1);
-		_buttons.pushBack(btn2);
-		_buttons.pushBack(btn3);
+		_circleMenu->AddMenuItem(btn1);
+		_circleMenu->AddMenuItem(btn2);
+		_circleMenu->AddMenuItem(btn3);
 	}
 
-	_menu = cocos2d::Menu::createWithArray(_buttons);
-	_menu->setPosition(_position);
-	addChild(_menu, 0);
+	_circleMenu->InitMenuItems();
 }
 
 void CellMenuSelector::OnMenuClosed(void)
@@ -201,7 +150,12 @@ void CellMenuSelector::OnMenuClosed(void)
 	}
 }
 
-void CellMenuSelector::_PrepareButtonToAppear(cocos2d::MenuItem *item, Vector2 pos)
+bool CellMenuSelector::isOpened() const
+{
+	return (bool)_circleMenu;
+}
+
+void CellMenuSelector::PrepareButtonToAppear(cocos2d::Node *item, Vector2 pos)
 {
 	if (!item)
 	{
@@ -228,7 +182,7 @@ void CellMenuSelector::_PrepareButtonToAppear(cocos2d::MenuItem *item, Vector2 p
 	item->runAction(fade);
 }
 
-void CellMenuSelector::_PrepareButtonToDisappear(cocos2d::MenuItem *item)
+void CellMenuSelector::PrepareButtonToDisappear(cocos2d::Node* item)
 {
 	if (!item)
 	{
@@ -309,17 +263,4 @@ void CellMenuSelector::OnKillButtonPressed(cocos2d::Ref *sender)
 {
 	_cell.lock()->BeginDestruction();
 	DisappearWithAnimation();
-}
-
-bool CellMenuSelector::_IsAnimationFinished(void)
-{
-	for (Buttons::iterator it = _buttons.begin(); it != _buttons.end(); ++it)
-	{
-		if ((*it)->getNumberOfRunningActions() > 0)
-		{
-			return false;
-		}
-	}
-
-	return true;
 }

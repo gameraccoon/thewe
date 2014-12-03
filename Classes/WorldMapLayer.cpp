@@ -287,7 +287,7 @@ void WorldMapLayer::TouchesBegan(const std::vector<cocos2d::Touch* > &touches, c
 		_touchLastPoint = touch->getLocation();
 		_touchFirstPos = touch->getLocation();
 
-		if (_cellMenu->isVisible())
+		if (_cellMenu->isOpened())
 		{
 			_cellMenu->DisappearWithAnimation();
 		}
@@ -335,7 +335,7 @@ void WorldMapLayer::TouchesEnded(const std::vector<cocos2d::Touch* > &touches, c
 							_linkCellChildren = cell;
 						}
 
-						Vector2 cell_pos = Vector2(-700, 200);//cell->GetInfo().location;
+						Vector2 cell_pos = cell->GetInfo().location;
 						Vector2 menu_pos = _mapProjector->ProjectOnScreen(cell_pos);
 
 						_cellMenu->DisappearImmedaitely();
