@@ -67,11 +67,6 @@ bool AppDelegate::applicationDidFinishLaunching()
 	// load game info
 	GameInfo::Instance().ParseXml("gameInfo.xml");
 
-	// load game data
-	World::Instance().InitLuaContext();
-	WorldLoader::LoadGameInfo();
-	GameSavesManager::Instance().LoadGameState();
-
 	// load localizations
 	if (Utils::IsPlatformDesktop())
 	{
@@ -83,6 +78,13 @@ bool AppDelegate::applicationDidFinishLaunching()
 		// use system language
 		LocalizationManager::Instance().InitWithLocale("content.xml", getCurrentLanguageCode());
 	}
+
+	// load game data
+	World::Instance().InitLuaContext();
+	WorldLoader::LoadGameInfo();
+	GameSavesManager::Instance().LoadGameState();
+
+
 
 	// initialize graphics after all data is loaded
 	mainMenuScene->init();

@@ -1,4 +1,4 @@
-local ContinueText = "Продолжить"
+local ContinueText = GetLocalizedString("Tutorial_BtnContinue")
 
 function RunTutorial_Welcome()
 	World:addTutorial(Tutorial(GetLocalizedString("Tutorial_Welcome_Step1"), ContinueText))
