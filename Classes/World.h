@@ -12,7 +12,7 @@
 #include "CellsNetwork.h"
 #include "TaskManager.h"
 #include "NotificationMessageManager.h"
-#include "Tutorial.h"
+#include "TutorialManager.h"
 #include "LuaInstance.h"
 #include "MiscUtils.h"
 
@@ -33,6 +33,7 @@ public:
 	TaskManager& GetTaskManager();
 	CellsNetwork& GetCellsNetwork();
 	NotificationMessageManager& GetMessageManager();
+	TutorialManager& GetTutorialManager();
 
 	/** Removes all the regions */
 	void CleanupMapContent(void);
@@ -78,16 +79,6 @@ public:
 
 	LuaInstance* GetLuaInst(void) const;
 
-	void AddTutorial(Tutorial tutrorial);
-	bool IsHaveTutorial();
-	Tutorial::WeakPtr GetCurrentTutorial();
-	void RemoveCurrentTutorial();
-	bool IsTutorialStateAvailable(const std::string& state) const;
-	void AddTutorialState(const std::string& state);
-	void RemoveTutorialState(const std::string& state);
-	void RunTutorialFunction(const std::string& function);
-	const std::set<std::string>& GetTutorialStatements() const;
-
 	// calculated parameters of cells
 	int GetExperienceForLevel(int level) const;
 	int GetLevelFromExperience(int experience) const;
@@ -100,6 +91,7 @@ private:
 	CellsNetwork _cellsNetwork;
 	TaskManager _taskManager;
 	NotificationMessageManager _messageManager;
+	TutorialManager _tutorialManager;
 
 	Regions _regions;
 	Towns _towns;
@@ -113,9 +105,6 @@ private:
 	bool _isLuaInited;
 	bool _isGameOver;
 	float _worldCapturingState;
-
-	std::queue<Tutorial::Ptr> _tutorials;
-	std::set<std::string> _availableTutorialStates;
 
 	Utils::GameTime _currentTime;
 

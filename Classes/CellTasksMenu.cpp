@@ -67,9 +67,9 @@ bool CellTasksScreen::init(void)
 
 	addChild(_widget);
 
-	if (World::Instance().IsTutorialStateAvailable("StartFirstTask"))
+	if (World::Instance().GetTutorialManager().IsTutorialStateAvailable("StartFirstTask"))
 	{
-		World::Instance().RunTutorialFunction("BeforeStartFirstTask");
+		World::Instance().GetTutorialManager().RunTutorialFunction("BeforeStartFirstTask");
 	}
 
 	return true;
@@ -125,13 +125,13 @@ void CellTasksScreen::OnStartTaskCallback(cocos2d::Ref *sender, cocos2d::ui::Wid
 	{
 		if (_cell.lock()->GetInfo().state == Cell::State::READY)
 		{
-			if (World::Instance().IsTutorialStateAvailable("WaitingForStartFirstTask"))
+			if (World::Instance().GetTutorialManager().IsTutorialStateAvailable("WaitingForStartFirstTask"))
 			{
-				World::Instance().RunTutorialFunction("StartingFirstTask");
+				World::Instance().GetTutorialManager().RunTutorialFunction("StartingFirstTask");
 			}
-			else if (World::Instance().IsTutorialStateAvailable("ReadyToFirstRealWork"))
+			else if (World::Instance().GetTutorialManager().IsTutorialStateAvailable("ReadyToFirstRealWork"))
 			{
-				World::Instance().RunTutorialFunction("StartingFirstRealWork");
+				World::Instance().GetTutorialManager().RunTutorialFunction("StartingFirstRealWork");
 			}
 
 			cocos2d::ui::Button *btn = dynamic_cast<cocos2d::ui::Button *>(sender);

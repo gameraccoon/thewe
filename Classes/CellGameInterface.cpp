@@ -251,9 +251,9 @@ void CellMenuSelector::OnSpinoffButtonPressed(cocos2d::Ref*)
 			_worldMapLayer->SetNextCellParent(_cell);
 			DisappearWithAnimation();
 
-			if (World::Instance().IsTutorialStateAvailable("ReadyToCreateSpinoff"))
+			if (World::Instance().GetTutorialManager().IsTutorialStateAvailable("ReadyToCreateSpinoff"))
 			{
-				World::Instance().RunTutorialFunction("OnReadyToCreateFirstSpinoff");
+				World::Instance().GetTutorialManager().RunTutorialFunction("OnReadyToCreateFirstSpinoff");
 			}
 		}
 	}

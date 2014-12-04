@@ -50,6 +50,11 @@ NotificationMessageManager& World::GetMessageManager()
 	return _messageManager;
 }
 
+TutorialManager& World::GetTutorialManager()
+{
+	return _tutorialManager;
+}
+
 void ExecScript(LuaInstance* instance, std::string filename)
 {
 	std::string fullPath = cocos2d::FileUtils::getInstance()->fullPathForFilename(filename);
@@ -102,10 +107,10 @@ void World::AddTown(Town::Ptr cell)
 
 void World::AddInvestigator(Investigator::Ptr investigator)
 {
-	if (World::Instance().IsTutorialStateAvailable("WaitForFirstInvestigator"))
+	if (World::Instance().GetTutorialManager().IsTutorialStateAvailable("WaitForFirstInvestigator"))
 	{
 		investigator->BeginCatchTime(GameInfo::Instance().GetTime("INVESTIGATOR_TUTORIAL_CATCH_TIME"));
-		World::Instance().RunTutorialFunction("FirstInvestigationStarted");
+		World::Instance().GetTutorialManager().RunTutorialFunction("FirstInvestigationStarted");
 	}
 
 	_investigators.push_back(investigator);
@@ -143,9 +148,9 @@ bool World::RemoveInvestigator(Investigator::Ptr investigator)
 	{
 		if ((*it) == investigator)
 		{
-			if (IsTutorialStateAvailable("WaitForCatchUncatchedInvestigator"))
+			if (GetTutorialManager().IsTutorialStateAvailable("WaitForCatchUncatchedInvestigator"))
 			{
-				RunTutorialFunction("FirstUncatchedInvestigatorCatched");
+				GetTutorialManager().RunTutorialFunction("FirstUncatchedInvestigatorCatched");
 			}
 
 			Message message("DeleteInvestigatorWidget");
@@ -349,63 +354,6 @@ void World::InitUid(unsigned int uid)
 LuaInstance* World::GetLuaInst(void) const
 {
 	return _luaScript;
-}
-
-void World::AddTutorial(Tutorial tutrorial)
-{
-	_tutorials.push(std::make_shared<Tutorial>(tutrorial));
-}
-
-bool World::IsHaveTutorial()
-{
-	return _tutorials.size() > 0;
-}
-
-Tutorial::WeakPtr World::GetCurrentTutorial()
-{
-	return _tutorials.front();
-}
-
-void World::RemoveCurrentTutorial()
-{
-	if (_tutorials.size() > 0)
-	{
-		if (!_tutorials.front()->luaCallback.empty())
-		{
-			luabind::call_function<void>(World::Instance().GetLuaInst()->GetLuaState()
-				, _tutorials.front()->luaCallback.c_str()
-				, 0);
-		}
-
-		_tutorials.pop();
-	}
-}
-
-bool World::IsTutorialStateAvailable(const std::string& state) const
-{
-	return _availableTutorialStates.find(state) != _availableTutorialStates.end();
-}
-
-void World::AddTutorialState(const std::string& state)
-{
-	_availableTutorialStates.insert(state);
-}
-
-void World::RemoveTutorialState(const std::string& state)
-{
-	_availableTutorialStates.erase(_availableTutorialStates.find(state));
-}
-
-void World::RunTutorialFunction(const std::string& function)
-{
-	luabind::call_function<void>(_luaScript->GetLuaState()
-		, std::string("RunTutorial_" + function).c_str()
-		, 0);
-}
-
-const std::set<std::string>& World::GetTutorialStatements() const
-{
-	return _availableTutorialStates;
 }
 
 int World::GetExperienceForLevel(int level) const

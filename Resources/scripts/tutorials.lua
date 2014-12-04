@@ -1,100 +1,102 @@
 local ContinueText = GetLocalizedString("Tutorial_BtnContinue")
 
+local TutorialManager = World:getTutorialManager()
+
 function RunTutorial_Welcome()
-	World:addTutorial(Tutorial(GetLocalizedString("Tutorial_Welcome_Step1"), ContinueText))
-	World:addTutorial(Tutorial(GetLocalizedString("Tutorial_Welcome_Step2"), ContinueText))
+	TutorialManager:addTutorial(Tutorial(GetLocalizedString("Tutorial_Welcome_Step1"), ContinueText))
+	TutorialManager:addTutorial(Tutorial(GetLocalizedString("Tutorial_Welcome_Step2"), ContinueText))
 
 	-- запускаем цепочки туториалов
-	World:addTutorialState("FirstCell")
-	World:addTutorialState("WaitForFirstInvestigator");
+	TutorialManager:addTutorialState("FirstCell")
+	TutorialManager:addTutorialState("WaitForFirstInvestigator");
 end
 
 function RunTutorial_AfterCreatingFirstCell()
-	World:addTutorial(Tutorial(GetLocalizedString("Tutorial_AfterCreatingFirstCell"), ContinueText))
+	TutorialManager:addTutorial(Tutorial(GetLocalizedString("Tutorial_AfterCreatingFirstCell"), ContinueText))
 
-	World:addTutorialState("StartFirstTask");
-	World:removeTutorialState("FirstCell");
+	TutorialManager:addTutorialState("StartFirstTask");
+	TutorialManager:removeTutorialState("FirstCell");
 end
 
 function RunTutorial_BeforeStartFirstTask()
-	World:addTutorial(Tutorial(GetLocalizedString("Tutorial_BeforeStartFirstTask"), ContinueText))
+	TutorialManager:addTutorial(Tutorial(GetLocalizedString("Tutorial_BeforeStartFirstTask"), ContinueText))
 
-	World:addTutorialState("WaitingForStartFirstTask");
-	World:removeTutorialState("StartFirstTask");
+	TutorialManager:addTutorialState("WaitingForStartFirstTask");
+	TutorialManager:removeTutorialState("StartFirstTask");
 end
 
 function RunTutorial_StartingFirstTask()
-	World:addTutorial(Tutorial(GetLocalizedString("Tutorial_StartingFirstTask"), ContinueText))
+	TutorialManager:addTutorial(Tutorial(GetLocalizedString("Tutorial_StartingFirstTask"), ContinueText))
 
-	World:addTutorialState("WaitingForFinishFirstTask");
-	World:removeTutorialState("WaitingForStartFirstTask");
+	TutorialManager:addTutorialState("WaitingForFinishFirstTask");
+	TutorialManager:removeTutorialState("WaitingForStartFirstTask");
 end
 
 function RunTutorial_AfterFirstTaskFinished()
-	World:addTutorial(Tutorial(GetLocalizedString("Tutorial_AfterFirstTaskFinished"), ContinueText))
+	TutorialManager:addTutorial(Tutorial(GetLocalizedString("Tutorial_AfterFirstTaskFinished"), ContinueText))
 
-	World:addTutorialState("ReadyToFirstRealWork");
-	World:removeTutorialState("WaitingForFinishFirstTask");
+	TutorialManager:addTutorialState("ReadyToFirstRealWork");
+	TutorialManager:removeTutorialState("WaitingForFinishFirstTask");
 end
 
 function RunTutorial_StartingFirstRealWork()
 	-- пока отключаем туториал про бустеры
-	--World:addTutorial(Tutorial(GetLocalizedString("Tutorial_StartingFirstRealWork"), ContinueText))
+	--TutorialManager:addTutorial(Tutorial(GetLocalizedString("Tutorial_StartingFirstRealWork"), ContinueText))
 
-	World:addTutorialState("ReadyToFinishFirstRealWork");
-	World:removeTutorialState("ReadyToFirstRealWork");
+	TutorialManager:addTutorialState("ReadyToFinishFirstRealWork");
+	TutorialManager:removeTutorialState("ReadyToFirstRealWork");
 end
 
 function RunTutorial_AfterRealWorkDone()
-	World:addTutorial(Tutorial(GetLocalizedString("Tutorial_AfterRealWorkDone"), ContinueText))
+	TutorialManager:addTutorial(Tutorial(GetLocalizedString("Tutorial_AfterRealWorkDone"), ContinueText))
 
-	World:addTutorialState("ReadyToCreateSpinoff");
-	World:removeTutorialState("ReadyToFinishFirstRealWork");
+	TutorialManager:addTutorialState("ReadyToCreateSpinoff");
+	TutorialManager:removeTutorialState("ReadyToFinishFirstRealWork");
 end
 
 function RunTutorial_OnReadyToCreateFirstSpinoff()
-	World:addTutorial(Tutorial(GetLocalizedString("Tutorial_OnReadyToCreateFirstSpinoff"), ContinueText))
+	TutorialManager:addTutorial(Tutorial(GetLocalizedString("Tutorial_OnReadyToCreateFirstSpinoff"), ContinueText))
 end
 
 function RunTutorial_OnCreateFirstSpinoff()
-	World:addTutorial(Tutorial(GetLocalizedString("Tutorial_OnCreateFirstSpinoff_Step1"), ContinueText))
-	World:addTutorial(Tutorial(GetLocalizedString("Tutorial_OnCreateFirstSpinoff_Step2"), ContinueText))
+	TutorialManager:addTutorial(Tutorial(GetLocalizedString("Tutorial_OnCreateFirstSpinoff_Step1"), ContinueText))
+	TutorialManager:addTutorial(Tutorial(GetLocalizedString("Tutorial_OnCreateFirstSpinoff_Step2"), ContinueText))
 
 	-- конец цепочки
-	World:removeTutorialState("ReadyToCreateSpinoff");
+	TutorialManager:removeTutorialState("ReadyToCreateSpinoff");
 end
 
 function RunTutorial_FirstInvestigationStarted()
-	World:addTutorial(Tutorial(GetLocalizedString("Tutorial_FirstInvestigationStarted"), ContinueText))
+	TutorialManager:addTutorial(Tutorial(GetLocalizedString("Tutorial_FirstInvestigationStarted"), ContinueText))
 
-	World:addTutorialState("WaitForCatchingFirstInvestigator");
-	World:removeTutorialState("WaitForFirstInvestigator");
+	TutorialManager:addTutorialState("WaitForCatchingFirstInvestigator");
+	TutorialManager:removeTutorialState("WaitForFirstInvestigator");
 end
 
 function RunTutorial_FirstInvestigationCatched()
-	World:addTutorial(Tutorial(GetLocalizedString("Tutorial_FirstInvestigationCatched"), ContinueText))
+	TutorialManager:addTutorial(Tutorial(GetLocalizedString("Tutorial_FirstInvestigationCatched"), ContinueText))
 
-	World:addTutorialState("WaitForUncatchedInvestigator");
-	World:removeTutorialState("WaitForCatchingFirstInvestigator");
+	TutorialManager:addTutorialState("WaitForUncatchedInvestigator");
+	TutorialManager:removeTutorialState("WaitForCatchingFirstInvestigator");
 end
 
 function RunTutorial_FirstUncatchedInvestigator()
-	World:addTutorial(Tutorial(GetLocalizedString("Tutorial_FirstUncatchedInvestigator"), ContinueText))
+	TutorialManager:addTutorial(Tutorial(GetLocalizedString("Tutorial_FirstUncatchedInvestigator"), ContinueText))
 
-	World:addTutorialState("WaitForCatchUncatchedInvestigator");
-	World:removeTutorialState("WaitForUncatchedInvestigator");
+	TutorialManager:addTutorialState("WaitForCatchUncatchedInvestigator");
+	TutorialManager:removeTutorialState("WaitForUncatchedInvestigator");
 end
 
 function RunTutorial_FirstUncatchedInvestigatorCatched()
-	World:addTutorial(Tutorial(GetLocalizedString("Tutorial_FirstUncatchedInvestigatorCatched"), ContinueText, "TutorialsLastTutorial"))
+	TutorialManager:addTutorial(Tutorial(GetLocalizedString("Tutorial_FirstUncatchedInvestigatorCatched"), ContinueText, "TutorialsLastTutorial"))
 
 	-- конец цепочки
-	World:removeTutorialState("WaitForCatchUncatchedInvestigator");
+	TutorialManager:removeTutorialState("WaitForCatchUncatchedInvestigator");
 end
 
 -- продолжить туториал после перезапуска игры (для особых случаев, которые не разрешаются простой загрузкой состояния)
 function ContinueTutorial()
-	local tutorialState = World:getTutorialState()
+	local tutorialState = TutorialManager:getTutorialState()
 	if tutorialState == "FirstCell" then
 		RunTutorial_AfterCreatingFirstCell()
 	end

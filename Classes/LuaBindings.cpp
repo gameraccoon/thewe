@@ -12,6 +12,7 @@
 #include "GameInfo.h"
 #include "World.h"
 #include "Localization.h"
+#include "TutorialManager.h"
 
 template<>
 void LuaInstance::BindClass<Cell>()
@@ -105,6 +106,21 @@ void LuaInstance::BindClass<Tutorial>()
 }
 
 template<>
+void LuaInstance::BindClass<TutorialManager>()
+{
+	luabind::module(_luaState) [
+	luabind::class_<TutorialManager>("TutorialManagerClass")
+		.def("addTutorial", &TutorialManager::AddTutorial)
+		.def("getCurrentTutorial", &TutorialManager::GetCurrentTutorial)
+		.def("removeCurrentTutorial", &TutorialManager::RemoveCurrentTutorial)
+		.def("addTutorialState", &TutorialManager::AddTutorialState)
+		.def("removeTutorialState", &TutorialManager::RemoveTutorialState)
+		.def("isTutorialStateAvailable", &TutorialManager::IsTutorialStateAvailable)
+		.def("runTutorialFuncton", &TutorialManager::RunTutorialFunction)
+	];
+}
+
+template<>
 void LuaInstance::BindClass<Vector2>()
 {
 	luabind::module(_luaState) [
@@ -121,14 +137,8 @@ void LuaInstance::BindClass<World>()
 	luabind::module(_luaState) [
 	luabind::class_<World>("WorldClass")
 		.def("addInvestigatorByCellUid", &World::AddInvestigatorByCellUid)
-		.def("addTutorial", &World::AddTutorial)
-		.def("getCurrentTutorial", &World::GetCurrentTutorial)
-		.def("removeCurrentTutorial", &World::RemoveCurrentTutorial)
 		.def("isFirstLaunch", &World::IsFirstLaunch)
-		.def("addTutorialState", &World::AddTutorialState)
-		.def("removeTutorialState", &World::RemoveTutorialState)
-		.def("isTutorialStateAvailable", &World::IsTutorialStateAvailable)
-		.def("runTutorialFuncton", &World::RunTutorialFunction)
+		.def("getTutorialManager", &World::GetTutorialManager)
 	];
 }
 
@@ -174,6 +184,7 @@ namespace lua
 		luaInstance->BindClass<const Task::Info>();
 		luaInstance->BindClass<Vector2>();
 		luaInstance->BindClass<Tutorial>();
+		luaInstance->BindClass<TutorialManager>();
 	}
 
 	void BindFunctions(LuaInstance* luaInstance)

@@ -398,7 +398,7 @@ void GameSavesManager::LoadTutorialStates()
 	SqliteDataReader::Ptr reader = _impl->database.execQuery("SELECT * FROM " + TUTORIAL_STATES_TABLE);
 	while (reader->next())
 	{
-		World::Instance().AddTutorialState(reader->getValueByName("state")->asString());
+		World::Instance().GetTutorialManager().AddTutorialState(reader->getValueByName("state")->asString());
 	}
 }
 
@@ -687,9 +687,9 @@ static std::string GetUserInfoAdditionStatement()
 
 static bool FillTutorialStatesAdditionStatement(std::string* const tutorialStatesSqlStatement)
 {
-	const World& world = World::Instance();
+	const TutorialManager& tutorialManager = World::Instance().GetTutorialManager();
 	bool addTutorialStates = false;
-	for (auto& tutorialState : world.GetTutorialStatements())
+	for (auto& tutorialState : tutorialManager.GetTutorialStatements())
 	{
 		AppendSeparator(tutorialStatesSqlStatement, addTutorialStates);
 		addTutorialStates = true;

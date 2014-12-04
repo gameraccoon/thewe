@@ -40,13 +40,13 @@ void TutorialLayer::update(float delta)
 {
 	if (_currentTutorial == nullptr)
 	{
-		if (World::Instance().IsHaveTutorial())
+		if (World::Instance().GetTutorialManager().IsHaveTutorial())
 		{
 			cocos2d::Director *director = cocos2d::Director::getInstance();
 			Vector2 screen = director->getVisibleSize();
 			Vector2 origin = director->getVisibleOrigin();
 
-			_currentTutorial = TutorialWidget::create(World::Instance().GetCurrentTutorial());
+			_currentTutorial = TutorialWidget::create(World::Instance().GetTutorialManager().GetCurrentTutorial());
 			addChild(_currentTutorial);
 			_currentTutorial->setPosition(origin + screen/2);
 

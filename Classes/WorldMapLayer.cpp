@@ -127,7 +127,7 @@ void WorldMapLayer::AcceptMessage(const Message &msg)
 			addChild(widget, Z_INVESTIGATOR);
 			_investigatorWidgets.push_back(widget);
 
-			if (World::Instance().IsTutorialStateAvailable("WaitForCatchingFirstInvestigator"))
+			if (World::Instance().GetTutorialManager().IsTutorialStateAvailable("WaitForCatchingFirstInvestigator"))
 			{
 				dynamic_cast<GameScene*>(getParent())->MoveViewToPoint(
 					investigator->GetInvestigationRoot().lock()->GetInfo().town.lock()->GetLocation());
@@ -575,9 +575,9 @@ void WorldMapLayer::_OnTownSelect(Town::WeakPtr town)
 			World::Instance().SetFirstLaunch(false);
 			World::Instance().GetCellsNetwork().SetRootCell(cell);
 
-			if (World::Instance().IsTutorialStateAvailable("FirstCell"))
+			if (World::Instance().GetTutorialManager().IsTutorialStateAvailable("FirstCell"))
 			{
-				World::Instance().RunTutorialFunction("AfterCreatingFirstCell");
+				World::Instance().GetTutorialManager().RunTutorialFunction("AfterCreatingFirstCell");
 			}
 
 			MessageManager::Instance().PutMessage(Message("SaveGame"));
@@ -589,9 +589,9 @@ void WorldMapLayer::_OnTownSelect(Town::WeakPtr town)
 				parent->GetInfo().membersCount >= GameInfo::Instance().GetInt("CELL_SPINOFF_MEMBERS_PRICE"))
 			{
 				Cell::Info info;
-				if (World::Instance().IsTutorialStateAvailable("ReadyToCreateSpinoff"))
+				if (World::Instance().GetTutorialManager().IsTutorialStateAvailable("ReadyToCreateSpinoff"))
 				{
-					World::Instance().RunTutorialFunction("OnCreateFirstSpinoff");
+					World::Instance().GetTutorialManager().RunTutorialFunction("OnCreateFirstSpinoff");
 				}
 
 				info.parent = parent;

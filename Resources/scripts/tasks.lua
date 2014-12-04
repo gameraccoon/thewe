@@ -21,7 +21,7 @@ function IsShowTaskInList(cell, taskInfo)
 	local cellInfo = cell:getInfo()
 
 	-- задачи для туториала
-	if World:isTutorialStateAvailable("StartFirstTask") then
+	if World:getTutorialManager():isTutorialStateAvailable("StartFirstTask") then
 		if taskInfo.id == "tutorial_Recrutment" then
 			return true
 		else
@@ -31,7 +31,7 @@ function IsShowTaskInList(cell, taskInfo)
 		return false
 	end
 
-	if World:isTutorialStateAvailable("ReadyToFirstRealWork") then
+	if World:getTutorialManager():isTutorialStateAvailable("ReadyToFirstRealWork") then
 		if taskInfo.id == "tutorial_RealWork" then
 			return true
 		else
@@ -151,7 +151,7 @@ function MissionSuccess_TutorialRecrutment(cell, taskInfo)
 
 	cellInfo.membersCount = cellInfo.membersCount + 6
 
-	World:runTutorialFuncton("AfterFirstTaskFinished")
+	World:getTutorialManager():runTutorialFuncton("AfterFirstTaskFinished")
 
 	AddExperience(cellInfo, 5)
 end
@@ -169,7 +169,7 @@ function MissionSuccess_TutorialFirstRealWork(cell, taskInfo)
 
 	cellInfo.cash = cellInfo.cash + math.random(40, 60) * 1000
 
-	World:runTutorialFuncton("AfterRealWorkDone")
+	World:getTutorialManager():runTutorialFuncton("AfterRealWorkDone")
 
 	AddExperience(cellInfo, 5)
 end

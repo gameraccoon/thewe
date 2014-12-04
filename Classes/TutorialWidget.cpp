@@ -69,6 +69,6 @@ void TutorialWidget::OnContinueCallback(cocos2d::Ref *sender, cocos2d::ui::Widge
 {
 	if (eventType == cocos2d::ui::Widget::TouchEventType::ENDED)
 	{
-		World::Instance().RemoveCurrentTutorial();
+		World::Instance().GetTutorialManager().RemoveCurrentTutorial();
 	}
 }
