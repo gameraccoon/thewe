@@ -23,9 +23,9 @@ LOCAL_SRC_FILES := hellocpp/main.cpp \
 				   	../../Classes/CellNetWidget.cpp \
 				   	../../Classes/CellsNetLayer.cpp \
 				   	../../Classes/CellsNetwork.cpp \
-				   	../../Classes/CellSpinoffMenu.cpp \
 				   	../../Classes/CellTasksMenu.cpp \
 				   	../../Classes/CellTaskInfoMenu.cpp \
+				   	../../Classes/CircleMenu.cpp \
 				   	../../Classes/Color.cpp \
 				   	../../Classes/Drawable.cpp \
 				   	../../Classes/EditorLayer.cpp \
@@ -47,6 +47,7 @@ LOCAL_SRC_FILES := hellocpp/main.cpp \
 				   	../../Classes/NotificationMessageLayer.cpp \
 				   	../../Classes/NotificationMessageWidget.cpp \
 				   	../../Classes/ProgressBar.cpp \
+				   	../../Classes/ProgressTapWidget.cpp \
 				   	../../Classes/Region.cpp \
 				   	../../Classes/SessionEndScreen.cpp \
 				   	../../Classes/SplashScreenScene.cpp \
@@ -54,6 +55,7 @@ LOCAL_SRC_FILES := hellocpp/main.cpp \
 				   	../../Classes/SqliteDataReader.cpp \
 				   	../../Classes/Task.cpp \
 				   	../../Classes/TaskManager.cpp \
+				   	../../Classes/TaskRewardMapWidget.cpp \
 				   	../../Classes/Town.cpp \
 				   	../../Classes/TownMapWidget.cpp \
 				   	../../Classes/TransitionZoomFade.cpp \
