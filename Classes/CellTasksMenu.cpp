@@ -102,7 +102,7 @@ cocos2d::ui::Widget* CellTasksScreen::CreateScrollerItem(const Task::Info *info)
 	startBtn->addTouchEventListener(CC_CALLBACK_2(CellTasksScreen::OnStartTaskCallback, this));
 	startBtn->setTitleText(LocalizationManager::Instance().getText("CellTaskMenuItem_Start"));
 
-	taskTitle->setString(info->title);
+	taskTitle->setString(LocalizationManager::Instance().getText(std::string("Task_").append(info->id)));
 	taskDuration->setString(cocos2d::StringUtils::format("%s %.1f", LocalizationManager::Instance().getText("CellTaskMenuItem_Duration").c_str(), info->duration));
 	taskChanse->setString(cocos2d::StringUtils::format("%s %.1f",
 		LocalizationManager::Instance().getText("CellTaskMenuItem_Chanse").c_str(),

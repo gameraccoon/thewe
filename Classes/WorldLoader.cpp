@@ -52,7 +52,6 @@ static bool LoadTasksInfo()
 		Task::Info info;
 
 		info.id = task_node.attribute("id").as_string();
-		info.title = task_node.attribute("title").as_string();
 		info.fameImpact = task_node.attribute("fameImpact").as_float();
 		info.duration = Utils::StringToTime(task_node.attribute("duration").as_string());
 		info.moralLevel = task_node.attribute("moralLevel").as_float();

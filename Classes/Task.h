@@ -25,9 +25,7 @@ public:
 	{
 		/** ID */
 		std::string id;
-		/** Title of the task */
-		std::string title;
-		/** Time needless to complete the task */
+		/** Time need to complete the task */
 		Utils::GameTime duration;
 		float moralLevel;
 		int level;
