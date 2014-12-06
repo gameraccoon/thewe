@@ -294,9 +294,6 @@
     <ClCompile Include="..\Classes\Town.cpp">
       <Filter>Classes\GameModels</Filter>
     </ClCompile>
-    <ClCompile Include="..\Classes\Tutorial.cpp">
-      <Filter>Classes\GameModels</Filter>
-    </ClCompile>
     <ClCompile Include="..\Classes\World.cpp">
       <Filter>Classes\GameModels</Filter>
     </ClCompile>
@@ -355,6 +352,15 @@
       <Filter>Classes\GameModels</Filter>
     </ClCompile>
     <ClCompile Include="..\Classes\BonusMapWidget.cpp">
+      <Filter>Classes\GameWidgets</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\ProgressTapWidget.cpp">
+      <Filter>Classes\GameWidgets</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\TutorialManager.cpp">
+      <Filter>Classes\GameModels</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\CircleMenu.cpp">
       <Filter>Classes\GameWidgets</Filter>
     </ClCompile>
   </ItemGroup>
@@ -609,6 +615,15 @@
       <Filter>Classes\GameModels</Filter>
     </ClInclude>
     <ClInclude Include="..\Classes\BonusMapWidget.h">
+      <Filter>Classes\GameWidgets</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\ProgressTapWidget.h">
+      <Filter>Classes\GameWidgets</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\TutorialManager.h">
+      <Filter>Classes\GameModels</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\CircleMenu.h">
       <Filter>Classes\GameWidgets</Filter>
     </ClInclude>
   </ItemGroup>
