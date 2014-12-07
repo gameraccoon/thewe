@@ -8,16 +8,19 @@ BonusOnMap::BonusOnMap(void)
 	, _waitForBonusDestroy(false)
 {
 	MessageManager::Instance().RegisterReceiver(dynamic_cast<BonusOnMap *>(this));
-
-	_startTime = Utils::GetGameTime();
-	Utils::GameTime delay = GameInfo::Instance().GetTime("BONUS_BORN_TIME_DELAY");
-	Utils::GameTime offset = GameInfo::Instance().GetTime("BONUS_BORN_TIME_OFFSET");
-	_waitTime = CalcNextWaitTime(delay, offset);
 }
 
 BonusOnMap::~BonusOnMap(void)
 {
 	MessageManager::Instance().UnregisterReceiver(dynamic_cast<BonusOnMap *>(this));
+}
+
+void BonusOnMap::OnStartLogic(void)
+{
+	_startTime = Utils::GetGameTime();
+	Utils::GameTime delay = GameInfo::Instance().GetTime("BONUS_BORN_TIME_DELAY");
+	Utils::GameTime offset = GameInfo::Instance().GetTime("BONUS_BORN_TIME_OFFSET");
+	_waitTime = CalcNextWaitTime(delay, offset);
 }
 
 void BonusOnMap::UpdateToTime(Utils::GameTime time, const std::vector<Town::Ptr> &towns)

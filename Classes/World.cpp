@@ -87,6 +87,8 @@ void World::StartLogic()
 	luabind::call_function<void>(World::Instance().GetLuaInst()->GetLuaState()
 		, "StartGame"
 		, 0);
+
+	_bonusOnMap.OnStartLogic();
 }
 
 void World::CleanupMapContent(void)

@@ -11,6 +11,7 @@ public:
 	BonusOnMap(void);
 	~BonusOnMap(void);
 
+	void OnStartLogic(void);
 	void UpdateToTime(Utils::GameTime time, const std::vector<Town::Ptr> &towns);
 	void SendMessageAboutBornBonus(int townUid);
 
