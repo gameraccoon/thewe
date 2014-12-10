@@ -45,6 +45,7 @@ LOCAL_SRC_FILES := hellocpp/main.cpp \
 				   	../../Classes/MapProjector.cpp \
 				   	../../Classes/MessageManager.cpp \
 				   	../../Classes/MiscUtils.cpp \
+				   	../../Classes/MultipleImageSprite.cpp \
 				   	../../Classes/NotificationMessageManager.cpp \
 				   	../../Classes/NotificationMessageLayer.cpp \
 				   	../../Classes/NotificationMessageWidget.cpp \

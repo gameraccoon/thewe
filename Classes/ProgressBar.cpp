@@ -108,6 +108,8 @@ bool RoundProgressBar::init(void)
 
 	addChild(_progressTimer, 0);
 
+	setContentSize(_roundTexture->getContentSize());
+
 	return true;
 }
 

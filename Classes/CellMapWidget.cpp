@@ -76,6 +76,8 @@ bool CellMapWidget::init(void)
 	addChild(_relinkableMark, DrawOrder::BUTTON);
 	scheduleUpdate();
 
+	setContentSize(_cellMapTaskProgressBar->getContentSize());
+
 	return true;
 }
 

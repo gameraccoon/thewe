@@ -666,7 +666,7 @@ void WorldMapLayer::UpdateCells()
 
 		cocos2d::Rect rect = cocos2d::Rect(firstPoint.x, firstPoint.y, secondPoint.x, secondPoint.y);
 
-		if (rect.intersectsRect(screenRect))
+		if (cellWidget->isVisible() && rect.intersectsRect(screenRect))
 		{
 			widgetsToScale.push_back(cellWidget);
 		}
@@ -710,7 +710,7 @@ void WorldMapLayer::UpdateTowns()
 
 		cocos2d::Rect rect = cocos2d::Rect(firstPoint.x, firstPoint.y, secondPoint.x, secondPoint.y);
 
-		if (rect.intersectsRect(screenRect))
+		if (townWidget->isVisible() && rect.intersectsRect(screenRect))
 		{
 			widgetsToScale.push_back(townWidget);
 		}
