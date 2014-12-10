@@ -71,17 +71,20 @@ private:
 	Cell::WeakPtr _nextCellParent;
 	Cell::WeakPtr _linkCellChildren;
 
-	Region::WeakPtr _GetRegionUnderPoint(const Vector2& point) const;
-	Cell::WeakPtr _GetCellUnderPoint(const Vector2& point);
-	Town::WeakPtr _GetTownUnderPoint(const Vector2& point);
+	Region::WeakPtr GetRegionUnderPoint(const Vector2& point) const;
+	Cell::WeakPtr GetCellUnderPoint(const Vector2& point);
+	Town::WeakPtr GetTownUnderPoint(const Vector2& point);
 	
-	CellMapWidget* _CreateCellWidget(Cell::Ptr cell);
-	TownMapWidget* _CreateTownWidget(Town::Ptr town);
-	InvestigatorMapWidget* _CreateInvestigatorWidget(Investigator::Ptr investigator);
+	CellMapWidget* CreateCellWidget(Cell::Ptr cell);
+	TownMapWidget* CreateTownWidget(Town::Ptr town);
+	InvestigatorMapWidget* CreateInvestigatorWidget(Investigator::Ptr investigator);
 
-	void _UpdateNetwork();
-	void _RecursiveUpdateNetworkVisualiser(cocos2d::DrawNode *visualiser, Cell::WeakPtr cell);
-	void _OnTownSelect(Town::WeakPtr town);
+	void UpdateMapElements();
+	void UpdateCells();
+	void UpdateTowns();
+	void UpdateNetwork();
+	void RecursiveUpdateNetworkVisualiser(cocos2d::DrawNode *visualiser, Cell::WeakPtr cell);
+	void OnTownSelect(Town::WeakPtr town);
 	void SetTownsVisibility(bool visibility);
 	void RecalculateTouches(const std::vector<cocos2d::Touch* > &touches, bool updateView);
 	void ResetTouches();

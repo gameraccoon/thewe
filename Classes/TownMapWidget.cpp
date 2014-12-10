@@ -27,13 +27,15 @@ bool TownMapWidget::init(void)
 	_townMapSprite->setScale(1.0f);
 
 	addChild(_townMapSprite, 0);
+
+	setContentSize(_townMapSprite->getContentSize());
 		
 	return true;
 }
 
 void TownMapWidget::AcceptMessage(const Message &message)
 {
-	if (message.is("BornBonus") && message.variables.GetInt("TOWN_UID") == _town->GetUid())
+	if (message.is("BornBonus") && (unsigned int)message.variables.GetInt("TOWN_UID") == _town->GetUid())
 	{
 		BonusMapWidget *bonus = new BonusMapWidget(_town, 
 												  Vector2(0.0f, 50.0f),
@@ -43,7 +45,7 @@ void TownMapWidget::AcceptMessage(const Message &message)
 		_bonuses.push_back(bonus);
 		addChild(bonus, 1);
 	}
-	else if (message.is("DeleteBonusWidget") && message.variables.GetInt("TOWN_UID") == _town->GetUid())
+	else if (message.is("DeleteBonusWidget") && (unsigned int)message.variables.GetInt("TOWN_UID") == _town->GetUid())
 	{
 		for (Bonuses::iterator it = _bonuses.begin(); it != _bonuses.end();)
 		{

@@ -11,6 +11,8 @@
 #include <luabind/luabind.hpp>
 
 static const float MAX_MAP_SCALE = 1.5f;
+static const float INITIAL_TOWN_SCALE = 0.17f;
+static const float INITIAL_CELL_SCALE = 0.2f;
 
 WorldMapLayer::WorldMapLayer(GameScene *gameScene, MapProjector* projector)
 	: _mapProjector(projector)
@@ -62,14 +64,14 @@ bool WorldMapLayer::init(void)
 
 	for (const Cell::Ptr cell : World::Instance().GetCellsNetwork().GetActiveCells())
 	{
-		CellMapWidget *widget = _CreateCellWidget(cell);
+		CellMapWidget *widget = CreateCellWidget(cell);
 		_cellWidgets.push_back(widget);
 		addChild(widget, Z_CELL);
 	}
 	
 	for (const Town::Ptr town : World::Instance().GetTowns())
 	{
-		TownMapWidget *widget = _CreateTownWidget(town);
+		TownMapWidget *widget = CreateTownWidget(town);
 		_townWidgets.push_back(widget);
 		addChild(widget, Z_TOWN);
 	}
@@ -86,7 +88,7 @@ bool WorldMapLayer::init(void)
 
 	scheduleUpdate();
 
-	_UpdateNetwork();
+	UpdateMapElements();
 
 	return true;
 }
@@ -118,7 +120,7 @@ void WorldMapLayer::AcceptMessage(const Message &msg)
 		Investigator::Ptr investigator = World::Instance().GetInvestigatorByUid(msg.variables.GetInt("UID"));
 		if (investigator)
 		{
-			InvestigatorMapWidget *widget = _CreateInvestigatorWidget(investigator);
+			InvestigatorMapWidget *widget = CreateInvestigatorWidget(investigator);
 			addChild(widget, Z_INVESTIGATOR);
 			_investigatorWidgets.push_back(widget);
 
@@ -126,7 +128,7 @@ void WorldMapLayer::AcceptMessage(const Message &msg)
 			{
 				dynamic_cast<GameScene*>(getParent())->MoveViewToPoint(
 					investigator->GetInvestigationRoot().lock()->GetInfo().town.lock()->GetLocation());
-				_UpdateNetwork();
+				UpdateMapElements();
 			}
 		}
 	}
@@ -153,7 +155,7 @@ void WorldMapLayer::AcceptMessage(const Message &msg)
 				removeChild(widget);
 				_mapProjector->RemoveMapPart(widget->GetProjectorUid());
 				_mapProjector->Update();
-				_UpdateNetwork();
+				UpdateMapElements();
 				it = _cellWidgets.erase(it);
 				delete widget;
 				break;
@@ -207,11 +209,11 @@ Cell::Ptr WorldMapLayer::CreateCell(Cell::Info info, Cell::State state)
 
 	World::Instance().GetCellsNetwork().AddCell(cell);
 
-	CellMapWidget *widget = _CreateCellWidget(cell);
+	CellMapWidget *widget = CreateCellWidget(cell);
 	_cellWidgets.push_back(widget);
 	addChild(widget, Z_CELL);
 
-	_UpdateNetwork();
+	UpdateMapElements();
 
 	return cell;
 }
@@ -306,7 +308,7 @@ void WorldMapLayer::TouchesEnded(const std::vector<cocos2d::Touch* > &touches, c
 
 			if (size <= tolerance)
 			{
-				Cell::Ptr cell = _GetCellUnderPoint(point).lock();
+				Cell::Ptr cell = GetCellUnderPoint(point).lock();
 				if (cell)
 				{
 					if (  !_linkCellChildren.expired() 
@@ -322,7 +324,7 @@ void WorldMapLayer::TouchesEnded(const std::vector<cocos2d::Touch* > &touches, c
 						World::Instance().GetCellsNetwork().RelinkCells(cell, relinked);
 						_linkCellChildren.reset();
 
-						_UpdateNetwork();
+						UpdateMapElements();
 					}
 					else
 					{
@@ -344,10 +346,10 @@ void WorldMapLayer::TouchesEnded(const std::vector<cocos2d::Touch* > &touches, c
 					_cellMenu->DisappearWithAnimation();		
 				}
 
-				Town::WeakPtr town = _GetTownUnderPoint(point);
+				Town::WeakPtr town = GetTownUnderPoint(point);
 				if (!town.expired())
 				{
-					_OnTownSelect(town);
+					OnTownSelect(town);
 					return;
 				}
 			}
@@ -369,7 +371,7 @@ void WorldMapLayer::TouchesMoved(const std::vector<cocos2d::Touch* > &touches, c
 		}
 	}
 
-	_UpdateNetwork();
+	UpdateMapElements();
 }
 
 void WorldMapLayer::RecalculateTouches(const std::vector<cocos2d::Touch* > &touches, bool updateView)
@@ -395,7 +397,9 @@ void WorldMapLayer::RecalculateTouches(const std::vector<cocos2d::Touch* > &touc
 	{
 		_mapProjector->ShiftView(newTouchPoint - _touchesCenter);
 		if (_avgTouchDistance > 0.01 && newAvgDistance > 0.01)
-		_mapProjector->SetScale(std::min(MAX_MAP_SCALE, _mapProjector->GetScale() * (newAvgDistance / _avgTouchDistance)));
+		{
+			_mapProjector->SetScale(std::min(MAX_MAP_SCALE, _mapProjector->GetScale() * (newAvgDistance / _avgTouchDistance)));
+		}
 	}
 
 	_avgTouchDistance = newAvgDistance;
@@ -414,11 +418,11 @@ void WorldMapLayer::BackToMainMenuCallback(cocos2d::Ref *sender)
 	_gameScene->GoToMainMenu();
 }
 
-CellMapWidget* WorldMapLayer::_CreateCellWidget(Cell::Ptr cell)
+CellMapWidget* WorldMapLayer::CreateCellWidget(Cell::Ptr cell)
 {
 	CellMapWidget *widget = new CellMapWidget(cell);
 	
-	int uid = _mapProjector->AddMapPart(Drawable::CastFromCocos(widget), cell->GetInfo().location, Vector2(0.0f, 0.0f), 0.2f, true);
+	int uid = _mapProjector->AddMapPart(Drawable::CastFromCocos(widget), cell->GetInfo().location, Vector2(0.0f, 0.0f), INITIAL_CELL_SCALE, true);
 	_mapProjector->Update();
 
 	cocos2d::Rect tex = widget->GetCellRect();
@@ -432,11 +436,11 @@ CellMapWidget* WorldMapLayer::_CreateCellWidget(Cell::Ptr cell)
 	return widget;
 }
 
-TownMapWidget* WorldMapLayer::_CreateTownWidget(Town::Ptr town)
+TownMapWidget* WorldMapLayer::CreateTownWidget(Town::Ptr town)
 {
 	TownMapWidget *widget = new TownMapWidget(town);
 	
-	int uid = _mapProjector->AddMapPart(Drawable::CastFromCocos(widget), town->GetInfo().location, Vector2(0.0f, 0.0f), 0.17f, true);
+	int uid = _mapProjector->AddMapPart(Drawable::CastFromCocos(widget), town->GetInfo().location, Vector2(0.0f, 0.0f), INITIAL_TOWN_SCALE, true);
 	_mapProjector->Update();
 
 	cocos2d::Rect tex = widget->GetTownRect();
@@ -450,14 +454,14 @@ TownMapWidget* WorldMapLayer::_CreateTownWidget(Town::Ptr town)
 	return widget;
 }
 
-InvestigatorMapWidget* WorldMapLayer::_CreateInvestigatorWidget(Investigator::Ptr investigator)
+InvestigatorMapWidget* WorldMapLayer::CreateInvestigatorWidget(Investigator::Ptr investigator)
 {
 	InvestigatorMapWidget *widget = new InvestigatorMapWidget(investigator, _mapProjector, this);
 	widget->autorelease();
 	return widget;
 }
 
-Region::WeakPtr WorldMapLayer::_GetRegionUnderPoint(const Vector2& point) const
+Region::WeakPtr WorldMapLayer::GetRegionUnderPoint(const Vector2& point) const
 {
 	Vector2 projectedClickPoint = _mapProjector->ProjectOnMap(point);
 	for (Region::Ptr region : World::Instance().GetRegions())
@@ -476,7 +480,7 @@ Region::WeakPtr WorldMapLayer::_GetRegionUnderPoint(const Vector2& point) const
 	return Region::WeakPtr();
 }
 
-Cell::WeakPtr WorldMapLayer::_GetCellUnderPoint(const Vector2& point)
+Cell::WeakPtr WorldMapLayer::GetCellUnderPoint(const Vector2& point)
 {
 	for (CellMapWidget *widget : _cellWidgets)
 	{
@@ -509,7 +513,7 @@ Cell::WeakPtr WorldMapLayer::_GetCellUnderPoint(const Vector2& point)
 	return Cell::WeakPtr();
 }
 
-Town::WeakPtr WorldMapLayer::_GetTownUnderPoint(const Vector2& point)
+Town::WeakPtr WorldMapLayer::GetTownUnderPoint(const Vector2& point)
 {
 	for (TownMapWidget *widget : _townWidgets)
 	{
@@ -532,7 +536,7 @@ Town::WeakPtr WorldMapLayer::_GetTownUnderPoint(const Vector2& point)
 	return Town::WeakPtr();
 }
 
-void WorldMapLayer::_OnTownSelect(Town::WeakPtr town)
+void WorldMapLayer::OnTownSelect(Town::WeakPtr town)
 {
 	bool avaliable = World::Instance().IsTownAvaliableToPlaceCell(town);
 
@@ -631,7 +635,7 @@ void WorldMapLayer::SetTownsVisibility(bool visibility)
 void WorldMapLayer::ModifyZoom(float multiplier)
 {
 	_mapProjector->SetScale(_mapProjector->GetScale() * multiplier);
-	_UpdateNetwork();
+	UpdateMapElements();
 }
 
 void WorldMapLayer::HideCellGameInterface(void)
@@ -639,16 +643,111 @@ void WorldMapLayer::HideCellGameInterface(void)
 	_cellMenu->DisappearWithAnimation();
 }
 
-void WorldMapLayer::_UpdateNetwork()
+void WorldMapLayer::UpdateMapElements()
+{
+	UpdateTowns();
+	UpdateCells();
+	UpdateNetwork();
+}
+
+void WorldMapLayer::UpdateCells()
+{
+	Vector2 origin = cocos2d::Director::getInstance()->getVisibleOrigin();
+	Vector2 screen = cocos2d::Director::getInstance()->getVisibleSize();
+	Vector2 visibleSize = origin + screen;
+	cocos2d::Rect screenRect(0.0f, 0.0f, visibleSize.x, visibleSize.y);
+
+	CellWidgets widgetsToScale;
+
+	for (auto cellWidget : _cellWidgets)
+	{
+		Vector2 firstPoint = cellWidget->getPosition() - cellWidget->getContentSize() * INITIAL_CELL_SCALE;
+		Vector2 secondPoint = cellWidget->getPosition() + cellWidget->getContentSize() * INITIAL_CELL_SCALE;
+
+		cocos2d::Rect rect = cocos2d::Rect(firstPoint.x, firstPoint.y, secondPoint.x, secondPoint.y);
+
+		if (rect.intersectsRect(screenRect))
+		{
+			widgetsToScale.push_back(cellWidget);
+		}
+	}
+
+	if (widgetsToScale.size() > 1)
+	{
+		float minDistance = 999999.0f;
+		for (int i = 0, xMax = widgetsToScale.size() - 2; i <= xMax; i++)
+			for (int j = i + 1, yMax = widgetsToScale.size() - 1; j <= yMax; j++)
+		{
+			float dist = Vector2(widgetsToScale[i]->getPosition() - widgetsToScale[j]->getPosition()).Size();
+			if (dist < minDistance)
+			{
+				minDistance = dist;
+			}
+		}
+
+		float calcScale = minDistance * 0.005;
+		float scale = INITIAL_CELL_SCALE < calcScale ? INITIAL_CELL_SCALE : calcScale;
+		for (auto widget : widgetsToScale)
+		{
+			widget->setScale(scale);
+		}
+	}
+}
+
+void WorldMapLayer::UpdateTowns()
+{
+	Vector2 origin = cocos2d::Director::getInstance()->getVisibleOrigin();
+	Vector2 screen = cocos2d::Director::getInstance()->getVisibleSize();
+	Vector2 visibleSize = origin + screen;
+	cocos2d::Rect screenRect(0.0f, 0.0f, visibleSize.x, visibleSize.y);
+
+	TownWidgets widgetsToScale;
+
+	for (auto townWidget : _townWidgets)
+	{
+		Vector2 firstPoint = townWidget->getPosition() - townWidget->getContentSize() * INITIAL_TOWN_SCALE;
+		Vector2 secondPoint = townWidget->getPosition() + townWidget->getContentSize() * INITIAL_TOWN_SCALE;
+
+		cocos2d::Rect rect = cocos2d::Rect(firstPoint.x, firstPoint.y, secondPoint.x, secondPoint.y);
+
+		if (rect.intersectsRect(screenRect))
+		{
+			widgetsToScale.push_back(townWidget);
+		}
+	}
+
+	if (widgetsToScale.size() > 1)
+	{
+		float minDistance = 999999.0f;
+		for (int i = 0, xMax = widgetsToScale.size() - 2; i <= xMax; i++)
+			for (int j = i + 1, yMax = widgetsToScale.size() - 1; j <= yMax; j++)
+		{
+			float dist = Vector2(widgetsToScale[i]->getPosition() - widgetsToScale[j]->getPosition()).Size();
+			if (dist < minDistance)
+			{
+				minDistance = dist;
+			}
+		}
+
+		float calcScale = minDistance * 0.005;
+		float scale = INITIAL_TOWN_SCALE < calcScale ? INITIAL_TOWN_SCALE : calcScale;
+		for (auto widget : widgetsToScale)
+		{
+			widget->setScale(scale);
+		}
+	}
+}
+
+void WorldMapLayer::UpdateNetwork()
 {
 	if (!World::Instance().GetCellsNetwork().GetRootCell().expired())
 	{
 		_networkVisualiser->clear();
-		_RecursiveUpdateNetworkVisualiser(_networkVisualiser, World::Instance().GetCellsNetwork().GetRootCell());
+		RecursiveUpdateNetworkVisualiser(_networkVisualiser, World::Instance().GetCellsNetwork().GetRootCell());
 	}
 }
 
-void WorldMapLayer::_RecursiveUpdateNetworkVisualiser(cocos2d::DrawNode *visualiser, Cell::WeakPtr cell)
+void WorldMapLayer::RecursiveUpdateNetworkVisualiser(cocos2d::DrawNode *visualiser, Cell::WeakPtr cell)
 {
 	Vector2 p1(_mapProjector->ProjectOnScreen(cell.lock()->GetInfo().location));
 
@@ -661,7 +760,7 @@ void WorldMapLayer::_RecursiveUpdateNetworkVisualiser(cocos2d::DrawNode *visuali
 			visualiser->drawSegment(p1, p2, 1.0f, Color(1.0f, 0.0f, 0.0f, 1.0f));
 
 			// recursive
-			_RecursiveUpdateNetworkVisualiser(visualiser, child);
+			RecursiveUpdateNetworkVisualiser(visualiser, child);
 		}
 	}
 }

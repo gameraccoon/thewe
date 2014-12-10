@@ -60,6 +60,8 @@ set(GAME_SRC
 	proj.linux/main.cpp
 	Classes/Application.cpp
 	Classes/ArbitraryHull.cpp
+	Classes/BonusMapWidget.cpp
+	Classes/BonusOnMap.cpp
 	Classes/Cell.cpp
 	Classes/CellGameInterface.cpp
 	Classes/CellInfoMenu.cpp
