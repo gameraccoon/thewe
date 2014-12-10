@@ -4,81 +4,6 @@
 #include "GameInfo.h"
 #include "Log.h"
 
-class CellMapImage : public cocos2d::Node
-{
-public:
-	CellMapImage(Cell::State state) : _state(state)
-	{
-		init();
-		SwitchState(_state);
-	}
-
-	virtual bool init(void) override
-	{
-		_stateNormal = cocos2d::Sprite::create("cell.png");
-		_stateNormal->setPosition(0.0f, 0.0f);
-		_stateNormal->setVisible(false);
-
-		_stateArrested = cocos2d::Sprite::create("cell_arrested.png");
-		_stateArrested->setPosition(0.0f, 0.0f);
-		_stateArrested->setVisible(false);
-
-		addChild(_stateNormal, 0);
-		addChild(_stateArrested, 1);
-
-		return true;
-	}
-
-	void SwitchState(Cell::State state)
-	{
-		_state = state;
-
-		switch (_state)
-		{
-		case Cell::State::CONSTRUCTION:
-		case Cell::State::DESTRUCTION:
-		case Cell::State::AUTONOMY:
-		case Cell::State::READY:
-			_stateNormal->setVisible(true);
-			_stateArrested->setVisible(false);
-			break;
-		case Cell::State::ARRESTED:
-			_stateNormal->setVisible(false);
-			_stateArrested->setVisible(true);
-			break;
-		default:
-			Log::Instance().writeWarning("Unknown cell state");
-			break;
-		}
-	}
-
-	cocos2d::Sprite* GetCurrentStateImage(void) const
-	{
-		switch (_state)
-		{
-		case Cell::State::CONSTRUCTION:
-		case Cell::State::DESTRUCTION:
-		case Cell::State::AUTONOMY:
-		case Cell::State::READY:
-			return _stateNormal;
-			break;
-		case Cell::State::ARRESTED:
-			return _stateArrested;
-			break;
-		default:
-			Log::Instance().writeWarning("Unknown cell state");
-			return nullptr;
-			break;
-		}
-	}
-
-private:
-	cocos2d::Sprite *_stateNormal;
-	cocos2d::Sprite *_stateArrested;
-
-	Cell::State _state;
-};
-
 CellMapWidget::CellMapWidget(Cell::WeakPtr cell)
 	: _cell(cell)
 	, _hitAreaBeginX(0.0f)
@@ -113,10 +38,13 @@ bool CellMapWidget::init(void)
 	touch->onTouchesEnded = CC_CALLBACK_2(CellMapWidget::TouchEnded, this);
 	cocos2d::Director::getInstance()->getEventDispatcher()->addEventListenerWithSceneGraphPriority(touch, this);
 
-	_cellMapSprite = new CellMapImage(_cell.lock()->GetInfo().state);
+	_cellMapSprite = new MultipleImageSprite();
 	_cellMapSprite->setPosition(0.0f, 0.0f);
 	_cellMapSprite->setScale(1.0f);
 	_cellMapSprite->autorelease();
+	_cellMapSprite->AddImage("normal", "cell.png");
+	_cellMapSprite->AddImage("arrested", "cell_arrested.png");
+	_cellMapSprite->SetCurrentImage("normal");
 
 	_cellMapTaskProgressBar = new RoundProgressBar("cell_overlay.png", 1.0f);
 	_cellMapTaskProgressBar->SetProgressImmediately(0.0f);
@@ -181,7 +109,7 @@ void CellMapWidget::update(float dt)
 	}
 	else if (cell->IsState(Cell::State::ARRESTED) && _lastCellState == Cell::State::READY)
 	{
-		_cellMapSprite->SwitchState(Cell::State::ARRESTED);
+		_cellMapSprite->SetCurrentImage("arrested");
 		_lastCellState = Cell::State::ARRESTED;
 	}
 	else if (cell->IsState(Cell::State::AUTONOMY))
@@ -318,7 +246,7 @@ int CellMapWidget::GetCellUid(void) const
 
 const cocos2d::Rect& CellMapWidget::GetCellRect(void) const
 {
-	return _cellMapSprite->GetCurrentStateImage()->getTextureRect();
+	return _cellMapSprite->GetCurrentImage()->getTextureRect();
 }
 
 Cell::WeakPtr CellMapWidget::GetCell(void) const

@@ -6,8 +6,7 @@
 #include "MessageManager.h"
 #include "InvestigatorMapWidget.h"
 #include "TaskRewardMapWidget.h"
-
-class CellMapImage;
+#include "MultipleImageSprite.h"
 
 class CellMapWidget : public cocos2d::Node, public MessageReceiver
 {
@@ -59,8 +58,7 @@ private:
 	cocos2d::Sprite *_relinkableMark;
 
 	TaskRewards _taskRewardsOnMap;
-
-	CellMapImage *_cellMapSprite;
+	MultipleImageSprite *_cellMapSprite;
 	RoundProgressBar *_cellMapTaskProgressBar;
 	RoundProgressBar *_cellCommonProgressBar;
 
