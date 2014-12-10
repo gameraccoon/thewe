@@ -15,6 +15,8 @@ LOCAL_MODULE_FILENAME := libcocos2dcpp
 LOCAL_SRC_FILES := hellocpp/main.cpp \
 				   	../../Classes/Application.cpp \
 				   	../../Classes/ArbitraryHull.cpp \
+				   	../../Classes/BonusMapWidget.cpp \
+				   	../../Classes/BonusOnMap.cpp \
 				   	../../Classes/Cell.cpp \
 				   	../../Classes/CellGameInterface.cpp \
 				   	../../Classes/CellInfoMenu.cpp \
@@ -59,8 +61,8 @@ LOCAL_SRC_FILES := hellocpp/main.cpp \
 				   	../../Classes/Town.cpp \
 				   	../../Classes/TownMapWidget.cpp \
 				   	../../Classes/TransitionZoomFade.cpp \
-				   	../../Classes/Tutorial.cpp \
 				   	../../Classes/TutorialLayer.cpp \
+				   	../../Classes/TutorialManager.cpp \
 				   	../../Classes/TutorialWidget.cpp \
 				   	../../Classes/UserMessage.cpp \
 				   	../../Classes/Vector2.cpp \

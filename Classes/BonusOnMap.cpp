@@ -3,6 +3,8 @@
 #include "MessageManager.h"
 #include "GameInfo.h"
 
+#include <stdlib.h>
+
 BonusOnMap::BonusOnMap(void)
 	: _startTime(0)
 	, _waitForBonusDestroy(false)
