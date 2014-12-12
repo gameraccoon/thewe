@@ -167,6 +167,7 @@ xcopy /Y /Q "$(EngineRoot)external\websockets\prebuilt\win32\*.lib" "$(SolutionD
     <ClCompile Include="..\Classes\MainMenuScene.cpp" />
     <ClCompile Include="..\Classes\MapGuiLayer.cpp" />
     <ClCompile Include="..\Classes\MapProjector.cpp" />
+    <ClCompile Include="..\Classes\MultipleImageSprite.cpp" />
     <ClCompile Include="..\Classes\NotificationMessageLayer.cpp" />
     <ClCompile Include="..\Classes\NotificationMessageManager.cpp" />
     <ClCompile Include="..\Classes\NotificationMessageWidget.cpp" />
@@ -174,6 +175,7 @@ xcopy /Y /Q "$(EngineRoot)external\websockets\prebuilt\win32\*.lib" "$(SolutionD
     <ClCompile Include="..\Classes\ProgressTapWidget.cpp" />
     <ClCompile Include="..\Classes\Region.cpp" />
     <ClCompile Include="..\Classes\SessionEndScreen.cpp" />
+    <ClCompile Include="..\Classes\MapDragAndDropWidget.cpp" />
     <ClCompile Include="..\Classes\SplashScreenScene.cpp" />
     <ClCompile Include="..\Classes\SqliteConnection.cpp" />
     <ClCompile Include="..\Classes\SqliteDataReader.cpp" />
@@ -276,6 +278,7 @@ xcopy /Y /Q "$(EngineRoot)external\websockets\prebuilt\win32\*.lib" "$(SolutionD
     <ClInclude Include="..\Classes\MainMenuScene.h" />
     <ClInclude Include="..\Classes\MapGuiLayer.h" />
     <ClInclude Include="..\Classes\MapProjector.h" />
+    <ClInclude Include="..\Classes\MultipleImageSprite.h" />
     <ClInclude Include="..\Classes\NotificationMessageLayer.h" />
     <ClInclude Include="..\Classes\NotificationMessageManager.h" />
     <ClInclude Include="..\Classes\NotificationMessageWidget.h" />
@@ -284,6 +287,7 @@ xcopy /Y /Q "$(EngineRoot)external\websockets\prebuilt\win32\*.lib" "$(SolutionD
     <ClInclude Include="..\Classes\Region.h" />
     <ClInclude Include="..\Classes\SessionEndScreen.h" />
     <ClInclude Include="..\Classes\SettingsManager.h" />
+    <ClInclude Include="..\Classes\MapDragAndDropWidget.h" />
     <ClInclude Include="..\Classes\SplashScreenScene.h" />
     <ClInclude Include="..\Classes\SqlDataReader.h" />
     <ClInclude Include="..\Classes\SqliteConnection.h" />

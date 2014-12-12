@@ -363,6 +363,12 @@
     <ClCompile Include="..\Classes\CircleMenu.cpp">
       <Filter>Classes\GameWidgets</Filter>
     </ClCompile>
+    <ClCompile Include="..\Classes\MapDragAndDropWidget.cpp">
+      <Filter>Classes\GameWidgets</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\MultipleImageSprite.cpp">
+      <Filter>Classes\Utils</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="main.h">
@@ -625,6 +631,12 @@
     </ClInclude>
     <ClInclude Include="..\Classes\CircleMenu.h">
       <Filter>Classes\GameWidgets</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\MapDragAndDropWidget.h">
+      <Filter>Classes\GameWidgets</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\MultipleImageSprite.h">
+      <Filter>Classes\Utils</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
