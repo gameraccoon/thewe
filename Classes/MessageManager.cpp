@@ -47,7 +47,7 @@ void MessageManager::RegisterReceiver(MessageReceiver *receiver)
 
 void MessageManager::UnregisterReceiver(MessageReceiver *receiver)
 {
-	for (std::vector<MessageReceiver *>::iterator iter = _receivers.begin(); iter != _receivers.end(); ++iter)
+	for (std::list<MessageReceiver *>::iterator iter = _receivers.begin(); iter != _receivers.end(); ++iter)
 	{
 		if ((*iter) == receiver)
 		{

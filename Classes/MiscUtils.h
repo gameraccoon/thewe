@@ -2,8 +2,12 @@
 #define MISC_UTILS_H
 
 #include <string>
+#include <vector>
+#include <list>
+#include <queue>
 #include <map>
 #include <ctime>
+#include <limits>
 
 namespace Utils
 {

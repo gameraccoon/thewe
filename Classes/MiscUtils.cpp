@@ -75,7 +75,7 @@ namespace Utils
 
 	void VariablesSet::SetBool(const std::string &name, bool value)
 	{
-		_timeSet[name] = value;
+		_intSet[name] = value;
 	}
 
 	void VariablesSet::SetTime(const std::string &name, Utils::GameTime value)

@@ -45,6 +45,7 @@ public:
 	void PushSessionWinScreen(void);
 
 	CellMapWidget* GetCellMapWidget(Cell::WeakPtr cell) const;
+	TownMapWidget* GetNearestTownWidget(const Vector2 &pointOnScreen, float radius) const;
 
 private:
 	enum CONTENT_Z_ORDER
@@ -112,6 +113,7 @@ private:
 	int _lastTouchesCount;
 	float _avgTouchDistance;
 	bool _isTouchesCountUpdated;
+	bool _isMapMovementsEnabled;
 };
 
 #endif

@@ -18,6 +18,7 @@ WorldMapLayer::WorldMapLayer(GameScene *gameScene, MapProjector* projector)
 	: _mapProjector(projector)
 	, _isInputEnabled(true)
 	, _isSessionScreenShowed(false)
+	, _isMapMovementsEnabled(true)
 	, _mapGui(nullptr)
 	, _gameScene(gameScene)
 	, _nextCellParent()
@@ -75,7 +76,9 @@ bool WorldMapLayer::init(void)
 		_townWidgets.push_back(widget);
 		addChild(widget, Z_TOWN);
 	}
-	
+
+	SetTownsVisibility(false);
+
 	// say where is screen center
 	_mapProjector->SetScreenCenter(origin + screen / 2.0f);
 	// send map sprite to the center of world
@@ -109,8 +112,9 @@ void WorldMapLayer::update(float dt)
 		}
 	}
 
-	// allow to draw towns olny if cell spinoff creation enabled
-	SetTownsVisibility(!_nextCellParent.expired() || World::Instance().IsFirstLaunch());
+	if (World::Instance().IsFirstLaunch()) {
+		SetTownsVisibility(true);
+	}
 }
 
 void WorldMapLayer::AcceptMessage(const Message &msg)
@@ -160,6 +164,57 @@ void WorldMapLayer::AcceptMessage(const Message &msg)
 				delete widget;
 				break;
 			}
+		}
+	}
+	else if (msg.is("DragOnMapEnded"))
+	{
+		_isMapMovementsEnabled = true;
+		SetTownsVisibility(msg.variables.GetBool("SHOW_TOWNS", false));
+	}
+	else if (msg.is("DragOnMapBegan"))
+	{
+		_isMapMovementsEnabled = false;
+		SetTownsVisibility(msg.variables.GetBool("SHOW_TOWNS", false));
+	}
+	else if (msg.is("CreateCell"))
+	{
+		Town::WeakPtr town = World::Instance().GetTownByName(msg.variables.GetString("TOWN_NAME"));
+		Cell::WeakPtr parent = World::Instance().GetCellsNetwork().GetCellByUid(msg.variables.GetInt("PARENT_UID"));
+
+		if (parent.lock()->GetInfo().cash >= GameInfo::Instance().GetInt("CELL_SPINOFF_CASH_PRICE") &&
+			parent.lock()->GetInfo().membersCount >= GameInfo::Instance().GetInt("CELL_SPINOFF_MEMBERS_PRICE"))
+		{
+			Cell::Info info;
+			if (World::Instance().GetTutorialManager().IsTutorialStateAvailable("ReadyToCreateSpinoff"))
+			{
+				World::Instance().GetTutorialManager().RunTutorialFunction("OnCreateFirstSpinoff");
+			}
+
+			info.parent = parent;
+			info.town = town;
+			info.location = town.lock()->GetLocation();
+			info.cash = GameInfo::Instance().GetInt("CELL_STARTUP_MONEY");
+			info.morale = GameInfo::Instance().GetFloat("CELL_STARTUP_MORALE");
+			info.devotion = GameInfo::Instance().GetFloat("CELL_STARTUP_DEVOTION");
+			info.membersCount = GameInfo::Instance().GetInt("CELL_STARTUP_MEMBERS");
+			info.ratsCount = GameInfo::Instance().GetInt("CELL_STARTUP_RATS_COUNT");
+			info.techUnitsCount = GameInfo::Instance().GetInt("CELL_STARTUP_TECH_UNITS_COUNT");
+			info.experience = 0;
+			info.fame = 0.0f;
+			info.specialization = Cell::Specialization::NORMAL;
+			info.townHeartPounding = GameInfo::Instance().GetFloat("CELL_STARTUP_TOWN_HEART_POUNDING");
+			info.townInfluence = GameInfo::Instance().GetFloat("CELL_STARTUP_TOWN_INFLUENCE");
+			info.townWelfare = GameInfo::Instance().GetFloat("CELL_STARTUP_TOWN_WELFARE");
+
+			parent.lock()->GetInfo().cash -= GameInfo::Instance().GetInt("CELL_SPINOFF_CASH_PRICE");
+			parent.lock()->GetInfo().membersCount -= GameInfo::Instance().GetInt("CELL_SPINOFF_MEMBERS_PRICE");
+
+			info.stateBegin = Utils::GetGameTime();
+			info.stateDuration = GameInfo::Instance().GetTime("CELL_CONSTRUCTION_TIME");
+
+			CreateCell(info, Cell::State::CONSTRUCTION);
+
+			MessageManager::Instance().PutMessage(Message("SaveGame"));
 		}
 	}
 }
@@ -272,6 +327,23 @@ CellMapWidget* WorldMapLayer::GetCellMapWidget(Cell::WeakPtr cell) const
 	return nullptr;
 }
 
+TownMapWidget* WorldMapLayer::GetNearestTownWidget(const Vector2 &pointOnScreen, float radius) const
+{
+	TownMapWidget *result = nullptr;
+
+	float min_dist = std::numeric_limits<float>::max();
+	for (TownWidgets::const_iterator iter = _townWidgets.begin(); iter != _townWidgets.end(); ++iter) {
+		TownMapWidget *widget = (*iter);
+		float dist = (*iter)->getPosition().getDistance(pointOnScreen);
+		if (dist <= radius && dist < min_dist) {
+			result = widget;
+			min_dist = dist;
+		}
+	}
+
+	return result;
+}
+
 void WorldMapLayer::menuCloseCallback(cocos2d::Ref *Sender)
 {
 }
@@ -359,6 +431,10 @@ void WorldMapLayer::TouchesEnded(const std::vector<cocos2d::Touch* > &touches, c
 
 void WorldMapLayer::TouchesMoved(const std::vector<cocos2d::Touch* > &touches, cocos2d::Event* event)
 {
+	if (!_isMapMovementsEnabled) {
+		return;
+	}
+
 	if (_isInputEnabled && touches.size() > 0)
 	{
 		if (!_isTouchesCountUpdated && (unsigned)_lastTouchesCount == touches.size())
@@ -581,6 +657,7 @@ void WorldMapLayer::OnTownSelect(Town::WeakPtr town)
 
 			MessageManager::Instance().PutMessage(Message("SaveGame"));
 		}
+		/*
 		else if (Cell::Ptr parent = _nextCellParent.lock())
 		{
 
@@ -621,8 +698,9 @@ void WorldMapLayer::OnTownSelect(Town::WeakPtr town)
 			}
 
 			_nextCellParent = Cell::Ptr();
-		}
+		}*/
 	}
+	
 }
 
 void WorldMapLayer::SetTownsVisibility(bool visibility)

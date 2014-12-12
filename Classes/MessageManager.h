@@ -1,10 +1,6 @@
 #ifndef MESSAGE_MANAGER_H
 #define MESSAGE_MANAGER_H
 
-#include <string>
-#include <vector>
-#include <queue>
-
 #include "MiscUtils.h"
 
 struct Message
@@ -32,7 +28,7 @@ public:
 class MessageManager
 {
 private:
-	std::vector<MessageReceiver *> _receivers;
+	std::list<MessageReceiver *> _receivers;
 	std::queue<Message> _messages;
 
 public:

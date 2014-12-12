@@ -13,6 +13,11 @@ CellMenuSelector::CellMenuSelector(MapProjector *proj, WorldMapLayer *map)
 {
 }
 
+CellMenuSelector::~CellMenuSelector(void)
+{
+	MessageManager::Instance().UnregisterReceiver(this);
+}
+
 CellMenuSelector* CellMenuSelector::create(MapProjector* proj, WorldMapLayer* map)
 {
 	CellMenuSelector* ret = new CellMenuSelector(proj, map);
@@ -33,6 +38,8 @@ bool CellMenuSelector::init()
 	{
 		return false;
 	}
+
+	MessageManager::Instance().RegisterReceiver(this);
 
 	return true;
 }
@@ -58,6 +65,20 @@ void CellMenuSelector::update(float)
 
 			_circleMenu->setPosition(updatedPos);
 		}
+	}
+}
+
+void CellMenuSelector::AcceptMessage(const Message &message)
+{
+	if (message.is("DragOnMapBegan"))
+	{
+		_btnInfo->runAction(cocos2d::FadeOut::create(0.2f));
+		_btnTasks->runAction(cocos2d::FadeOut::create(0.2f));
+	}
+	else if (message.is("DragOnMapEnded"))
+	{
+		OnMenuClosed();
+		RemoveMenu();
 	}
 }
 
@@ -120,19 +141,22 @@ void CellMenuSelector::InitButtons(Cell::Ptr cell)
 
 	if (!cell->IsState(Cell::State::AUTONOMY))
 	{
-		cocos2d::MenuItemImage *btn1, *btn2, *btn3;
-
-		btn1 = MenuItemImage::create("1_norm.png", "1_press.png", "1_disabled.png", CC_CALLBACK_1(CellMenuSelector::OnSpinoffButtonPressed, this));
-		btn1->setScale(0.85f, 0.85f);
-		btn1->setEnabled(cell->IsReadyToCreateSpinoff());
-		btn2 = MenuItemImage::create("2_norm.png", "2_press.png", CC_CALLBACK_1(CellMenuSelector::OnCellInfoButtonPressed, this));
-		btn2->setScale(0.85f, 0.85f);
-		btn3 = MenuItemImage::create("3_norm.png", "3_press.png", CC_CALLBACK_1(CellMenuSelector::OnTasksButtonPressed, this));
-		btn3->setScale(0.85f, 0.85f);
-
-		_circleMenu->AddMenuItem(btn1);
-		_circleMenu->AddMenuItem(btn2);
-		_circleMenu->AddMenuItem(btn3);
+		_btnInfo = MenuItemImage::create("2_norm.png", "2_press.png", CC_CALLBACK_1(CellMenuSelector::OnCellInfoButtonPressed, this));
+		_btnInfo->setScale(0.85f, 0.85f);
+		_btnTasks = MenuItemImage::create("3_norm.png", "3_press.png", CC_CALLBACK_1(CellMenuSelector::OnTasksButtonPressed, this));
+		_btnTasks->setScale(0.85f, 0.85f);
+		MapDragAndDropWidget::Settings btn3_settings;
+		btn3_settings.normalImage = "1_norm.png";
+		btn3_settings.pressedImage = "1_press.png";
+		btn3_settings.disabledImage = "1_disabled.png";
+		_btnSpinoff = new MapDragAndDropWidget(btn3_settings, _worldMapLayer, cell, Vector2(0.0f, -45.0f));
+		_btnSpinoff->setScale(0.85f, 0.85f);
+		_btnSpinoff->SetEnabled(cell->IsReadyToCreateSpinoff());
+		_btnSpinoff->autorelease();
+		
+		_circleMenu->AddNonMenuItem(_btnSpinoff);
+		_circleMenu->AddMenuItem(_btnInfo);
+		_circleMenu->AddMenuItem(_btnTasks);
 	}
 
 	_circleMenu->InitMenuItems();
@@ -152,54 +176,7 @@ void CellMenuSelector::OnMenuClosed(void)
 
 bool CellMenuSelector::isOpened() const
 {
-	return (bool)_circleMenu;
-}
-
-void CellMenuSelector::PrepareButtonToAppear(cocos2d::Node *item, Vector2 pos)
-{
-	if (!item)
-	{
-		assert(false);
-		return;
-	}
-
-	float initialScaleX = item->getScaleX();
-	float initialScaleY = item->getScaleY();
-
-	item->setPosition(cocos2d::Vec2::ZERO);
-	item->setScale(0.4f);
-	item->setOpacity(0);
-	
-	cocos2d::MoveTo *move = cocos2d::MoveTo::create(1.0f, pos);
-	cocos2d::ScaleTo *scale = cocos2d::ScaleTo::create(1.0f, initialScaleX, initialScaleY);
-	cocos2d::FadeIn *fade = cocos2d::FadeIn::create(0.25f);
-
-	cocos2d::EaseElasticOut *ease_move = cocos2d::EaseElasticOut::create(move, 0.35f);
-	cocos2d::EaseElasticOut *ease_scale = cocos2d::EaseElasticOut::create(scale, 1.0f);
-
-	item->runAction(ease_move);
-	item->runAction(ease_scale);
-	item->runAction(fade);
-}
-
-void CellMenuSelector::PrepareButtonToDisappear(cocos2d::Node* item)
-{
-	if (!item)
-	{
-		assert(false);
-		return;
-	}
-	
-	cocos2d::MoveTo *move = cocos2d::MoveTo::create(0.35f, cocos2d::Vec2::ZERO);
-	cocos2d::ScaleTo *scale = cocos2d::ScaleTo::create(0.35f, 0.4f, 0.4f);
-	cocos2d::FadeOut *fade = cocos2d::FadeOut::create(0.25f);
-
-	cocos2d::EaseBackInOut *ease_move = cocos2d::EaseBackInOut::create(move);
-	cocos2d::EaseBackInOut *ease_scale = cocos2d::EaseBackInOut::create(scale);
-
-	item->runAction(ease_move);
-	item->runAction(ease_scale);
-	item->runAction(fade);
+	return _circleMenu != nullptr;
 }
 
 void CellMenuSelector::CreateMenu(cocos2d::Layer* menu)

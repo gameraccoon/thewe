@@ -11,19 +11,22 @@
 #include "ProgressBar.h"
 #include "World.h"
 #include "CircleMenu.h"
+#include "MapDragAndDropWidget.h"
 
 class WorldMapLayer;
 class CellMapPopupButton;
 
-class CellMenuSelector : public cocos2d::Layer
+class CellMenuSelector : public cocos2d::Layer, public MessageReceiver
 {
 public:
 	CellMenuSelector(MapProjector *proj, WorldMapLayer *map);
+	~CellMenuSelector(void);
 
 	static CellMenuSelector* create(MapProjector *proj, WorldMapLayer *map);
 
 	virtual bool init() override;
 	virtual void update(float dt) override;
+	virtual void AcceptMessage(const Message &message) override;
 	
 	void AppearImmediately(Cell::WeakPtr cell, const Vector2 &position);
 	void AppearWithAnimation(Cell::WeakPtr cell, const Vector2 &position);
@@ -36,8 +39,6 @@ public:
 	bool isOpened() const;
 
 private:
-	void PrepareButtonToAppear(cocos2d::Node* item, Vector2 pos);
-	void PrepareButtonToDisappear(cocos2d::Node* item);
 	void CreateMenu(cocos2d::Layer* menu);
 	void RemoveMenu();
 	// listeners
@@ -49,6 +50,9 @@ private:
 private:
 	WorldMapLayer *_worldMapLayer;
 	MapProjector *_projector;
+
+	cocos2d::MenuItemImage *_btnTasks, *_btnInfo;
+	MapDragAndDropWidget *_btnSpinoff;
 
 	Cell::WeakPtr _cell;
 
