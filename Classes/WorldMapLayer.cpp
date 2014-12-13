@@ -79,6 +79,15 @@ bool WorldMapLayer::init(void)
 
 	SetTownsVisibility(false);
 
+	_effectsAbsolute = new EffectsLayer();
+	_effectsAbsolute->autorelease();
+	_effectsAbsolute->setPosition(0.0f, 0.0f);
+	_effectsGameField = new EffectsLayer();
+	_effectsGameField->autorelease();
+	_effectsGameField->setPosition(0.0f, 0.0f);
+	addChild(_effectsAbsolute, Z_EFFECTS_ABSOLUTE);
+	addChild(_effectsGameField, Z_EFFECTS_GAME_FIELD);
+		
 	// say where is screen center
 	_mapProjector->SetScreenCenter(origin + screen / 2.0f);
 	// send map sprite to the center of world
@@ -342,6 +351,16 @@ TownMapWidget* WorldMapLayer::GetNearestTownWidget(const Vector2 &pointOnScreen,
 	}
 
 	return result;
+}
+
+void WorldMapLayer::AddEffectAbsolute(Effect *effect)
+{
+	_effectsAbsolute->AddEffect(effect);
+}
+
+void WorldMapLayer::AddEffectGameField(Effect *effect)
+{
+	_effectsGameField->AddEffect(effect);
 }
 
 void WorldMapLayer::menuCloseCallback(cocos2d::Ref *Sender)

@@ -5,6 +5,7 @@
 
 #include "ArbitraryHull.h"
 #include "MapProjector.h"
+#include "EffectsLayer.h"
 #include "MessageManager.h"
 #include "Region.h"
 #include "Cell.h"
@@ -47,6 +48,9 @@ public:
 	CellMapWidget* GetCellMapWidget(Cell::WeakPtr cell) const;
 	TownMapWidget* GetNearestTownWidget(const Vector2 &pointOnScreen, float radius) const;
 
+	void AddEffectAbsolute(Effect *effect);
+	void AddEffectGameField(Effect *effect);
+
 private:
 	enum CONTENT_Z_ORDER
 	{
@@ -55,8 +59,10 @@ private:
 		Z_INVESTIGATOR,
 		Z_TOWN,
 		Z_CELL,
+		Z_EFFECTS_GAME_FIELD,
 		Z_CELL_MENU,
-		Z_MAP_GUI
+		Z_MAP_GUI,
+		Z_EFFECTS_ABSOLUTE
 	};
 
 	typedef std::vector<CellMapWidget *> CellWidgets;
@@ -94,6 +100,9 @@ private:
 	CellWidgets _cellWidgets;
 	TownWidgets _townWidgets;
 	InvestigatorWidgets _investigatorWidgets;
+
+	EffectsLayer *_effectsAbsolute;
+	EffectsLayer *_effectsGameField;
 
 	CellMenuSelector *_cellMenu;
 	cocos2d::Layer *_cellGameInterface;
