@@ -153,6 +153,7 @@ xcopy /Y /Q "$(EngineRoot)external\websockets\prebuilt\win32\*.lib" "$(SolutionD
     <ClCompile Include="..\Classes\Color.cpp" />
     <ClCompile Include="..\Classes\Drawable.cpp" />
     <ClCompile Include="..\Classes\EditorLayer.cpp" />
+    <ClCompile Include="..\Classes\EffectsLayer.cpp" />
     <ClCompile Include="..\Classes\GameSavesManager.cpp" />
     <ClCompile Include="..\Classes\Investigator.cpp" />
     <ClCompile Include="..\Classes\InvestigatorMapWidget.cpp" />
@@ -177,8 +178,10 @@ xcopy /Y /Q "$(EngineRoot)external\websockets\prebuilt\win32\*.lib" "$(SolutionD
     <ClCompile Include="..\Classes\SessionEndScreen.cpp" />
     <ClCompile Include="..\Classes\MapDragAndDropWidget.cpp" />
     <ClCompile Include="..\Classes\SplashScreenScene.cpp" />
+    <ClCompile Include="..\Classes\Spline.cpp" />
     <ClCompile Include="..\Classes\SqliteConnection.cpp" />
     <ClCompile Include="..\Classes\SqliteDataReader.cpp" />
+    <ClCompile Include="..\Classes\StripEffect.cpp" />
     <ClCompile Include="..\Classes\Task.cpp" />
     <ClCompile Include="..\Classes\TaskManager.cpp" />
     <ClCompile Include="..\Classes\TaskRewardMapWidget.cpp" />
@@ -265,6 +268,7 @@ xcopy /Y /Q "$(EngineRoot)external\websockets\prebuilt\win32\*.lib" "$(SolutionD
     <ClInclude Include="..\Classes\DbConnection.h" />
     <ClInclude Include="..\Classes\Drawable.h" />
     <ClInclude Include="..\Classes\EditorLayer.h" />
+    <ClInclude Include="..\Classes\EffectsLayer.h" />
     <ClInclude Include="..\Classes\GameSavesManager.h" />
     <ClInclude Include="..\Classes\Investigator.h" />
     <ClInclude Include="..\Classes\InvestigatorMapWidget.h" />
@@ -286,12 +290,13 @@ xcopy /Y /Q "$(EngineRoot)external\websockets\prebuilt\win32\*.lib" "$(SolutionD
     <ClInclude Include="..\Classes\ProgressTapWidget.h" />
     <ClInclude Include="..\Classes\Region.h" />
     <ClInclude Include="..\Classes\SessionEndScreen.h" />
-    <ClInclude Include="..\Classes\SettingsManager.h" />
     <ClInclude Include="..\Classes\MapDragAndDropWidget.h" />
     <ClInclude Include="..\Classes\SplashScreenScene.h" />
+    <ClInclude Include="..\Classes\Spline.h" />
     <ClInclude Include="..\Classes\SqlDataReader.h" />
     <ClInclude Include="..\Classes\SqliteConnection.h" />
     <ClInclude Include="..\Classes\SqliteDataReader.h" />
+    <ClInclude Include="..\Classes\StripEffect.h" />
     <ClInclude Include="..\Classes\Task.h" />
     <ClInclude Include="..\Classes\TaskManager.h" />
     <ClInclude Include="..\Classes\TaskRewardMapWidget.h" />

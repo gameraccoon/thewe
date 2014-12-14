@@ -369,6 +369,15 @@
     <ClCompile Include="..\Classes\MultipleImageSprite.cpp">
       <Filter>Classes\Utils</Filter>
     </ClCompile>
+    <ClCompile Include="..\Classes\EffectsLayer.cpp">
+      <Filter>Classes\GameWidgets</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\Spline.cpp">
+      <Filter>Classes\Utils</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\StripEffect.cpp">
+      <Filter>Classes\Utils</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="main.h">
@@ -477,9 +486,6 @@
       <Filter>Classes\Utils</Filter>
     </ClInclude>
     <ClInclude Include="..\Classes\ProgressBar.h">
-      <Filter>Classes\Utils</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Classes\SettingsManager.h">
       <Filter>Classes\Utils</Filter>
     </ClInclude>
     <ClInclude Include="..\Classes\Vector2.h">
@@ -636,6 +642,15 @@
       <Filter>Classes\GameWidgets</Filter>
     </ClInclude>
     <ClInclude Include="..\Classes\MultipleImageSprite.h">
+      <Filter>Classes\Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\EffectsLayer.h">
+      <Filter>Classes\GameWidgets</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Spline.h">
+      <Filter>Classes\Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\StripEffect.h">
       <Filter>Classes\Utils</Filter>
     </ClInclude>
   </ItemGroup>
