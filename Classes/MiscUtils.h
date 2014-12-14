@@ -9,6 +9,8 @@
 #include <ctime>
 #include <limits>
 
+#include "Spline.h"
+
 namespace Utils
 {
 	typedef float GameTime;
@@ -48,6 +50,20 @@ namespace Utils
 		Utils::GameTime GetTime(const std::string &name, Utils::GameTime def = 0) const;
 		std::string GetString(const std::string &name, std::string def = " ") const;
 	};
+
+	const float PI = 3.14159265359f;
+
+	template <class T>
+	T Lerp(T a, T b, float time) {
+		return a+time*(b-a);
+	}
+
+	template <class T>
+	T Clamp(T a, T b, T Value) {
+		if (Value < a) return b;
+		if (Value > b) return a;
+		return Value;
+	}
 }
 
 #endif // MISC_UTILS_H

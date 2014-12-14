@@ -10,7 +10,6 @@ MapDragAndDropWidget::MapDragAndDropWidget(const Settings &settings, WorldMapLay
 	, _worldMapLayer(worldMapLayer)
 	, _state(State::STAY)
 	, _cellFrom(cellFrom)
-	, _offsetToCenter(offsetToCenter)
 	, _attractionDist(30.0f)
 	, _isEnabled(true)
 {
@@ -38,6 +37,11 @@ bool MapDragAndDropWidget::init(void)
 	_texture->AddImage("disabled", _settings.disabledImage);
 	_texture->SetCurrentImage("normal");
 
+	_strip = StripEffect::create("spinoff_drag_strip.png");
+	_strip->setColor(cocos2d::Color4F(1.0f, 1.0f, 1.0f, 0.4f));
+	_strip->setVisible(false);
+
+	addChild(_strip);
 	addChild(_texture);
 	scheduleUpdate();
 
@@ -46,6 +50,23 @@ bool MapDragAndDropWidget::init(void)
 
 void MapDragAndDropWidget::update(float dt)
 {
+	if (_state != State::STAY)
+	{
+		cocos2d::Vec2 p0 = convertToNodeSpace(getParent()->getPosition());
+		cocos2d::Vec2 p1 = _texture->getPosition();
+
+		Utils::Spline<cocos2d::Vec3> spline;
+		spline.AddKey(cocos2d::Vec3(p0.x, p0.y, 10.0f));
+		spline.AddKey(cocos2d::Vec3(p1.x, p1.y, 70.0f));
+		spline.CalculateGradient();
+
+		_strip->setVisible(true);
+		_strip->setStripGeometry(spline);
+	}
+	else
+	{
+		_strip->setVisible(false);
+	}
 }
 
 void MapDragAndDropWidget::setOpacity(GLubyte opacity)
@@ -148,20 +169,36 @@ void MapDragAndDropWidget::TouchesEnded(const std::vector<cocos2d::Touch *> &tou
 				msg.variables.SetBool("SHOW_TOWNS", false);
 				MessageManager::Instance().PutMessage(msg);
 			});
-			cocos2d::MoveTo *move = cocos2d::MoveTo::create(0.2f, cocos2d::Vec2(0.0f, 0.0f) + _offsetToCenter);
+			
+			cocos2d::MoveTo *move = cocos2d::MoveTo::create(0.2f, convertToNodeSpace(getParent()->getPosition()));
 			cocos2d::ScaleTo *scale = cocos2d::ScaleTo::create(0.2f, 0.5f, 0.5f, 1.0f);
 			cocos2d::FadeOut *fade = cocos2d::FadeOut::create(0.2f);
 			cocos2d::Spawn *stage = cocos2d::Spawn::create(move, scale, fade, nullptr);
 			cocos2d::Sequence *seq = cocos2d::Sequence::create(stage, func_end, nullptr);
 
 			_texture->runAction(seq);
+			_strip->runAction(fade);
 		}
 	}
 }
 
 void MapDragAndDropWidget::TouchesCancelled(const std::vector<cocos2d::Touch *> &touches, cocos2d::Event *event)
 {
-	MessageManager::Instance().PutMessage(Message("EnableMapMovements"));
+	cocos2d::CallFunc *func_end = cocos2d::CallFunc::create([&]()
+	{
+		Message msg = Message("DragOnMapEnded");
+		msg.variables.SetBool("SHOW_TOWNS", false);
+		MessageManager::Instance().PutMessage(msg);
+	});
+
+	cocos2d::MoveTo *move = cocos2d::MoveTo::create(0.2f, convertToNodeSpace(getParent()->getPosition()));
+	cocos2d::ScaleTo *scale = cocos2d::ScaleTo::create(0.2f, 0.5f, 0.5f, 1.0f);
+	cocos2d::FadeOut *fade = cocos2d::FadeOut::create(0.2f);
+	cocos2d::Spawn *stage = cocos2d::Spawn::create(move, scale, fade, nullptr);
+	cocos2d::Sequence *seq = cocos2d::Sequence::create(stage, func_end, nullptr);
+	
+	_strip->runAction(fade);
+	_texture->runAction(seq);
 	_texture->SetCurrentImage("normal");
 	_state = State::STAY;
 }

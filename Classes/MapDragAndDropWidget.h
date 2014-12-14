@@ -6,6 +6,7 @@
 #include "Cell.h"
 #include "MultipleImageSprite.h"
 #include "MiscUtils.h"
+#include "StripEffect.h"
 #include "Vector2.h"
 
 class WorldMapLayer;
@@ -47,10 +48,10 @@ public:
 private:
 	WorldMapLayer *_worldMapLayer;
 	MultipleImageSprite *_texture;
+	StripEffect *_strip;
 	Settings _settings;
 	State _state;
 	Cell::WeakPtr _cellFrom;
-	cocos2d::Vec2 _offsetToCenter;
 
 	const float _attractionDist;
 	bool _isEnabled;
