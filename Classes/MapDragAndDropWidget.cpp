@@ -12,6 +12,7 @@ MapDragAndDropWidget::MapDragAndDropWidget(const Settings &settings, WorldMapLay
 	, _cellFrom(cellFrom)
 	, _attractionDist(30.0f)
 	, _isEnabled(true)
+	, _isAttracting(false)
 {
 	if (_cellFrom.expired()) {
 		Log::Instance().writeError("MapDragAndDropWidget: Failed to create with unexisted cell");
@@ -110,17 +111,31 @@ void MapDragAndDropWidget::TouchesMoved(const std::vector<cocos2d::Touch *> &tou
 		Vector2 touch_world = touches[0]->getLocation();
 		Vector2 touch_local = convertToNodeSpace(touch_world);
 
-		_texture->setPosition(touch_local);
-		_texture->SetCurrentImage("pressed");
+		bool attach_to_touch = true;
 
 		TownMapWidget *town_widget = _worldMapLayer->GetNearestTownWidget(touch_world, _attractionDist);
-		if (town_widget) {
+		if (town_widget)
+		{
 			Town::WeakPtr town_ptr = town_widget->GetTown();
-			if (!town_ptr.lock()->IsCellPresented()) {
-				Vector2 town_pos = town_widget->getPosition();
-				_texture->setPosition(convertToNodeSpace(town_pos));
+			if (!town_ptr.lock()->IsCellPresented())
+			{
+				attach_to_touch = false;
+				if (!_isAttracting)
+				{
+					_isAttracting = true;
+					cocos2d::Vec2 pos = convertToNodeSpace(town_widget->getPosition());
+					cocos2d::MoveTo *move = cocos2d::MoveTo::create(0.08f, pos);
+					cocos2d::CallFunc *func_end = cocos2d::CallFunc::create([&](){_isAttracting=false;});
+					_texture->runAction(cocos2d::Sequence::create(move, func_end, nullptr));
+				}
 			}
 		}
+
+		if (attach_to_touch) {
+			_texture->setPosition(touch_local);
+		}
+
+		_texture->SetCurrentImage("pressed");
 	}
 }
 
@@ -176,6 +191,7 @@ void MapDragAndDropWidget::TouchesEnded(const std::vector<cocos2d::Touch *> &tou
 			cocos2d::Spawn *stage = cocos2d::Spawn::create(move, scale, fade, nullptr);
 			cocos2d::Sequence *seq = cocos2d::Sequence::create(stage, func_end, nullptr);
 
+			_texture->stopAllActions();
 			_texture->runAction(seq);
 			_strip->runAction(fade);
 		}
@@ -198,6 +214,7 @@ void MapDragAndDropWidget::TouchesCancelled(const std::vector<cocos2d::Touch *> 
 	cocos2d::Sequence *seq = cocos2d::Sequence::create(stage, func_end, nullptr);
 	
 	_strip->runAction(fade);
+	_texture->stopAllActions();
 	_texture->runAction(seq);
 	_texture->SetCurrentImage("normal");
 	_state = State::STAY;

@@ -55,6 +55,7 @@ private:
 
 	const float _attractionDist;
 	bool _isEnabled;
+	bool _isAttracting;
 };
 
 #endif
