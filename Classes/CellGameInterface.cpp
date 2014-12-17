@@ -147,11 +147,7 @@ void CellMenuSelector::InitButtons(Cell::Ptr cell)
 		_btnInfo->setScale(0.85f, 0.85f);
 		_btnTasks = MenuItemImage::create("3_norm.png", "3_press.png", CC_CALLBACK_1(CellMenuSelector::OnTasksButtonPressed, this));
 		_btnTasks->setScale(0.85f, 0.85f);
-		MapDragAndDropWidget::Settings btn3_settings;
-		btn3_settings.normalImage = "1_norm.png";
-		btn3_settings.pressedImage = "1_press.png";
-		btn3_settings.disabledImage = "1_disabled.png";
-		_btnSpinoff = new MapDragAndDropWidget(btn3_settings, _worldMapLayer, _projector, cell, Vector2(0.0f, -45.0f));
+		_btnSpinoff = new SpinoffDragAndDrop(_worldMapLayer, _projector, cell, Vector2(0.0f, -45.0f));
 		_btnSpinoff->setScale(0.85f, 0.85f);
 		_btnSpinoff->SetEnabled(cell->IsReadyToCreateSpinoff());
 		_btnSpinoff->autorelease();

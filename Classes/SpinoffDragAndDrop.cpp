@@ -1,13 +1,12 @@
-#include "MapDragAndDropWidget.h"
+#include "SpinoffDragAndDrop.h"
 
 #include "WorldMapLayer.h"
 #include "MessageManager.h"
 #include "Log.h"
 
-MapDragAndDropWidget::MapDragAndDropWidget(const Settings &settings, WorldMapLayer *worldMapLayer,
-										   MapProjector *proj, Cell::WeakPtr cellFrom, const Vector2 &offsetToCenter)
-	: _settings(settings)
-	, _worldMapLayer(worldMapLayer)
+SpinoffDragAndDrop::SpinoffDragAndDrop(WorldMapLayer *worldMapLayer, MapProjector *proj,
+									   Cell::WeakPtr cellFrom, const Vector2 &offsetToCenter)
+	: _worldMapLayer(worldMapLayer)
 	, _projector(proj)
 	, _state(State::STAY)
 	, _cellFrom(cellFrom)
@@ -22,21 +21,21 @@ MapDragAndDropWidget::MapDragAndDropWidget(const Settings &settings, WorldMapLay
 	init();
 }
 
-bool MapDragAndDropWidget::init(void)
+bool SpinoffDragAndDrop::init(void)
 {
 	cocos2d::EventListenerTouchAllAtOnce *listener = cocos2d::EventListenerTouchAllAtOnce::create();
-	listener->onTouchesBegan = CC_CALLBACK_2(MapDragAndDropWidget::TouchesBegin, this);
-	listener->onTouchesMoved = CC_CALLBACK_2(MapDragAndDropWidget::TouchesMoved, this);
-	listener->onTouchesEnded = CC_CALLBACK_2(MapDragAndDropWidget::TouchesEnded, this);
-	listener->onTouchesCancelled = CC_CALLBACK_2(MapDragAndDropWidget::TouchesCancelled, this);
+	listener->onTouchesBegan = CC_CALLBACK_2(SpinoffDragAndDrop::TouchesBegin, this);
+	listener->onTouchesMoved = CC_CALLBACK_2(SpinoffDragAndDrop::TouchesMoved, this);
+	listener->onTouchesEnded = CC_CALLBACK_2(SpinoffDragAndDrop::TouchesEnded, this);
+	listener->onTouchesCancelled = CC_CALLBACK_2(SpinoffDragAndDrop::TouchesCancelled, this);
 	cocos2d::Director::getInstance()->getEventDispatcher()->addEventListenerWithSceneGraphPriority(listener, this);
 
 	_texture = new MultipleImageSprite();
 	_texture->setPosition(0.0f, 0.0f);
 	_texture->autorelease();
-	_texture->AddImage("normal", _settings.normalImage);
-	_texture->AddImage("pressed", _settings.pressedImage);
-	_texture->AddImage("disabled", _settings.disabledImage);
+	_texture->AddImage("normal", "1_norm.png");
+	_texture->AddImage("pressed", "1_press.png");
+	_texture->AddImage("disabled", "1_disabled.png");
 	_texture->SetCurrentImage("normal");
 
 	_strip = StripEffect::create("spinoff_drag_strip.png");
@@ -50,7 +49,7 @@ bool MapDragAndDropWidget::init(void)
 	return true;
 }
 
-void MapDragAndDropWidget::update(float dt)
+void SpinoffDragAndDrop::update(float dt)
 {
 	if (_state != State::STAY)
 	{
@@ -89,20 +88,20 @@ void MapDragAndDropWidget::update(float dt)
 	}
 }
 
-void MapDragAndDropWidget::setOpacity(GLubyte opacity)
+void SpinoffDragAndDrop::setOpacity(GLubyte opacity)
 {
 	_texture->setOpacity(opacity);
 	cocos2d::Node::setOpacity(opacity);
 }
 
-void MapDragAndDropWidget::SetEnabled(bool flag)
+void SpinoffDragAndDrop::SetEnabled(bool flag)
 {
 	_isEnabled = flag;
 
 	_texture->SetCurrentImage(_isEnabled ? "normal" : "disabled");
 }
 
-void MapDragAndDropWidget::TouchesBegin(const std::vector<cocos2d::Touch *> &touches, cocos2d::Event *event)
+void SpinoffDragAndDrop::TouchesBegin(const std::vector<cocos2d::Touch *> &touches, cocos2d::Event *event)
 {
 	if (!_isEnabled) {
 		return;
@@ -122,7 +121,7 @@ void MapDragAndDropWidget::TouchesBegin(const std::vector<cocos2d::Touch *> &tou
 	}
 }
 
-void MapDragAndDropWidget::TouchesMoved(const std::vector<cocos2d::Touch *> &touches, cocos2d::Event *event)
+void SpinoffDragAndDrop::TouchesMoved(const std::vector<cocos2d::Touch *> &touches, cocos2d::Event *event)
 {
 	if (!_isEnabled) {
 		return;
@@ -160,7 +159,7 @@ void MapDragAndDropWidget::TouchesMoved(const std::vector<cocos2d::Touch *> &tou
 	}
 }
 
-void MapDragAndDropWidget::TouchesEnded(const std::vector<cocos2d::Touch *> &touches, cocos2d::Event *event)
+void SpinoffDragAndDrop::TouchesEnded(const std::vector<cocos2d::Touch *> &touches, cocos2d::Event *event)
 {
 	if (!_isEnabled) {
 		return;
@@ -188,14 +187,14 @@ void MapDragAndDropWidget::TouchesEnded(const std::vector<cocos2d::Touch *> &tou
 
 		if (create_cell)
 		{
-			Message message("CreateCell");
-			message.variables.SetString("TOWN_NAME", town_widget->GetTown()->GetName());
-			message.variables.SetInt("PARENT_UID", _cellFrom.lock()->GetUid());
-			MessageManager::Instance().PutMessage(message);
+			Message msg1("CreateCell");
+			msg1.variables.SetString("TOWN_NAME", town_widget->GetTown()->GetName());
+			msg1.variables.SetInt("PARENT_UID", _cellFrom.lock()->GetUid());
+			MessageManager::Instance().PutMessage(msg1);
 
-			Message msg = Message("DragOnMapEnded");
-			msg.variables.SetBool("SHOW_TOWNS", false);
-			MessageManager::Instance().PutMessage(msg);
+			Message msg2 = Message("DragOnMapEnded");
+			msg2.variables.SetBool("SHOW_TOWNS", false);
+			MessageManager::Instance().PutMessage(msg2);
 		}
 		else
 		{
@@ -219,7 +218,7 @@ void MapDragAndDropWidget::TouchesEnded(const std::vector<cocos2d::Touch *> &tou
 	}
 }
 
-void MapDragAndDropWidget::TouchesCancelled(const std::vector<cocos2d::Touch *> &touches, cocos2d::Event *event)
+void SpinoffDragAndDrop::TouchesCancelled(const std::vector<cocos2d::Touch *> &touches, cocos2d::Event *event)
 {
 	cocos2d::CallFunc *func_end = cocos2d::CallFunc::create([&]()
 	{

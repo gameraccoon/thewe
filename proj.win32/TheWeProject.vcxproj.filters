@@ -363,9 +363,6 @@
     <ClCompile Include="..\Classes\CircleMenu.cpp">
       <Filter>Classes\GameWidgets</Filter>
     </ClCompile>
-    <ClCompile Include="..\Classes\MapDragAndDropWidget.cpp">
-      <Filter>Classes\GameWidgets</Filter>
-    </ClCompile>
     <ClCompile Include="..\Classes\MultipleImageSprite.cpp">
       <Filter>Classes\Utils</Filter>
     </ClCompile>
@@ -377,6 +374,9 @@
     </ClCompile>
     <ClCompile Include="..\Classes\StripEffect.cpp">
       <Filter>Classes\Utils</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\SpinoffDragAndDrop.cpp">
+      <Filter>Classes\GameWidgets</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -638,9 +638,6 @@
     <ClInclude Include="..\Classes\CircleMenu.h">
       <Filter>Classes\GameWidgets</Filter>
     </ClInclude>
-    <ClInclude Include="..\Classes\MapDragAndDropWidget.h">
-      <Filter>Classes\GameWidgets</Filter>
-    </ClInclude>
     <ClInclude Include="..\Classes\MultipleImageSprite.h">
       <Filter>Classes\Utils</Filter>
     </ClInclude>
@@ -652,6 +649,9 @@
     </ClInclude>
     <ClInclude Include="..\Classes\StripEffect.h">
       <Filter>Classes\Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\SpinoffDragAndDrop.h">
+      <Filter>Classes\GameWidgets</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

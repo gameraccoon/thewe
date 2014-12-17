@@ -11,7 +11,7 @@
 #include "ProgressBar.h"
 #include "World.h"
 #include "CircleMenu.h"
-#include "MapDragAndDropWidget.h"
+#include "SpinoffDragAndDrop.h"
 
 class WorldMapLayer;
 class CellMapPopupButton;
@@ -52,7 +52,7 @@ private:
 	MapProjector *_projector;
 
 	cocos2d::MenuItemImage *_btnTasks, *_btnInfo;
-	MapDragAndDropWidget *_btnSpinoff;
+	SpinoffDragAndDrop *_btnSpinoff;
 
 	Cell::WeakPtr _cell;
 

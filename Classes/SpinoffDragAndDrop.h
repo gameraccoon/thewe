@@ -11,16 +11,8 @@
 
 class WorldMapLayer;
 
-class MapDragAndDropWidget : public cocos2d::Node
+class SpinoffDragAndDrop : public cocos2d::Node
 {
-public:
-	struct Settings
-	{
-		std::string normalImage;
-		std::string pressedImage;
-		std::string disabledImage;
-	};
-
 private:
 	enum class State : int
 	{
@@ -31,8 +23,8 @@ private:
 	};
 
 public:
-	MapDragAndDropWidget(const Settings &settings, WorldMapLayer *worldMapLayer, MapProjector *proj,
-		Cell::WeakPtr cellFrom, const Vector2 &offsetToCenter = Vector2(0.0f, 0.0f));
+	SpinoffDragAndDrop(WorldMapLayer *worldMapLayer, MapProjector *proj, Cell::WeakPtr cellFrom,
+		const Vector2 &offsetToCenter = Vector2(0.0f, 0.0f));
 
 	bool init(void) override;
 	void update(float dt) override;
@@ -50,7 +42,6 @@ private:
 	MapProjector *_projector;
 	MultipleImageSprite *_texture;
 	StripEffect *_strip;
-	Settings _settings;
 	State _state;
 	Cell::WeakPtr _cellFrom;
 

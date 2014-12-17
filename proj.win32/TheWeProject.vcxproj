@@ -176,7 +176,7 @@ xcopy /Y /Q "$(EngineRoot)external\websockets\prebuilt\win32\*.lib" "$(SolutionD
     <ClCompile Include="..\Classes\ProgressTapWidget.cpp" />
     <ClCompile Include="..\Classes\Region.cpp" />
     <ClCompile Include="..\Classes\SessionEndScreen.cpp" />
-    <ClCompile Include="..\Classes\MapDragAndDropWidget.cpp" />
+    <ClCompile Include="..\Classes\SpinoffDragAndDrop.cpp" />
     <ClCompile Include="..\Classes\SplashScreenScene.cpp" />
     <ClCompile Include="..\Classes\Spline.cpp" />
     <ClCompile Include="..\Classes\SqliteConnection.cpp" />
@@ -290,7 +290,7 @@ xcopy /Y /Q "$(EngineRoot)external\websockets\prebuilt\win32\*.lib" "$(SolutionD
     <ClInclude Include="..\Classes\ProgressTapWidget.h" />
     <ClInclude Include="..\Classes\Region.h" />
     <ClInclude Include="..\Classes\SessionEndScreen.h" />
-    <ClInclude Include="..\Classes\MapDragAndDropWidget.h" />
+    <ClInclude Include="..\Classes\SpinoffDragAndDrop.h" />
     <ClInclude Include="..\Classes\SplashScreenScene.h" />
     <ClInclude Include="..\Classes\Spline.h" />
     <ClInclude Include="..\Classes\SqlDataReader.h" />
