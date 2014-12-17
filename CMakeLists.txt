@@ -76,6 +76,7 @@ set(GAME_SRC
 	Classes/Color.cpp
 	Classes/Drawable.cpp
 	Classes/EditorLayer.cpp
+	Classes/EffectsLayer.cpp
 	Classes/GameInfo.cpp
 	Classes/GameSavesManager.cpp
 	Classes/GameScene.cpp
@@ -98,9 +99,11 @@ set(GAME_SRC
 	Classes/ProgressTapWidget.cpp
 	Classes/Region.cpp
 	Classes/SessionEndScreen.cpp
+	Classes/SpinoffDragAndDrop.cpp
 	Classes/SplashScreenScene.cpp
 	Classes/SqliteConnection.cpp
 	Classes/SqliteDataReader.cpp
+	Classes/StripEffect.cpp
 	Classes/Task.cpp
 	Classes/TaskManager.cpp
 	Classes/TaskRewardMapWidget.cpp

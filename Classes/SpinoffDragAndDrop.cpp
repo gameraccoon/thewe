@@ -67,11 +67,11 @@ void SpinoffDragAndDrop::update(float dt)
 		if (!_isAttracting) {
 			float shift_dist = 50.0f;
 			float shift_speed = 3.0f;
-			cocos2d::Size screen = cocos2d::Director::getInstance()->getVisibleSize();
+			cocos2d::Vec2 screen = cocos2d::Director::getInstance()->getVisibleSize();
 			cocos2d::Vec2 origin = cocos2d::Director::getInstance()->getVisibleOrigin();
 			cocos2d::Rect bounds;
-			bounds.origin = (cocos2d::Vec2)(origin + cocos2d::Vec2(shift_dist, shift_dist));
-			bounds.size = (cocos2d::Size)(screen - cocos2d::Vec2(shift_dist, shift_dist) * 2.0f);
+			bounds.origin = origin + cocos2d::Vec2(shift_dist, shift_dist);
+			bounds.size = screen - cocos2d::Vec2(shift_dist, shift_dist) * 2.0f;
 			if (!bounds.containsPoint(_touchWorld)) {
 				cocos2d::Vec2 p0 = origin+screen/2.0f;
 				cocos2d::Vec2 p1 = _touchWorld;

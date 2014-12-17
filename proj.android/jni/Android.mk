@@ -31,6 +31,7 @@ LOCAL_SRC_FILES := hellocpp/main.cpp \
 				   	../../Classes/Color.cpp \
 				   	../../Classes/Drawable.cpp \
 				   	../../Classes/EditorLayer.cpp \
+				   	../../Classes/EffectsLayer.cpp \
 				   	../../Classes/GameInfo.cpp \
 				   	../../Classes/GameSavesManager.cpp \
 				   	../../Classes/GameScene.cpp \
@@ -53,9 +54,12 @@ LOCAL_SRC_FILES := hellocpp/main.cpp \
 				   	../../Classes/ProgressTapWidget.cpp \
 				   	../../Classes/Region.cpp \
 				   	../../Classes/SessionEndScreen.cpp \
+				   	../../Classes/SpinoffDragAndDrop.cpp \
 				   	../../Classes/SplashScreenScene.cpp \
+				   	../../Classes/Spline.cpp \
 				   	../../Classes/SqliteConnection.cpp \
 				   	../../Classes/SqliteDataReader.cpp \
+				   	../../Classes/StripEffect.cpp \
 				   	../../Classes/Task.cpp \
 				   	../../Classes/TaskManager.cpp \
 				   	../../Classes/TaskRewardMapWidget.cpp \
