@@ -31,7 +31,7 @@ private:
 	};
 
 public:
-	MapDragAndDropWidget(const Settings &settings, WorldMapLayer *worldMapLayer,
+	MapDragAndDropWidget(const Settings &settings, WorldMapLayer *worldMapLayer, MapProjector *proj,
 		Cell::WeakPtr cellFrom, const Vector2 &offsetToCenter = Vector2(0.0f, 0.0f));
 
 	bool init(void) override;
@@ -47,11 +47,15 @@ public:
 
 private:
 	WorldMapLayer *_worldMapLayer;
+	MapProjector *_projector;
 	MultipleImageSprite *_texture;
 	StripEffect *_strip;
 	Settings _settings;
 	State _state;
 	Cell::WeakPtr _cellFrom;
+
+	Vector2 _touchWorld;
+	Vector2 _touchLocal;
 
 	const float _attractionDist;
 	bool _isEnabled;

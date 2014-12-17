@@ -34,6 +34,7 @@ public:
 
 	void ModifyZoom(float multiplier);
 	void HideCellGameInterface(void);
+	void UpdateMapElements();
 
 	void SetMapInputEnabled(bool isEnabled);
 	void SetGuiEnabled(bool isEnabled);
@@ -86,7 +87,6 @@ private:
 	TownMapWidget* CreateTownWidget(Town::Ptr town);
 	InvestigatorMapWidget* CreateInvestigatorWidget(Investigator::Ptr investigator);
 
-	void UpdateMapElements();
 	void UpdateCells();
 	void UpdateTowns();
 	void UpdateNetwork();

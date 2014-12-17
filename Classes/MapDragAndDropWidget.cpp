@@ -5,9 +5,10 @@
 #include "Log.h"
 
 MapDragAndDropWidget::MapDragAndDropWidget(const Settings &settings, WorldMapLayer *worldMapLayer,
-										   Cell::WeakPtr cellFrom, const Vector2 &offsetToCenter)
+										   MapProjector *proj, Cell::WeakPtr cellFrom, const Vector2 &offsetToCenter)
 	: _settings(settings)
 	, _worldMapLayer(worldMapLayer)
+	, _projector(proj)
 	, _state(State::STAY)
 	, _cellFrom(cellFrom)
 	, _attractionDist(30.0f)
@@ -63,6 +64,24 @@ void MapDragAndDropWidget::update(float dt)
 
 		_strip->setVisible(true);
 		_strip->setStripGeometry(spline);
+	
+		if (!_isAttracting) {
+			float shift_dist = 50.0f;
+			float shift_speed = 3.0f;
+			cocos2d::Size screen = cocos2d::Director::getInstance()->getVisibleSize();
+			cocos2d::Vec2 origin = cocos2d::Director::getInstance()->getVisibleOrigin();
+			cocos2d::Rect bounds;
+			bounds.origin = (cocos2d::Vec2)(origin + cocos2d::Vec2(shift_dist, shift_dist));
+			bounds.size = (cocos2d::Size)(screen - cocos2d::Vec2(shift_dist, shift_dist) * 2.0f);
+			if (!bounds.containsPoint(_touchWorld)) {
+				cocos2d::Vec2 p0 = origin+screen/2.0f;
+				cocos2d::Vec2 p1 = _touchWorld;
+				_projector->ShiftView((p0-p1).getNormalized() * shift_speed);
+				_projector->Update();
+				_worldMapLayer->UpdateMapElements();
+				_texture->setPosition(convertToNodeSpace(_touchWorld));
+			}
+		}
 	}
 	else
 	{
@@ -89,6 +108,9 @@ void MapDragAndDropWidget::TouchesBegin(const std::vector<cocos2d::Touch *> &tou
 		return;
 	}
 
+	_touchWorld = touches[0]->getLocation();
+	_touchLocal = convertToNodeSpace(_touchWorld);
+
 	if (_texture->GetCurrentImage()->getBoundingBox().containsPoint(convertTouchToNodeSpace(touches[0])))
 	{
 		Message msg = Message("DragOnMapBegan");
@@ -108,12 +130,12 @@ void MapDragAndDropWidget::TouchesMoved(const std::vector<cocos2d::Touch *> &tou
 
 	if (_state == State::DRAG)
 	{
-		Vector2 touch_world = touches[0]->getLocation();
-		Vector2 touch_local = convertToNodeSpace(touch_world);
+		_touchWorld = touches[0]->getLocation();
+		_touchLocal = convertToNodeSpace(_touchWorld);
 
 		bool attach_to_touch = true;
 
-		TownMapWidget *town_widget = _worldMapLayer->GetNearestTownWidget(touch_world, _attractionDist);
+		TownMapWidget *town_widget = _worldMapLayer->GetNearestTownWidget(_touchWorld, _attractionDist);
 		if (town_widget)
 		{
 			Town::WeakPtr town_ptr = town_widget->GetTown();
@@ -130,12 +152,11 @@ void MapDragAndDropWidget::TouchesMoved(const std::vector<cocos2d::Touch *> &tou
 				}
 			}
 		}
-
-		if (attach_to_touch) {
-			_texture->setPosition(touch_local);
-		}
-
+		
 		_texture->SetCurrentImage("pressed");
+		if (attach_to_touch) {
+			_texture->setPosition(_touchLocal);
+		}
 	}
 }
 

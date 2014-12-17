@@ -41,6 +41,8 @@ bool CellMenuSelector::init()
 
 	MessageManager::Instance().RegisterReceiver(this);
 
+	scheduleUpdate();
+
 	return true;
 }
 	
@@ -149,7 +151,7 @@ void CellMenuSelector::InitButtons(Cell::Ptr cell)
 		btn3_settings.normalImage = "1_norm.png";
 		btn3_settings.pressedImage = "1_press.png";
 		btn3_settings.disabledImage = "1_disabled.png";
-		_btnSpinoff = new MapDragAndDropWidget(btn3_settings, _worldMapLayer, cell, Vector2(0.0f, -45.0f));
+		_btnSpinoff = new MapDragAndDropWidget(btn3_settings, _worldMapLayer, _projector, cell, Vector2(0.0f, -45.0f));
 		_btnSpinoff->setScale(0.85f, 0.85f);
 		_btnSpinoff->SetEnabled(cell->IsReadyToCreateSpinoff());
 		_btnSpinoff->autorelease();
