@@ -22,7 +22,6 @@ CellMapWidget::CellMapWidget(Cell::WeakPtr cell)
 
 CellMapWidget::~CellMapWidget(void)
 {
-	MessageManager::Instance().UnregisterReceiver(this);
 }
 
 bool CellMapWidget::init(void)
@@ -31,8 +30,6 @@ bool CellMapWidget::init(void)
 	{
 		return false;
 	}
-
-	MessageManager::Instance().RegisterReceiver(this);
 
 	cocos2d::EventListenerTouchAllAtOnce *touch = cocos2d::EventListenerTouchAllAtOnce::create();
 	touch->onTouchesEnded = CC_CALLBACK_2(CellMapWidget::TouchEnded, this);

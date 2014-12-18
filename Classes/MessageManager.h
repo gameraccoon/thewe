@@ -21,16 +21,14 @@ public:
 class MessageReceiver
 {
 public:
-	virtual ~MessageReceiver(void) {}
+	MessageReceiver();
+	virtual ~MessageReceiver(void);
+
 	virtual void AcceptMessage(const Message &msg) = 0;
 };
 
 class MessageManager
 {
-private:
-	std::list<MessageReceiver *> _receivers;
-	std::queue<Message> _messages;
-
 public:
 	static MessageManager& Instance(void);
 
@@ -39,9 +37,15 @@ public:
 
 	void RegisterReceiver(MessageReceiver *receiver);
 	void UnregisterReceiver(MessageReceiver *receiver);
-	void UnregisteraAllReceivers(void);
 
+	/**
+	 * Send all scheduled messages to the receivers
+	 */
 	void CallAcceptMessages(void);
+
+private:
+	std::list<MessageReceiver *> _receivers;
+	std::queue<Message> _messages;
 
 private:
 	~MessageManager(void);

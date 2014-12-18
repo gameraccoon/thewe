@@ -2,6 +2,16 @@
 
 #include "Log.h"
 
+MessageReceiver::MessageReceiver()
+{
+	MessageManager::Instance().RegisterReceiver(this);
+}
+
+MessageReceiver::~MessageReceiver()
+{
+	MessageManager::Instance().UnregisterReceiver(this);
+}
+
 MessageManager::MessageManager(void)
 {
 }
@@ -55,11 +65,6 @@ void MessageManager::UnregisterReceiver(MessageReceiver *receiver)
 			break;
 		}
 	}
-}
-
-void MessageManager::UnregisteraAllReceivers(void)
-{
-	_receivers.clear();
 }
 
 void MessageManager::CallAcceptMessages(void)

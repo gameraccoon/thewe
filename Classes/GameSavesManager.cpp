@@ -38,14 +38,11 @@ GameSavesManager::GameSavesManager()
 	dbPath.append("userdata.db");
 	_impl = new GameSavesManagerImpl(dbPath);
 
-	MessageManager::Instance().RegisterReceiver(this);
-
 	FirstInitSave();
 }
 
 GameSavesManager::~GameSavesManager()
 {
-	MessageManager::Instance().UnregisterReceiver(this);
 	delete _impl;
 }
 

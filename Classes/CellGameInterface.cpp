@@ -15,7 +15,6 @@ CellMenuSelector::CellMenuSelector(MapProjector *proj, WorldMapLayer *map)
 
 CellMenuSelector::~CellMenuSelector(void)
 {
-	MessageManager::Instance().UnregisterReceiver(this);
 }
 
 CellMenuSelector* CellMenuSelector::create(MapProjector* proj, WorldMapLayer* map)
@@ -38,8 +37,6 @@ bool CellMenuSelector::init()
 	{
 		return false;
 	}
-
-	MessageManager::Instance().RegisterReceiver(this);
 
 	scheduleUpdate();
 
