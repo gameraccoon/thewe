@@ -31,7 +31,7 @@ WorldMapLayer::WorldMapLayer(GameScene *gameScene, MapProjector* projector)
 
 WorldMapLayer::~WorldMapLayer(void)
 {
-	MessageManager::Instance().UnregisterReceiver(dynamic_cast<MessageReceiver *>(this));
+	MessageManager::Instance().UnregisterReceiver(this);
 }
 
 bool WorldMapLayer::init(void)
@@ -41,7 +41,7 @@ bool WorldMapLayer::init(void)
 		return false;
 	}
 
-	MessageManager::Instance().RegisterReceiver(dynamic_cast<MessageReceiver *>(this));
+	MessageManager::Instance().RegisterReceiver(this);
 
 	cocos2d::EventListenerTouchAllAtOnce *touches = cocos2d::EventListenerTouchAllAtOnce::create();
 	touches->onTouchesBegan = CC_CALLBACK_2(WorldMapLayer::TouchesBegan, this);

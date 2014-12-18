@@ -9,12 +9,12 @@ BonusOnMap::BonusOnMap(void)
 	: _startTime(0)
 	, _waitForBonusDestroy(false)
 {
-	MessageManager::Instance().RegisterReceiver(dynamic_cast<BonusOnMap *>(this));
+	MessageManager::Instance().RegisterReceiver(this);
 }
 
 BonusOnMap::~BonusOnMap(void)
 {
-	MessageManager::Instance().UnregisterReceiver(dynamic_cast<BonusOnMap *>(this));
+	MessageManager::Instance().UnregisterReceiver(this);
 }
 
 void BonusOnMap::OnStartLogic(void)

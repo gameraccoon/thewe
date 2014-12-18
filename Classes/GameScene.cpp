@@ -69,10 +69,8 @@ void GameScene::GoToMainMenu(void)
 	MainMenuScene* mainMenuScene = new MainMenuScene(nullptr);
 	mainMenuScene->init();
 	mainMenuScene->autorelease();
-
-	cocos2d::Scene *scene = dynamic_cast<cocos2d::Scene *>(mainMenuScene);
 	
-	cocos2d::TransitionScene* transition = cocos2d::TransitionSlideInL::create(0.5f, scene);
+	cocos2d::TransitionScene* transition = cocos2d::TransitionSlideInL::create(0.5f, mainMenuScene);
 	cocos2d::Director::getInstance()->replaceScene(transition);
 }
 

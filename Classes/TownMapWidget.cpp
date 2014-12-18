@@ -15,12 +15,12 @@ TownMapWidget::TownMapWidget(Town::Ptr town)
 
 TownMapWidget::~TownMapWidget(void)
 {
-	MessageManager::Instance().UnregisterReceiver(dynamic_cast<MessageReceiver *>(this));
+	MessageManager::Instance().UnregisterReceiver(this);
 }
 
 bool TownMapWidget::init(void)
 {
-	MessageManager::Instance().RegisterReceiver(dynamic_cast<MessageReceiver *>(this));
+	MessageManager::Instance().RegisterReceiver(this);
 
 	_townMapSprite = cocos2d::Sprite::create("town.png");
 	_townMapSprite->setPosition(0.0f, 0.0f);
