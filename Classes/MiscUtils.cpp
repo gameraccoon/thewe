@@ -83,44 +83,104 @@ namespace Utils
 		_timeSet[name] = value;
 	}
 
-	void VariablesSet::SetString(const std::string &name, const std::string &value)
+	void VariablesSet::SetString(const std::string &name, const std::string& value)
 	{
 		_strSet[name] = value;
 	}
 
-	int VariablesSet::GetInt(const std::string &name, int def) const
+	bool VariablesSet::HaveInt(const std::string &name) const
 	{
-		std::map<std::string, int>::const_iterator it;
-		it = _intSet.find(name);
-		return it != _intSet.end() ? (*it).second : def;
+		return _intSet.find(name) != _intSet.end();
 	}
 
-	float VariablesSet::GetFloat(const std::string &name, float def) const
+	bool VariablesSet::HaveFloat(const std::string &name) const
 	{
-		std::map<std::string, float>::const_iterator it;
-		it = _floatSet.find(name);
-		return it != _floatSet.end() ? (*it).second : def;
+		return _floatSet.find(name) != _floatSet.end();
 	}
 
-	bool VariablesSet::GetBool(const std::string &name, bool def) const
+	bool VariablesSet::HaveBool(const std::string &name) const
 	{
-		std::map<std::string, int>::const_iterator it;
-		it = _intSet.find(name);
-		return it != _intSet.end() ? (*it).second != 0 : def;
+		return _intSet.find(name) != _intSet.end();
 	}
 
-	Utils::GameTime VariablesSet::GetTime(const std::string &name, Utils::GameTime def) const
+	bool VariablesSet::HaveTime(const std::string &name) const
 	{
-		std::map<std::string, Utils::GameTime>::const_iterator it;
-		it = _timeSet.find(name);
-		return it != _timeSet.end() ? (*it).second : def;
+		return _timeSet.find(name) != _timeSet.end();
 	}
 
-	std::string VariablesSet::GetString(const std::string &name, std::string def) const
+	bool VariablesSet::HaveString(const std::string &name) const
 	{
-		std::map<std::string, std::string>::const_iterator it;
-		it = _strSet.find(name);
-		return it != _strSet.end() ? (*it).second : def;
+		return _strSet.find(name) != _strSet.end();
+	}
+
+	int VariablesSet::GetInt(const std::string &name) const
+	{
+		const auto it = _intSet.find(name);
+		if (it != _intSet.end())
+		{
+			return it->second;
+		}
+		else
+		{
+			Log::Instance().writeError("Trying to access to unknown int variable \"" + name + "\" in VariablesSet");
+			return -1;
+		}
+	}
+
+	float VariablesSet::GetFloat(const std::string &name) const
+	{
+		const auto it = _floatSet.find(name);
+		if (it != _floatSet.end())
+		{
+			return it->second;
+		}
+		else
+		{
+			Log::Instance().writeError("Trying to access to unknown float variable \"" + name + "\" in VariablesSet");
+			return -1;
+		}
+	}
+
+	bool VariablesSet::GetBool(const std::string &name) const
+	{
+		const auto it = _intSet.find(name);
+		if (it != _intSet.end())
+		{
+			return it->second != 0;
+		}
+		else
+		{
+			Log::Instance().writeError("Trying to access to unknown bool variable \"" + name + "\" in VariablesSet");
+			return false;
+		}
+	}
+
+	Utils::GameTime VariablesSet::GetTime(const std::string &name) const
+	{
+		const auto it = _timeSet.find(name);
+		if (it != _timeSet.end())
+		{
+			return it->second;
+		}
+		else
+		{
+			Log::Instance().writeError("Trying to access to unknown time variable \"" + name + "\" in VariablesSet");
+			return 0;
+		}
+	}
+
+	std::string VariablesSet::GetString(const std::string &name) const
+	{
+		const auto it = _strSet.find(name);
+		if (it != _strSet.end())
+		{
+			return it->second;
+		}
+		else
+		{
+			Log::Instance().writeError("Trying to access to unknown string variable \"" + name + "\" in VariablesSet");
+			return "";
+		}
 	}
 
 } // namespace Utils

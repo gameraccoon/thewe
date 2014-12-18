@@ -175,12 +175,12 @@ void WorldMapLayer::AcceptMessage(const Message &msg)
 	else if (msg.is("DragOnMapEnded"))
 	{
 		_isMapMovementsEnabled = true;
-		SetTownsVisibility(msg.variables.GetBool("SHOW_TOWNS", false));
+		SetTownsVisibility(msg.variables.GetBool("SHOW_TOWNS"));
 	}
 	else if (msg.is("DragOnMapBegan"))
 	{
 		_isMapMovementsEnabled = false;
-		SetTownsVisibility(msg.variables.GetBool("SHOW_TOWNS", false));
+		SetTownsVisibility(msg.variables.GetBool("SHOW_TOWNS"));
 	}
 	else if (msg.is("CreateCell"))
 	{

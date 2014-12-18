@@ -42,13 +42,19 @@ namespace Utils
 		void SetFloat(const std::string &name, float value);
 		void SetBool(const std::string &name, bool value);
 		void SetTime(const std::string &name, Utils::GameTime value);
-		void SetString(const std::string &name, const std::string &value);
+		void SetString(const std::string &name, const std::string& value);
 
-		int GetInt(const std::string &name, int def = 0) const;
-		float GetFloat(const std::string &name, float def = 0.0f) const;
-		bool GetBool(const std::string &name, bool def = false) const;
-		Utils::GameTime GetTime(const std::string &name, Utils::GameTime def = 0) const;
-		std::string GetString(const std::string &name, std::string def = " ") const;
+		bool HaveInt(const std::string &name) const;
+		bool HaveFloat(const std::string &name) const;
+		bool HaveBool(const std::string &name) const;
+		bool HaveTime(const std::string &name) const;
+		bool HaveString(const std::string &name) const;
+
+		int GetInt(const std::string &name) const;
+		float GetFloat(const std::string &name) const;
+		bool GetBool(const std::string &name) const;
+		Utils::GameTime GetTime(const std::string &name) const;
+		std::string GetString(const std::string &name) const;
 	};
 
 	const float PI = 3.14159265359f;
