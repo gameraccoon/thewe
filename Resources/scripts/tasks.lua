@@ -133,14 +133,14 @@ end
 
 function MissionFail_InvestigatorTest(cell, taskInfo)
 	local cellInfo = cell:getInfo()
-	SayFailed(taskInfo.title)
+	SayFailed(taskInfo.id)
 	MessageManager:sendMessage("Investigation launched")
 	World:addInvestigatorByCellUid(cell:getUid())
 end
 
 function MissionSuccess_CheatMission(cell, taskInfo)
 	local cellInfo = cell:getInfo()
-	SayCompleted(cellInfo.id)
+	SayCompleted(taskInfo.id)
 	cellInfo.membersCount = 100
 	cellInfo.cash = 100000
 end
