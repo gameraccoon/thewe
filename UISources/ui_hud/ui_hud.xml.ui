@@ -20,10 +20,7 @@
   <imageFileList>
     <string>ui_hud0.plist</string>
   </imageFileList>
-  <imagePngList>
-    <string>ui_hud0.png</string>
-    <string>ui_hud0.png</string>
-  </imagePngList>
+  <imagePngList />
   <JsonSuffix>.json</JsonSuffix>
-  <CurrentUIJson>ui_hud.json</CurrentUIJson>
+  <CurrentUIJson>ui_message.json</CurrentUIJson>
 </UIProject>

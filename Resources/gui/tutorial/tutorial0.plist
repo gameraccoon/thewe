@@ -86,9 +86,9 @@
 			<key>format</key>
 			<integer>0</integer>
 			<key>textureFileName</key>
-			<string>tutorial0.png</string>
+			<string>Tutorial0.png</string>
 			<key>realTextureFileName</key>
-			<string>tutorial0.png</string>
+			<string>Tutorial0.png</string>
 			<key>size</key>
 			<string>{1024,1024}</string>
 		</dict>

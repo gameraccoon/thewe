@@ -8,20 +8,20 @@
   <JsonFolder>D:\Projects\TheWe\UISources\tutorial\Json</JsonFolder>
   <JsonList>
     <string>tutorial.json</string>
+    <string>tutorial_a.json</string>
+    <string>tutorial_b.json</string>
   </JsonList>
   <CanvasSize>
     <Width>800</Width>
     <Height>480</Height>
   </CanvasSize>
-  <filePath>D:\Projects\TheWe\UISources\tutorial\tutorial.xml.ui</filePath>
+  <filePath>D:\Projects\TheWe\UISources\tutorial\Tutorial.xml.ui</filePath>
   <ProjectType>UIProject</ProjectType>
   <ResRelativePath />
   <imageFileList>
     <string>tutorial0.plist</string>
   </imageFileList>
-  <imagePngList>
-    <string>tutorial0.png</string>
-  </imagePngList>
+  <imagePngList />
   <JsonSuffix>.json</JsonSuffix>
-  <CurrentUIJson>tutorial.json</CurrentUIJson>
+  <CurrentUIJson>tutorial_b.json</CurrentUIJson>
 </UIProject>
