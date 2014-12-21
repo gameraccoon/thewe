@@ -6,7 +6,7 @@
 class BonusMapWidget : public cocos2d::Node
 {
 public:
-	BonusMapWidget(Town::WeakPtr town, Vector2 pos, Utils::GameTime waitTime);
+	BonusMapWidget(Cell::WeakPtr cell, Vector2 pos, Utils::GameTime waitTime);
 
 	bool init(void) override;
 	void update(float dt) override;
@@ -22,7 +22,7 @@ private:
 	cocos2d::FiniteTimeAction* GetShowAnimation(void) const;
 	cocos2d::FiniteTimeAction* GetHideAnimation(void) const;
 
-	Town::WeakPtr _town;
+	Cell::WeakPtr _cell;
 
 	cocos2d::Sprite *_texture;
 	std::function<void()> _bonusBehavior;

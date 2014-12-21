@@ -231,7 +231,7 @@ void World::Update(float deltaTime)
 
 	_taskManager.UpdateToTime(_currentTime);
 	_cellsNetwork.UpdateToTime(_currentTime);
-	_bonusOnMap.UpdateToTime(_currentTime, _towns);
+	_bonusOnMap.UpdateToTime(_currentTime);
 
 	MessageManager::Instance().CallAcceptMessages();
 

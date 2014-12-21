@@ -3,7 +3,6 @@
 
 #include "Town.h"
 #include "MessageManager.h"
-#include "BonusMapWidget.h"
 
 #include <cocos2d.h>
 
@@ -28,14 +27,9 @@ public:
 	const cocos2d::Rect& GetTownRect(void) const;
 
 private:
-	typedef std::vector<BonusMapWidget *> Bonuses;
-
-private:
 	Town::Ptr _town;
 	
 	cocos2d::Sprite *_townMapSprite;
-
-	Bonuses _bonuses;
 
 	int _projectorUid;
 

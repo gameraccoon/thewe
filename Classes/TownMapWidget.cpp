@@ -30,26 +30,8 @@ bool TownMapWidget::init(void)
 	return true;
 }
 
-void TownMapWidget::AcceptMessage(const Message &message)
+void TownMapWidget::AcceptMessage(const Message&)
 {
-	if (message.is("BornBonus") && (unsigned int)message.variables.GetInt("TOWN_UID") == _town->GetUid())
-	{
-		BonusMapWidget *bonus = new BonusMapWidget(_town, 
-												  Vector2(0.0f, 50.0f),
-												  GameInfo::Instance().GetTime("BONUS_LIVE_TIME"));
-		bonus->autorelease();
-
-		_bonuses.push_back(bonus);
-		addChild(bonus, 1);
-	}
-	else if (message.is("DeleteBonusWidget") && (unsigned int)message.variables.GetInt("TOWN_UID") == _town->GetUid())
-	{
-		for (Bonuses::iterator it = _bonuses.begin(); it != _bonuses.end();)
-		{
-			removeChild(*it);
-			it = _bonuses.erase(it);
-		}
-	}
 }
 
 void TownMapWidget::SetHitArea(float beginX, float beginY, float endX, float endY)

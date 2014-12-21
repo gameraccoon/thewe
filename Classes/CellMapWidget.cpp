@@ -170,7 +170,25 @@ void CellMapWidget::TouchEnded(const std::vector<cocos2d::Touch *> &touches, coc
 
 void CellMapWidget::AcceptMessage(const Message &message)
 {
-	if (message.is("PushTaskRewardOnMap") && (unsigned int)message.variables.GetInt("CELL_UID") == _cell.lock()->GetUid())
+	if (message.is("ShowBonus") && (unsigned int)message.variables.GetInt("CELL_UID") == _cell.lock()->GetUid())
+	{
+		BonusMapWidget *bonus = new BonusMapWidget(_cell,
+												  Vector2(0.0f, 50.0f),
+												  GameInfo::Instance().GetTime("BONUS_LIVE_TIME"));
+		bonus->autorelease();
+
+		_bonuses.push_back(bonus);
+		addChild(bonus, 1);
+	}
+	else if (message.is("DeleteBonusWidget") && (unsigned int)message.variables.GetInt("CELL_UID") == _cell.lock()->GetUid())
+	{
+		for (Bonuses::iterator it = _bonuses.begin(); it != _bonuses.end();)
+		{
+			removeChild(*it);
+			it = _bonuses.erase(it);
+		}
+	}
+	else if (message.is("PushTaskRewardOnMap") && (unsigned int)message.variables.GetInt("CELL_UID") == _cell.lock()->GetUid())
 	{
 		Task::Info task_info = World::Instance().GetTaskManager().FindTaskById(message.variables.GetString("TASK_ID"));
 

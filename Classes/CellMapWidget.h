@@ -7,6 +7,7 @@
 #include "InvestigatorMapWidget.h"
 #include "TaskRewardMapWidget.h"
 #include "MultipleImageSprite.h"
+#include "BonusMapWidget.h"
 
 class CellMapWidget : public cocos2d::Node, public MessageReceiver
 {
@@ -45,6 +46,7 @@ private:
 	};
 
 	typedef std::vector<TaskRewardMapWidget *> TaskRewards;
+	typedef std::vector<BonusMapWidget *> Bonuses;
 
 private:
 	WorldMapLayer *_worldMapLayer;
@@ -65,6 +67,8 @@ private:
 	CellMapPopupButton *_popupCatchInvestigator;
 
 	Cell::State _lastCellState;
+
+	Bonuses _bonuses;
 };
 
 #endif

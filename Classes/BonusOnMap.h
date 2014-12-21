@@ -12,16 +12,15 @@ public:
 	~BonusOnMap(void);
 
 	void OnStartLogic(void);
-	void UpdateToTime(Utils::GameTime time, const std::vector<Town::Ptr> &towns);
-	void SendMessageAboutBornBonus(int townUid);
+	void UpdateToTime(Utils::GameTime time);
+	void SendMessageAboutBonus(int cellUid);
 
 	void AcceptMessage(const Message &message) override;
 
 private:
 	Utils::GameTime CalcNextWaitTime(Utils::GameTime delay, Utils::GameTime offset) const;
 
-	Utils::GameTime _startTime;
-	Utils::GameTime _waitTime;
+	Utils::GameTime _nextBonusTime;
 
 	bool _waitForBonusDestroy;
 };

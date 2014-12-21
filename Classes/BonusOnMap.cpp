@@ -2,12 +2,12 @@
 
 #include "MessageManager.h"
 #include "GameInfo.h"
+#include "World.h"
 
 #include <stdlib.h>
 
 BonusOnMap::BonusOnMap(void)
-	: _startTime(0)
-	, _waitForBonusDestroy(false)
+	: _waitForBonusDestroy(false)
 {
 }
 
@@ -17,26 +17,26 @@ BonusOnMap::~BonusOnMap(void)
 
 void BonusOnMap::OnStartLogic(void)
 {
-	_startTime = Utils::GetGameTime();
 	Utils::GameTime delay = GameInfo::Instance().GetTime("BONUS_BORN_TIME_DELAY");
 	Utils::GameTime offset = GameInfo::Instance().GetTime("BONUS_BORN_TIME_OFFSET");
-	_waitTime = CalcNextWaitTime(delay, offset);
+	_nextBonusTime = CalcNextWaitTime(delay, offset);
 }
 
-void BonusOnMap::UpdateToTime(Utils::GameTime time, const std::vector<Town::Ptr> &towns)
+void BonusOnMap::UpdateToTime(Utils::GameTime time)
 {
-	if (time > (_startTime + _waitTime) && !_waitForBonusDestroy)
+	if (!_waitForBonusDestroy && time > _nextBonusTime)
 	{
-		int town_id = rand() % towns.size();
-		SendMessageAboutBornBonus(towns[town_id]->GetUid());
+		const CellsNetwork::Cells& cells = World::Instance().GetCellsNetwork().GetActiveCells();
+		int town_id = rand() % cells.size();
+		SendMessageAboutBonus(cells[town_id]->GetUid());
 		_waitForBonusDestroy = true;
 	}
 }
 
-void BonusOnMap::SendMessageAboutBornBonus(int townUid)
+void BonusOnMap::SendMessageAboutBonus(int cellUid)
 {
-	Message message("BornBonus");
-	message.variables.SetInt("TOWN_UID", townUid);
+	Message message("ShowBonus");
+	message.variables.SetInt("CELL_UID", cellUid);
 	MessageManager::Instance().PutMessage(message);
 }
 
@@ -46,8 +46,7 @@ void BonusOnMap::AcceptMessage(const Message &message)
 	{
 		Utils::GameTime delay = GameInfo::Instance().GetTime("BONUS_BORN_TIME_DELAY");
 		Utils::GameTime offset = GameInfo::Instance().GetTime("BONUS_BORN_TIME_OFFSET");
-		_waitTime = CalcNextWaitTime(delay, offset);
-		_startTime = Utils::GetGameTime();
+		_nextBonusTime = CalcNextWaitTime(delay, offset);
 		
 		_waitForBonusDestroy = false;
 	}
@@ -55,6 +54,8 @@ void BonusOnMap::AcceptMessage(const Message &message)
 
 Utils::GameTime BonusOnMap::CalcNextWaitTime(Utils::GameTime delay, Utils::GameTime offset) const
 {
+	size_t cellsCount = World::Instance().GetCellsNetwork().GetActiveCells().size();
+	size_t townsCount = World::Instance().GetTowns().size();
 	double r = ((double)rand()/(double)RAND_MAX);
-	return delay + offset * r - offset/2.0f;
+	return Utils::GetGameTime() + ((float)townsCount / cellsCount) * (delay + offset * r - offset/2.0f);
 }

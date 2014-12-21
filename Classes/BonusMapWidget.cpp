@@ -2,8 +2,8 @@
 
 #include "MessageManager.h"
 
-BonusMapWidget::BonusMapWidget(Town::WeakPtr town, Vector2 pos, Utils::GameTime waitTime)
-	: _town(town)
+BonusMapWidget::BonusMapWidget(Cell::WeakPtr cell, Vector2 pos, Utils::GameTime waitTime)
+	: _cell(cell)
 	, _startTime(Utils::GetGameTime())
 	, _waitTime(waitTime)
 	, _pos(pos)
@@ -80,7 +80,7 @@ void BonusMapWidget::TouchEnded(const std::vector<cocos2d::Touch *> &touches, co
 void BonusMapWidget::SendMessageAboutDelete(void)
 {
 	Message message("DeleteBonusWidget");
-	message.variables.SetInt("TOWN_UID", _town.lock()->GetUid());
+	message.variables.SetInt("CELL_UID", _cell.lock()->GetUid());
 	MessageManager::Instance().PutMessage(message);
 }
 
