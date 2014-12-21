@@ -191,10 +191,6 @@ void WorldMapLayer::AcceptMessage(const Message &msg)
 			parent.lock()->GetInfo().membersCount >= GameInfo::Instance().GetInt("CELL_SPINOFF_MEMBERS_PRICE"))
 		{
 			Cell::Info info;
-			if (World::Instance().GetTutorialManager().IsTutorialStateAvailable("ReadyToCreateSpinoff"))
-			{
-				World::Instance().GetTutorialManager().RunTutorialFunction("OnCreateFirstSpinoff");
-			}
 
 			info.parent = parent;
 			info.town = town;
@@ -219,6 +215,13 @@ void WorldMapLayer::AcceptMessage(const Message &msg)
 			info.stateDuration = GameInfo::Instance().GetTime("CELL_CONSTRUCTION_TIME");
 
 			CreateCell(info, Cell::State::CONSTRUCTION);
+
+			const std::set<std::string>& test = World::Instance().GetTutorialManager().GetTutorialStatements();
+			if (World::Instance().GetTutorialManager().IsTutorialStateAvailable("ReadyToCreateSpinoff"))
+			{
+				World::Instance().GetTutorialManager().RemoveCurrentTutorial();
+				World::Instance().GetTutorialManager().RunTutorialFunction("OnCreateFirstSpinoff");
+			}
 
 			MessageManager::Instance().PutMessage(Message("SaveGame"));
 		}
@@ -668,55 +671,13 @@ void WorldMapLayer::OnTownSelect(Town::WeakPtr town)
 
 			if (World::Instance().GetTutorialManager().IsTutorialStateAvailable("FirstCell"))
 			{
+				World::Instance().GetTutorialManager().RemoveCurrentTutorial();
 				World::Instance().GetTutorialManager().RunTutorialFunction("AfterCreatingFirstCell");
 			}
 
 			MessageManager::Instance().PutMessage(Message("SaveGame"));
 		}
-		/*
-		else if (Cell::Ptr parent = _nextCellParent.lock())
-		{
-
-			if (parent->GetInfo().cash >= GameInfo::Instance().GetInt("CELL_SPINOFF_CASH_PRICE") &&
-				parent->GetInfo().membersCount >= GameInfo::Instance().GetInt("CELL_SPINOFF_MEMBERS_PRICE"))
-			{
-				Cell::Info info;
-				if (World::Instance().GetTutorialManager().IsTutorialStateAvailable("ReadyToCreateSpinoff"))
-				{
-					World::Instance().GetTutorialManager().RunTutorialFunction("OnCreateFirstSpinoff");
-				}
-
-				info.parent = parent;
-				info.town = town;
-				info.location = town.lock()->GetLocation();
-				info.cash = GameInfo::Instance().GetInt("CELL_STARTUP_MONEY");
-				info.morale = GameInfo::Instance().GetFloat("CELL_STARTUP_MORALE");
-				info.devotion = GameInfo::Instance().GetFloat("CELL_STARTUP_DEVOTION");
-				info.membersCount = GameInfo::Instance().GetInt("CELL_STARTUP_MEMBERS");
-				info.ratsCount = GameInfo::Instance().GetInt("CELL_STARTUP_RATS_COUNT");
-				info.techUnitsCount = GameInfo::Instance().GetInt("CELL_STARTUP_TECH_UNITS_COUNT");
-				info.experience = 0;
-				info.fame = 0.0f;
-				info.specialization = Cell::Specialization::NORMAL;
-				info.townHeartPounding = GameInfo::Instance().GetFloat("CELL_STARTUP_TOWN_HEART_POUNDING");
-				info.townInfluence = GameInfo::Instance().GetFloat("CELL_STARTUP_TOWN_INFLUENCE");
-				info.townWelfare = GameInfo::Instance().GetFloat("CELL_STARTUP_TOWN_WELFARE");
-
-				parent->GetInfo().cash -= GameInfo::Instance().GetInt("CELL_SPINOFF_CASH_PRICE");
-				parent->GetInfo().membersCount -= GameInfo::Instance().GetInt("CELL_SPINOFF_MEMBERS_PRICE");
-
-				info.stateBegin = Utils::GetGameTime();
-				info.stateDuration = GameInfo::Instance().GetTime("CELL_CONSTRUCTION_TIME");
-
-				CreateCell(info, Cell::State::CONSTRUCTION);
-
-				MessageManager::Instance().PutMessage(Message("SaveGame"));
-			}
-
-			_nextCellParent = Cell::Ptr();
-		}*/
 	}
-	
 }
 
 void WorldMapLayer::SetTownsVisibility(bool visibility)

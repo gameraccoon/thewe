@@ -10,10 +10,10 @@
   "designHeight": 480,
   "designWidth": 800,
   "textures": [
-    "Tutorial0.plist"
+    "tutorial0.plist"
   ],
   "texturesPng": [
-    "Tutorial0.png"
+    "tutorial0.png"
   ],
   "version": "1.6.0.0",
   "widgetTree": {

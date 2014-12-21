@@ -152,6 +152,7 @@ bool World::RemoveInvestigator(Investigator::Ptr investigator)
 		{
 			if (GetTutorialManager().IsTutorialStateAvailable("WaitForCatchUncatchedInvestigator"))
 			{
+				World::Instance().GetTutorialManager().RemoveCurrentTutorial();
 				GetTutorialManager().RunTutorialFunction("FirstUncatchedInvestigatorCatched");
 			}
 

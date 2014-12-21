@@ -49,8 +49,6 @@ void TutorialLayer::update(float delta)
 			_currentTutorial = TutorialWidget::create(World::Instance().GetTutorialManager().GetCurrentTutorial());
 			addChild(_currentTutorial);
 			_currentTutorial->setPosition(origin + screen/2);
-
-			dynamic_cast<GameScene*>(getParent())->SetInputEnabled(false);
 		}
 	}
 	else
@@ -59,8 +57,6 @@ void TutorialLayer::update(float delta)
 		{
 			removeChild(_currentTutorial);
 			_currentTutorial = nullptr;
-
-			dynamic_cast<GameScene*>(getParent())->SetInputEnabled(true);
 		}
 	}
 }

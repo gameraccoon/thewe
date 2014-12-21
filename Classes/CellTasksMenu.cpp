@@ -69,6 +69,7 @@ bool CellTasksScreen::init(void)
 
 	if (World::Instance().GetTutorialManager().IsTutorialStateAvailable("StartFirstTask"))
 	{
+		World::Instance().GetTutorialManager().RemoveCurrentTutorial();
 		World::Instance().GetTutorialManager().RunTutorialFunction("BeforeStartFirstTask");
 	}
 
@@ -127,10 +128,12 @@ void CellTasksScreen::OnStartTaskCallback(cocos2d::Ref *sender, cocos2d::ui::Wid
 		{
 			if (World::Instance().GetTutorialManager().IsTutorialStateAvailable("WaitingForStartFirstTask"))
 			{
+				World::Instance().GetTutorialManager().RemoveCurrentTutorial();
 				World::Instance().GetTutorialManager().RunTutorialFunction("StartingFirstTask");
 			}
 			else if (World::Instance().GetTutorialManager().IsTutorialStateAvailable("ReadyToFirstRealWork"))
 			{
+				World::Instance().GetTutorialManager().RemoveCurrentTutorial();
 				World::Instance().GetTutorialManager().RunTutorialFunction("StartingFirstRealWork");
 			}
 

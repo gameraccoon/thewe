@@ -151,6 +151,7 @@ function MissionSuccess_TutorialRecrutment(cell, taskInfo)
 
 	cellInfo.membersCount = cellInfo.membersCount + 6
 
+	World:getTutorialManager():removeCurrentTutorial()
 	World:getTutorialManager():runTutorialFuncton("AfterFirstTaskFinished")
 
 	AddExperience(cellInfo, 5)
@@ -169,9 +170,9 @@ function MissionSuccess_TutorialFirstRealWork(cell, taskInfo)
 
 	cellInfo.cash = cellInfo.cash + math.random(40, 60) * 1000
 
-	World:getTutorialManager():runTutorialFuncton("AfterRealWorkDone")
-
 	AddExperience(cellInfo, 5)
+	
+	World:getTutorialManager():runTutorialFuncton("AfterRealWorkDone")
 end
 
 function MissionSuccess_Alpha1Recrutment_university(cell, taskInfo)
