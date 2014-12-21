@@ -97,6 +97,7 @@ set(GAME_SRC
 	Classes/MiscUtils.cpp
 	Classes/ProgressBar.cpp
 	Classes/ProgressTapWidget.cpp
+	Classes/RelinkDragAndDrop.cpp
 	Classes/Region.cpp
 	Classes/SessionEndScreen.cpp
 	Classes/SpinoffDragAndDrop.cpp
