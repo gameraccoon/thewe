@@ -27,7 +27,7 @@
         "options": {
           "__type": "LabelSurrogate:#EditorCommon.JsonModel.Component.GUI",
           "classname": "Label",
-          "name": "Text",
+          "name": "TutorialText",
           "ZOrder": 2,
           "actiontag": 16881426,
           "anchorPointX": 0.5,
@@ -55,7 +55,7 @@
             "marginLeft": 326,
             "marginRight": 0,
             "marginTop": 158,
-            "relativeName": "Text",
+            "relativeName": "TutorialText",
             "relativeToName": "Main",
             "type": 2
           },
