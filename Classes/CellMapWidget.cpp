@@ -3,9 +3,12 @@
 #include "World.h"
 #include "GameInfo.h"
 #include "Log.h"
+#include "RelinkDragAndDrop.h"
 
-CellMapWidget::CellMapWidget(Cell::WeakPtr cell)
-	: _cell(cell)
+CellMapWidget::CellMapWidget(WorldMapLayer *worldMapLayer, MapProjector *projector, Cell::WeakPtr cell)
+	: _worldMapLayer(worldMapLayer)
+	, _projector(projector)
+	, _cell(cell)
 	, _hitAreaBeginX(0.0f)
 	, _hitAreaBeginY(0.0f)
 	, _hitAreaEndX(1.0f)
@@ -60,17 +63,11 @@ bool CellMapWidget::init(void)
 	_popupCatchInvestigator = CellMapPopupButton::create(s);
 	_popupCatchInvestigator->setPosition(0.0f, 0.0f);
 	_popupCatchInvestigator->setScale(6.0f);
-
-	_relinkableMark = cocos2d::Sprite::create("relink-mark.png");
-	_relinkableMark->setPosition(0.0f, 155.0f);
-	_relinkableMark->setScale(1.0f);
-	_relinkableMark->setVisible(false);
 	
 	addChild(_cellMapSprite, DrawOrder::SPRITE);
 	addChild(_cellMapTaskProgressBar, DrawOrder::PROGRESS);
 	addChild(_cellCommonProgressBar, DrawOrder::PROGRESS);
 	addChild(_popupCatchInvestigator, DrawOrder::BUTTON);
-	addChild(_relinkableMark, DrawOrder::BUTTON);
 	scheduleUpdate();
 
 	setContentSize(_cellMapTaskProgressBar->getContentSize());
@@ -89,8 +86,6 @@ void CellMapWidget::update(float dt)
 
 	Utils::GameTime currentTime = Utils::GetGameTime();
 	cell->UpdateToTime(currentTime);
-
-	_relinkableMark->setVisible(World::Instance().GetCellsNetwork().IsCellRelinkable(cell));
 
 	if (cell->IsState(Cell::State::CONSTRUCTION))
 	{
@@ -113,15 +108,20 @@ void CellMapWidget::update(float dt)
 	}
 	else if (cell->IsState(Cell::State::AUTONOMY))
 	{
+		if (!getChildByName("RelinkDND")) {
+			RelinkDragAndDrop *relink = new RelinkDragAndDrop(_worldMapLayer, _projector, _cell);
+			relink->setPosition(0.0f, 0.0f);
+			relink->setName("RelinkDND");
+			relink->autorelease();
+			addChild(relink, DrawOrder::RELINK_WIDGET);
+		}
+
 		float progress = abs(1.0f - cell->GetStateProgress(currentTime));
 		if (progress <= 1.0f)
 		{
 			_cellMapTaskProgressBar->SetProgressImmediately(progress * 100.0f);
 			_cellMapTaskProgressBar->setVisible(true);
 		}
-
-		_relinkMarkYAngle += 180.0f * dt;
-		_relinkableMark->setRotation3D(cocos2d::Vec3(0.0f, _relinkMarkYAngle, 0.0f));
 	}
 	else if (cell->IsState(Cell::State::DESTRUCTION))
 	{
@@ -137,6 +137,10 @@ void CellMapWidget::update(float dt)
 
 	if (cell->IsState(Cell::State::READY))
 	{
+		if (getChildByName("RelinkDND")) {
+			removeChildByName("RelinkDND");
+		}
+
 		if (cell->IsCurrentTaskExists())
 		{
 			Task::Ptr task = cell->getCurrentTask().lock();

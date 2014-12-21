@@ -112,7 +112,7 @@ void SpinoffDragAndDrop::TouchesBegin(const std::vector<cocos2d::Touch *> &touch
 
 	if (_texture->GetCurrentImage()->getBoundingBox().containsPoint(convertTouchToNodeSpace(touches[0])))
 	{
-		Message msg = Message("DragOnMapBegan");
+		Message msg = Message("SpinoffWithDragBegan");
 		msg.variables.SetBool("SHOW_TOWNS", true);
 		MessageManager::Instance().PutMessage(msg);
 		_texture->SetCurrentImage("pressed");
@@ -192,7 +192,7 @@ void SpinoffDragAndDrop::TouchesEnded(const std::vector<cocos2d::Touch *> &touch
 			msg1.variables.SetInt("PARENT_UID", _cellFrom.lock()->GetUid());
 			MessageManager::Instance().PutMessage(msg1);
 
-			Message msg2 = Message("DragOnMapEnded");
+			Message msg2 = Message("SpinoffWithDragEnded");
 			msg2.variables.SetBool("SHOW_TOWNS", false);
 			MessageManager::Instance().PutMessage(msg2);
 		}
@@ -200,7 +200,7 @@ void SpinoffDragAndDrop::TouchesEnded(const std::vector<cocos2d::Touch *> &touch
 		{
 			cocos2d::CallFunc *func_end = cocos2d::CallFunc::create([&]()
 			{
-				Message msg = Message("DragOnMapEnded");
+				Message msg = Message("SpinoffWithDragEnded");
 				msg.variables.SetBool("SHOW_TOWNS", false);
 				MessageManager::Instance().PutMessage(msg);
 			});
@@ -222,7 +222,7 @@ void SpinoffDragAndDrop::TouchesCancelled(const std::vector<cocos2d::Touch *> &t
 {
 	cocos2d::CallFunc *func_end = cocos2d::CallFunc::create([&]()
 	{
-		Message msg = Message("DragOnMapEnded");
+		Message msg = Message("SpinoffWithDragEnded");
 		msg.variables.SetBool("SHOW_TOWNS", false);
 		MessageManager::Instance().PutMessage(msg);
 	});

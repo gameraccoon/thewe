@@ -175,6 +175,7 @@ xcopy /Y /Q "$(EngineRoot)external\websockets\prebuilt\win32\*.lib" "$(SolutionD
     <ClCompile Include="..\Classes\ProgressBar.cpp" />
     <ClCompile Include="..\Classes\ProgressTapWidget.cpp" />
     <ClCompile Include="..\Classes\Region.cpp" />
+    <ClCompile Include="..\Classes\RelinkDragAndDrop.cpp" />
     <ClCompile Include="..\Classes\SessionEndScreen.cpp" />
     <ClCompile Include="..\Classes\SpinoffDragAndDrop.cpp" />
     <ClCompile Include="..\Classes\SplashScreenScene.cpp" />
@@ -289,6 +290,7 @@ xcopy /Y /Q "$(EngineRoot)external\websockets\prebuilt\win32\*.lib" "$(SolutionD
     <ClInclude Include="..\Classes\ProgressBar.h" />
     <ClInclude Include="..\Classes\ProgressTapWidget.h" />
     <ClInclude Include="..\Classes\Region.h" />
+    <ClInclude Include="..\Classes\RelinkDragAndDrop.h" />
     <ClInclude Include="..\Classes\SessionEndScreen.h" />
     <ClInclude Include="..\Classes\SpinoffDragAndDrop.h" />
     <ClInclude Include="..\Classes\SplashScreenScene.h" />

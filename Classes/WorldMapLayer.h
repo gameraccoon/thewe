@@ -48,6 +48,7 @@ public:
 
 	CellMapWidget* GetCellMapWidget(Cell::WeakPtr cell) const;
 	TownMapWidget* GetNearestTownWidget(const Vector2 &pointOnScreen, float radius) const;
+	CellMapWidget* GetNearestCellWidget(const Vector2 &pointOnScreen, float radius) const;
 
 	void AddEffectAbsolute(Effect *effect);
 	void AddEffectGameField(Effect *effect);

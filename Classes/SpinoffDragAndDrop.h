@@ -1,5 +1,5 @@
-#ifndef MAP_DRAW_AND_DROP_WIDGET_H
-#define MAP_DRAW_AND_DROP_WIDGET_H
+#ifndef SPINOFF_DRAG_AND_DROP_H
+#define SPINOFF_DRAG_AND_DROP_H
 
 #include <cocos2d.h>
 

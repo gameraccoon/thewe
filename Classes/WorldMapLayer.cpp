@@ -172,15 +172,31 @@ void WorldMapLayer::AcceptMessage(const Message &msg)
 			}
 		}
 	}
-	else if (msg.is("DragOnMapEnded"))
+	else if (msg.is("SpinoffWithDragEnded") || msg.is("RelinkWithDragEnded"))
 	{
 		_isMapMovementsEnabled = true;
 		SetTownsVisibility(msg.variables.GetBool("SHOW_TOWNS"));
 	}
-	else if (msg.is("DragOnMapBegan"))
+	else if (msg.is("SpinoffWithDragBegan") || msg.is("RelinkWithDragBegan"))
 	{
 		_isMapMovementsEnabled = false;
 		SetTownsVisibility(msg.variables.GetBool("SHOW_TOWNS"));
+	}
+	else if (msg.is("RelinkCell"))
+	{
+		Cell::Ptr relink_cell = World::Instance().GetCellsNetwork().GetCellByUid(msg.variables.GetInt("RELINK_CELL_UID"));
+		Cell::Ptr parent_cell = World::Instance().GetCellsNetwork().GetCellByUid(msg.variables.GetInt("PARENT_CELL_UID"));
+
+		if (relink_cell->IsState(Cell::State::AUTONOMY) && parent_cell->IsState(Cell::State::READY))
+		{
+			relink_cell->GetInfo().state = Cell::State::READY;
+			relink_cell->GetInfo().stateBegin = 0;
+			relink_cell->GetInfo().stateDuration = 0;
+
+			World::Instance().GetCellsNetwork().RelinkCells(parent_cell, relink_cell);
+
+			UpdateMapElements();
+		}
 	}
 	else if (msg.is("CreateCell"))
 	{
@@ -353,6 +369,23 @@ TownMapWidget* WorldMapLayer::GetNearestTownWidget(const Vector2 &pointOnScreen,
 	return result;
 }
 
+CellMapWidget* WorldMapLayer::GetNearestCellWidget(const Vector2 &pointOnScreen, float radius) const
+{
+	CellMapWidget *result = nullptr;
+
+	float min_dist = std::numeric_limits<float>::max();
+	for (CellWidgets::const_iterator iter = _cellWidgets.begin(); iter != _cellWidgets.end(); ++iter) {
+		CellMapWidget *widget = (*iter);
+		float dist = (*iter)->getPosition().getDistance(pointOnScreen);
+		if (dist <= radius && dist < min_dist) {
+			result = widget;
+			min_dist = dist;
+		}
+	}
+
+	return result;
+}
+
 void WorldMapLayer::AddEffectAbsolute(Effect *effect)
 {
 	_effectsAbsolute->AddEffect(effect);
@@ -515,7 +548,7 @@ void WorldMapLayer::BackToMainMenuCallback(cocos2d::Ref *sender)
 
 CellMapWidget* WorldMapLayer::CreateCellWidget(Cell::Ptr cell)
 {
-	CellMapWidget *widget = new CellMapWidget(cell);
+	CellMapWidget *widget = new CellMapWidget(this, _mapProjector, cell);
 	
 	int uid = _mapProjector->AddMapPart(Drawable::CastFromCocos(widget), cell->GetInfo().location, Vector2(0.0f, 0.0f), INITIAL_CELL_SCALE, true);
 	_mapProjector->Update();

@@ -11,7 +11,7 @@
 class CellMapWidget : public cocos2d::Node, public MessageReceiver
 {
 public:
-	CellMapWidget(Cell::WeakPtr cell);
+	CellMapWidget(WorldMapLayer *worldMapLayer, MapProjector *projector, Cell::WeakPtr cell);
 	~CellMapWidget(void);
 
 	virtual bool init(void) override;
@@ -41,11 +41,14 @@ private:
 		,PROGRESS
 		,REWARD
 		,BUTTON
+		, RELINK_WIDGET
 	};
 
 	typedef std::vector<TaskRewardMapWidget *> TaskRewards;
 
 private:
+	WorldMapLayer *_worldMapLayer;
+	MapProjector *_projector;
 	Cell::WeakPtr _cell;
 
 	float _hitAreaBeginX, _hitAreaEndX;
@@ -55,13 +58,10 @@ private:
 	int _projectorUid;
 	const int _cellUid;
 
-	cocos2d::Sprite *_relinkableMark;
-
 	TaskRewards _taskRewardsOnMap;
 	MultipleImageSprite *_cellMapSprite;
 	RoundProgressBar *_cellMapTaskProgressBar;
 	RoundProgressBar *_cellCommonProgressBar;
-
 	CellMapPopupButton *_popupCatchInvestigator;
 
 	Cell::State _lastCellState;

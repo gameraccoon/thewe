@@ -378,6 +378,9 @@
     <ClCompile Include="..\Classes\SpinoffDragAndDrop.cpp">
       <Filter>Classes\GameWidgets</Filter>
     </ClCompile>
+    <ClCompile Include="..\Classes\RelinkDragAndDrop.cpp">
+      <Filter>Classes\GameWidgets</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="main.h">
@@ -651,6 +654,9 @@
       <Filter>Classes\Utils</Filter>
     </ClInclude>
     <ClInclude Include="..\Classes\SpinoffDragAndDrop.h">
+      <Filter>Classes\GameWidgets</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\RelinkDragAndDrop.h">
       <Filter>Classes\GameWidgets</Filter>
     </ClInclude>
   </ItemGroup>

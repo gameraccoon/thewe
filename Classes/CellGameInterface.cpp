@@ -69,12 +69,12 @@ void CellMenuSelector::update(float)
 
 void CellMenuSelector::AcceptMessage(const Message &message)
 {
-	if (message.is("DragOnMapBegan"))
+	if (message.is("SpinoffWithDragBegan"))
 	{
 		_btnInfo->runAction(cocos2d::FadeOut::create(0.2f));
 		_btnTasks->runAction(cocos2d::FadeOut::create(0.2f));
 	}
-	else if (message.is("DragOnMapEnded"))
+	else if (message.is("SpinoffWithDragEnded"))
 	{
 		OnMenuClosed();
 		RemoveMenu();
