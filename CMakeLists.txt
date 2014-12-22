@@ -74,7 +74,6 @@ set(GAME_SRC
 	Classes/CellsNetLayer.cpp
 	Classes/CircleMenu.cpp
 	Classes/Color.cpp
-	Classes/Drawable.cpp
 	Classes/EditorLayer.cpp
 	Classes/EffectsLayer.cpp
 	Classes/GameInfo.cpp

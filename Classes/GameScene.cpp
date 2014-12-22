@@ -9,9 +9,8 @@
 #include "NotificationMessageLayer.h"
 
 GameScene::GameScene(MainMenuScene *mainMenuScene)
-	: _mapProjector()
-	, _mainMenuScene(mainMenuScene)
-	, _RegionEditor(nullptr)
+	: _mainMenuScene(mainMenuScene)
+	, _regionEditor(nullptr)
 	, _worldMap(nullptr)
 	, _cellScreen(nullptr)
 {
@@ -29,7 +28,10 @@ bool GameScene::init(void)
 		return false;
 	}
 
-	_worldMap = new WorldMapLayer(this, &_mapProjector);
+	_mapProjector = MapProjector::create();
+	addChild(_mapProjector);
+
+	_worldMap = new WorldMapLayer(this, _mapProjector);
 	addChild(_worldMap);
 	_worldMap->autorelease();
 
@@ -48,10 +50,10 @@ void GameScene::update(float delta)
 
 void GameScene::ShowMap()
 {
-	if (_RegionEditor)
+	if (_regionEditor)
 	{
-		removeChild(_RegionEditor);
-		_RegionEditor = nullptr;
+		removeChild(_regionEditor);
+		_regionEditor = nullptr;
 	}
 
 	if (_cellScreen)
@@ -76,12 +78,12 @@ void GameScene::GoToMainMenu(void)
 
 void GameScene::ToggleEditor()
 {
-	if (!_RegionEditor)
+	if (!_regionEditor)
 	{
 		ShowMap(); // changes state of _editor
-		_RegionEditor = new EditorLayer(&_mapProjector);
-		addChild(_RegionEditor);
-		_RegionEditor->autorelease();
+		_regionEditor = new EditorLayer(_mapProjector);
+		addChild(_regionEditor);
+		_regionEditor->autorelease();
 		_worldMap->SetMapInputEnabled(false);
 	}
 	else
@@ -98,5 +100,5 @@ void GameScene::SetInputEnabled(bool enabled)
 
 void GameScene::MoveViewToPoint(const Vector2& worldPoint)
 {
-	_mapProjector.SetLocation(worldPoint);
+	_mapProjector->SetLocation(worldPoint);
 }

@@ -7,6 +7,20 @@ MapProjector::MapProjector()
 {
 }
 
+MapProjector* MapProjector::create()
+{
+	MapProjector* ret = new MapProjector();
+	if (ret && ret->init())
+	{
+		ret->autorelease();
+	}
+	else
+	{
+		CC_SAFE_DELETE(ret);
+	}
+	return ret;
+}
+
 void MapProjector::SetLocation(Vector2 worldLocation)
 {
 	_viewLocation = worldLocation;
@@ -72,9 +86,9 @@ void MapProjector::_CheckBoundings()
 	}
 }
 
-unsigned int MapProjector::_GetNewPartUid(void) const
+int MapProjector::_GetNewPartUid(void) const
 {
-	static unsigned int uid = 0;
+	static int uid = 0;
 	return uid++;
 }
 
@@ -128,7 +142,7 @@ void MapProjector::SetMapSize(const Vector2& mapSize)
 	_mapSize = mapSize;
 }
 
-int MapProjector::AddMapPart(Drawable::Ptr node, Vector2 location, Vector2 shift, float scale, bool dontScale)
+int MapProjector::AddProjectedChild(cocos2d::Node *node, Vector2 location, Vector2 shift, float scale, bool dontScale)
 {
 	MapPart locSprite;
 	locSprite.location = location;
@@ -136,10 +150,13 @@ int MapProjector::AddMapPart(Drawable::Ptr node, Vector2 location, Vector2 shift
 	locSprite.shift = shift;
 	locSprite.node = node;
 	locSprite.isScalable = !dontScale;
-	locSprite.uid = _GetNewPartUid();
+	locSprite.tag = _GetNewPartUid();
 	_mapParts.push_back(locSprite);
 
-	return locSprite.uid;
+	node->setTag(locSprite.tag);
+	Layer::addChild(node);
+
+	return locSprite.tag;
 }
 
 void MapProjector::_UpdateNodes()
@@ -157,20 +174,21 @@ void MapProjector::_UpdateNodes()
 			screenScale = node.initialScale;
 		}
 
-		node.node->SetPosition(_screenCenter + (node.location - _viewLocation) * _viewScale + node.shift * screenScale);
-		node.node->SetScale(screenScale);
+		node.node->setPosition(_screenCenter + (node.location - _viewLocation) * _viewScale + node.shift * screenScale);
+		node.node->setScale(screenScale);
 	}
 }
 
-void MapProjector::RemoveMapPart(const Drawable::Ptr node)
+void MapProjector::removeChild(cocos2d::Node* child, bool cleanup)
 {
 	auto iterator = _mapParts.begin(), iEnd = _mapParts.end();
 	while (iterator != iEnd)
 	{
 		const MapPart currentPart = (*iterator);	
 
-		if (currentPart.node == node)
+		if (currentPart.node == child)
 		{
+			Layer::removeChild(currentPart.node, cleanup);
 			_mapParts.erase(iterator);
 			return;
 		}
@@ -179,15 +197,16 @@ void MapProjector::RemoveMapPart(const Drawable::Ptr node)
 	}
 }
 
-void MapProjector::RemoveMapPart(unsigned int uid)
+void MapProjector::removeChildByTag(int tag, bool cleanup)
 {
 	auto iterator = _mapParts.begin(), iEnd = _mapParts.end();
 	while (iterator != iEnd)
 	{
 		const MapPart currentPart = (*iterator);	
 
-		if (currentPart.uid == uid)
+		if (currentPart.tag == tag)
 		{
+			Layer::removeChild(currentPart.node, cleanup);
 			_mapParts.erase(iterator);
 			return;
 		}
