@@ -151,7 +151,6 @@ xcopy /Y /Q "$(EngineRoot)external\websockets\prebuilt\win32\*.lib" "$(SolutionD
     <ClCompile Include="..\Classes\CellTasksMenu.cpp" />
     <ClCompile Include="..\Classes\CircleMenu.cpp" />
     <ClCompile Include="..\Classes\Color.cpp" />
-    <ClCompile Include="..\Classes\Drawable.cpp" />
     <ClCompile Include="..\Classes\EditorLayer.cpp" />
     <ClCompile Include="..\Classes\EffectsLayer.cpp" />
     <ClCompile Include="..\Classes\GameSavesManager.cpp" />
@@ -267,7 +266,6 @@ xcopy /Y /Q "$(EngineRoot)external\websockets\prebuilt\win32\*.lib" "$(SolutionD
     <ClInclude Include="..\Classes\CircleMenu.h" />
     <ClInclude Include="..\Classes\Color.h" />
     <ClInclude Include="..\Classes\DbConnection.h" />
-    <ClInclude Include="..\Classes\Drawable.h" />
     <ClInclude Include="..\Classes\EditorLayer.h" />
     <ClInclude Include="..\Classes\EffectsLayer.h" />
     <ClInclude Include="..\Classes\GameSavesManager.h" />

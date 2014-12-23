@@ -4,6 +4,7 @@
 #include "GameInfo.h"
 #include "Log.h"
 #include "RelinkDragAndDrop.h"
+#include "WorldMapLayer.h"
 
 CellMapWidget::CellMapWidget(WorldMapLayer *worldMapLayer, MapProjector *projector, Cell::WeakPtr cell)
 	: _worldMapLayer(worldMapLayer)
@@ -15,6 +16,7 @@ CellMapWidget::CellMapWidget(WorldMapLayer *worldMapLayer, MapProjector *project
 	, _hitAreaEndY(1.0f)
 	, _relinkMarkYAngle(0.0f)
 	, _projectorUid(-1)
+	, _isRelinkMode(false)
 	, _cellUid(cell.lock()->GetUid())
 	, _lastCellState(Cell::State::READY)
 	, _cellMapSprite(nullptr)
@@ -87,6 +89,15 @@ void CellMapWidget::update(float dt)
 	Utils::GameTime currentTime = Utils::GetGameTime();
 	cell->UpdateToTime(currentTime);
 
+	if (!_isRelinkMode && World::Instance().GetCellsNetwork().IsCellRelinkable(_cell))
+	{
+		RelinkDragAndDrop *relink = new RelinkDragAndDrop(this, _worldMapLayer, _projector, _cell);
+		relink->setPosition(0.0f, 0.0f);
+		relink->autorelease();
+		_worldMapLayer->AddEffectGameField(relink);
+		_isRelinkMode = true;
+	}
+
 	if (cell->IsState(Cell::State::CONSTRUCTION))
 	{
 		_cellCommonProgressBar->SetProgressImmediately(cell->GetStateProgress(currentTime) * 100.0f);
@@ -108,14 +119,6 @@ void CellMapWidget::update(float dt)
 	}
 	else if (cell->IsState(Cell::State::AUTONOMY))
 	{
-		if (!getChildByName("RelinkDND")) {
-			RelinkDragAndDrop *relink = new RelinkDragAndDrop(_worldMapLayer, _projector, _cell);
-			relink->setPosition(0.0f, 0.0f);
-			relink->setName("RelinkDND");
-			relink->autorelease();
-			addChild(relink, DrawOrder::RELINK_WIDGET);
-		}
-
 		float progress = abs(1.0f - cell->GetStateProgress(currentTime));
 		if (progress <= 1.0f)
 		{
@@ -137,8 +140,8 @@ void CellMapWidget::update(float dt)
 
 	if (cell->IsState(Cell::State::READY))
 	{
-		if (getChildByName("RelinkDND")) {
-			removeChildByName("RelinkDND");
+		if (_isRelinkMode) {
+			_isRelinkMode = false;
 		}
 
 		if (cell->IsCurrentTaskExists())
@@ -161,10 +164,10 @@ void CellMapWidget::TouchEnded(const std::vector<cocos2d::Touch *> &touches, coc
 {
 	Vector2 location = convertTouchToNodeSpace(touches.at(0));
 	if (_cellMapSprite->getBoundingBox().containsPoint(location)) {
-		for (TaskRewardMapWidget *reward : _taskRewardsOnMap)
+		/*for (TaskRewardMapWidget *reward : _taskRewardsOnMap)
 		{
 			reward->PickReward();
-		}
+		}*/
 	}
 }
 
@@ -172,54 +175,24 @@ void CellMapWidget::AcceptMessage(const Message &message)
 {
 	if (message.is("ShowBonus") && (unsigned int)message.variables.GetInt("CELL_UID") == _cell.lock()->GetUid())
 	{
-		BonusMapWidget *bonus = new BonusMapWidget(_cell,
+		BonusMapWidget *bonus = new BonusMapWidget(this, _cell,
 												  Vector2(0.0f, 50.0f),
 												  GameInfo::Instance().GetTime("BONUS_LIVE_TIME"));
 		bonus->autorelease();
-
-		_bonuses.push_back(bonus);
-		addChild(bonus, 1);
-	}
-	else if (message.is("DeleteBonusWidget") && (unsigned int)message.variables.GetInt("CELL_UID") == _cell.lock()->GetUid())
-	{
-		for (Bonuses::iterator it = _bonuses.begin(); it != _bonuses.end();)
-		{
-			removeChild(*it);
-			it = _bonuses.erase(it);
-		}
+		_worldMapLayer->AddEffectGameField(bonus);
 	}
 	else if (message.is("PushTaskRewardOnMap") && (unsigned int)message.variables.GetInt("CELL_UID") == _cell.lock()->GetUid())
 	{
 		Task::Info task_info = World::Instance().GetTaskManager().FindTaskById(message.variables.GetString("TASK_ID"));
-
 		TaskRewardMapWidget *reward = new TaskRewardMapWidget(
+			this,
 			_cell,
 			task_info,
 			GameInfo::Instance().GetTime("TASK_REWARD_WAIT_TIME"),
 			cocos2d::Vec2(0.0f, 185.0f),
 			2.7f);
-
 		reward->autorelease();
-		addChild(reward, DrawOrder::REWARD);
-
-		_taskRewardsOnMap.push_back(reward);
-	}
-	else if (message.is("DeleteTaskRewardWidget") && (unsigned int)message.variables.GetInt("CELL_UID") == _cell.lock()->GetUid())
-	{
-		for (TaskRewards::iterator it = _taskRewardsOnMap.begin(); it != _taskRewardsOnMap.end();)
-		{
-			std::string id = message.variables.GetString("TASK_ID");
-			TaskRewardMapWidget *reward = (*it);
-			
-			if (reward->IsTaskId(id))
-			{
-				removeChild(reward);
-				it = _taskRewardsOnMap.erase(it);
-				break;
-			}
-			else
-				++it;
-		}
+		_worldMapLayer->AddEffectGameField(reward);
 	}
 }
 

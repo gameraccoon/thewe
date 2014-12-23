@@ -210,9 +210,6 @@
     <ClCompile Include="..\Classes\ArbitraryHull.cpp">
       <Filter>Classes\Utils</Filter>
     </ClCompile>
-    <ClCompile Include="..\Classes\Drawable.cpp">
-      <Filter>Classes\Utils</Filter>
-    </ClCompile>
     <ClCompile Include="..\Classes\Log.cpp">
       <Filter>Classes\Utils</Filter>
     </ClCompile>
@@ -480,9 +477,6 @@
       <Filter>Classes\Utils</Filter>
     </ClInclude>
     <ClInclude Include="..\Classes\Color.h">
-      <Filter>Classes\Utils</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Classes\Drawable.h">
       <Filter>Classes\Utils</Filter>
     </ClInclude>
     <ClInclude Include="..\Classes\Log.h">

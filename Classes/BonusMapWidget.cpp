@@ -2,19 +2,25 @@
 
 #include "MessageManager.h"
 
-BonusMapWidget::BonusMapWidget(Cell::WeakPtr cell, Vector2 pos, Utils::GameTime waitTime)
-	: _cell(cell)
+BonusMapWidget::BonusMapWidget(cocos2d::Node *widget, Cell::WeakPtr cell, Vector2 pos, Utils::GameTime waitTime)
+	: Effect("BonusOnMap", 0, widget)
+	, _cell(cell)
 	, _startTime(Utils::GetGameTime())
 	, _waitTime(waitTime)
 	, _pos(pos)
 	, _destroyMsgSended(false)
 	, _isPickEnabled(true)
+	, _isLiveFinished(false)
 {
 	init();
 }
 
 bool BonusMapWidget::init(void)
 {
+	if (!Effect::init()) {
+		return false;
+	}
+
 	cocos2d::EventListenerTouchAllAtOnce *listener = cocos2d::EventListenerTouchAllAtOnce::create();
 	listener->onTouchesBegan = CC_CALLBACK_2(BonusMapWidget::TouchBegan, this);
 	listener->onTouchesEnded = CC_CALLBACK_2(BonusMapWidget::TouchEnded, this);
@@ -35,12 +41,23 @@ bool BonusMapWidget::init(void)
 
 void BonusMapWidget::update(float dt)
 {
+	Effect::update(dt);
+
 	if ((Utils::GetGameTime() - _startTime) >= _waitTime && !_destroyMsgSended)
 	{
-		cocos2d::CallFunc *func_end = cocos2d::CallFunc::create([&](){SendMessageAboutDelete();});
+		cocos2d::CallFunc *func_end = cocos2d::CallFunc::create([&](){
+			_isLiveFinished = true;
+			MessageManager::Instance().PutMessage(Message("DeleteBonusWidget"));
+		});
+
 		_texture->runAction(cocos2d::Sequence::create(GetHideAnimation(), func_end, nullptr));
 		_destroyMsgSended = true;
 	}
+}
+
+bool BonusMapWidget::IsFinished(void) const
+{
+	return _isLiveFinished;
 }
 
 void BonusMapWidget::SetBonusBehavior(const std::function<void()> &func)
@@ -71,17 +88,14 @@ void BonusMapWidget::TouchEnded(const std::vector<cocos2d::Touch *> &touches, co
 	if (_texture->getBoundingBox().containsPoint(location)) {
 		// apply some bonus here
 		cocos2d::CallFunc *func_bonus = cocos2d::CallFunc::create(_bonusBehavior);
-		cocos2d::CallFunc *func_end = cocos2d::CallFunc::create([&](){SendMessageAboutDelete();});
+		cocos2d::CallFunc *func_end = cocos2d::CallFunc::create([&](){
+			_isLiveFinished = true;
+			MessageManager::Instance().PutMessage(Message("DeleteBonusWidget"));
+		});
+
 		cocos2d::Sequence *seq = cocos2d::Sequence::create(GetHideAnimation(), func_bonus, func_end, nullptr);
 		_texture->runAction(seq);
 	}
-}
-
-void BonusMapWidget::SendMessageAboutDelete(void)
-{
-	Message message("DeleteBonusWidget");
-	message.variables.SetInt("CELL_UID", _cell.lock()->GetUid());
-	MessageManager::Instance().PutMessage(message);
 }
 
 cocos2d::FiniteTimeAction* BonusMapWidget::GetShowAnimation(void) const

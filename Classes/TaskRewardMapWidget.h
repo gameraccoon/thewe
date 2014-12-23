@@ -2,24 +2,26 @@
 #define TASK_RESULT_WIDGET_H
 
 #include "CellGameInterface.h"
+#include "EffectsLayer.h"
 
-class TaskRewardMapWidget : public cocos2d::Node
+class CellMapWidget;
+
+class TaskRewardMapWidget : public Effect
 {
 public:
-	TaskRewardMapWidget(Cell::WeakPtr cell, const Task::Info &task, Utils::GameTime waitTime, cocos2d::Vec2 pos, float scale);
+	TaskRewardMapWidget(CellMapWidget *widget, Cell::WeakPtr cell, const Task::Info &task,
+		Utils::GameTime waitTime, cocos2d::Vec2 pos, float scale);
 
 	bool init(void) override;
 	void update(float dt) override;
+	bool IsFinished(void) const override;
 
-	void SetPickEnabled(bool flag);
 	bool IsTaskId(const std::string &id) const;
 	void PickReward(void);
 	void TouchBegan(const std::vector<cocos2d::Touch *> &touches, cocos2d::Event *event);
 	void TouchEnded(const std::vector<cocos2d::Touch *> &touches, cocos2d::Event *event);
 
-private:
-	void SendMessageAboutDelete(void) const;
-	
+private:	
 	cocos2d::FiniteTimeAction* GetJumpAnimation(void);
 	cocos2d::FiniteTimeAction* GetPickAnimation(void);
 	cocos2d::FiniteTimeAction* GetLateAnimation(void);
@@ -38,6 +40,7 @@ private:
 	float _accentEffTime;
 	bool _isDestroyMsgSended;
 	bool _isPickEnabled;
+	bool _isLiveFinished;
 	bool _isWaving;
 };
 

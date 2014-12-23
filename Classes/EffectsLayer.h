@@ -10,14 +10,15 @@ class Effect : public cocos2d::Node
 {
 	std::string _name;
 	int _zOrder;
+	cocos2d::Node *_relationObject;
 	friend class EffectsLayer;
 
 public:
-	Effect(const std::string &name, int zOrder)
-		: _name(name), _zOrder(zOrder)
-	{}
+	Effect(const std::string &name, int zOrder, cocos2d::Node *relation = nullptr);
 
-	virtual bool IsFinished(void) const {return false;}
+	virtual bool init(void) override;
+	virtual void update(float dt) override;
+	virtual bool IsFinished(void) const = 0;
 };
 
 class EffectsLayer : public cocos2d::Layer

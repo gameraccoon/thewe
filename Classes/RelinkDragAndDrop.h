@@ -2,16 +2,19 @@
 #define RELINK_DRAG_AND_DROP_H
 
 #include "CellGameInterface.h"
+#include "EffectsLayer.h"
 
 class WorldMapLayer;
+class CellMapWidget;
 
-class RelinkDragAndDrop : public cocos2d::Node
+class RelinkDragAndDrop : public Effect
 {
 public:
-	RelinkDragAndDrop(WorldMapLayer *worldMapLayer, MapProjector *projector, Cell::WeakPtr cell);
+	RelinkDragAndDrop(CellMapWidget *widget, WorldMapLayer *worldMapLayer, MapProjector *projector, Cell::WeakPtr cell);
 
 	bool init(void) override;
 	void update(float dt) override;
+	bool IsFinished(void) const override;
 
 	void TouchesBegan(const std::vector<cocos2d::Touch *> &touches, cocos2d::Event *event);
 	void TouchesMoved(const std::vector<cocos2d::Touch *> &touches, cocos2d::Event *event);
@@ -43,6 +46,7 @@ private:
 	float _timeLocal;
 	float _markAngle;
 	bool _isAttracting;
+	bool _isRelinkFinished;
 
 	static const float DRAG_WAIT_DELAY;
 	static const float DRAG_WAIT_DISTANCE;

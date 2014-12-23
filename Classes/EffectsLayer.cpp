@@ -2,6 +2,25 @@
 
 #include "Log.h"
 
+Effect::Effect(const std::string &name, int zOrder, cocos2d::Node *relation)
+	: _name(name), _zOrder(zOrder), _relationObject(relation)
+{
+}
+
+bool Effect::init(void)
+{
+	scheduleUpdate();
+	return true;
+}
+
+void Effect::update(float dt)
+{
+	if (_relationObject) {
+		setPosition(_relationObject->getPosition());
+		setScale(_relationObject->getScale());
+	}
+}
+
 EffectsLayer::EffectsLayer(void)
 {
 	init();

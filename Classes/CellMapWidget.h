@@ -45,7 +45,6 @@ private:
 		, RELINK_WIDGET
 	};
 
-	typedef std::vector<TaskRewardMapWidget *> TaskRewards;
 	typedef std::vector<BonusMapWidget *> Bonuses;
 
 private:
@@ -59,8 +58,8 @@ private:
 
 	int _projectorUid;
 	const int _cellUid;
+	bool _isRelinkMode;
 
-	TaskRewards _taskRewardsOnMap;
 	MultipleImageSprite *_cellMapSprite;
 	RoundProgressBar *_cellMapTaskProgressBar;
 	RoundProgressBar *_cellCommonProgressBar;

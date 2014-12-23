@@ -7,14 +7,16 @@ const float RelinkDragAndDrop::DRAG_WAIT_DISTANCE = 50.0f;
 const float RelinkDragAndDrop::ATTRACTION_DISTANCE = 30.0f;
 const Vector2 RelinkDragAndDrop::MARK_POSITION = Vector2(0.0f, 155.0f);
 
-RelinkDragAndDrop::RelinkDragAndDrop(WorldMapLayer *worldMapLayer, MapProjector *projector, Cell::WeakPtr cell)
-	: _worldMapLayer(worldMapLayer)
+RelinkDragAndDrop::RelinkDragAndDrop(CellMapWidget *widget, WorldMapLayer *worldMapLayer, MapProjector *projector, Cell::WeakPtr cell)
+	: Effect("RelinkDragAndDrop", 0, widget)
+	, _worldMapLayer(worldMapLayer)
 	, _projector(projector)
 	, _cell(cell)
 	, _state(State::IDLE)
 	, _timeLocal(0.0f)
 	, _markAngle(0.0f)
 	, _isAttracting(false)
+	, _isRelinkFinished(false)
 {
 	init();
 }
@@ -53,6 +55,8 @@ bool RelinkDragAndDrop::init(void)
 
 void RelinkDragAndDrop::update(float dt)
 {
+	Effect::update(dt);
+
 	if (_state == State::WAIT) {
 		_timeLocal += dt;
 		if ((_touchFirst - _touchWorld).Size() >= DRAG_WAIT_DISTANCE) {
@@ -107,6 +111,11 @@ void RelinkDragAndDrop::update(float dt)
 
 	_markAngle += 180.0f * dt;
 	_mark->setRotation3D(cocos2d::Vec3(0.0f, _markAngle, 0.0f));
+}
+
+bool RelinkDragAndDrop::IsFinished(void) const
+{
+	return _isRelinkFinished;
 }
 
 void RelinkDragAndDrop::TouchesBegan(const std::vector<cocos2d::Touch *> &touches, cocos2d::Event *event)
@@ -188,7 +197,7 @@ void RelinkDragAndDrop::TouchesEnded(const std::vector<cocos2d::Touch *> &touche
 			message2.variables.SetBool("SHOW_TOWNS", false);
 			MessageManager::Instance().PutMessage(message2);
 
-			_sprite->setPosition(0.0f, 0.0f);
+			_isRelinkFinished = true;
 		}
 		else
 		{

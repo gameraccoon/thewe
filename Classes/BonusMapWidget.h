@@ -2,14 +2,16 @@
 #define BONUS_MAP_WIDGET_H
 
 #include "CellGameInterface.h"
+#include "EffectsLayer.h"
 
-class BonusMapWidget : public cocos2d::Node
+class BonusMapWidget : public Effect
 {
 public:
-	BonusMapWidget(Cell::WeakPtr cell, Vector2 pos, Utils::GameTime waitTime);
+	BonusMapWidget(cocos2d::Node *widget, Cell::WeakPtr cell, Vector2 pos, Utils::GameTime waitTime);
 
 	bool init(void) override;
 	void update(float dt) override;
+	bool IsFinished(void) const override;
 
 	void SetBonusBehavior(const std::function<void()> &func);
 	void SetPickEnabled(bool flag);
@@ -17,8 +19,6 @@ public:
 	void TouchEnded(const std::vector<cocos2d::Touch *> &touches, cocos2d::Event *event);
 
 private:
-	void SendMessageAboutDelete(void);
-
 	cocos2d::FiniteTimeAction* GetShowAnimation(void) const;
 	cocos2d::FiniteTimeAction* GetHideAnimation(void) const;
 
@@ -34,6 +34,7 @@ private:
 
 	bool _destroyMsgSended;
 	bool _isPickEnabled;
+	bool _isLiveFinished;
 };
 
 #endif
