@@ -177,7 +177,7 @@ end
 
 function MissionSuccess_Alpha1Recrutment_university(cell, taskInfo)
 	local cellInfo = cell:getInfo()
-	local newMembersCount = math.random(2, 4)
+	local newMembersCount = math.random(3, 5)
 	SayCompleted(taskInfo.id)
 	AcceptRecrutmentParams(cell, taskInfo, newMembersCount, 0.05)
 	AddExperience(cellInfo, 2)
@@ -198,7 +198,7 @@ end
 
 function MissionSuccess_Alpha1Recrutment_government(cell, taskInfo)
 	local cellInfo = cell:getInfo()
-	local newMembersCount = math.random(1, 2)
+	local newMembersCount = math.random(2, 3)
 	SayCompleted(taskInfo.id)
 	AcceptRecrutmentParams(cell, taskInfo, newMembersCount, 0.15)
 	AddExperience(cellInfo, 15)
@@ -243,7 +243,7 @@ end
 function MissionSuccess_Alpha1DrugsTrading(cell, taskInfo)
 	local cellInfo = cell:getInfo()
 	SayCompleted(taskInfo.id)
-	cellInfo.cash = cellInfo.cash + math.random(100, 150) * 1000
+	cellInfo.cash = cellInfo.cash + math.random(120, 170) * 1000
 	cellInfo.fame = cellInfo.fame + 0.3
 	if cellInfo.fame > 1.0 then cellInfo.fame = 1.0 end
 	local newMorale = taskInfo.morale
@@ -273,7 +273,7 @@ end
 function MissionSuccess_Alpha1Autostealings(cell, taskInfo)
 	local cellInfo = cell:getInfo()
 	SayCompleted(taskInfo.id)
-	cellInfo.cash = cellInfo.cash + math.random(18, 22) * 1000
+	cellInfo.cash = cellInfo.cash + math.random(38, 42) * 1000
 	cellInfo.fame = cellInfo.fame + 0.2
 	if cellInfo.fame > 1.0 then cellInfo.fame = 1.0 end
 	local newMorale = taskInfo.morale
@@ -303,7 +303,7 @@ end
 function MissionSuccess_Alpha1Freelance(cell, taskInfo)
 	local cellInfo = cell:getInfo()
 	SayCompleted(taskInfo.id)
-	cellInfo.cash = cellInfo.cash + math.random(3, 7) * 1000
+	cellInfo.cash = cellInfo.cash + math.random(7, 9) * 1000
 	cellInfo.fame = cellInfo.fame + 0.05
 	if cellInfo.fame > 1.0 then cellInfo.fame = 1.0 end
 	local newMorale = 1.0
@@ -328,7 +328,7 @@ end
 function MissionSuccess_Alpha1PrivateDetectiveInvestigation(cell, taskInfo)
 	local cellInfo = cell:getInfo()
 	SayCompleted(taskInfo.id)
-	cellInfo.cash = cellInfo.cash + math.random(9, 12) * 1000
+	cellInfo.cash = cellInfo.cash + math.random(12, 16) * 1000
 	cellInfo.fame = cellInfo.fame + 0.1
 	if cellInfo.fame > 1.0 then cellInfo.fame = 1.0 end
 	local newMorale = 0.9
