@@ -39,7 +39,6 @@ public:
 	void SetMapInputEnabled(bool isEnabled);
 	void SetGuiEnabled(bool isEnabled);
 	void SetNextCellParent(Cell::WeakPtr parent);
-	void SetLinkCellChildren(Cell::WeakPtr children);
 
 	Cell::Ptr CreateCell(Cell::Info info, Cell::State state);
 
@@ -78,7 +77,6 @@ private:
 	GameScene *_gameScene;
 
 	Cell::WeakPtr _nextCellParent;
-	Cell::WeakPtr _linkCellChildren;
 
 	Region::WeakPtr GetRegionUnderPoint(const Vector2& point) const;
 	Cell::WeakPtr GetCellUnderPoint(const Vector2& point);

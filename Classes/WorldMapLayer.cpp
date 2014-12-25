@@ -21,7 +21,6 @@ WorldMapLayer::WorldMapLayer(GameScene *gameScene, MapProjector* projector)
 	, _mapGui(nullptr)
 	, _gameScene(gameScene)
 	, _nextCellParent()
-	, _linkCellChildren()
 	, _cellMenu(nullptr)
 	, _cellGameInterface(nullptr)
 	, _mapProjector(projector)
@@ -268,11 +267,6 @@ void WorldMapLayer::SetNextCellParent(Cell::WeakPtr parent)
 	_nextCellParent = parent;
 }
 
-void WorldMapLayer::SetLinkCellChildren(Cell::WeakPtr children)
-{
-	_linkCellChildren = children;
-}
-
 Cell::Ptr WorldMapLayer::CreateCell(Cell::Info info, Cell::State state)
 {	
 	info.state = state;
@@ -289,7 +283,7 @@ Cell::Ptr WorldMapLayer::CreateCell(Cell::Info info, Cell::State state)
 
 	CellMapWidget *widget = CreateCellWidget(cell);
 	_cellWidgets.push_back(widget);
-	addChild(widget, Z_CELL);
+	//addChild(widget, Z_CELL);
 
 	UpdateMapElements();
 
@@ -433,33 +427,11 @@ void WorldMapLayer::TouchesEnded(const std::vector<cocos2d::Touch* > &touches, c
 				Cell::Ptr cell = GetCellUnderPoint(point).lock();
 				if (cell)
 				{
-					if (  !_linkCellChildren.expired() 
-						&& _linkCellChildren.lock()->IsState(Cell::State::AUTONOMY) 
-						&& cell != _linkCellChildren.lock() 
-						&& cell->IsState(Cell::State::READY))
-					{
-						Cell::Ptr relinked = _linkCellChildren.lock();
-						relinked->GetInfo().state = Cell::State::READY;
-						relinked->GetInfo().stateBegin = 0;
-						relinked->GetInfo().stateDuration = 0;
+					Vector2 cell_pos = cell->GetInfo().location;
+					Vector2 menu_pos = _mapProjector->ProjectOnScreen(cell_pos);
 
-						World::Instance().GetCellsNetwork().RelinkCells(cell, relinked);
-						_linkCellChildren.reset();
-
-						UpdateMapElements();
-					}
-					else
-					{
-						if (World::Instance().GetCellsNetwork().IsCellRelinkable(cell) && cell->IsState(Cell::State::AUTONOMY)) {
-							_linkCellChildren = cell;
-						}
-
-						Vector2 cell_pos = cell->GetInfo().location;
-						Vector2 menu_pos = _mapProjector->ProjectOnScreen(cell_pos);
-
-						_cellMenu->DisappearImmedaitely();
-						_cellMenu->AppearWithAnimation(cell, menu_pos);
-					}
+					_cellMenu->DisappearImmedaitely();
+					_cellMenu->AppearWithAnimation(cell, menu_pos);
 
 					return;
 				}
