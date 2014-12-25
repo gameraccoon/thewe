@@ -363,7 +363,7 @@ LuaInstance* World::GetLuaInst(void) const
 int World::GetExperienceForLevel(int level) const
 {
 	return luabind::call_function<int>(_luaScript->GetLuaState()
-		, std::string("ExperienceForLevel").c_str()
+		, "ExperienceForLevel"
 		, level
 		, 0);
 }
@@ -371,7 +371,7 @@ int World::GetExperienceForLevel(int level) const
 int World::GetLevelFromExperience(int experience) const
 {
 	return luabind::call_function<int>(_luaScript->GetLuaState()
-		, std::string("LevelFromExperience").c_str()
+		, "LevelFromExperience"
 		, experience
 		, 0);
 }
@@ -379,7 +379,16 @@ int World::GetLevelFromExperience(int experience) const
 float World::GetCellPursuedLevel(Cell* cell) const
 {
 	return luabind::call_function<float>(_luaScript->GetLuaState()
-		, std::string("CalcCellPursuedLevel").c_str()
+		, "CalcCellPursuedLevel"
 		, cell
 		, 0);
 }
+
+std::function<void()> World::GetBonusCallback(Cell::WeakPtr cell) const
+{
+	return std::function<void()>([cell, this](){
+		luabind::call_function<void>(_luaScript->GetLuaState()
+			, "BonusBehavior"
+			, cell.lock().get());
+	});
+} 

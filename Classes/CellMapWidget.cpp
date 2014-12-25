@@ -178,6 +178,7 @@ void CellMapWidget::AcceptMessage(const Message &message)
 		BonusMapWidget *bonus = new BonusMapWidget(this, _cell,
 												  Vector2(0.0f, 50.0f),
 												  GameInfo::Instance().GetTime("BONUS_LIVE_TIME"));
+		bonus->SetBonusBehavior(World::Instance().GetBonusCallback(_cell));
 		bonus->autorelease();
 		_worldMapLayer->AddEffectGameField(bonus);
 	}

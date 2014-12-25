@@ -85,6 +85,8 @@ public:
 	int GetLevelFromExperience(int experience) const;
 	float GetCellPursuedLevel(Cell* cell) const;
 
+	std::function<void()> GetBonusCallback(Cell::WeakPtr cell) const;
+
 private:
 	void CalcWorldCapturingState();
 

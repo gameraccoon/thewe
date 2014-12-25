@@ -19,6 +19,14 @@ function FirstLaunch()
 	end
 end
 
+-- вызывается когда игрок подбирает бонус
+function BonusBehavior(cell)
+	local cellInfo = cell:getInfo()
+	cellInfo.cash = cellInfo.cash + math.random(1, 20) * 1000
+	cellInfo.morale = cellInfo.morale + cellInfo.morale * 0.2
+	cellInfo.experience = cellInfo.experience + cellInfo.devotion * 0.1
+end
+
 -- вычисляем уровень ячейки из опыта
 function LevelFromExperience(experience)
 	local nextLevelExp
