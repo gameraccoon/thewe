@@ -3,22 +3,14 @@
 
 #include <memory>
 #include <string>
-
-#include <cocos2d.h>
-
 #include "Vector2.h"
 #include "ArbitraryHull.h"
+#include "Drawable.h"
 
-class MapProjector : public cocos2d::Layer
+class MapProjector
 {
 public:
 	MapProjector();
-
-	static MapProjector* create();
-
-	/** Set screen center of the camera view */
-	void SetScreenCenter(Vector2 centerPos);
-	void SetMapSize(const Vector2& mapSize);
 
 	/** Project point from screen coordinates to map coordinates */
 	Vector2 ProjectOnMap(Vector2 screenPoint) const;
@@ -43,15 +35,19 @@ public:
 	/** Get current view scale */
 	float GetScale() const;
 
-	/** Update all elements position */
-	void Update();
+	/** Set screen center of camera view */
+	void SetScreenCenter(Vector2 centerPos);
+	void SetMapSize(const Vector2& mapSize);
 	
 	/** Add new element that will be projected as map part */
-	int AddProjectedChild(cocos2d::Node *node, Vector2 location, Vector2 shift, float scale, bool dontScale = false);
+	int AddMapPart(Drawable::Ptr node, Vector2 location, Vector2 shift, float scale, bool dontScale = false);
 	
 	/** Remove and destroy some element */
-	virtual void removeChild(cocos2d::Node* child, bool cleanup = true) override;
-	virtual void removeChildByTag(int tag, bool cleanup = true) override;
+	void RemoveMapPart(const Drawable::Ptr node);
+	void RemoveMapPart(unsigned int uid);
+
+	/** Update all elements position */
+	void Update();
 
 private:
 	struct MapPart
@@ -65,9 +61,9 @@ private:
 		/** Are we need to scale object with map */
 		bool isScalable;
 		/** Graphical object */
-		cocos2d::Node *node;
-		/** Unique tag */
-		int tag;
+		Drawable::Ptr node;
+		/** Unique identifier */
+		unsigned int uid;
 	};
 
 	/** Projected parts of map */
@@ -77,14 +73,13 @@ private:
 	/** Checking intersection of the screen borders and correct position if needed */
 	void _CheckBoundings();
 
-	int _GetNewPartUid(void) const;
+	unsigned int _GetNewPartUid(void) const;
 
 	/** Update position of all projected elements */
 	void _UpdateNodes();
 
-private:
-	Vector2 _viewLocation;
 	float _viewScale;
+	Vector2 _viewLocation;
 
 	Vector2 _screenCenter;
 

@@ -4,6 +4,7 @@
 #include <string>
 #include <queue>
 #include <set>
+#include <functional>
 
 #include "Region.h"
 #include "Cell.h"

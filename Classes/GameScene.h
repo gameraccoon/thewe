@@ -29,11 +29,11 @@ public:
 	void MoveViewToPoint(const Vector2& worldPoint);
 
 private:
-	MapProjector *_mapProjector;
+	MapProjector _mapProjector;
 
 	WorldMapLayer *_worldMap;
 	MainMenuScene *_mainMenuScene;
-	cocos2d::Layer *_regionEditor;
+	cocos2d::Layer *_RegionEditor;
 	cocos2d::Layer *_cellScreen;
 };
 

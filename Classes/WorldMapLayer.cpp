@@ -15,7 +15,8 @@ static const float INITIAL_TOWN_SCALE = 0.17f;
 static const float INITIAL_CELL_SCALE = 0.2f;
 
 WorldMapLayer::WorldMapLayer(GameScene *gameScene, MapProjector* projector)
-	: _isInputEnabled(true)
+	: _mapProjector(projector)
+	, _isInputEnabled(true)
 	, _isSessionScreenShowed(false)
 	, _isMapMovementsEnabled(true)
 	, _mapGui(nullptr)
@@ -23,7 +24,6 @@ WorldMapLayer::WorldMapLayer(GameScene *gameScene, MapProjector* projector)
 	, _nextCellParent()
 	, _cellMenu(nullptr)
 	, _cellGameInterface(nullptr)
-	, _mapProjector(projector)
 {
 	init();
 }
@@ -49,9 +49,10 @@ bool WorldMapLayer::init(void)
 	addChild(_networkVisualiser, Z_LINKS);
 
 	cocos2d::Sprite *mapSprite = cocos2d::Sprite::create("WorldMap.png");
-	_mapProjector->AddProjectedChild(mapSprite, Vector2(0.0f, 0.0f), Vector2(0.0f, 0.0f), 1.0f, false);
+	mapSprite->retain();
+	_mapProjector->AddMapPart(Drawable::CastFromCocos(mapSprite), Vector2(0.0f, 0.0f), Vector2(0.0f, 0.0f), 1.0f, false);
 	_mapProjector->SetMapSize(mapSprite->getTextureRect().size);
-	mapSprite->setLocalZOrder(Z_MAP);
+	addChild(mapSprite, Z_MAP);
 
 	Vector2 origin = cocos2d::Director::getInstance()->getVisibleOrigin();
 	Vector2 screen = cocos2d::Director::getInstance()->getVisibleSize();
@@ -62,13 +63,14 @@ bool WorldMapLayer::init(void)
 	{
 		CellMapWidget *widget = CreateCellWidget(cell);
 		_cellWidgets.push_back(widget);
-		widget->setLocalZOrder(Z_CELL);
+		addChild(widget, Z_CELL);
 	}
 	
 	for (const Town::Ptr town : World::Instance().GetTowns())
 	{
 		TownMapWidget *widget = CreateTownWidget(town);
 		_townWidgets.push_back(widget);
+		addChild(widget, Z_TOWN);
 	}
 
 	SetTownsVisibility(false);
@@ -133,9 +135,9 @@ void WorldMapLayer::AcceptMessage(const Message &msg)
 
 			if (World::Instance().GetTutorialManager().IsTutorialStateAvailable("WaitForCatchingFirstInvestigator"))
 			{
-				/*dynamic_cast<GameScene*>(getParent())->MoveViewToPoint(
+				dynamic_cast<GameScene*>(getParent())->MoveViewToPoint(
 					investigator->GetInvestigationRoot().lock()->GetInfo().town.lock()->GetLocation());
-				UpdateMapElements();*/
+				UpdateMapElements();
 			}
 		}
 	}
@@ -160,7 +162,7 @@ void WorldMapLayer::AcceptMessage(const Message &msg)
 			if (widget->GetCellUid() == msg.variables.GetInt("UID"))
 			{
 				removeChild(widget);
-				_mapProjector->removeChildByTag(widget->GetProjectorUid());
+				_mapProjector->RemoveMapPart(widget->GetProjectorUid());
 				_mapProjector->Update();
 				UpdateMapElements();
 				it = _cellWidgets.erase(it);
@@ -283,7 +285,7 @@ Cell::Ptr WorldMapLayer::CreateCell(Cell::Info info, Cell::State state)
 
 	CellMapWidget *widget = CreateCellWidget(cell);
 	_cellWidgets.push_back(widget);
-	//addChild(widget, Z_CELL);
+	addChild(widget, Z_CELL);
 
 	UpdateMapElements();
 
@@ -519,9 +521,8 @@ void WorldMapLayer::BackToMainMenuCallback(cocos2d::Ref *sender)
 CellMapWidget* WorldMapLayer::CreateCellWidget(Cell::Ptr cell)
 {
 	CellMapWidget *widget = new CellMapWidget(this, _mapProjector, cell);
-	widget->autorelease();
 	
-	int uid = _mapProjector->AddProjectedChild(widget, cell->GetInfo().location, Vector2(0.0f, 0.0f), INITIAL_CELL_SCALE, true);
+	int uid = _mapProjector->AddMapPart(Drawable::CastFromCocos(widget), cell->GetInfo().location, Vector2(0.0f, 0.0f), INITIAL_CELL_SCALE, true);
 	_mapProjector->Update();
 
 	cocos2d::Rect tex = widget->GetCellRect();
@@ -538,12 +539,9 @@ CellMapWidget* WorldMapLayer::CreateCellWidget(Cell::Ptr cell)
 TownMapWidget* WorldMapLayer::CreateTownWidget(Town::Ptr town)
 {
 	TownMapWidget *widget = new TownMapWidget(town);
-	widget->autorelease();
 	
-	int uid = _mapProjector->AddProjectedChild(widget, town->GetInfo().location, Vector2(0.0f, 0.0f), INITIAL_TOWN_SCALE, true);
+	int uid = _mapProjector->AddMapPart(Drawable::CastFromCocos(widget), town->GetInfo().location, Vector2(0.0f, 0.0f), INITIAL_TOWN_SCALE, true);
 	_mapProjector->Update();
-
-	widget->setLocalZOrder(Z_TOWN);
 
 	cocos2d::Rect tex = widget->GetTownRect();
 	float w = tex.size.width * widget->getScaleX();
