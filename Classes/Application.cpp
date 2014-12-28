@@ -39,6 +39,7 @@ bool AppDelegate::applicationDidFinishLaunching()
 	cocos2d::FileUtils::getInstance()->addSearchPath(resourcesPath + "worldinfo");
 	cocos2d::FileUtils::getInstance()->addSearchPath(resourcesPath + "saves");
 	cocos2d::FileUtils::getInstance()->addSearchPath(resourcesPath + "scripts");
+	cocos2d::FileUtils::getInstance()->addSearchPath(resourcesPath + "shaders");
 	cocos2d::FileUtils::getInstance()->addSearchPath(resourcesPath + "fonts");
 	cocos2d::FileUtils::getInstance()->addSearchPath(resourcesPath + "texts");
 	

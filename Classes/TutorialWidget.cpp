@@ -59,7 +59,23 @@ bool TutorialWidget::init()
 		tutorialText->setString(_tutorial.lock()->text);
 	}
 
-	addChild(widget);
+	cocos2d::Sprite *spot1 = cocos2d::Sprite::create("tutorial_spot.png");
+	spot1->setPosition(cocos2d::Director::getInstance()->getVisibleSize() * 0.5f);
+	spot1->setScale(3.0f);
+	spot1->retain();
+
+	cocos2d::Sprite *spot2 = cocos2d::Sprite::create("tutorial_spot.png");
+	spot2->setPosition(0.0f, 0.0f);
+	spot2->setAnchorPoint(cocos2d::Vec2(0.0f, 0.0f));
+	spot2->setScale(1.5f);
+	spot2->retain();
+
+	ScreenBlackoutWidget *blackout = ScreenBlackoutWidget::create(cocos2d::Color4F(0.0f, 0.0f, 0.0f, 0.9f));
+	blackout->AddSpot(spot1);
+	blackout->AddSpot(spot2);
+
+	addChild(widget, 0);
+	addChild(blackout, 1);
 
 	return true;
 }

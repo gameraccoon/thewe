@@ -6,6 +6,7 @@
 #include <ui/CocosGUI.h>
 
 #include "Tutorial.h"
+#include "ScreenBlackoutWidget.h"
 
 class TutorialWidget : public cocos2d::Node
 {
