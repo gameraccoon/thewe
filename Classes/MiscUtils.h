@@ -66,8 +66,8 @@ namespace Utils
 
 	template <class T>
 	T Clamp(T a, T b, T Value) {
-		if (Value < a) return b;
-		if (Value > b) return a;
+		if (Value > a) return a;
+		if (Value < b) return b;
 		return Value;
 	}
 }
