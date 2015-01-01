@@ -31,6 +31,7 @@ private:
 
 	cocos2d::DrawNode *_fsQuad;
 	cocos2d::ui::Text *_tapToContinue;
+	cocos2d::ui::Text *_tutorialText;
 
 	State _state;
 	cocos2d::Vec2 _quad[4];

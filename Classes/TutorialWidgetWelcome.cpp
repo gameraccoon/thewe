@@ -80,14 +80,14 @@ bool TutorialWidgetWelcome::init()
 	cocos2d::MoveTo *welcome_move = cocos2d::MoveTo::create(1.0f, cocos2d::Vec2(0.0f, 0.0f));
 	cocos2d::DelayTime *welcome_delay = cocos2d::DelayTime::create(1.0f);
 
-	cocos2d::ui::Text *welcomeText = cocos2d::ui::Text::create(_tutorial.lock()->text, "EuropeNormal.ttf", 30);
-	welcomeText->setPosition(cocos2d::Vec2(0.0f, view.width));
-	welcomeText->setTextHorizontalAlignment(cocos2d::TextHAlignment::CENTER);
-	welcomeText->runAction(cocos2d::Sequence::create(welcome_delay, welcome_move, nullptr));
+	_tutorialText = cocos2d::ui::Text::create(_tutorial.lock()->text, "EuropeNormal.ttf", 30);
+	_tutorialText->setPosition(cocos2d::Vec2(0.0f, view.height));
+	_tutorialText->setTextHorizontalAlignment(cocos2d::TextHAlignment::CENTER);
+	_tutorialText->runAction(cocos2d::Sequence::create(welcome_delay, welcome_move, nullptr));
 
 	addChild(_fsQuad, 0);
 	addChild(_tapToContinue, 1);
-	addChild(welcomeText, 1);
+	addChild(_tutorialText, 1);
 	scheduleUpdate();
 
 	return true;
@@ -139,6 +139,14 @@ void TutorialWidgetWelcome::TouchesEnded(const std::vector<cocos2d::Touch *> &to
 {
 	if (_state == State::WAIT) {
 		_state = State::FADE_OUT;
+
+		cocos2d::Size view = cocos2d::Director::getInstance()->getVisibleSize();
+		cocos2d::MoveTo *move1 = cocos2d::MoveTo::create(0.25f, cocos2d::Vec2(0.0f, view.height));
+		cocos2d::MoveTo *move2 = cocos2d::MoveTo::create(0.5f, cocos2d::Vec2(0.0f, -view.height));
+		cocos2d::DelayTime *delay = cocos2d::DelayTime::create(0.25f);
+
+		_tapToContinue->runAction(move2);
+		_tutorialText->runAction(cocos2d::Sequence::create(delay, move1, nullptr));
 	}
 
 	event->stopPropagation();
