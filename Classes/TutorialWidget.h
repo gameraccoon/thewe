@@ -7,21 +7,20 @@
 
 #include "Tutorial.h"
 #include "ScreenBlackoutWidget.h"
+#include "Localization.h"
 
 class TutorialWidget : public cocos2d::Node
 {
 public:
-	explicit TutorialWidget(Tutorial::WeakPtr tutorial);
+	static TutorialWidget* Make(Tutorial::WeakPtr tutorial);
 
-	static TutorialWidget* create(Tutorial::WeakPtr tutorial);
+	TutorialWidget(Tutorial::WeakPtr tutorial);
 
-	bool IsReadyToClose() const;
+	virtual bool IsReadyToClose(void) const;
 
-private:
-	virtual bool init() override;
+protected:
 	void OnContinueCallback(cocos2d::Ref *sender, cocos2d::ui::Widget::TouchEventType eventType);
 
-private:
 	Tutorial::WeakPtr _tutorial;
 };
 

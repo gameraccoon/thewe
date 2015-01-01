@@ -46,7 +46,7 @@ void TutorialLayer::update(float delta)
 			Vector2 screen = director->getVisibleSize();
 			Vector2 origin = director->getVisibleOrigin();
 
-			_currentTutorial = TutorialWidget::create(World::Instance().GetTutorialManager().GetCurrentTutorial());
+			_currentTutorial = TutorialWidget::Make(World::Instance().GetTutorialManager().GetCurrentTutorial());
 			addChild(_currentTutorial);
 			_currentTutorial->setPosition(origin + screen/2);
 		}

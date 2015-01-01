@@ -43,6 +43,9 @@
     <Filter Include="Classes\UI">
       <UniqueIdentifier>{24112e01-a8b7-448a-8d27-f6c22026385b}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Classes\Tutorial\Widgets">
+      <UniqueIdentifier>{da04a231-f4f6-4af1-9075-ae0d3b875785}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -387,6 +390,12 @@
     <ClCompile Include="..\Classes\ScreenBlackoutWidget.cpp">
       <Filter>Classes\Tutorial</Filter>
     </ClCompile>
+    <ClCompile Include="..\Classes\TutorialWidgetWelcome.cpp">
+      <Filter>Classes\Tutorial\Widgets</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\TutorialWidgetFirstCell.cpp">
+      <Filter>Classes\Tutorial\Widgets</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="main.h">
@@ -667,6 +676,12 @@
     </ClInclude>
     <ClInclude Include="..\Classes\ScreenBlackoutWidget.h">
       <Filter>Classes\Tutorial</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\TutorialWidgetWelcome.h">
+      <Filter>Classes\Tutorial\Widgets</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\TutorialWidgetFirstCell.h">
+      <Filter>Classes\Tutorial\Widgets</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

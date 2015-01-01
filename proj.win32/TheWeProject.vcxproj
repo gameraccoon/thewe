@@ -193,6 +193,8 @@ xcopy /Y /Q "$(EngineRoot)external\websockets\prebuilt\win32\*.lib" "$(SolutionD
     <ClCompile Include="..\Classes\TutorialLayer.cpp" />
     <ClCompile Include="..\Classes\TutorialManager.cpp" />
     <ClCompile Include="..\Classes\TutorialWidget.cpp" />
+    <ClCompile Include="..\Classes\TutorialWidgetFirstCell.cpp" />
+    <ClCompile Include="..\Classes\TutorialWidgetWelcome.cpp" />
     <ClCompile Include="..\Classes\UserMessage.cpp" />
     <ClCompile Include="..\Classes\Vector2.cpp" />
     <ClCompile Include="..\Classes\World.cpp" />
@@ -310,6 +312,8 @@ xcopy /Y /Q "$(EngineRoot)external\websockets\prebuilt\win32\*.lib" "$(SolutionD
     <ClInclude Include="..\Classes\TutorialLayer.h" />
     <ClInclude Include="..\Classes\TutorialManager.h" />
     <ClInclude Include="..\Classes\ScreenBlackoutWidget.h" />
+    <ClInclude Include="..\Classes\TutorialWidgetFirstCell.h" />
+    <ClInclude Include="..\Classes\TutorialWidgetWelcome.h" />
     <ClInclude Include="..\Classes\TutorialWidget.h" />
     <ClInclude Include="..\Classes\UserMessage.h" />
     <ClInclude Include="..\Classes\Vector2.h" />

@@ -11,7 +11,7 @@ public:
 	static TutorialLayer* create();
 
 	virtual bool init(void) override;
-	virtual void update(float delta);
+	virtual void update(float delta) override;
 
 private:
 	TutorialWidget* _currentTutorial;
