@@ -3,16 +3,19 @@
 #include <math.h>
 
 #include "World.h"
+#include "WorldMapLayer.h"
 #include "GameScene.h"
 
-TutorialLayer::TutorialLayer()
+TutorialLayer::TutorialLayer(WorldMapLayer *worldMapLayer, MapProjector *projector)
 	: _currentTutorial(nullptr)
+	, _worldMapLayer(worldMapLayer)
+	, _projector(projector)
 {
 }
 
-TutorialLayer* TutorialLayer::create()
+TutorialLayer* TutorialLayer::create(WorldMapLayer *worldMapLayer, MapProjector *projector)
 {
-	TutorialLayer* ret = new TutorialLayer();
+	TutorialLayer* ret = new TutorialLayer(worldMapLayer, projector);
 	if (ret && ret->init())
 	{
 		ret->autorelease();
@@ -46,7 +49,9 @@ void TutorialLayer::update(float delta)
 			Vector2 screen = director->getVisibleSize();
 			Vector2 origin = director->getVisibleOrigin();
 
-			_currentTutorial = TutorialWidget::Make(World::Instance().GetTutorialManager().GetCurrentTutorial());
+			_currentTutorial = TutorialWidget::Make(World::Instance().GetTutorialManager().GetCurrentTutorial(),
+				                                    _worldMapLayer,
+													_projector);
 			addChild(_currentTutorial);
 			_currentTutorial->setPosition(origin + screen/2);
 		}

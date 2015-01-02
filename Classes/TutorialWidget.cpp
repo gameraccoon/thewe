@@ -1,17 +1,23 @@
 #include "TutorialWidget.h"
 
+#include "WorldMapLayer.h"
+#include "MapProjector.h"
+
 #include "TutorialWidgetWelcome.h"
 #include "TutorialWidgetFirstCell.h"
+#include "TutorialWidgetAfterFirstCell.h"
 
-TutorialWidget* TutorialWidget::Make(Tutorial::WeakPtr tutorial)
+TutorialWidget* TutorialWidget::Make(Tutorial::WeakPtr tutorial, WorldMapLayer *worldMapLayer, MapProjector *projector)
 {
 	TutorialWidget *widget;
 	std::string name = tutorial.lock()->widgetName;
 
 	if (name == "Welcome") {
 		widget = TutorialWidgetWelcome::create(tutorial);
+	} else if (name == "FirstCell") {
+		widget = TutorialWidgetFirstCell::create(tutorial, worldMapLayer, projector);
 	} else {
-		widget = TutorialWidgetFirstCell::create(tutorial);
+		widget = TutorialWidgetAfterFirstCell::create(tutorial);
 	}
 
 	return widget;

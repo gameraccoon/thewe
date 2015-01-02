@@ -181,6 +181,11 @@ void WorldMapLayer::AcceptMessage(const Message &msg)
 		_isMapMovementsEnabled = false;
 		SetTownsVisibility(msg.variables.GetBool("SHOW_TOWNS"));
 	}
+	else if (msg.is("EnableMapScrolling")) {
+		_isMapMovementsEnabled = true;
+	} else if (msg.is("DisableMapScrolling")) {
+		_isMapMovementsEnabled = false;
+	}
 	else if (msg.is("RelinkCell"))
 	{
 		Cell::Ptr relink_cell = World::Instance().GetCellsNetwork().GetCellByUid(msg.variables.GetInt("RELINK_CELL_UID"));

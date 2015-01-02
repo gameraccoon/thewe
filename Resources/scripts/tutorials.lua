@@ -7,7 +7,7 @@ local TutorialManager = World:getTutorialManager()
 
 function RunTutorial_Welcome()
 	TutorialManager:addTutorial(Tutorial("Welcome", GetLocalizedString("Tutorial_Welcome_Step1"), ContinueText))
-	TutorialManager:addTutorial(Tutorial(ACTION_TUTORIAL, GetLocalizedString("Tutorial_Welcome_Step2")))
+	TutorialManager:addTutorial(Tutorial("FirstCell", GetLocalizedString("Tutorial_Welcome_Step2")))
 
 	-- запускаем цепочки туториалов
 	TutorialManager:addTutorialState("FirstCell")
