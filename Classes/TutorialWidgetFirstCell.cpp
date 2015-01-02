@@ -83,13 +83,12 @@ void TutorialWidgetFirstCell::update(float dt)
 			_time = 0.0f;
 			_state = State::WAIT;
 
+			MessageManager::Instance().PutMessage(Message("DisableMapScrolling"));
+
 			cocos2d::Size view = cocos2d::Director::getInstance()->getVisibleSize();
 			cocos2d::MoveTo *move = cocos2d::MoveTo::create(0.5f, cocos2d::Vec2(200.0f, -100.0f));
-			cocos2d::CallFunc *func =  cocos2d::CallFunc::create([](){
-				MessageManager::Instance().PutMessage(Message("DisableMapScrolling"));
-			});
 			
-			_tutorialText->runAction(cocos2d::Sequence::create(move, func, nullptr));
+			_tutorialText->runAction(cocos2d::Sequence::create(move, nullptr));
 		}
 	}
 
