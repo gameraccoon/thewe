@@ -265,7 +265,6 @@ void WorldMapLayer::SetGuiEnabled(bool isEnabled)
 		_mapGui = new MapGuiLayer(_mapProjector);
 		addChild(_mapGui, Z_MAP_GUI);
 		_mapGui->autorelease();
-		_mapProjector->SetScale(_mapProjector->GetScale());
 	}
 }
 
