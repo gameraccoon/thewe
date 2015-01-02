@@ -384,6 +384,11 @@ CellMapWidget* WorldMapLayer::GetNearestCellWidget(const Vector2 &pointOnScreen,
 	return result;
 }
 
+bool WorldMapLayer::IsCellMenuOpened(void) const
+{
+	return _cellMenu->isOpened();
+}
+
 void WorldMapLayer::AddEffectAbsolute(Effect *effect)
 {
 	_effectsAbsolute->AddEffect(effect);

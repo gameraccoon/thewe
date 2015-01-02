@@ -16,6 +16,7 @@ class TutorialWidget : public cocos2d::Node
 {
 public:
 	static TutorialWidget* Make(Tutorial::WeakPtr tutorial, WorldMapLayer *worldMapLayer, MapProjector *projector);
+	static cocos2d::Action* Arrow(const cocos2d::Vec2 &dir, float amplitude, float time);
 
 	virtual bool IsReadyToClose(void) const;
 

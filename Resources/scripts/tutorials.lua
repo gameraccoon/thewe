@@ -15,7 +15,7 @@ function RunTutorial_Welcome()
 end
 
 function RunTutorial_AfterCreatingFirstCell()
-	TutorialManager:addTutorial(Tutorial(ACTION_TUTORIAL, GetLocalizedString("Tutorial_AfterCreatingFirstCell")))
+	TutorialManager:addTutorial(Tutorial("AfterFirstCell", GetLocalizedString("Tutorial_AfterCreatingFirstCell")))
 
 	TutorialManager:addTutorialState("StartFirstTask");
 	TutorialManager:removeTutorialState("FirstCell");
