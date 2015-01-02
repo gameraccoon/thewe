@@ -2,9 +2,22 @@
 
 #include "Log.h"
 
-MultipleImageSprite::MultipleImageSprite(void)
+MultipleImageSprite::MultipleImageSprite()
 {
-	init();
+}
+
+MultipleImageSprite* MultipleImageSprite::create()
+{
+	MultipleImageSprite* ret = new MultipleImageSprite();
+	if (ret && ret->init())
+	{
+		ret->autorelease();
+	}
+	else
+	{
+		CC_SAFE_DELETE(ret);
+	}
+	return ret;
 }
 
 bool MultipleImageSprite::init(void)
