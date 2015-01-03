@@ -54,7 +54,7 @@ bool TutorialWidgetFirstCell::init()
 
 	cocos2d::Size view = cocos2d::Director::getInstance()->getVisibleSize();
 
-	_tutorialText = cocos2d::ui::Text::create(LocalizationManager::Instance().getText(_tutorial.lock()->text), "EuropeNormal.ttg", 32);
+	_tutorialText = cocos2d::ui::Text::create(LocalizationManager::Instance().getText(_tutorial.lock()->text), "EuropeNormal.ttf", 32);
 	_tutorialText->setTextVerticalAlignment(cocos2d::TextVAlignment::CENTER);
 	_tutorialText->setTextHorizontalAlignment(cocos2d::TextHAlignment::CENTER);
 	_tutorialText->setTextAreaSize(cocos2d::Size(300.0f, 500.0f));

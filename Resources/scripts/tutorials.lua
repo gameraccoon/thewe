@@ -22,7 +22,7 @@ function RunTutorial_AfterCreatingFirstCell()
 end
 
 function RunTutorial_BeforeStartFirstTask()
-	TutorialManager:addTutorial(Tutorial(ACTION_TUTORIAL, GetLocalizedString("Tutorial_BeforeStartFirstTask")))
+	TutorialManager:addTutorial(Tutorial("StartFirstTask", GetLocalizedString("Tutorial_BeforeStartFirstTask")))
 
 	TutorialManager:addTutorialState("WaitingForStartFirstTask");
 	TutorialManager:removeTutorialState("StartFirstTask");

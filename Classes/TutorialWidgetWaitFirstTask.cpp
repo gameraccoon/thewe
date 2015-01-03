@@ -1,4 +1,4 @@
-#include "TutorialWidgetBeforeFirstTask.h"
+#include "TutorialWidgetWaitFirstTask.h"
 
 #include <luabind/luabind.hpp>
 
@@ -7,14 +7,14 @@
 #include "World.h"
 #include "Log.h"
 
-TutorialWidgetBeforeFirstTask::TutorialWidgetBeforeFirstTask(Tutorial::WeakPtr tutorial)
+TutorialWidgetWaitFirstTask::TutorialWidgetWaitFirstTask(Tutorial::WeakPtr tutorial)
 	: TutorialWidget(tutorial)
 {
 }
 
-TutorialWidgetBeforeFirstTask* TutorialWidgetBeforeFirstTask::create(Tutorial::WeakPtr tutorial)
+TutorialWidgetWaitFirstTask* TutorialWidgetWaitFirstTask::create(Tutorial::WeakPtr tutorial)
 {
-	TutorialWidgetBeforeFirstTask* ret = new TutorialWidgetBeforeFirstTask(tutorial);
+	TutorialWidgetWaitFirstTask* ret = new TutorialWidgetWaitFirstTask(tutorial);
 	if (ret && ret->init())
 	{
 		ret->autorelease();
@@ -26,7 +26,7 @@ TutorialWidgetBeforeFirstTask* TutorialWidgetBeforeFirstTask::create(Tutorial::W
 	return ret;
 }
 
-bool TutorialWidgetBeforeFirstTask::init()
+bool TutorialWidgetWaitFirstTask::init()
 {
 	if (!cocos2d::Node::init())
 	{
@@ -50,7 +50,7 @@ bool TutorialWidgetBeforeFirstTask::init()
 
 	if (btnContinue)
 	{
-		btnContinue->addTouchEventListener(CC_CALLBACK_2(TutorialWidgetBeforeFirstTask::OnContinueCallback, this));
+		btnContinue->addTouchEventListener(CC_CALLBACK_2(TutorialWidgetWaitFirstTask::OnContinueCallback, this));
 		btnContinue->setTitleText(_tutorial.lock()->buttonText);
 	}
 
