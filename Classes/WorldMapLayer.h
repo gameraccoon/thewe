@@ -49,6 +49,8 @@ public:
 	TownMapWidget* GetNearestTownWidget(const Vector2 &pointOnScreen, float radius) const;
 	CellMapWidget* GetNearestCellWidget(const Vector2 &pointOnScreen, float radius) const;
 
+	bool IsCellMenuOpened(void) const;
+
 	void AddEffectAbsolute(Effect *effect);
 	void AddEffectGameField(Effect *effect);
 

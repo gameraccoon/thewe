@@ -53,6 +53,8 @@ LOCAL_SRC_FILES := hellocpp/main.cpp \
 				   	../../Classes/ProgressBar.cpp \
 				   	../../Classes/ProgressTapWidget.cpp \
 				   	../../Classes/Region.cpp \
+				   	../../Classes/RelinkDragAndDrop.cpp \
+				   	../../Classes/ScreenBlackoutWidget.cpp \
 				   	../../Classes/SessionEndScreen.cpp \
 				   	../../Classes/SpinoffDragAndDrop.cpp \
 				   	../../Classes/SplashScreenScene.cpp \
@@ -69,6 +71,9 @@ LOCAL_SRC_FILES := hellocpp/main.cpp \
 				   	../../Classes/TutorialLayer.cpp \
 				   	../../Classes/TutorialManager.cpp \
 				   	../../Classes/TutorialWidget.cpp \
+				   	../../Classes/TutorialWidgetFirstCell.cpp \
+				   	../../Classes/TutorialWidgetAfterFirstCell.cpp \
+				   	../../Classes/TutorialWidgetWelcome.cpp \
 				   	../../Classes/UserMessage.cpp \
 				   	../../Classes/Vector2.cpp \
 				   	../../Classes/World.cpp \

@@ -30,8 +30,7 @@ bool RelinkDragAndDrop::init(void)
 	listener->onTouchesCancelled = CC_CALLBACK_2(RelinkDragAndDrop::TouchesCancelled, this);
 	cocos2d::Director::getInstance()->getEventDispatcher()->addEventListenerWithSceneGraphPriority(listener, this);
 
-	_sprite = new MultipleImageSprite();
-	_sprite->autorelease();
+	_sprite = MultipleImageSprite::create();
 	_sprite->setPosition(0.0f, 0.0f);
 	_sprite->setScale(1.0f);
 	_sprite->AddImage("Drag", "relink-drag.png");

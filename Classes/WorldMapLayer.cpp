@@ -181,6 +181,11 @@ void WorldMapLayer::AcceptMessage(const Message &msg)
 		_isMapMovementsEnabled = false;
 		SetTownsVisibility(msg.variables.GetBool("SHOW_TOWNS"));
 	}
+	else if (msg.is("EnableMapScrolling")) {
+		_isMapMovementsEnabled = true;
+	} else if (msg.is("DisableMapScrolling")) {
+		_isMapMovementsEnabled = false;
+	}
 	else if (msg.is("RelinkCell"))
 	{
 		Cell::Ptr relink_cell = World::Instance().GetCellsNetwork().GetCellByUid(msg.variables.GetInt("RELINK_CELL_UID"));
@@ -260,7 +265,6 @@ void WorldMapLayer::SetGuiEnabled(bool isEnabled)
 		_mapGui = new MapGuiLayer(_mapProjector);
 		addChild(_mapGui, Z_MAP_GUI);
 		_mapGui->autorelease();
-		_mapProjector->SetScale(_mapProjector->GetScale());
 	}
 }
 
@@ -378,6 +382,11 @@ CellMapWidget* WorldMapLayer::GetNearestCellWidget(const Vector2 &pointOnScreen,
 	}
 
 	return result;
+}
+
+bool WorldMapLayer::IsCellMenuOpened(void) const
+{
+	return _cellMenu->isOpened();
 }
 
 void WorldMapLayer::AddEffectAbsolute(Effect *effect)

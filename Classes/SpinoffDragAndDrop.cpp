@@ -30,9 +30,8 @@ bool SpinoffDragAndDrop::init(void)
 	listener->onTouchesCancelled = CC_CALLBACK_2(SpinoffDragAndDrop::TouchesCancelled, this);
 	cocos2d::Director::getInstance()->getEventDispatcher()->addEventListenerWithSceneGraphPriority(listener, this);
 
-	_texture = new MultipleImageSprite();
+	_texture = MultipleImageSprite::create();
 	_texture->setPosition(0.0f, 0.0f);
-	_texture->autorelease();
 	_texture->AddImage("normal", "1_norm.png");
 	_texture->AddImage("pressed", "1_press.png");
 	_texture->AddImage("disabled", "1_disabled.png");

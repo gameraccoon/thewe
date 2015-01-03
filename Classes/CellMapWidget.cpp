@@ -40,22 +40,20 @@ bool CellMapWidget::init(void)
 	touch->onTouchesEnded = CC_CALLBACK_2(CellMapWidget::TouchEnded, this);
 	cocos2d::Director::getInstance()->getEventDispatcher()->addEventListenerWithSceneGraphPriority(touch, this);
 
-	_cellMapSprite = new MultipleImageSprite();
+	_cellMapSprite = MultipleImageSprite::create();
 	_cellMapSprite->setPosition(0.0f, 0.0f);
 	_cellMapSprite->setScale(1.0f);
-	_cellMapSprite->autorelease();
 	_cellMapSprite->AddImage("normal", "cell.png");
 	_cellMapSprite->AddImage("arrested", "cell_arrested.png");
 	_cellMapSprite->SetCurrentImage("normal");
 
-	_cellMapTaskProgressBar = new RoundProgressBar("cell_overlay.png", 1.0f);
+	_cellMapTaskProgressBar = RoundProgressBar::create("cell_overlay.png", 1.0f);
 	_cellMapTaskProgressBar->SetProgressImmediately(0.0f);
 	_cellMapTaskProgressBar->setPosition(0.0f, 0.0f);
 	_cellMapTaskProgressBar->setVisible(false);
 	_cellMapTaskProgressBar->ToggleReverse(true);
-	_cellMapTaskProgressBar->autorelease();
 
-	_cellCommonProgressBar = new RoundProgressBar("cell.png", 0.8f);
+	_cellCommonProgressBar = RoundProgressBar::create("cell.png", 0.8f);
 	_cellCommonProgressBar->setPosition(0.0f, 0.0f);
 	_cellCommonProgressBar->SetProgressImmediately(0.0f);
 

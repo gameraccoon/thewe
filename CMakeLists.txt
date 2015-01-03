@@ -99,6 +99,7 @@ set(GAME_SRC
 	Classes/ProgressTapWidget.cpp
 	Classes/RelinkDragAndDrop.cpp
 	Classes/Region.cpp
+	Classes/ScreenBlackoutWidget.cpp
 	Classes/SessionEndScreen.cpp
 	Classes/SpinoffDragAndDrop.cpp
 	Classes/SplashScreenScene.cpp
@@ -113,6 +114,10 @@ set(GAME_SRC
 	Classes/TransitionZoomFade.cpp
 	Classes/TutorialLayer.cpp
 	Classes/TutorialManager.cpp
+	Classes/TutorialWidget.cpp
+	Classes/TutorialWidgetAfterFirstCell.cpp
+	Classes/TutorialWidgetFirstCell.cpp
+	Classes/TutorialWidgetWelcome.cpp
 	Classes/TutorialWidget.cpp
 	Classes/UserMessage.cpp
 	Classes/Vector2.cpp

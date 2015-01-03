@@ -14,6 +14,7 @@ public:
 	void AddSpot(cocos2d::Sprite *spot);
 	void RemoveSpot(cocos2d::Sprite *spot, bool release = true);
 	void ClearSpots(void);
+	void SetBackgroundColor(const cocos2d::Color4F &color);
 
 protected:
 	ScreenBlackoutWidget(void);

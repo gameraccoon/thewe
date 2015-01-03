@@ -35,7 +35,7 @@ bool GameScene::init(void)
 
 	scheduleUpdate();
 
-	addChild(TutorialLayer::create());
+	addChild(TutorialLayer::create(_worldMap, &_mapProjector));
 	addChild(NotificationMessageLayer::create());
 
 	return true;

@@ -57,6 +57,12 @@ void ScreenBlackoutWidget::ClearSpots(void)
 	_spots.clear();
 }
 
+void ScreenBlackoutWidget::SetBackgroundColor(const cocos2d::Color4F &color)
+{
+	_mask->getSprite()->getGLProgramState()->setUniformVec4("u_backgroundColor",
+		cocos2d::Vec4(color.r, color.g, color.b, color.a));
+}
+
 bool ScreenBlackoutWidget::initWithColor(cocos2d::Color4F color)
 {
 	_maskProg = cocos2d::GLProgram::createWithFilenames("create_alpha_mask.vsh", "create_alpha_mask.fsh");

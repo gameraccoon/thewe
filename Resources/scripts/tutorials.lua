@@ -7,7 +7,7 @@ local TutorialManager = World:getTutorialManager()
 
 function RunTutorial_Welcome()
 	TutorialManager:addTutorial(Tutorial("Welcome", GetLocalizedString("Tutorial_Welcome_Step1"), ContinueText))
-	TutorialManager:addTutorial(Tutorial(ACTION_TUTORIAL, GetLocalizedString("Tutorial_Welcome_Step2")))
+	TutorialManager:addTutorial(Tutorial("FirstCell", GetLocalizedString("Tutorial_Welcome_Step2")))
 
 	-- запускаем цепочки туториалов
 	TutorialManager:addTutorialState("FirstCell")
@@ -15,14 +15,14 @@ function RunTutorial_Welcome()
 end
 
 function RunTutorial_AfterCreatingFirstCell()
-	TutorialManager:addTutorial(Tutorial(ACTION_TUTORIAL, GetLocalizedString("Tutorial_AfterCreatingFirstCell")))
+	TutorialManager:addTutorial(Tutorial("AfterFirstCell", GetLocalizedString("Tutorial_AfterCreatingFirstCell")))
 
 	TutorialManager:addTutorialState("StartFirstTask");
 	TutorialManager:removeTutorialState("FirstCell");
 end
 
 function RunTutorial_BeforeStartFirstTask()
-	TutorialManager:addTutorial(Tutorial(ACTION_TUTORIAL, GetLocalizedString("Tutorial_BeforeStartFirstTask")))
+	TutorialManager:addTutorial(Tutorial("StartFirstTask", GetLocalizedString("Tutorial_BeforeStartFirstTask")))
 
 	TutorialManager:addTutorialState("WaitingForStartFirstTask");
 	TutorialManager:removeTutorialState("StartFirstTask");

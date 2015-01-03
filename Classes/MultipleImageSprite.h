@@ -8,7 +8,8 @@
 class MultipleImageSprite : public cocos2d::Node
 {
 public:
-	MultipleImageSprite(void);
+	MultipleImageSprite();
+	static MultipleImageSprite* create();
 
 	bool init(void) override;
 	void setOpacity(GLubyte opacity) override;

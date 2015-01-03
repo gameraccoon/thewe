@@ -78,6 +78,11 @@ bool CellTasksScreen::init(void)
 
 void CellTasksScreen::CloseMenu(void)
 {
+	// we don't want to close menu then tutorial in the screen.
+	if (World::Instance().GetTutorialManager().IsTutorialStateAvailable("WaitingForStartFirstTask")) {
+		return;
+	}
+
 	cocos2d::ScaleTo *scale = cocos2d::ScaleTo::create(0.2f, 0.2f, 0.01f);
 	cocos2d::EaseElasticIn *elastic_scale = cocos2d::EaseElasticIn::create(scale, 5.0f);
 	cocos2d::CallFunc *func = cocos2d::CallFunc::create(CC_CALLBACK_0(CellMenuSelector::OnMenuClosed, _cellMenu));

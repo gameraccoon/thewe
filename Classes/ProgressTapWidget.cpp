@@ -1,24 +1,35 @@
 #include "ProgressTapWidget.h"
 
 ProgressTapWidget::ProgressTapWidget() :
-_currentRepetitionMode(endless),
-isRoundingNow(false),
-_roundsLeft(0.0f),
-_tapChangeValue(-1.0f),
-_tickChangeValue(1.0f),
-_progressUpdateIntervalInSec(0.1f),
-_tapInfluenceEnabled(false),
-_backgroundSprite(nullptr),
-_roundsCountLabel(nullptr),
-_roundProgressBar(nullptr)
+	_currentRepetitionMode(endless),
+	_isRoundingNow(false),
+	_roundsLeft(0.0f),
+	_tapChangeValue(-1.0f),
+	_tickChangeValue(1.0f),
+	_progressUpdateIntervalInSec(0.1f),
+	_tapInfluenceEnabled(false),
+	_backgroundSprite(nullptr),
+	_roundsCountLabel(nullptr),
+	_roundProgressBar(nullptr)
 {
-	init();
 }
-
 
 ProgressTapWidget::~ProgressTapWidget()
 {
-	delete _roundProgressBar;
+}
+
+ProgressTapWidget* ProgressTapWidget::create()
+{
+	ProgressTapWidget* ret = new ProgressTapWidget();
+	if (ret && ret->init())
+	{
+		ret->autorelease();
+	}
+	else
+	{
+		CC_SAFE_DELETE(ret);
+	}
+	return ret;
 }
 
 bool ProgressTapWidget::init(void)
@@ -30,7 +41,7 @@ bool ProgressTapWidget::init(void)
 	addChild(_backgroundSprite, 0);
 
 	// adding the round progress bar for this class-widget
-	_roundProgressBar = new RoundProgressBar("cell.png", 1.0f);
+	_roundProgressBar = RoundProgressBar::create("cell.png", 1.0f);
 	addChild(_roundProgressBar, 1);
 
 	//_roundsCountLabel = cocos2d::Label::create("", "arial.ttf", 20);
@@ -54,7 +65,7 @@ void ProgressTapWidget::update(float dt)
 		toUpdate += dt;
 	else
 	{
-		if (isRoundingNow)
+		if (_isRoundingNow)
 			processRounding();
 		toUpdate = 0.0f;
 	}
@@ -86,25 +97,25 @@ void ProgressTapWidget::initRounding(const int _repeatsCount)
 		_currentRepetitionMode = defined;
 		break;
 	}
-	isRoundingNow = true;
+	_isRoundingNow = true;
 	_roundsLeft = _repeatsCount;
 	_tapInfluenceEnabled = true;
 }
 
 void ProgressTapWidget::startRounding()
 {
-	isRoundingNow = true;
+	_isRoundingNow = true;
 }
 
 void ProgressTapWidget::pauseRounding()
 {
-	isRoundingNow = false;
+	_isRoundingNow = false;
 	_tapInfluenceEnabled = false;
 }
 
 void ProgressTapWidget::stopRounding()
 {
-	isRoundingNow = false;
+	_isRoundingNow = false;
 	_tapInfluenceEnabled = false;
 	_roundsLeft = 0;
 }
