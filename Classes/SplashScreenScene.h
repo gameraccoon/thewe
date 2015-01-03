@@ -6,6 +6,8 @@
 class SplashScreenScene : public cocos2d::Scene
 {
 public:
+	bool b_gameLoaded;
+
 	SplashScreenScene();
 	virtual ~SplashScreenScene();
 
@@ -17,6 +19,8 @@ private:
 
 	float _timeToShow;
 	float _timeElapsed;
+
+	
 };
 
 #endif // SPLASH_SCREEN_SCENE_H
