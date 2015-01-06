@@ -155,6 +155,7 @@ void CellTasksScreen::OnStartTaskCallback(cocos2d::Ref *sender, cocos2d::ui::Wid
 
 			World::Instance().GetTaskManager().RunTask(_cell, task_info, Utils::GetGameTime());
 			CloseMenu();
+			_cellMenu->DisappearWithAnimation();
 		}
 	}
 }
