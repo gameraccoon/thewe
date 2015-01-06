@@ -34,7 +34,10 @@ ProgressTapWidget* ProgressTapWidget::create()
 
 bool ProgressTapWidget::init(void)
 {
-	if (!cocos2d::Node::init()) return false;
+	if (!cocos2d::Node::init())
+	{
+		return false;
+	}
 
 	// adding the common background sprite for this class-widget
 	_backgroundSprite = cocos2d::Sprite::create("town.png");
@@ -62,11 +65,15 @@ void ProgressTapWidget::update(float dt)
 	static float toUpdate;
 
 	if (toUpdate <= _progressUpdateIntervalInSec)
+	{
 		toUpdate += dt;
+	}
 	else
 	{
 		if (_isRoundingNow)
+		{
 			processRounding();
+		}
 		toUpdate = 0.0f;
 	}
 }

@@ -117,6 +117,8 @@ set(GAME_SRC
 	Classes/TutorialWidget.cpp
 	Classes/TutorialWidgetAfterFirstCell.cpp
 	Classes/TutorialWidgetFirstCell.cpp
+	Classes/TutorialWidgetStartFirstTask.cpp
+	Classes/TutorialWidgetWaitFirstTask.cpp
 	Classes/TutorialWidgetWelcome.cpp
 	Classes/TutorialWidget.cpp
 	Classes/UserMessage.cpp

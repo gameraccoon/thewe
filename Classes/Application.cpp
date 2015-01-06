@@ -100,7 +100,6 @@ bool AppDelegate::applicationDidFinishLaunching()
 void AppDelegate::applicationDidEnterBackground()
 {
 	GameSavesManager::Instance().SaveGameTime();
-	//MessageManager::Instance().PutMessage(Message("SaveTime"));
 }
 
 void AppDelegate::applicationWillEnterForeground()

@@ -71,8 +71,10 @@ LOCAL_SRC_FILES := hellocpp/main.cpp \
 				   	../../Classes/TutorialLayer.cpp \
 				   	../../Classes/TutorialManager.cpp \
 				   	../../Classes/TutorialWidget.cpp \
-				   	../../Classes/TutorialWidgetFirstCell.cpp \
 				   	../../Classes/TutorialWidgetAfterFirstCell.cpp \
+				   	../../Classes/TutorialWidgetFirstCell.cpp \
+				   	../../Classes/TutorialWidgetStartFirstTask.cpp \
+				   	../../Classes/TutorialWidgetWaitFirstTask.cpp \
 				   	../../Classes/TutorialWidgetWelcome.cpp \
 				   	../../Classes/UserMessage.cpp \
 				   	../../Classes/Vector2.cpp \

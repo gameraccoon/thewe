@@ -60,7 +60,7 @@ bool TutorialWidgetStartFirstTask::init()
 
 	_arrow = cocos2d::Sprite::create("tutorial_arrow.png");
 	_arrow->setRotation(-90.0f);
-	_arrow->setPosition((view/2.0f + cocos2d::Vec2(-160.0f, 130.0f)) - view/2.0f);
+	_arrow->setPosition((view/2.0f + cocos2d::Size(-160.0f, 130.0f)) - view/2.0f);
 	_arrow->setScale(0.3f);
 	_arrow->setVisible(false);
 
