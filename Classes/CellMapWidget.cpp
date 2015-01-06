@@ -187,7 +187,7 @@ void CellMapWidget::AcceptMessage(const Message &message)
 			this,
 			_cell,
 			task_info,
-			GameInfo::Instance().GetTime("TASK_REWARD_WAIT_TIME"),
+			message.variables.GetTime("WAIT_TIME"),
 			cocos2d::Vec2(0.0f, 185.0f),
 			2.7f);
 		reward->autorelease();

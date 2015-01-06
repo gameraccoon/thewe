@@ -5,6 +5,7 @@
 #include "LuaInstance.h"
 #include "WorldLoader.h"
 #include "MessageManager.h"
+#include "GameInfo.h"
 
 #include <luabind/luabind.hpp>
 
@@ -97,9 +98,18 @@ void TaskManager::UpdateToTime(Utils::GameTime worldTime)
 
 					if (isSuccess)
 					{
+						Utils::GameTime waitTime;
+						if (World::Instance().GetTutorialManager().IsTutorialStateAvailable("WaitingForFinishFirstTask") ||
+							World::Instance().GetTutorialManager().IsTutorialStateAvailable("ReadyToFinishFirstRealWork")) {
+							waitTime = GameInfo::Instance().GetTime("TASK_REWARD_TUTORIAL_WAIT_TIME");
+						} else {
+							waitTime = GameInfo::Instance().GetTime("TASK_REWARD_WAIT_TIME");
+						}
+
 						Message message("PushTaskRewardOnMap");
 						message.variables.SetInt("CELL_UID", cell->GetUid());
 						message.variables.SetString("TASK_ID", taskInfo->id);
+						message.variables.SetTime("WAIT_TIME", waitTime);
 						MessageManager::Instance().PutMessage(message);
 					}
 					else
