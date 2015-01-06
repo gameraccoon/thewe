@@ -405,6 +405,9 @@
     <ClCompile Include="..\Classes\TutorialWidgetWaitFirstTask.cpp">
       <Filter>Classes\Tutorial\Widgets</Filter>
     </ClCompile>
+    <ClCompile Include="..\Classes\TutorialWidgetAfterFirstTask.cpp">
+      <Filter>Classes\Tutorial\Widgets</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="main.h">
@@ -699,6 +702,9 @@
       <Filter>Classes\Tutorial\Widgets</Filter>
     </ClInclude>
     <ClInclude Include="..\Classes\TutorialWidgetWaitFirstTask.h">
+      <Filter>Classes\Tutorial\Widgets</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\TutorialWidgetAfterFirstTask.h">
       <Filter>Classes\Tutorial\Widgets</Filter>
     </ClInclude>
   </ItemGroup>

@@ -29,7 +29,7 @@ function RunTutorial_BeforeStartFirstTask()
 end
 
 function RunTutorial_StartingFirstTask()
-	TutorialManager:addTutorial(Tutorial(TEXT_TUTORIAL, GetLocalizedString("Tutorial_StartingFirstTask"), ContinueText))
+	TutorialManager:addTutorial(Tutorial("WaitFirstTask", GetLocalizedString("Tutorial_StartingFirstTask"), ContinueText))
 
 	TutorialManager:addTutorialState("WaitingForFinishFirstTask");
 	TutorialManager:removeTutorialState("WaitingForStartFirstTask");

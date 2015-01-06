@@ -8,6 +8,7 @@
 #include "TutorialWidgetAfterFirstCell.h"
 #include "TutorialWidgetStartFirstTask.h"
 #include "TutorialWidgetWaitFirstTask.h"
+#include "TutorialWidgetAfterFirstTask.h"
 
 TutorialWidget* TutorialWidget::Make(Tutorial::WeakPtr tutorial, WorldMapLayer *worldMapLayer, MapProjector *projector)
 {
@@ -22,8 +23,10 @@ TutorialWidget* TutorialWidget::Make(Tutorial::WeakPtr tutorial, WorldMapLayer *
 		widget = TutorialWidgetAfterFirstCell::create(tutorial, worldMapLayer, projector);
 	} else if (name == "StartFirstTask") { 
 		widget = TutorialWidgetStartFirstTask::create(tutorial);
-	} else {
+	} else if (name == "WaitFirstTask") {
 		widget = TutorialWidgetWaitFirstTask::create(tutorial);
+	} else {
+		widget = TutorialWidgetAfterFirstTask::create(tutorial);
 	}
 
 	return widget;

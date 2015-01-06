@@ -9,6 +9,8 @@
 
 TutorialWidgetWaitFirstTask::TutorialWidgetWaitFirstTask(Tutorial::WeakPtr tutorial)
 	: TutorialWidget(tutorial)
+	, _state(State::SHOW)
+	, _time(0.0f)
 {
 }
 
@@ -40,42 +42,96 @@ bool TutorialWidgetWaitFirstTask::init()
 		return true;
 	}
 
-	cocos2d::ui::Widget *widget = cocostudio::GUIReader::getInstance()->widgetFromJsonFile(
-				std::string("tutorial/").append(tutorial->widgetName).append(".ExportJson").c_str());
-	widget->setAnchorPoint(cocos2d::Vec2(0.5f, 0.5f));
-	widget->setPosition(cocos2d::Vec2(0.0f, 0.0f));
+	cocos2d::EventListenerTouchAllAtOnce *listener = cocos2d::EventListenerTouchAllAtOnce::create();
+	listener->onTouchesBegan = CC_CALLBACK_2(TutorialWidgetWaitFirstTask::TouchesBegan, this);
+	listener->onTouchesMoved = CC_CALLBACK_2(TutorialWidgetWaitFirstTask::TouchesMoved, this);
+	listener->onTouchesEnded = CC_CALLBACK_2(TutorialWidgetWaitFirstTask::TouchesEnded, this);
+	cocos2d::Director::getInstance()->getEventDispatcher()->addEventListenerWithSceneGraphPriority(listener, this);
 
-	cocos2d::ui::Button *btnContinue = dynamic_cast<cocos2d::ui::Button *>(widget->getChildByName("ContinueBtn"));
-	cocos2d::ui::Text *tutorialText = dynamic_cast<cocos2d::ui::Text *>(widget->getChildByName("TutorialText"));
+	cocos2d::Size view = cocos2d::Director::getInstance()->getVisibleSize();
+	cocos2d::Vec2 window = cocos2d::Director::getInstance()->getWinSize();
 
-	if (btnContinue)
-	{
-		btnContinue->addTouchEventListener(CC_CALLBACK_2(TutorialWidgetWaitFirstTask::OnContinueCallback, this));
-		btnContinue->setTitleText(_tutorial.lock()->buttonText);
-	}
+	_quad[0] = cocos2d::Vec2(0.0f, 0.0f);
+	_quad[1] = cocos2d::Vec2(window.x, 0.0f);
+	_quad[2] = cocos2d::Vec2(window.x, window.y);
+	_quad[3] = cocos2d::Vec2(0.0f, window.y);
 
-	if (tutorialText)
-	{
-		tutorialText->setString(_tutorial.lock()->text);
-	}
+	_fsQuad = cocos2d::DrawNode::create();
+	_fsQuad->drawPolygon(_quad, 4, cocos2d::Color4F(0.0f, 0.0f, 0.0f, 0.5f), 0.0f, cocos2d::Color4F::WHITE);
+	_fsQuad->setPosition(-window * 0.5f);
 
-	cocos2d::Sprite *spot1 = cocos2d::Sprite::create("tutorial_spot.png");
-	spot1->setPosition(cocos2d::Director::getInstance()->getVisibleSize() * 0.5f);
-	spot1->setScale(3.0f);
-	spot1->retain();
+	_tutorialText = cocos2d::ui::Text::create(_tutorial.lock()->text, "EuropeNormal.ttf", 28);
+	_tutorialText->setTextVerticalAlignment(cocos2d::TextVAlignment::CENTER);
+	_tutorialText->setTextHorizontalAlignment(cocos2d::TextHAlignment::CENTER);
+	_tutorialText->setTextAreaSize(cocos2d::Size(300.0f, 500.0f));
+	_tutorialText->setPosition(cocos2d::Vec2(view.width, 0.0f));
+	_tutorialText->runAction(cocos2d::MoveTo::create(0.5f, cocos2d::Vec2(220.0f, 0.0f)));
 
-	cocos2d::Sprite *spot2 = cocos2d::Sprite::create("tutorial_spot.png");
-	spot2->setPosition(0.0f, 0.0f);
-	spot2->setAnchorPoint(cocos2d::Vec2(0.0f, 0.0f));
-	spot2->setScale(1.5f);
-	spot2->retain();
+	cocos2d::ScaleTo *ttc_scale1 = cocos2d::ScaleTo::create(0.5f, 0.95f, 0.95f, 1.0f);
+	cocos2d::ScaleTo *ttc_scale2 = cocos2d::ScaleTo::create(0.6f, 1.05f, 1.05f, 1.0f);
+	cocos2d::Sequence *ttc_scale = cocos2d::Sequence::create(ttc_scale1, ttc_scale2, nullptr);
+	cocos2d::RepeatForever *pulsation = cocos2d::RepeatForever::create(ttc_scale);
+	_tapToContinue = cocos2d::ui::Text::create(LocalizationManager::Instance().getText("TapToContinue"), "EuropeNormal.ttf", 18);
+	_tapToContinue->setPosition(cocos2d::Vec2(0.0f, -170.0f));
+	_tapToContinue->runAction(pulsation);
 
-	ScreenBlackoutWidget *blackout = ScreenBlackoutWidget::create(cocos2d::Color4F(0.0f, 0.0f, 0.0f, 0.9f));
-	blackout->AddSpot(spot1);
-	blackout->AddSpot(spot2);
-
-	addChild(widget, 0);
-	addChild(blackout, 1);
+	addChild(_fsQuad, 0);
+	addChild(_tutorialText, 1);
+	addChild(_tapToContinue, 1);
+	scheduleUpdate();
 
 	return true;
+}
+
+void TutorialWidgetWaitFirstTask::update(float dt)
+{
+	float alpha = 0.5f;
+
+	if (_state == State::SHOW) {
+		float scale = 1.0f / 0.6f;
+		_time += dt * scale;
+		alpha = Utils::Lerp(0.0f, 0.5f, _time);
+		_tapToContinue->setOpacity(Utils::Clamp(255, 0, (int)(255 * _time)));
+		if (_time > 1.0f) {
+			_time = 0.0f;
+			_state = State::STAND;
+		}
+	}
+	if (_state == State::HIDE) {
+		float scale = 1.0f / 0.6f;
+		_time += dt * scale;
+		alpha = Utils::Lerp(0.5f, 0.0f, _time);
+		_tapToContinue->setOpacity((Utils::Clamp(255, 0, (int)(255 - 255*_time))));
+		if (_time > 1.0f) {
+			_time = 0.0f;
+			_state = State::FINISH;
+			World::Instance().GetTutorialManager().RemoveCurrentTutorial();
+		}
+	}
+
+	_fsQuad->clear();
+	_fsQuad->drawPolygon(_quad, 4,
+						cocos2d::Color4F(0.0f, 0.0f, 0.0f, alpha),
+						0.0f, cocos2d::Color4F::WHITE);
+}
+
+void TutorialWidgetWaitFirstTask::TouchesBegan(const std::vector<cocos2d::Touch *> &touches, cocos2d::Event *event)
+{
+	if (_state == State::STAND) {
+		_state = State::HIDE;
+		cocos2d::Size view = cocos2d::Director::getInstance()->getVisibleSize();
+		_tutorialText->runAction(cocos2d::MoveBy::create(0.5f, cocos2d::Vec2(view.width, 0.0f)));
+	}
+
+	event->stopPropagation();
+}
+
+void TutorialWidgetWaitFirstTask::TouchesMoved(const std::vector<cocos2d::Touch *> &touches, cocos2d::Event *event)
+{
+	event->stopPropagation();
+}
+
+void TutorialWidgetWaitFirstTask::TouchesEnded(const std::vector<cocos2d::Touch *> &touches, cocos2d::Event *event)
+{
+	event->stopPropagation();
 }

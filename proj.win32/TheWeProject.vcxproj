@@ -194,6 +194,7 @@ xcopy /Y /Q "$(EngineRoot)external\websockets\prebuilt\win32\*.lib" "$(SolutionD
     <ClCompile Include="..\Classes\TutorialManager.cpp" />
     <ClCompile Include="..\Classes\TutorialWidget.cpp" />
     <ClCompile Include="..\Classes\TutorialWidgetAfterFirstCell.cpp" />
+    <ClCompile Include="..\Classes\TutorialWidgetAfterFirstTask.cpp" />
     <ClCompile Include="..\Classes\TutorialWidgetStartFirstTask.cpp" />
     <ClCompile Include="..\Classes\TutorialWidgetFirstCell.cpp" />
     <ClCompile Include="..\Classes\TutorialWidgetWaitFirstTask.cpp" />
@@ -316,6 +317,7 @@ xcopy /Y /Q "$(EngineRoot)external\websockets\prebuilt\win32\*.lib" "$(SolutionD
     <ClInclude Include="..\Classes\TutorialManager.h" />
     <ClInclude Include="..\Classes\ScreenBlackoutWidget.h" />
     <ClInclude Include="..\Classes\TutorialWidgetAfterFirstCell.h" />
+    <ClInclude Include="..\Classes\TutorialWidgetAfterFirstTask.h" />
     <ClInclude Include="..\Classes\TutorialWidgetStartFirstTask.h" />
     <ClInclude Include="..\Classes\TutorialWidgetFirstCell.h" />
     <ClInclude Include="..\Classes\TutorialWidgetWaitFirstTask.h" />
