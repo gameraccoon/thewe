@@ -538,7 +538,7 @@ CellMapWidget* WorldMapLayer::CreateCellWidget(Cell::Ptr cell)
 	float w = tex.size.width * widget->getScaleX();
 	float h = tex.size.height * widget->getScaleY();
 	
-	widget->SetHitArea(-(w / 2.0f), -(h / 2.0f), w, h);
+	widget->SetHitArea(cocos2d::Rect(-(w / 2.0f), -(h / 2.0f), w, h));
 	widget->SetProjectorUid(uid);
 	widget->retain();
 
@@ -556,7 +556,7 @@ TownMapWidget* WorldMapLayer::CreateTownWidget(Town::Ptr town)
 	float w = tex.size.width * widget->getScaleX();
 	float h = tex.size.height * widget->getScaleY();
 	
-	widget->SetHitArea(-(w / 2.0f), -(h / 2.0f), w, h);
+	widget->SetHitArea(cocos2d::Rect(-(w / 2.0f), -(h / 2.0f), w, h));
 	widget->SetProjectorUid(uid);
 	widget->retain();
 
@@ -602,12 +602,8 @@ Cell::WeakPtr WorldMapLayer::GetCellUnderPoint(const Vector2& point)
 		}
 
 		Vector2 projectedPoint = point - _mapProjector->ProjectOnScreen(cell->GetInfo().location);
-		
-		float xbegin, xend, ybegin, yend;
-		widget->GetHitArea(xbegin, xend, ybegin, yend);
 
-		cocos2d::Rect rect;
-		rect.setRect(xbegin, ybegin, xend, yend);
+		cocos2d::Rect rect = widget->GetHitArea();
 
 		if (rect.containsPoint(projectedPoint))
 		{
@@ -629,12 +625,8 @@ Town::WeakPtr WorldMapLayer::GetTownUnderPoint(const Vector2& point)
 		Town::Ptr town = widget->GetTown();
 
 		Vector2 projectedPoint = point - _mapProjector->ProjectOnScreen(town->GetLocation());
-		
-		float xbegin, xend, ybegin, yend;
-		widget->GetHitArea(xbegin, xend, ybegin, yend);
 
-		cocos2d::Rect rect;
-		rect.setRect(xbegin, ybegin, xend, yend);
+		cocos2d::Rect rect = widget->GetHitArea();
 
 		if (rect.containsPoint(projectedPoint))
 		{

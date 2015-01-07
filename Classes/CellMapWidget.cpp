@@ -10,10 +10,7 @@ CellMapWidget::CellMapWidget(WorldMapLayer *worldMapLayer, MapProjector *project
 	: _worldMapLayer(worldMapLayer)
 	, _projector(projector)
 	, _cell(cell)
-	, _hitAreaBeginX(0.0f)
-	, _hitAreaBeginY(0.0f)
-	, _hitAreaEndX(1.0f)
-	, _hitAreaEndY(1.0f)
+	, _hitArea(0.0f, 0.0f, 1.0f, 1.0f)
 	, _relinkMarkYAngle(0.0f)
 	, _projectorUid(-1)
 	, _isRelinkMode(false)
@@ -206,20 +203,14 @@ void CellMapWidget::HideInvestigatorLaunchButton(bool hideWithWarning)
 	_popupCatchInvestigator->Disappear(hideWithWarning);
 }
 
-void CellMapWidget::SetHitArea(float beginX, float beginY, float endX, float endY)
+void CellMapWidget::SetHitArea(const cocos2d::Rect& hitArea)
 {
-	_hitAreaBeginX = beginX;
-	_hitAreaEndX = endX;
-	_hitAreaBeginY = beginY;
-	_hitAreaEndY = endY;
+	_hitArea = hitArea;
 }
 
-void CellMapWidget::GetHitArea(float &beginX, float &endX, float &beginY, float &endY) const
+cocos2d::Rect CellMapWidget::GetHitArea() const
 {
-	beginX = _hitAreaBeginX;
-	endX = _hitAreaEndX;
-	beginY = _hitAreaBeginY;
-	endY = _hitAreaEndY;
+	return _hitArea;
 }
 
 void CellMapWidget::SetProjectorUid(int uid)

@@ -4,10 +4,7 @@
 
 TownMapWidget::TownMapWidget(Town::Ptr town)
 	: _town(town)
-	, _hitAreaBeginX(0.0f)
-	, _hitAreaBeginY(0.0f)
-	, _hitAreaEndX(1.0f)
-	, _hitAreaEndY(1.0f)
+	, _hitArea(0.0f, 0.0f, 1.0f, 1.0f)
 	, _projectorUid(-1)
 {
 	init();
@@ -34,20 +31,14 @@ void TownMapWidget::AcceptMessage(const Message&)
 {
 }
 
-void TownMapWidget::SetHitArea(float beginX, float beginY, float endX, float endY)
+void TownMapWidget::SetHitArea(const cocos2d::Rect& hitArea)
 {
-	_hitAreaBeginX = beginX;
-	_hitAreaEndX = endX;
-	_hitAreaBeginY = beginY;
-	_hitAreaEndY = endY;
+	_hitArea = hitArea;
 }
 
-void TownMapWidget::GetHitArea(float &beginX, float &endX, float &beginY, float &endY) const
+cocos2d::Rect TownMapWidget::GetHitArea() const
 {
-	beginX = _hitAreaBeginX;
-	endX = _hitAreaEndX;
-	beginY = _hitAreaBeginY;
-	endY = _hitAreaEndY;
+	return _hitArea;
 }
 
 void TownMapWidget::SetTownImageVisible(bool visible)

@@ -16,8 +16,8 @@ public:
 
 	void AcceptMessage(const Message &message) override;
 
-	void SetHitArea(float beginX, float beginY, float endX, float endY);
-	void GetHitArea(float &beginX, float &beginY, float &endX, float &endY) const;
+	void SetHitArea(const cocos2d::Rect& hitArea);
+	cocos2d::Rect GetHitArea() const;
 
 	void SetTownImageVisible(bool visible);
 	void SetProjectorUid(int uid);
@@ -33,8 +33,7 @@ private:
 
 	int _projectorUid;
 
-	float _hitAreaBeginX, _hitAreaEndX;
-	float _hitAreaBeginY, _hitAreaEndY;
+	cocos2d::Rect _hitArea;
 };
 
 #endif

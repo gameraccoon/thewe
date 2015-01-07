@@ -8,6 +8,7 @@
 #include "TaskRewardMapWidget.h"
 #include "MultipleImageSprite.h"
 #include "BonusMapWidget.h"
+#include "ProgressTapWidget.h"
 
 class CellMapWidget : public cocos2d::Node, public MessageReceiver
 {
@@ -25,8 +26,8 @@ public:
 	void ShowInvestigatorLaunchButton(cocos2d::ccMenuCallback onCatchCallback);
 	void HideInvestigatorLaunchButton(bool hideWithWarning);
 
-	void SetHitArea(float beginX, float beginY, float endX, float endY);
-	void GetHitArea(float &beginX, float &beginY, float &endX, float &endY) const;
+	void SetHitArea(const cocos2d::Rect& hitArea);
+	cocos2d::Rect GetHitArea() const;
 
 	void SetProjectorUid(int uid);
 	int GetProjectorUid(void) const;
@@ -42,7 +43,7 @@ private:
 		,PROGRESS
 		,REWARD
 		,BUTTON
-		, RELINK_WIDGET
+		,RELINK_WIDGET
 	};
 
 	typedef std::vector<BonusMapWidget *> Bonuses;
@@ -52,8 +53,7 @@ private:
 	MapProjector *_projector;
 	Cell::WeakPtr _cell;
 
-	float _hitAreaBeginX, _hitAreaEndX;
-	float _hitAreaBeginY, _hitAreaEndY;
+	cocos2d::Rect _hitArea;
 	float _relinkMarkYAngle;
 
 	int _projectorUid;
@@ -64,6 +64,7 @@ private:
 	RoundProgressBar *_cellMapTaskProgressBar;
 	RoundProgressBar *_cellCommonProgressBar;
 	CellMapPopupButton *_popupCatchInvestigator;
+	ProgressTapWidget *_progressTapWidget;
 
 	Cell::State _lastCellState;
 
