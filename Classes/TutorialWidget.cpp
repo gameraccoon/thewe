@@ -25,7 +25,12 @@ TutorialWidget* TutorialWidget::Make(Tutorial::WeakPtr tutorial, WorldMapLayer *
 		widget = TutorialWidgetStartFirstTask::create(tutorial);
 	} else if (name == "WaitFirstTask") {
 		widget = TutorialWidgetWaitFirstTask::create(tutorial);
+	} else if (name == "tutorial") {
+		widget = TutorialWidgetAfterFirstTask::create(tutorial);
+	} else if (name == "tutorial_a") {
+		widget = TutorialWidgetAfterFirstTask::create(tutorial);
 	} else {
+		Log::Instance().writeError("Unknown tutorial widget: " + name);
 		widget = TutorialWidgetAfterFirstTask::create(tutorial);
 	}
 
