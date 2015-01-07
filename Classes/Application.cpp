@@ -57,42 +57,46 @@ bool AppDelegate::applicationDidFinishLaunching()
 
 	srand(time(nullptr));
 
-	MainMenuScene*		mainMenuScene = new MainMenuScene(nullptr); // there is no automatic init()
-	SplashScreenScene*	splashScreenScene = new SplashScreenScene();
+	MainMenuScene* mainMenuScene = new MainMenuScene(nullptr); // there is no automatic init()
+	SplashScreenScene* splashScreenScene = new SplashScreenScene();
 
-	director->runWithScene(mainMenuScene); // make Menu as the main scene	
-	director->pushScene(splashScreenScene); // put SplashScreen onto the stack	
+	// make Menu as the main scene
+	director->runWithScene(mainMenuScene);
+	// put SplashScreen onto the stack
+	director->pushScene(splashScreenScene);
+	// ready to unload the SplashScreen
+	splashScreenScene->autorelease();
 
-	splashScreenScene->autorelease(); // ready to unload the SplashScreen	
+	// load game info
+	GameInfo::Instance().ParseXml("gameInfo.xml");
 
-	mainMenuScene->init(); // initialize graphics after all data is loaded	
-	mainMenuScene->autorelease(); // register scenes in the garbage collector	
+	// load localizations
+	if (Utils::IsPlatformDesktop())
+	{
+		std::string languageCode = GameInfo::Instance().GetString("DESKTOP_LOCALE");
+		LocalizationManager::Instance().InitWithLocale("content.xml", languageCode);
+	}
+	else
+	{
+		// use system language
+		LocalizationManager::Instance().InitWithLocale("content.xml", getCurrentLanguageCode());
+	}
 
-	auto gameLoading = [&, splashScreenScene](){ // lambda-method for background loading
-		
-		GameInfo::Instance().ParseXml("gameInfo.xml"); // load game info		
-		if (Utils::IsPlatformDesktop()){ // load localizations
+	// load game data
+	World::Instance().InitLuaContext();
+	WorldLoader::LoadGameInfo();
+	GameSavesManager::Instance().LoadGameState();
 
-			std::string languageCode = GameInfo::Instance().GetString("DESKTOP_LOCALE");
-			LocalizationManager::Instance().InitWithLocale("content.xml", languageCode);
-		}
-		else{
 
-			// use system language
-			LocalizationManager::Instance().InitWithLocale("content.xml", getCurrentLanguageCode());
-		}
 
-		// load game data
-		World::Instance().InitLuaContext();
-		WorldLoader::LoadGameInfo();
-		GameSavesManager::Instance().LoadGameState();	
+	// initialize graphics after all data is loaded
+	mainMenuScene->init();
 
-		World::Instance().StartLogic(); // start calculation of game logic	
+	// register scenes in the garbage collector
+	mainMenuScene->autorelease();
 
-		std::this_thread::sleep_for(std::chrono::seconds(2)); // the illusion of long loading for very fast progress
-		splashScreenScene->b_gameLoaded = true;
-	};
-	std::thread(gameLoading).detach();	
+	// start calculation of game logic
+	World::Instance().StartLogic();
 
 	return true;
 }

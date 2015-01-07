@@ -6,7 +6,6 @@
 SplashScreenScene::SplashScreenScene(void)
 	: _timeElapsed(0.0f)
 	, _timeToShow(2.0f)
-	, b_gameLoaded(false)
 {
 	init();
 }
@@ -42,12 +41,10 @@ bool SplashScreenScene::init(void)
 
 void SplashScreenScene::update(float delta)
 {
-	/*_timeElapsed += delta;
+	_timeElapsed += delta;
 
 	if (_timeElapsed > _timeToShow)
 	{
 		cocos2d::Director::getInstance()->popScene();
-	}*/
-
-	if (b_gameLoaded) cocos2d::Director::getInstance()->popScene();
+	}
 }
