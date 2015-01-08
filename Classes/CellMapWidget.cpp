@@ -54,17 +54,15 @@ bool CellMapWidget::init(void)
 	_cellCommonProgressBar->setPosition(0.0f, 0.0f);
 	_cellCommonProgressBar->SetProgressImmediately(0.0f);
 
-	CellMapPopupButton::Settings s;
-	s.normalStateImage = "marker_crosshair.png";
-	s.pressedStateImage = "marker_crosshair_pressed.png";
-	_popupCatchInvestigator = CellMapPopupButton::create(s);
+	_popupCatchInvestigator = ProgressTapWidget::create();
 	_popupCatchInvestigator->setPosition(0.0f, 0.0f);
 	_popupCatchInvestigator->setScale(6.0f);
-	
+
 	addChild(_cellMapSprite, DrawOrder::SPRITE);
 	addChild(_cellMapTaskProgressBar, DrawOrder::PROGRESS);
 	addChild(_cellCommonProgressBar, DrawOrder::PROGRESS);
 	addChild(_popupCatchInvestigator, DrawOrder::BUTTON);
+	_popupCatchInvestigator->setVisible(false);
 	scheduleUpdate();
 
 	setContentSize(_cellMapTaskProgressBar->getContentSize());
@@ -79,6 +77,11 @@ void CellMapWidget::update(float dt)
 	if (!cell)
 	{
 		return;
+	}
+
+	if (_popupCatchInvestigator)
+	{
+		_popupCatchInvestigator->update(dt);
 	}
 
 	Utils::GameTime currentTime = Utils::GetGameTime();
@@ -192,15 +195,18 @@ void CellMapWidget::AcceptMessage(const Message &message)
 	}
 }
 
-void CellMapWidget::ShowInvestigatorLaunchButton(cocos2d::ccMenuCallback onCatchCallback)
+void CellMapWidget::ShowInvestigatorLaunchButton(ProgressTapWidget::Callback sucessCallback, ProgressTapWidget::Callback failureCallback)
 {
-	_popupCatchInvestigator->SetOnPressCallback(onCatchCallback);
-	_popupCatchInvestigator->Appear(10.0f);
+	_popupCatchInvestigator->setSuccessCallback(sucessCallback);
+	_popupCatchInvestigator->setFailureCallback(failureCallback);
+	_popupCatchInvestigator->initRounding();
+	_popupCatchInvestigator->startRounding();
+	_popupCatchInvestigator->setVisible(true);
 }
 
-void CellMapWidget::HideInvestigatorLaunchButton(bool hideWithWarning)
+void CellMapWidget::HideInvestigatorLaunchButton()
 {
-	_popupCatchInvestigator->Disappear(hideWithWarning);
+	_popupCatchInvestigator->setVisible(false);
 }
 
 void CellMapWidget::SetHitArea(const cocos2d::Rect& hitArea)

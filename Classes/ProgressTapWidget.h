@@ -1,17 +1,14 @@
 #ifndef PROGRESS_TAP_WIDGET_H
 #define PROGRESS_TAP_WIDGET_H
 
+#include <functional>
 #include <cocos2d.h>
 #include "ProgressBar.h"
 
-
 class ProgressTapWidget : public cocos2d::Node
 {
-private:
-	enum Repetition
-	{
-		none, defined, endless
-	};
+public:
+	typedef std::function<void()> Callback;
 
 public:
 	ProgressTapWidget();
@@ -21,30 +18,30 @@ public:
 	virtual bool init(void) override;
 	virtual void update(float dt) override;
 
-	void initRounding(const int RepeatCount = 0);
+	void initRounding();
 	void startRounding();
 	void pauseRounding();
-	void stopRounding();
+	void stopRounding(bool success);
+
+	void setSuccessCallback(Callback callback);
+	void setFailureCallback(Callback callback);
 
 private:
-	Repetition _currentRepetitionMode;
-
 	bool _isRoundingNow;
-	int _roundsLeft;
 	float _tapChangeValue;
 	float _tickChangeValue;
-	float _progressUpdateIntervalInSec;
-	bool _tapInfluenceEnabled;
+	float _progress;
 
 	cocos2d::Sprite *_backgroundSprite;
 	cocos2d::Label *_roundsCountLabel;
 	RoundProgressBar *_roundProgressBar;
 
+	Callback _successCallback;
+	Callback _failureCallback;
+
 private:
-	void processRounding();
-
+	void processRounding(float dt);
 	void touchBegan(const std::vector<cocos2d::Touch *> &touches, cocos2d::Event *event);
-
 };
 
 #endif

@@ -7,6 +7,7 @@ class CellTaskInfoMenu : public cocos2d::Layer
 {
 public:
 	CellTaskInfoMenu(Cell::WeakPtr cell, CellMenuSelector *selector);
+	static CellTaskInfoMenu* create(Cell::WeakPtr cell, CellMenuSelector *selector);
 
 	virtual bool init(void) override;
 	virtual void update(float dt) override;

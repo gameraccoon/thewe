@@ -7,6 +7,7 @@ class CellTasksScreen : public cocos2d::Layer
 {
 public:
 	CellTasksScreen(Cell::WeakPtr cell, CellMenuSelector *cellMenu);
+	static CellTasksScreen* create(Cell::WeakPtr cell, CellMenuSelector *cellMenu);
 
 	virtual bool init(void) override;
 

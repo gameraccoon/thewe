@@ -182,7 +182,6 @@ void CellMenuSelector::CreateMenu(cocos2d::Layer* menu)
 		return;
 	}
 
-	menu->autorelease();
 	menu->setName(_menuNodeName);
 	addChild(menu);
 
@@ -206,9 +205,9 @@ void CellMenuSelector::OnTasksButtonPressed(cocos2d::Ref *sender)
 	if (!getChildByName(_menuNodeName))
 	{
 		if (_cell.lock()->getCurrentTask().expired()) {
-			CreateMenu(new CellTasksScreen(_cell, this));
+			CreateMenu(CellTasksScreen::create(_cell, this));
 		} else {
-			CreateMenu(new CellTaskInfoMenu(_cell, this));
+			CreateMenu(CellTaskInfoMenu::create(_cell, this));
 		}
 	}
 }

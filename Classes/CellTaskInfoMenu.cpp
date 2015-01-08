@@ -9,6 +9,20 @@ CellTaskInfoMenu::CellTaskInfoMenu(Cell::WeakPtr cell, CellMenuSelector *selecto
 	init();
 }
 
+CellTaskInfoMenu* CellTaskInfoMenu::create(Cell::WeakPtr cell, CellMenuSelector *cellMenu)
+{
+	CellTaskInfoMenu* ret = new CellTaskInfoMenu(cell, cellMenu);
+	if (ret && ret->init())
+	{
+		ret->autorelease();
+	}
+	else
+	{
+		CC_SAFE_DELETE(ret);
+	}
+	return ret;
+}
+
 bool CellTaskInfoMenu::init(void)
 {
 	if (!cocos2d::Layer::init())

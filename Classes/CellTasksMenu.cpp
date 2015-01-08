@@ -11,6 +11,20 @@ CellTasksScreen::CellTasksScreen(Cell::WeakPtr cell, CellMenuSelector *cellMenu)
 	init();
 }
 
+CellTasksScreen* CellTasksScreen::create(Cell::WeakPtr cell, CellMenuSelector *cellMenu)
+{
+	CellTasksScreen* ret = new CellTasksScreen(cell, cellMenu);
+	if (ret && ret->init())
+	{
+		ret->autorelease();
+	}
+	else
+	{
+		CC_SAFE_DELETE(ret);
+	}
+	return ret;
+}
+
 bool CellTasksScreen::init(void)
 {
 	if (!cocos2d::Layer::init())

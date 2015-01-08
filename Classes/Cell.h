@@ -76,6 +76,7 @@ public:
 
 	void BeginDestruction(void);
 	void BeginAutonomy(void);
+	void ReturnToNormalState(void);
 
 	/** Returns all child cells */
 	const std::vector<Cell::WeakPtr>& GetChildren() const;

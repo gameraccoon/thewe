@@ -2,13 +2,12 @@
 #define CELL_MAP_WIDGET_H
 
 #include "CellGameInterface.h"
-#include "CellMapPopupButton.h"
+#include "ProgressTapWidget.h"
 #include "MessageManager.h"
 #include "InvestigatorMapWidget.h"
 #include "TaskRewardMapWidget.h"
 #include "MultipleImageSprite.h"
 #include "BonusMapWidget.h"
-#include "ProgressTapWidget.h"
 
 class CellMapWidget : public cocos2d::Node, public MessageReceiver
 {
@@ -22,9 +21,9 @@ public:
 	void TouchEnded(const std::vector<cocos2d::Touch *> &touches, cocos2d::Event *event);
 
 	void AcceptMessage(const Message &message) override;
-	
-	void ShowInvestigatorLaunchButton(cocos2d::ccMenuCallback onCatchCallback);
-	void HideInvestigatorLaunchButton(bool hideWithWarning);
+
+	void ShowInvestigatorLaunchButton(ProgressTapWidget::Callback sucessCallback, ProgressTapWidget::Callback failureCallback);
+	void HideInvestigatorLaunchButton();
 
 	void SetHitArea(const cocos2d::Rect& hitArea);
 	cocos2d::Rect GetHitArea() const;
@@ -63,8 +62,7 @@ private:
 	MultipleImageSprite *_cellMapSprite;
 	RoundProgressBar *_cellMapTaskProgressBar;
 	RoundProgressBar *_cellCommonProgressBar;
-	CellMapPopupButton *_popupCatchInvestigator;
-	ProgressTapWidget *_progressTapWidget;
+	ProgressTapWidget *_popupCatchInvestigator;
 
 	Cell::State _lastCellState;
 

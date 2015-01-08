@@ -97,6 +97,11 @@ void Cell::BeginAutonomy(void)
 	_info.stateDuration = GameInfo::Instance().GetTime("CELL_AUTONOMY_LIFE_TIME");
 }
 
+void Cell::ReturnToNormalState(void)
+{
+	_info.state = State::READY;
+}
+
 void Cell::SetParent(Cell::WeakPtr cell)
 {
 	_info.parent = cell;

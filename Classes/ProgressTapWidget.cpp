@@ -1,16 +1,13 @@
 #include "ProgressTapWidget.h"
 
 ProgressTapWidget::ProgressTapWidget() :
-	_currentRepetitionMode(endless),
 	_isRoundingNow(false),
-	_roundsLeft(0.0f),
-	_tapChangeValue(-1.0f),
-	_tickChangeValue(1.0f),
-	_progressUpdateIntervalInSec(0.1f),
-	_tapInfluenceEnabled(false),
+	_tapChangeValue(0.04f),
+	_tickChangeValue(0.1f),
 	_backgroundSprite(nullptr),
 	_roundsCountLabel(nullptr),
-	_roundProgressBar(nullptr)
+	_roundProgressBar(nullptr),
+	_progress(0.0f)
 {
 }
 
@@ -62,51 +59,34 @@ bool ProgressTapWidget::init(void)
 
 void ProgressTapWidget::update(float dt)
 {
-	static float toUpdate;
-
-	if (toUpdate <= _progressUpdateIntervalInSec)
+	if (_isRoundingNow)
 	{
-		toUpdate += dt;
-	}
-	else
-	{
-		if (_isRoundingNow)
-		{
-			processRounding();
-		}
-		toUpdate = 0.0f;
+		processRounding(dt);
 	}
 }
 
-void ProgressTapWidget::processRounding()
+void ProgressTapWidget::processRounding(float dt)
 {
-	if (_currentRepetitionMode != endless && !_roundsLeft)
+	_progress += _tickChangeValue * dt;
+
+	float visibleProgress = _roundProgressBar->GetCurrentProgress();
+	_roundProgressBar->SetProgressImmediately(visibleProgress + (_progress * 100.0f - visibleProgress) * 0.1f);
+
+	if (_progress > 1.0f)
 	{
-		stopRounding();
-		return;
+		stopRounding(false);
 	}
-	_roundProgressBar->SetProgressImmediately(_roundProgressBar->GetCurrentProgress() + _tickChangeValue);
-	if (_roundProgressBar->IsFinished())
-	{		
-		if (_currentRepetitionMode == endless || --_roundsLeft)
-			_roundProgressBar->SetProgressImmediately(0.0f);
+	else if (_progress < 0.0f)
+	{
+		stopRounding(true);
 	}
 }
 
-void ProgressTapWidget::initRounding(const int _repeatsCount)
+void ProgressTapWidget::initRounding()
 {
-	switch (_repeatsCount)
-	{
-	case 0:
-		_currentRepetitionMode = endless;
-		break;
-	default:
-		_currentRepetitionMode = defined;
-		break;
-	}
 	_isRoundingNow = true;
-	_roundsLeft = _repeatsCount;
-	_tapInfluenceEnabled = true;
+	_progress = 0.5f;
+	_roundProgressBar->SetProgressImmediately(_progress * 100.0f);
 }
 
 void ProgressTapWidget::startRounding()
@@ -117,28 +97,44 @@ void ProgressTapWidget::startRounding()
 void ProgressTapWidget::pauseRounding()
 {
 	_isRoundingNow = false;
-	_tapInfluenceEnabled = false;
 }
 
-void ProgressTapWidget::stopRounding()
+static void SafeRunCallback(const ProgressTapWidget::Callback& callback)
 {
-	_isRoundingNow = false;
-	_tapInfluenceEnabled = false;
-	_roundsLeft = 0;
-}
-
-void ProgressTapWidget::touchBegan(const std::vector<cocos2d::Touch *> &touches, cocos2d::Event *event)
-{
-	if (_tapInfluenceEnabled)
+	if (callback)
 	{
-		const float & current_progress = _roundProgressBar->GetCurrentProgress();
-		_roundProgressBar->SetProgressImmediately(current_progress + _tapChangeValue);
-		if (current_progress == 0.0f)
-			stopRounding();
+		callback();
 	}
 }
 
+void ProgressTapWidget::stopRounding(bool success)
+{
+	_isRoundingNow = false;
 
+	if (success)
+	{
+		SafeRunCallback(_successCallback);
+	}
+	else
+	{
+		SafeRunCallback(_failureCallback);
+	}
+}
 
+void ProgressTapWidget::setSuccessCallback(Callback callback)
+{
+	_successCallback = callback;
+}
 
+void ProgressTapWidget::setFailureCallback(Callback callback)
+{
+	_failureCallback = callback;
+}
 
+void ProgressTapWidget::touchBegan(const std::vector<cocos2d::Touch *>&, cocos2d::Event*)
+{
+	if (_isRoundingNow)
+	{
+		_progress -= _tapChangeValue;
+	}
+}
