@@ -12,7 +12,7 @@ SplashScreenScene::SplashScreenScene(void)
 
 SplashScreenScene::~SplashScreenScene(void)
 {
-	Log::Instance().writeLog("SplashScreen unloaded sucessfully");
+	WRITE_LOG("SplashScreen unloaded sucessfully");
 }
 
 bool SplashScreenScene::init(void)

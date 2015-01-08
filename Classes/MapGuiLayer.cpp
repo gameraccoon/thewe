@@ -37,11 +37,11 @@ bool MapGuiLayer::init(void)
 	cocos2d::ui::Button *btnZoomOut = dynamic_cast<cocos2d::ui::Button *>(_widget->getChildByName("BtnZoomOut"));
 	cocos2d::ui::Button *btnZoomIn = dynamic_cast<cocos2d::ui::Button *>(_widget->getChildByName("BtnZoomIn"));
 
-	if (!btnEdit) {Log::Instance().writeWarning("GameHud: Failed to get widget with name BtnEdit"); return false;}
-	if (!btnMenu) {Log::Instance().writeWarning("GameHud: Failed to get widget with name BtnMenu"); return false;}
-	if (!btnZoomOut) {Log::Instance().writeWarning("GameHud: Failed to get widget with name BtnZoomOut"); return false;}
-	if (!btnZoomIn) {Log::Instance().writeWarning("GameHud: Failed to get widget with name BtnZoomIn"); return false;}
-	if (!_worldCapturingBar) {Log::Instance().writeWarning("GameHud: Failed to get widget with name Progress"); return false;}
+	if (!btnEdit) {WRITE_WARN("GameHud: Failed to get widget with name BtnEdit"); return false;}
+	if (!btnMenu) {WRITE_WARN("GameHud: Failed to get widget with name BtnMenu"); return false;}
+	if (!btnZoomOut) {WRITE_WARN("GameHud: Failed to get widget with name BtnZoomOut"); return false;}
+	if (!btnZoomIn) {WRITE_WARN("GameHud: Failed to get widget with name BtnZoomIn"); return false;}
+	if (!_worldCapturingBar) {WRITE_WARN("GameHud: Failed to get widget with name Progress"); return false;}
 
 	btnEdit->addTouchEventListener(CC_CALLBACK_2(MapGuiLayer::MenuInputListener, this));
 	btnMenu->addTouchEventListener(CC_CALLBACK_2(MapGuiLayer::MenuInputListener, this));
@@ -82,7 +82,7 @@ void MapGuiLayer::MenuInputListener(cocos2d::Ref *sender, cocos2d::ui::Widget::T
 		} else if (name == "BtnMenu") {
 			ToggleCellsNetMenu();
 		} else {
-			Log::Instance().writeWarning("Game HUD input listener get unknown widget.");
+			WRITE_WARN("Game HUD input listener get unknown widget.");
 		}
 	}
 }

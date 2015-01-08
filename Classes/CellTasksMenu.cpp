@@ -54,9 +54,9 @@ bool CellTasksScreen::init(void)
 	cocos2d::ui::Button *btnClose = dynamic_cast<cocos2d::ui::Button *>(_widget->getChildByName("Close"));
 	cocos2d::ui::ScrollView *scroller = dynamic_cast<cocos2d::ui::ScrollView *>(_widget->getChildByName("Scroller"));
 	
-	if (!txtHeader) {Log::Instance().writeWarning("Failed to get widget with Header name from UICellTaskSelect widget"); return false;}
-	if (!btnClose) {Log::Instance().writeWarning("Failed to get widget with Close name from UICellTaskSelect widget"); return false;}
-	if (!scroller) {Log::Instance().writeWarning("Failed to get widget with Scroller name from UICellTaskSelect widget"); return false;}
+	if (!txtHeader) {WRITE_WARN("Failed to get widget with Header name from UICellTaskSelect widget"); return false;}
+	if (!btnClose) {WRITE_WARN("Failed to get widget with Close name from UICellTaskSelect widget"); return false;}
+	if (!scroller) {WRITE_WARN("Failed to get widget with Scroller name from UICellTaskSelect widget"); return false;}
 
 	txtHeader->setString(LocalizationManager::Instance().getText("CellTaskMenu_Header"));
 	btnClose->addTouchEventListener(CC_CALLBACK_2(CellTasksScreen::OnCloseCallback, this));
@@ -113,10 +113,10 @@ cocos2d::ui::Widget* CellTasksScreen::CreateScrollerItem(const Task::Info *info)
 	cocos2d::ui::TextBMFont *taskChanse = dynamic_cast<cocos2d::ui::TextBMFont *>(widget->getChildByName("Chanse"));
 	cocos2d::ui::Button *startBtn = dynamic_cast<cocos2d::ui::Button *>(widget->getChildByName("StartBtn"));
 
-	if (!taskTitle) {Log::Instance().writeWarning("Failed to get widget with TaskTitle name from ScrollTaskItem widget"); return widget;}
-	if (!taskDuration) {Log::Instance().writeWarning("Failed to get widget with Duration name from ScrollTaskItem widget"); return widget;}
-	if (!taskChanse) {Log::Instance().writeWarning("Failed to get widget with Chanse name from ScrollTaskItem widget"); return widget;}
-	if (!startBtn) {Log::Instance().writeWarning("Failed to get widget with StartBtn name from ScrollTaskItem widget"); return widget;}
+	if (!taskTitle) {WRITE_WARN("Failed to get widget with TaskTitle name from ScrollTaskItem widget"); return widget;}
+	if (!taskDuration) {WRITE_WARN("Failed to get widget with Duration name from ScrollTaskItem widget"); return widget;}
+	if (!taskChanse) {WRITE_WARN("Failed to get widget with Chanse name from ScrollTaskItem widget"); return widget;}
+	if (!startBtn) {WRITE_WARN("Failed to get widget with StartBtn name from ScrollTaskItem widget"); return widget;}
 
 	startBtn->setUserData((void *)info);
 	startBtn->addTouchEventListener(CC_CALLBACK_2(CellTasksScreen::OnStartTaskCallback, this));
@@ -158,12 +158,12 @@ void CellTasksScreen::OnStartTaskCallback(cocos2d::Ref *sender, cocos2d::ui::Wid
 
 			cocos2d::ui::Button *btn = dynamic_cast<cocos2d::ui::Button *>(sender);
 			if (!btn) {
-				Log::Instance().writeWarning("Failed to cast from sender to button type in StartTaskCallback.");
+				WRITE_WARN("Failed to cast from sender to button type in StartTaskCallback.");
 				return;
 			}
 			const Task::Info *task_info = (const Task::Info *)btn->getUserData();
 			if (!task_info) {
-				Log::Instance().writeWarning("Failed to get pointer to a task info from sender object in StartTaskCallback");
+				WRITE_WARN("Failed to get pointer to a task info from sender object in StartTaskCallback");
 				return;
 			}
 

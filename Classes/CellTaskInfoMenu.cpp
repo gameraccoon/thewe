@@ -55,10 +55,10 @@ bool CellTaskInfoMenu::init(void)
 	_progressBar = dynamic_cast<cocos2d::ui::LoadingBar *>(_widget->getChildByName("TaskProgress")->getChildByName("Progress"));
 	_textPercentage = dynamic_cast<cocos2d::ui::TextBMFont *>(_widget->getChildByName("TaskProgress")->getChildByName("Persentage"));
 
-	if (!btnClose) {Log::Instance().writeError("Failed to get element with name Close from ui_cell_current_task widget"); return false;}
-	if (!btnAbort) {Log::Instance().writeError("Failed to get element with name Abort from ui_cell_current_task widget"); return false;}
-	if (!_progressBar) {Log::Instance().writeError("Failed to get element with name TaskProgress:Progress from ui_cell_current_task widget"); return false;}
-	if (!_textPercentage) {Log::Instance().writeError("Failed to get element with name TaskProgress:Persentage from ui_cell_current_task widget"); return false;}
+	if (!btnClose) {WRITE_ERR("Failed to get element with name Close from ui_cell_current_task widget"); return false;}
+	if (!btnAbort) {WRITE_ERR("Failed to get element with name Abort from ui_cell_current_task widget"); return false;}
+	if (!_progressBar) {WRITE_ERR("Failed to get element with name TaskProgress:Progress from ui_cell_current_task widget"); return false;}
+	if (!_textPercentage) {WRITE_ERR("Failed to get element with name TaskProgress:Persentage from ui_cell_current_task widget"); return false;}
 
 	btnClose->addTouchEventListener(CC_CALLBACK_2(CellTaskInfoMenu::OnCloseCallback, this));
 	btnAbort->addTouchEventListener(CC_CALLBACK_2(CellTaskInfoMenu::OnAbortCallback, this));

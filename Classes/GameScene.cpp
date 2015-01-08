@@ -19,7 +19,7 @@ GameScene::GameScene(MainMenuScene *mainMenuScene)
 
 GameScene::~GameScene(void)
 {
-	Log::Instance().writeLog("GameScene unloaded sucessfully");
+	WRITE_LOG("GameScene unloaded sucessfully");
 }
 
 bool GameScene::init(void)

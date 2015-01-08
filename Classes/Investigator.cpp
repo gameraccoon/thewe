@@ -201,7 +201,7 @@ int Investigator::GetCountOfCellUsageInBranches(Cell::WeakPtr cell) const
 {
 	const Cell::Ptr cellPtr = cell.lock();
 	if (!cellPtr) {
-		Log::Instance().writeWarning("GetCountOfCellUsageInBranches: dead cell pointer in param.");
+		WRITE_WARN("GetCountOfCellUsageInBranches: dead cell pointer in param.");
 		return 0;
 	}
 

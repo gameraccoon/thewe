@@ -64,14 +64,14 @@ void LocalizationManager::InitWithLocale(const std::string& localizationFile, co
 		std::string defaultLocale = GameInfo::Instance().GetString("DEFAULT_LOCALE");
 		if (locale != defaultLocale)
 		{
-			Log::Instance().writeLog(std::string("Locale \"").append(locale).append("\" not found. Trying to use default locale"));
+			WRITE_LOG(std::string("Locale \"").append(locale).append("\" not found. Trying to use default locale"));
 			// Warning: recursive call
 			InitWithLocale(localizationFile, defaultLocale);
 			return;
 		}
 		else
 		{
-			Log::Instance().writeError(std::string("Default locale \"").append(locale).append("\" not found."));
+			WRITE_ERR(std::string("Default locale \"").append(locale).append("\" not found."));
 			return;
 		}
 	}

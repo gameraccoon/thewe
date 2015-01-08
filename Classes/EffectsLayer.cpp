@@ -53,7 +53,7 @@ void EffectsLayer::update(float dt)
 void EffectsLayer::AddEffect(Effect *effect)
 {
 	if (!effect) {
-		Log::Instance().writeWarning("EffectsLayer: Failed to add nullptr effect.");
+		WRITE_WARN("EffectsLayer: Failed to add nullptr effect.");
 		return;
 	}
 

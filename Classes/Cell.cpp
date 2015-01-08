@@ -75,7 +75,7 @@ void Cell::RemoveAllChildren(void)
 		}
 		else
 		{
-			Log::Instance().writeError("Dead link to cell child");
+			WRITE_ERR("Dead link to cell child");
 		}
 	}
 	_childCells.clear();
@@ -179,67 +179,67 @@ void Cell::_CheckValues() const
 {
 	if (_info.cash < 0.0f)
 	{
-		Log::Instance().writeWarning("Negative cash value");
+		WRITE_WARN("Negative cash value");
 	}
 
 	if (_info.membersCount <= 0)
 	{
-		Log::Instance().writeWarning("Wrong members count");
+		WRITE_WARN("Wrong members count");
 	}
 
 	if (_info.techUnitsCount < 0)
 	{
-		Log::Instance().writeWarning("Wrong techUnitsCount value");
+		WRITE_WARN("Wrong techUnitsCount value");
 	}
 
 	if (_info.ratsCount < 0)
 	{
-		Log::Instance().writeWarning("Wrong ratsCount value");
+		WRITE_WARN("Wrong ratsCount value");
 	}
 
 	if (_info.experience < 0)
 	{
-		Log::Instance().writeWarning("Wrong experience value");
+		WRITE_WARN("Wrong experience value");
 	}
 
 	if (_info.morale < 0.0f || 1.0f < _info.morale)
 	{
-		Log::Instance().writeWarning("Wrong morale value");
+		WRITE_WARN("Wrong morale value");
 	}
 	
 	if (_info.devotion < 0.0f || 1.0f < _info.devotion)
 	{
-		Log::Instance().writeWarning("Wrong devotion value");
+		WRITE_WARN("Wrong devotion value");
 	}
 
 	if (_info.fame < 0.0f || 1.0f < _info.fame)
 	{
-		Log::Instance().writeWarning("Wrong fame value");
+		WRITE_WARN("Wrong fame value");
 	}
 
 	if (_info.townHeartPounding < 0.0f || 1.0f < _info.townHeartPounding)
 	{
-		Log::Instance().writeWarning("Wrong townHeartPounding value");
+		WRITE_WARN("Wrong townHeartPounding value");
 	}
 
 	if (_info.townInfluence < 0.0f || 1.0f < _info.townInfluence)
 	{
-		Log::Instance().writeWarning("Wrong townInfluence value");
+		WRITE_WARN("Wrong townInfluence value");
 	}
 
 	if (_info.townWelfare < 0.0f || 1.0f < _info.townWelfare)
 	{
-		Log::Instance().writeWarning("Wrong townWelfare value");
+		WRITE_WARN("Wrong townWelfare value");
 	}
 
 	if (_info.town.expired())
 	{
-		Log::Instance().writeWarning("Dead reference to town");
+		WRITE_WARN("Dead reference to town");
 	}
 
 	if (IsInTemporaryState() && _info.stateDuration <= 0)
 	{
-		Log::Instance().writeError("State duration less or equals than zero");
+		WRITE_WARN("State duration less or equals than zero");
 	}
 }
 

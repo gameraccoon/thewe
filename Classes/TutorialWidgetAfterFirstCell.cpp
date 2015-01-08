@@ -42,7 +42,7 @@ bool TutorialWidgetAfterFirstCell::init()
 	Tutorial::Ptr tutorial = _tutorial.lock();
 	if (!tutorial)
 	{
-		Log::Instance().writeWarning("Tutorial was removed before use");
+		WRITE_WARN("Tutorial was removed before use");
 		return true;
 	}
 

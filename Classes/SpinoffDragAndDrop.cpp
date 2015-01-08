@@ -15,7 +15,7 @@ SpinoffDragAndDrop::SpinoffDragAndDrop(WorldMapLayer *worldMapLayer, MapProjecto
 	, _isAttracting(false)
 {
 	if (_cellFrom.expired()) {
-		Log::Instance().writeError("MapDragAndDropWidget: Failed to create with unexisted cell");
+		WRITE_ERR("MapDragAndDropWidget: Failed to create with unexisted cell");
 	}
 
 	init();

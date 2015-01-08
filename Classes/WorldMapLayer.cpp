@@ -597,7 +597,7 @@ Cell::WeakPtr WorldMapLayer::GetCellUnderPoint(const Vector2& point)
 
 		if (!cell)
 		{
-			Log::Instance().writeWarning("Dead cell under point");
+			WRITE_WARN("Dead cell under point");
 			return Cell::WeakPtr();
 		}
 

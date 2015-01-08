@@ -321,7 +321,7 @@ void GameSavesManager::LoadProcesses()
 		}
 		else
 		{
-			Log::Instance().writeWarning("Loaded old unusual process for a cell. Process type: "
+			WRITE_WARN("Loaded old unusual process for a cell. Process type: "
 				+ processesReader->getValueByName("type")->asString());
 		}
 	}

@@ -77,17 +77,17 @@ void Town::_CheckValues() const
 {
 	if (_population < 0.0f)
 	{
-		Log::Instance().writeWarning("Wrong population value");
+		WRITE_WARN("Wrong population value");
 	}
 
 	if (_region.expired())
 	{
-		Log::Instance().writeWarning("Dead reference to region");
+		WRITE_WARN("Dead reference to region");
 	}
 
 	if (_spriteScale < 0.0f)
 	{
-		Log::Instance().writeWarning("Negative sprite scale");
+		WRITE_WARN("Negative sprite scale");
 	}
 }
 

@@ -86,14 +86,14 @@ static bool LoadWorld(void)
 	std::string fullPath = cocos2d::FileUtils::getInstance()->fullPathForFilename("hulls.xml");
 	hullsBuffer = cocos2d::FileUtils::getInstance()->getStringFromFile(fullPath);
 	if (!hulls_xml_doc.load_buffer(hullsBuffer.c_str(), hullsBuffer.size())) {
-		Log::Instance().writeError("Failed to open hulls data file.");
+		WRITE_ERR("Failed to open hulls data file.");
 		return false;
 	}
 	
 	fullPath = cocos2d::FileUtils::getInstance()->fullPathForFilename("regions.xml");
 	regionsBuffer = cocos2d::FileUtils::getInstance()->getStringFromFile(fullPath);
 	if (!regions_xml_doc.load_buffer(regionsBuffer.c_str(), regionsBuffer.size())) {
-		Log::Instance().writeError("Failed to open regions data file.");
+		WRITE_ERR("Failed to open regions data file.");
 		return false;
 	}
 
@@ -176,7 +176,7 @@ bool WorldLoader::LoadGameInfo()
 	result &= LoadTasksInfo();
 	if (result == true)
 	{
-		Log::Instance().writeInit("World info load successfully");
+		WRITE_INIT("World info load successfully");
 	}
 
 	return result;

@@ -30,7 +30,7 @@ void ScreenBlackoutWidget::AddSpot(cocos2d::Sprite *spot)
 {
 	for (Spots::const_iterator it = _spots.begin(); it != _spots.end(); ++it) {
 		if ((*it) == spot) {
-			Log::Instance().writeWarning("ScreenBlackoutWidget: Trying to add duplicated spot.");
+			WRITE_WARN("ScreenBlackoutWidget: Trying to add duplicated spot.");
 			return;
 		}
 	}

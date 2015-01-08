@@ -45,7 +45,7 @@ void MultipleImageSprite::AddImage(const std::string &id, const std::string &fil
 void MultipleImageSprite::SetCurrentImage(const std::string &id)
 {
 	if (_images.find(id) == _images.end()) {
-		Log::Instance().writeWarning("MultipleImageSprite: Trying to access to unexisted sprite ("+id+")");
+		WRITE_WARN("MultipleImageSprite: Trying to access to unexisted sprite ("+id+")");
 		return;
 	}
 

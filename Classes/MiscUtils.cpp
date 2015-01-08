@@ -122,7 +122,7 @@ namespace Utils
 		}
 		else
 		{
-			Log::Instance().writeError("Trying to access to unknown int variable \"" + name + "\" in VariablesSet");
+			WRITE_ERR("Trying to access to unknown int variable \"" + name + "\" in VariablesSet");
 			return -1;
 		}
 	}
@@ -136,7 +136,7 @@ namespace Utils
 		}
 		else
 		{
-			Log::Instance().writeError("Trying to access to unknown float variable \"" + name + "\" in VariablesSet");
+			WRITE_ERR("Trying to access to unknown float variable \"" + name + "\" in VariablesSet");
 			return -1;
 		}
 	}
@@ -150,7 +150,7 @@ namespace Utils
 		}
 		else
 		{
-			Log::Instance().writeError("Trying to access to unknown bool variable \"" + name + "\" in VariablesSet");
+			WRITE_ERR("Trying to access to unknown bool variable \"" + name + "\" in VariablesSet");
 			return false;
 		}
 	}
@@ -164,7 +164,7 @@ namespace Utils
 		}
 		else
 		{
-			Log::Instance().writeError("Trying to access to unknown time variable \"" + name + "\" in VariablesSet");
+			WRITE_ERR("Trying to access to unknown time variable \"" + name + "\" in VariablesSet");
 			return 0;
 		}
 	}
@@ -178,7 +178,7 @@ namespace Utils
 		}
 		else
 		{
-			Log::Instance().writeError("Trying to access to unknown string variable \"" + name + "\" in VariablesSet");
+			WRITE_ERR("Trying to access to unknown string variable \"" + name + "\" in VariablesSet");
 			return "";
 		}
 	}

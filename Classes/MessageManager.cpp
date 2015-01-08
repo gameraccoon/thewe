@@ -42,13 +42,13 @@ void MessageManager::RegisterReceiver(MessageReceiver *receiver)
 {
 	if (!receiver)
 	{
-		Log::Instance().writeError("Trying to add nullptr message receiver.");
+		WRITE_ERR("Trying to add nullptr message receiver.");
 		return;
 	}
 
 	for (MessageReceiver *rec : _receivers) {
 		if (rec == receiver) {
-			Log::Instance().writeWarning("Trying to put existed message.");
+			WRITE_WARN("Trying to put existed message.");
 			return;
 		}
 	}

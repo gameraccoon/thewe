@@ -42,7 +42,7 @@ bool NotificationMessageWidget::init()
 
 		if (!text)
 		{
-			Log::Instance().writeError("Failed to get element with name Text from ui_message widget.");
+			WRITE_ERR("Failed to get element with name Text from ui_message widget.");
 			return false;
 		}
 

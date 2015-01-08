@@ -21,7 +21,7 @@ bool GameInfo::ParseXml(const std::string &filename)
 
 	if (buffer.empty())
 	{
-		Log::Instance().writeWarning("Failed to get file data: " + fullPath);
+		WRITE_WARN("Failed to get file data: " + fullPath);
 		return false;
 	}
 
@@ -60,7 +60,7 @@ bool GameInfo::ParseXml(const std::string &filename)
 			else
 			{
 				std::string message = "Failed to read global constant of name: " + name + ", type: " + type;
-				Log::Instance().writeWarning(message);
+				WRITE_WARN(message);
 			}
 
 			node = node.next_sibling();
@@ -70,7 +70,7 @@ bool GameInfo::ParseXml(const std::string &filename)
 	}
 	else
 	{
-		Log::Instance().writeWarning("Failed to parse file: " + fullPath);
+		WRITE_WARN("Failed to parse file: " + fullPath);
 		return false;
 	}
 }

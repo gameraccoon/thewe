@@ -35,14 +35,14 @@ void TaskManager::RunTask(Cell::WeakPtr cell, const std::string& id, Utils::Game
 	}
 	else
 	{
-		Log::Instance().writeWarning(std::string("Wrong task id ").append(id));
+		WRITE_WARN(std::string("Wrong task id ").append(id));
 	}
 }
 
 void TaskManager::CallCuccessfulCompletition(Cell::WeakPtr cell, const Task::Info *info)
 {
 	if (!info || cell.expired()) {
-		Log::Instance().writeWarning("TaskManager::CallCuccessfulCompletition wrong params");
+		WRITE_WARN("TaskManager::CallCuccessfulCompletition wrong params");
 		return;
 	}
 
@@ -154,7 +154,7 @@ void TaskManager::FillTasks(const std::vector<Task::Info>& tasks)
 {
 	if (_isTasksFilled)
 	{
-		Log::Instance().writeWarning("Trying to fill tasks info twice");
+		WRITE_WARN("Trying to fill tasks info twice");
 	}
 
 	for (const Task::Info& info : tasks)
@@ -179,7 +179,7 @@ TaskManager::Tasks TaskManager::GetAvailableTasks(Cell::WeakPtr cell) const
 {
 	if (!_isTasksFilled)
 	{
-		Log::Instance().writeError("Trying to acces to not initialized TaskManager");
+		WRITE_ERR("Trying to acces to not initialized TaskManager");
 	}
 
 	std::vector<const Task::Info*> availableTasks;
@@ -204,67 +204,67 @@ void TaskManager::_CheckTask(const Task::Info& taskInfo) const
 {
 	if (taskInfo.id == "")
 	{
-		Log::Instance().writeWarning("Empty task id");
+		WRITE_WARN("Empty task id");
 	}
 
 	if (taskInfo.successFn == "")
 	{
-		Log::Instance().writeWarning("Empty success function name");
+		WRITE_WARN("Empty success function name");
 	}
 
 	if (taskInfo.failFn == "")
 	{
-		Log::Instance().writeWarning("Empty fail function name");
+		WRITE_WARN("Empty fail function name");
 	}
 
 	if (taskInfo.abortFn == "")
 	{
-		Log::Instance().writeWarning("Empty abort function name");
+		WRITE_WARN("Empty abort function name");
 	}
 
 	if (taskInfo.moralLevel < 0.0f || 1.0f < taskInfo.moralLevel)
 	{
-		Log::Instance().writeWarning("Wrong task moral level");
+		WRITE_WARN("Wrong task moral level");
 	}
 
 	if (taskInfo.fameImpact < 0.0f || 1.0f < taskInfo.fameImpact)
 	{
-		Log::Instance().writeWarning("Wrong fameImpact level");
+		WRITE_WARN("Wrong fameImpact level");
 	}
 
 	if (taskInfo.chanceToLooseMembers < 0.0f || 1.0f < taskInfo.chanceToLooseMembers)
 	{
-		Log::Instance().writeWarning("Wrong chanceToLooseMembers value");
+		WRITE_WARN("Wrong chanceToLooseMembers value");
 	}
 
 	if (taskInfo.heartPoundingLevel < 0.0f || 1.0f < taskInfo.heartPoundingLevel)
 	{
-		Log::Instance().writeWarning("Wrong heartPoundingLevel value");
+		WRITE_WARN("Wrong heartPoundingLevel value");
 	}
 
 	if (taskInfo.duration < 0.0f)
 	{
-		Log::Instance().writeWarning("Negative task duration");
+		WRITE_WARN("Negative task duration");
 	}
 
 	if (taskInfo.level < 0.0f)
 	{
-		Log::Instance().writeWarning("Negative task level");
+		WRITE_WARN("Negative task level");
 	}
 
 	if (taskInfo.needCash < 0)
 	{
-		Log::Instance().writeWarning("Negative needCash value");
+		WRITE_WARN("Negative needCash value");
 	}
 
 	if (taskInfo.needMembers < 0)
 	{
-		Log::Instance().writeWarning("Negative needMembers value");
+		WRITE_WARN("Negative needMembers value");
 	}
 
 	if (taskInfo.needTech < 0)
 	{
-		Log::Instance().writeWarning("Negative needTech value");
+		WRITE_WARN("Negative needTech value");
 	}
 }
 

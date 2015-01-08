@@ -78,7 +78,7 @@ void World::InitLuaContext()
 	}
 	else
 	{
-		Log::Instance().writeWarning("Trying to init Lua context twice");
+		WRITE_WARN("Trying to init Lua context twice");
 	}
 }
 
@@ -260,7 +260,7 @@ void World::InitTime(Utils::GameTime time)
 {
 	if (_currentTime != 0)
 	{
-		Log::Instance().writeWarning("Trying to init time twice");
+		WRITE_WARN("Trying to init time twice");
 	}
 
 	_currentTime = time;
@@ -351,7 +351,7 @@ void World::InitUid(unsigned int uid)
 	}
 	else
 	{
-		Log::Instance().writeWarning("Trying to double initialize UId");
+		WRITE_WARN("Trying to double initialize UId");
 	}
 }
 

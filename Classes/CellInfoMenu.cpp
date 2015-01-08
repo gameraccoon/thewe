@@ -49,17 +49,17 @@ bool CellInfoMenu::init(void)
 	_moraleProgressBar = dynamic_cast<cocos2d::ui::LoadingBar *>(_widget->getChildByName("MoraleLevel")->getChildByName("Progress"));
 	_devotionProgressBar = dynamic_cast<cocos2d::ui::LoadingBar *>(_widget->getChildByName("DevotionLevel")->getChildByName("Progress"));
 	
-	if (!btnClose) {Log::Instance().writeWarning("CellInfo: Failed to get widget with name Close"); return false;}
-	if (!txtHeader) {Log::Instance().writeWarning("CellInfo: Failed to get widget with name Header"); return false;}
-	if (!_txtMembers) {Log::Instance().writeWarning("CellInfo: Failed to get widget with name Members"); return false;}
-	if (!_txtCach) {Log::Instance().writeWarning("CellInfo: Failed to get widget with name Cach"); return false;}
-	if (!_txtPursuedLevel) {Log::Instance().writeWarning("CellInfo: Failed to get widget with name PursuedLevel"); return false;}
-	if (!_txtMorale) {Log::Instance().writeWarning("CellInfo: Failed to get widget with name MoraleLabel"); return false;}
-	if (!_txtDevotion) {Log::Instance().writeWarning("CellInfo: Failed to get widget with name DevotionLabel"); return false;}
-	if (!_txtLevel) {Log::Instance().writeWarning("CellInfo: Failed to get widget with name LevelProgress:Label"); return false;}
-	if (!_levelProgressBar) {Log::Instance().writeWarning("CellInfo: Failed to get widget with name MoraleLevel:Progress"); return false;}
-	if (!_moraleProgressBar) {Log::Instance().writeWarning("CellInfo: Failed to get widget with name MoraleLevel:Progress"); return false;}
-	if (!_devotionProgressBar) {Log::Instance().writeWarning("CellInfo: Failed to get widget with name DevotionLevel:Progress"); return false;}
+	if (!btnClose) {WRITE_WARN("CellInfo: Failed to get widget with name Close"); return false;}
+	if (!txtHeader) {WRITE_WARN("CellInfo: Failed to get widget with name Header"); return false;}
+	if (!_txtMembers) {WRITE_WARN("CellInfo: Failed to get widget with name Members"); return false;}
+	if (!_txtCach) {WRITE_WARN("CellInfo: Failed to get widget with name Cach"); return false;}
+	if (!_txtPursuedLevel) {WRITE_WARN("CellInfo: Failed to get widget with name PursuedLevel"); return false;}
+	if (!_txtMorale) {WRITE_WARN("CellInfo: Failed to get widget with name MoraleLabel"); return false;}
+	if (!_txtDevotion) {WRITE_WARN("CellInfo: Failed to get widget with name DevotionLabel"); return false;}
+	if (!_txtLevel) {WRITE_WARN("CellInfo: Failed to get widget with name LevelProgress:Label"); return false;}
+	if (!_levelProgressBar) {WRITE_WARN("CellInfo: Failed to get widget with name MoraleLevel:Progress"); return false;}
+	if (!_moraleProgressBar) {WRITE_WARN("CellInfo: Failed to get widget with name MoraleLevel:Progress"); return false;}
+	if (!_devotionProgressBar) {WRITE_WARN("CellInfo: Failed to get widget with name DevotionLevel:Progress"); return false;}
 
 	btnClose->addTouchEventListener(CC_CALLBACK_2(CellInfoMenu::OnCloseCallback, this));
 	txtHeader->setString(LocalizationManager::Instance().getText("CellInfoMenu_Header"));

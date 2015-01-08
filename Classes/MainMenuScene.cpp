@@ -14,7 +14,7 @@ MainMenuScene::MainMenuScene(cocos2d::Scene* gameScene)
 
 MainMenuScene::~MainMenuScene(void)
 {
-	Log::Instance().writeLog("Main menu unloaded sucessfully");
+	WRITE_LOG("Main menu unloaded sucessfully");
 }
 
 bool MainMenuScene::init(void)
@@ -40,11 +40,11 @@ bool MainMenuScene::init(void)
 	cocos2d::ui::Button *btnCommand = dynamic_cast<cocos2d::ui::Button *>(_widget->getChildByName("BtnCommand"));
 	cocos2d::ui::Button *btnSettings = dynamic_cast<cocos2d::ui::Button *>(_widget->getChildByName("BtnSettings"));
 
-	if (!btnMap) {Log::Instance().writeWarning("MainMenu: Failed to get BtnMap widget."); return false;}
-	if (!btnMail) {Log::Instance().writeWarning("MainMenu: Failed to get BtnMail widget."); return false;}
-	if (!btnChat) {Log::Instance().writeWarning("MainMenu: Failed to get BtnChat widget."); return false;}
-	if (!btnCommand) {Log::Instance().writeWarning("MainMenu: Failed to get BtnCommand widget."); return false;}
-	if (!btnSettings) {Log::Instance().writeWarning("MainMenu: Failed to get BtnSettings widget."); return false;}
+	if (!btnMap) {WRITE_WARN("MainMenu: Failed to get BtnMap widget."); return false;}
+	if (!btnMail) {WRITE_WARN("MainMenu: Failed to get BtnMail widget."); return false;}
+	if (!btnChat) {WRITE_WARN("MainMenu: Failed to get BtnChat widget."); return false;}
+	if (!btnCommand) {WRITE_WARN("MainMenu: Failed to get BtnCommand widget."); return false;}
+	if (!btnSettings) {WRITE_WARN("MainMenu: Failed to get BtnSettings widget."); return false;}
 
 	btnMap->addTouchEventListener(CC_CALLBACK_2(MainMenuScene::MenuInputListener, this));
 	btnMail->addTouchEventListener(CC_CALLBACK_2(MainMenuScene::MenuInputListener, this));
