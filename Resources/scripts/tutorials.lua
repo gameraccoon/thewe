@@ -36,7 +36,7 @@ function RunTutorial_StartingFirstTask()
 end
 
 function RunTutorial_AfterFirstTaskFinished()
-	TutorialManager:addTutorial(Tutorial(TEXT_TUTORIAL, GetLocalizedString("Tutorial_AfterFirstTaskFinished"), ContinueText))
+	TutorialManager:addTutorial(Tutorial("AfterFirstTask", GetLocalizedString("Tutorial_AfterFirstTaskFinished"), ContinueText))
 
 	TutorialManager:addTutorialState("ReadyToFirstRealWork");
 	TutorialManager:removeTutorialState("WaitingForFinishFirstTask");
@@ -51,15 +51,15 @@ function RunTutorial_StartingFirstRealWork()
 end
 
 function RunTutorial_AfterRealWorkDone()
-	TutorialManager:addTutorial(Tutorial(ACTION_TUTORIAL, GetLocalizedString("Tutorial_AfterRealWorkDone")))
+	TutorialManager:addTutorial(Tutorial("SpinoffDrag", GetLocalizedString("Tutorial_AfterRealWorkDone")))
 
 	TutorialManager:addTutorialState("ReadyToCreateSpinoff");
 	TutorialManager:removeTutorialState("ReadyToFinishFirstRealWork");
 end
 
 function RunTutorial_OnCreateFirstSpinoff()
-	TutorialManager:addTutorial(Tutorial(TEXT_TUTORIAL, GetLocalizedString("Tutorial_OnCreateFirstSpinoff_Step1"), ContinueText))
-	TutorialManager:addTutorial(Tutorial(TEXT_TUTORIAL, GetLocalizedString("Tutorial_OnCreateFirstSpinoff_Step2"), ContinueText))
+	TutorialManager:addTutorial(Tutorial("SpinoffStep1", GetLocalizedString("Tutorial_OnCreateFirstSpinoff_Step1"), ContinueText))
+	TutorialManager:addTutorial(Tutorial("SpinoffStep2", GetLocalizedString("Tutorial_OnCreateFirstSpinoff_Step2"), ContinueText))
 
 	-- конец цепочки
 	TutorialManager:removeTutorialState("ReadyToCreateSpinoff");

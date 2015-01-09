@@ -37,6 +37,7 @@ public:
 	void OnMenuClosed(void);
 
 	bool isOpened() const;
+	bool isSpinoffMode() const;
 
 private:
 	void CreateMenu(cocos2d::Layer* menu);
@@ -58,6 +59,8 @@ private:
 
 	CircleMenu *_circleMenu;
 	const std::string _menuNodeName;
+
+	bool _isSpinoffMode;
 };
 
 #endif

@@ -7,8 +7,9 @@
 #include "TutorialWidgetFirstCell.h"
 #include "TutorialWidgetAfterFirstCell.h"
 #include "TutorialWidgetStartFirstTask.h"
-#include "TutorialWidgetWaitFirstTask.h"
-#include "TutorialWidgetAfterFirstTask.h"
+#include "TutorialWidgetTextual.h"
+#include "TutorialWidgetSpinoff.h"
+#include "TutorialWidgetInvestigationStarted.h"
 
 TutorialWidget* TutorialWidget::Make(Tutorial::WeakPtr tutorial, WorldMapLayer *worldMapLayer, MapProjector *projector)
 {
@@ -24,14 +25,22 @@ TutorialWidget* TutorialWidget::Make(Tutorial::WeakPtr tutorial, WorldMapLayer *
 	} else if (name == "StartFirstTask") { 
 		widget = TutorialWidgetStartFirstTask::create(tutorial);
 	} else if (name == "WaitFirstTask") {
-		widget = TutorialWidgetWaitFirstTask::create(tutorial);
+		widget = TutorialWidgetTextual::create(tutorial);
+	} else if (name == "AfterFirstTask") {
+		widget = TutorialWidgetTextual::create(tutorial);
+	} else if (name == "SpinoffDrag") {
+		widget = TutorialWidgetSpinoff::create(tutorial, worldMapLayer, projector);
+	} else if (name == "SpinoffStep1") {
+		widget = TutorialWidgetTextual::create(tutorial);
+	} else if (name == "SpinoffStep2") {
+		widget = TutorialWidgetTextual::create(tutorial);
 	} else if (name == "tutorial") {
-		widget = TutorialWidgetAfterFirstTask::create(tutorial);
+		widget = TutorialWidgetInvestigationStarted::create(tutorial);
 	} else if (name == "tutorial_a") {
-		widget = TutorialWidgetAfterFirstTask::create(tutorial);
+		widget = TutorialWidgetInvestigationStarted::create(tutorial);
 	} else {
 		WRITE_ERR("Unknown tutorial widget: " + name);
-		widget = TutorialWidgetAfterFirstTask::create(tutorial);
+		widget = TutorialWidgetInvestigationStarted::create(tutorial);
 	}
 
 	return widget;

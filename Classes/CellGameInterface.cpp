@@ -10,6 +10,7 @@ CellMenuSelector::CellMenuSelector(MapProjector *proj, WorldMapLayer *map)
 	, _worldMapLayer(map)
 	, _menuNodeName("CellMenu")
 	, _circleMenu(nullptr)
+	, _isSpinoffMode(false)
 {
 	MessageManager::Instance().RegisterReceiver(this, "SpinoffWithDragBegan");
 	MessageManager::Instance().RegisterReceiver(this, "SpinoffWithDragEnded");
@@ -75,11 +76,13 @@ void CellMenuSelector::AcceptMessage(const Message &message)
 	{
 		_btnInfo->runAction(cocos2d::FadeOut::create(0.2f));
 		_btnTasks->runAction(cocos2d::FadeOut::create(0.2f));
+		_isSpinoffMode = true;
 	}
 	else if (message.is("SpinoffWithDragEnded"))
 	{
 		OnMenuClosed();
 		RemoveMenu();
+		_isSpinoffMode = false;
 	}
 }
 
@@ -174,6 +177,11 @@ void CellMenuSelector::OnMenuClosed(void)
 bool CellMenuSelector::isOpened() const
 {
 	return _circleMenu != nullptr;
+}
+
+bool CellMenuSelector::isSpinoffMode() const
+{
+	return _isSpinoffMode;
 }
 
 void CellMenuSelector::CreateMenu(cocos2d::Layer* menu)

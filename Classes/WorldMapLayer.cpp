@@ -401,6 +401,11 @@ bool WorldMapLayer::IsCellMenuOpened(void) const
 	return _cellMenu->isOpened();
 }
 
+bool WorldMapLayer::IsCellMenuSpinoffMode(void) const
+{
+	return _cellMenu->isSpinoffMode();
+}
+
 void WorldMapLayer::AddEffectAbsolute(Effect *effect)
 {
 	_effectsAbsolute->AddEffect(effect);

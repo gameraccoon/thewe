@@ -1,4 +1,4 @@
-#include "TutorialWidgetWaitFirstTask.h"
+#include "TutorialWidgetTextual.h"
 
 #include <luabind/luabind.hpp>
 
@@ -7,16 +7,16 @@
 #include "World.h"
 #include "Log.h"
 
-TutorialWidgetWaitFirstTask::TutorialWidgetWaitFirstTask(Tutorial::WeakPtr tutorial)
+TutorialWidgetTextual::TutorialWidgetTextual(Tutorial::WeakPtr tutorial)
 	: TutorialWidget(tutorial)
 	, _state(State::SHOW)
 	, _time(0.0f)
 {
 }
 
-TutorialWidgetWaitFirstTask* TutorialWidgetWaitFirstTask::create(Tutorial::WeakPtr tutorial)
+TutorialWidgetTextual* TutorialWidgetTextual::create(Tutorial::WeakPtr tutorial)
 {
-	TutorialWidgetWaitFirstTask* ret = new TutorialWidgetWaitFirstTask(tutorial);
+	TutorialWidgetTextual* ret = new TutorialWidgetTextual(tutorial);
 	if (ret && ret->init())
 	{
 		ret->autorelease();
@@ -28,7 +28,7 @@ TutorialWidgetWaitFirstTask* TutorialWidgetWaitFirstTask::create(Tutorial::WeakP
 	return ret;
 }
 
-bool TutorialWidgetWaitFirstTask::init()
+bool TutorialWidgetTextual::init()
 {
 	if (!cocos2d::Node::init())
 	{
@@ -43,9 +43,9 @@ bool TutorialWidgetWaitFirstTask::init()
 	}
 
 	cocos2d::EventListenerTouchAllAtOnce *listener = cocos2d::EventListenerTouchAllAtOnce::create();
-	listener->onTouchesBegan = CC_CALLBACK_2(TutorialWidgetWaitFirstTask::TouchesBegan, this);
-	listener->onTouchesMoved = CC_CALLBACK_2(TutorialWidgetWaitFirstTask::TouchesMoved, this);
-	listener->onTouchesEnded = CC_CALLBACK_2(TutorialWidgetWaitFirstTask::TouchesEnded, this);
+	listener->onTouchesBegan = CC_CALLBACK_2(TutorialWidgetTextual::TouchesBegan, this);
+	listener->onTouchesMoved = CC_CALLBACK_2(TutorialWidgetTextual::TouchesMoved, this);
+	listener->onTouchesEnded = CC_CALLBACK_2(TutorialWidgetTextual::TouchesEnded, this);
 	cocos2d::Director::getInstance()->getEventDispatcher()->addEventListenerWithSceneGraphPriority(listener, this);
 
 	cocos2d::Size view = cocos2d::Director::getInstance()->getVisibleSize();
@@ -71,10 +71,10 @@ bool TutorialWidgetWaitFirstTask::init()
 	cocos2d::ScaleTo *ttc_scale2 = cocos2d::ScaleTo::create(0.6f, 1.05f, 1.05f, 1.0f);
 	cocos2d::Sequence *ttc_scale = cocos2d::Sequence::create(ttc_scale1, ttc_scale2, nullptr);
 	cocos2d::RepeatForever *pulsation = cocos2d::RepeatForever::create(ttc_scale);
-	_tapToContinue = cocos2d::ui::Text::create(LocalizationManager::Instance().getText("TapToContinue"), "EuropeNormal.ttf", 18);
+	_tapToContinue = cocos2d::ui::Text::create(_tutorial.lock()->buttonText, "EuropeNormal.ttf", 18);
 	_tapToContinue->setPosition(cocos2d::Vec2(0.0f, -170.0f));
 	_tapToContinue->runAction(pulsation);
-
+	//LocalizationManager::Instance().getText("TapToContinue")
 	addChild(_fsQuad, 0);
 	addChild(_tutorialText, 1);
 	addChild(_tapToContinue, 1);
@@ -83,7 +83,7 @@ bool TutorialWidgetWaitFirstTask::init()
 	return true;
 }
 
-void TutorialWidgetWaitFirstTask::update(float dt)
+void TutorialWidgetTextual::update(float dt)
 {
 	float alpha = 0.5f;
 
@@ -115,7 +115,7 @@ void TutorialWidgetWaitFirstTask::update(float dt)
 						0.0f, cocos2d::Color4F::WHITE);
 }
 
-void TutorialWidgetWaitFirstTask::TouchesBegan(const std::vector<cocos2d::Touch *> &touches, cocos2d::Event *event)
+void TutorialWidgetTextual::TouchesBegan(const std::vector<cocos2d::Touch *> &touches, cocos2d::Event *event)
 {
 	if (_state == State::STAND) {
 		_state = State::HIDE;
@@ -126,12 +126,12 @@ void TutorialWidgetWaitFirstTask::TouchesBegan(const std::vector<cocos2d::Touch 
 	event->stopPropagation();
 }
 
-void TutorialWidgetWaitFirstTask::TouchesMoved(const std::vector<cocos2d::Touch *> &touches, cocos2d::Event *event)
+void TutorialWidgetTextual::TouchesMoved(const std::vector<cocos2d::Touch *> &touches, cocos2d::Event *event)
 {
 	event->stopPropagation();
 }
 
-void TutorialWidgetWaitFirstTask::TouchesEnded(const std::vector<cocos2d::Touch *> &touches, cocos2d::Event *event)
+void TutorialWidgetTextual::TouchesEnded(const std::vector<cocos2d::Touch *> &touches, cocos2d::Event *event)
 {
 	event->stopPropagation();
 }

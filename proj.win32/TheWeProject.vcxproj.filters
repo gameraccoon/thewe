@@ -402,10 +402,13 @@
     <ClCompile Include="..\Classes\TutorialWidgetStartFirstTask.cpp">
       <Filter>Classes\Tutorial\Widgets</Filter>
     </ClCompile>
-    <ClCompile Include="..\Classes\TutorialWidgetWaitFirstTask.cpp">
+    <ClCompile Include="..\Classes\TutorialWidgetTextual.cpp">
       <Filter>Classes\Tutorial\Widgets</Filter>
     </ClCompile>
-    <ClCompile Include="..\Classes\TutorialWidgetAfterFirstTask.cpp">
+    <ClCompile Include="..\Classes\TutorialWidgetSpinoff.cpp">
+      <Filter>Classes\Tutorial\Widgets</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\TutorialWidgetInvestigationStarted.cpp">
       <Filter>Classes\Tutorial\Widgets</Filter>
     </ClCompile>
   </ItemGroup>
@@ -701,10 +704,13 @@
     <ClInclude Include="..\Classes\TutorialWidgetStartFirstTask.h">
       <Filter>Classes\Tutorial\Widgets</Filter>
     </ClInclude>
-    <ClInclude Include="..\Classes\TutorialWidgetWaitFirstTask.h">
+    <ClInclude Include="..\Classes\TutorialWidgetTextual.h">
       <Filter>Classes\Tutorial\Widgets</Filter>
     </ClInclude>
-    <ClInclude Include="..\Classes\TutorialWidgetAfterFirstTask.h">
+    <ClInclude Include="..\Classes\TutorialWidgetSpinoff.h">
+      <Filter>Classes\Tutorial\Widgets</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\TutorialWidgetInvestigationStarted.h">
       <Filter>Classes\Tutorial\Widgets</Filter>
     </ClInclude>
   </ItemGroup>

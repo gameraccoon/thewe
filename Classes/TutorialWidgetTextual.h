@@ -1,14 +1,14 @@
-#ifndef TUTORIAL_WIDGET_WAIT_FIRST_TASK_H
-#define TUTORIAL_WIDGET_WAIT_FIRST_TASK_H
+#ifndef TUTORIAL_WIDGET_TEXTUAL_H
+#define TUTORIAL_WIDGET_TEXTUAL_H
 
 #include "TutorialWidget.h"
 
-class TutorialWidgetWaitFirstTask : public TutorialWidget
+class TutorialWidgetTextual : public TutorialWidget
 {
 public:
-	explicit TutorialWidgetWaitFirstTask(Tutorial::WeakPtr tutorial);
+	explicit TutorialWidgetTextual(Tutorial::WeakPtr tutorial);
 
-	static TutorialWidgetWaitFirstTask* create(Tutorial::WeakPtr tutorial);
+	static TutorialWidgetTextual* create(Tutorial::WeakPtr tutorial);
 
 	void TouchesBegan(const std::vector<cocos2d::Touch *> &touches, cocos2d::Event *event);
 	void TouchesMoved(const std::vector<cocos2d::Touch *> &touches, cocos2d::Event *event);
@@ -36,4 +36,4 @@ private:
 	float _time;
 };
 
-#endif // TUTORIAL_WIDGET_WAIT_FIRST_TASK_H
+#endif // TUTORIAL_WIDGET_TEXTUAL_H
