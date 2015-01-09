@@ -80,14 +80,14 @@ bool AppDelegate::applicationDidFinishLaunching()
 			// use system language
 			LocalizationManager::Instance().InitWithLocale("content.xml", systemLanguageCode);
 		}
+	});
 
+	auto onFinishDataLoading([mainMenuScene, splashScreenScene](){
 		// load game data
 		World::Instance().InitLuaContext();
 		WorldLoader::LoadGameInfo();
 		GameSavesManager::Instance().LoadGameState();
-	});
 
-	auto onFinishDataLoading([mainMenuScene, splashScreenScene](){
 		// initialize graphics after all data is loaded
 		mainMenuScene->init();
 

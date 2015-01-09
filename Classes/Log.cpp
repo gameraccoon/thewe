@@ -3,12 +3,16 @@
 #include <fstream>
 #include <ctime>
 #include <cocos2d.h>
+#include <mutex>
 
 #include "MiscUtils.h"
 
 Log* Log::singleInstance = nullptr;
 bool Log::isDestroyed = false;
 bool Log::isFirstLife = true;
+
+static std::mutex InstanceMutex;
+static std::mutex FilestreamMutex;
 
 Log::Log()
 {
@@ -37,6 +41,8 @@ Log::~Log()
 
 Log& Log::Instance()
 {
+	std::lock_guard<std::mutex> lock(::InstanceMutex);
+
 	if (Log::singleInstance == nullptr)
 	{
 		if (isDestroyed)
@@ -101,6 +107,8 @@ void Log::writeInit(const std::string& text)
 
 void Log::writeLine(const std::string& text)
 {
+	std::lock_guard<std::mutex> lock(::FilestreamMutex);
+
 	if (this->logFileStream->is_open())
 	{
 		*this->logFileStream << text << std::endl;

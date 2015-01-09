@@ -35,6 +35,9 @@ namespace Utils
 
 	void RunInMainThread(std::function<void()> callback)
 	{
-		cocos2d::Director::getInstance()->getScheduler()->performFunctionInCocosThread(callback);
+		if (callback)
+		{
+			cocos2d::Director::getInstance()->getScheduler()->performFunctionInCocosThread(callback);
+		}
 	}
 }
