@@ -7,6 +7,7 @@
 #include "TransitionZoomFade.h"
 #include "TutorialLayer.h"
 #include "NotificationMessageLayer.h"
+#include "ThreadUtils.h"
 
 GameScene::GameScene(MainMenuScene *mainMenuScene)
 	: _mapProjector()
@@ -66,7 +67,7 @@ void GameScene::ShowMap()
 
 void GameScene::GoToMainMenu(void)
 {
-	MainMenuScene* mainMenuScene = new MainMenuScene(nullptr);
+	MainMenuScene* mainMenuScene = new MainMenuScene();
 	mainMenuScene->init();
 	mainMenuScene->autorelease();
 	

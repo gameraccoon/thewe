@@ -109,6 +109,7 @@ set(GAME_SRC
 	Classes/Task.cpp
 	Classes/TaskManager.cpp
 	Classes/TaskRewardMapWidget.cpp
+	Classes/ThreadUtils.cpp
 	Classes/Town.cpp
 	Classes/TownMapWidget.cpp
 	Classes/TransitionZoomFade.cpp

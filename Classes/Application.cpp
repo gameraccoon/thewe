@@ -9,6 +9,7 @@
 #include "WorldLoader.h"
 #include "GameSavesManager.h"
 #include "Localization.h"
+#include "ThreadUtils.h"
 
 AppDelegate::AppDelegate()
 {
@@ -57,9 +58,8 @@ bool AppDelegate::applicationDidFinishLaunching()
 
 	srand(time(nullptr));
 
-	MainMenuScene* mainMenuScene = new MainMenuScene(nullptr); // there is no automatic init()
+	MainMenuScene* mainMenuScene = new MainMenuScene(); // there is no automatic init()
 	SplashScreenScene* splashScreenScene = new SplashScreenScene();
-
 	// make Menu as the main scene
 	director->runWithScene(mainMenuScene);
 	// put SplashScreen onto the stack
@@ -67,36 +67,40 @@ bool AppDelegate::applicationDidFinishLaunching()
 	// ready to unload the SplashScreen
 	splashScreenScene->autorelease();
 
-	// load game info
-	GameInfo::Instance().ParseXml("gameInfo.xml");
+	std::string systemLanguageCode = getCurrentLanguageCode();
 
-	// load localizations
-	if (Utils::IsPlatformDesktop())
-	{
-		std::string languageCode = GameInfo::Instance().GetString("DESKTOP_LOCALE");
-		LocalizationManager::Instance().InitWithLocale("content.xml", languageCode);
-	}
-	else
-	{
-		// use system language
-		LocalizationManager::Instance().InitWithLocale("content.xml", getCurrentLanguageCode());
-	}
+	auto dataLoading([systemLanguageCode](){ // lambda-method for background loading
+		GameInfo::Instance().ParseXml("gameInfo.xml"); // load game info
 
-	// load game data
-	World::Instance().InitLuaContext();
-	WorldLoader::LoadGameInfo();
-	GameSavesManager::Instance().LoadGameState();
+		if (Utils::IsPlatformDesktop()){ // load localizations
+			std::string languageCode = GameInfo::Instance().GetString("DESKTOP_LOCALE");
+			LocalizationManager::Instance().InitWithLocale("content.xml", languageCode);
+		}
+		else{
+			// use system language
+			LocalizationManager::Instance().InitWithLocale("content.xml", systemLanguageCode);
+		}
 
+		// load game data
+		World::Instance().InitLuaContext();
+		WorldLoader::LoadGameInfo();
+		GameSavesManager::Instance().LoadGameState();
+	});
 
+	auto onFinishDataLoading([mainMenuScene, splashScreenScene](){
+		// initialize graphics after all data is loaded
+		mainMenuScene->init();
 
-	// initialize graphics after all data is loaded
-	mainMenuScene->init();
+		// register scenes in the garbage collector
+		mainMenuScene->autorelease();
 
-	// register scenes in the garbage collector
-	mainMenuScene->autorelease();
+		// start calculation of game logic
+		World::Instance().StartLogic();
 
-	// start calculation of game logic
-	World::Instance().StartLogic();
+		splashScreenScene->SetLoadingFinished();
+	});
+
+	Utils::RunInBackgroundThread(dataLoading, onFinishDataLoading);
 
 	return true;
 }

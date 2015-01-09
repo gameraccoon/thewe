@@ -7,9 +7,8 @@
 #include "TransitionZoomFade.h"
 #include "CellsNetLayer.h"
 
-MainMenuScene::MainMenuScene(cocos2d::Scene* gameScene)
+MainMenuScene::MainMenuScene()
 {
-	_gameScene = gameScene;
 }
 
 MainMenuScene::~MainMenuScene(void)
