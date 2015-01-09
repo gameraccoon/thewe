@@ -411,6 +411,9 @@
     <ClCompile Include="..\Classes\TutorialWidgetInvestigationStarted.cpp">
       <Filter>Classes\Tutorial\Widgets</Filter>
     </ClCompile>
+    <ClCompile Include="..\Classes\ThreadUtils.cpp">
+      <Filter>Classes\Utils</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="main.h">
@@ -712,6 +715,9 @@
     </ClInclude>
     <ClInclude Include="..\Classes\TutorialWidgetInvestigationStarted.h">
       <Filter>Classes\Tutorial\Widgets</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\ThreadUtils.h">
+      <Filter>Classes\Utils</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

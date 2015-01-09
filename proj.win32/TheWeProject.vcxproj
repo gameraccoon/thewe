@@ -187,6 +187,7 @@ xcopy /Y /Q "$(EngineRoot)external\websockets\prebuilt\win32\*.lib" "$(SolutionD
     <ClCompile Include="..\Classes\Task.cpp" />
     <ClCompile Include="..\Classes\TaskManager.cpp" />
     <ClCompile Include="..\Classes\TaskRewardMapWidget.cpp" />
+    <ClCompile Include="..\Classes\ThreadUtils.cpp" />
     <ClCompile Include="..\Classes\Town.cpp" />
     <ClCompile Include="..\Classes\TownMapWidget.cpp" />
     <ClCompile Include="..\Classes\TransitionZoomFade.cpp" />
@@ -310,6 +311,7 @@ xcopy /Y /Q "$(EngineRoot)external\websockets\prebuilt\win32\*.lib" "$(SolutionD
     <ClInclude Include="..\Classes\Task.h" />
     <ClInclude Include="..\Classes\TaskManager.h" />
     <ClInclude Include="..\Classes\TaskRewardMapWidget.h" />
+    <ClInclude Include="..\Classes\ThreadUtils.h" />
     <ClInclude Include="..\Classes\Town.h" />
     <ClInclude Include="..\Classes\TownMapWidget.h" />
     <ClInclude Include="..\Classes\TransitionZoomFade.h" />
