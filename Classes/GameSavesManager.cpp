@@ -39,6 +39,9 @@ GameSavesManager::GameSavesManager()
 	_impl = new GameSavesManagerImpl(dbPath);
 
 	FirstInitSave();
+
+	MessageManager::Instance().RegisterReceiver(this, "SaveGame");
+	MessageManager::Instance().RegisterReceiver(this, "SaveTime");
 }
 
 GameSavesManager::~GameSavesManager()

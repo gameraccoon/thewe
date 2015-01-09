@@ -19,6 +19,8 @@ CellMapWidget::CellMapWidget(WorldMapLayer *worldMapLayer, MapProjector *project
 	, _cellMapSprite(nullptr)
 	, _cellCommonProgressBar(nullptr)
 {
+	MessageManager::Instance().RegisterReceiver(this, "ShowBonus");
+	MessageManager::Instance().RegisterReceiver(this, "PushTaskRewardOnMap");
 	init();
 }
 

@@ -27,10 +27,6 @@ bool TownMapWidget::init(void)
 	return true;
 }
 
-void TownMapWidget::AcceptMessage(const Message&)
-{
-}
-
 void TownMapWidget::SetHitArea(const cocos2d::Rect& hitArea)
 {
 	_hitArea = hitArea;

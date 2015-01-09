@@ -1,6 +1,5 @@
 #include "BonusOnMap.h"
 
-#include "MessageManager.h"
 #include "GameInfo.h"
 #include "World.h"
 
@@ -9,6 +8,7 @@
 BonusOnMap::BonusOnMap(void)
 	: _waitForBonusDestroy(false)
 {
+	MessageManager::Instance().RegisterReceiver(this, "DeleteBonusWidget");
 }
 
 BonusOnMap::~BonusOnMap(void)

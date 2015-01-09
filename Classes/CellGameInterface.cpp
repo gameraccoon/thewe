@@ -11,6 +11,8 @@ CellMenuSelector::CellMenuSelector(MapProjector *proj, WorldMapLayer *map)
 	, _menuNodeName("CellMenu")
 	, _circleMenu(nullptr)
 {
+	MessageManager::Instance().RegisterReceiver(this, "SpinoffWithDragBegan");
+	MessageManager::Instance().RegisterReceiver(this, "SpinoffWithDragEnded");
 }
 
 CellMenuSelector::~CellMenuSelector(void)

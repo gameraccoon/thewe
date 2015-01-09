@@ -25,6 +25,18 @@ WorldMapLayer::WorldMapLayer(GameScene *gameScene, MapProjector* projector)
 	, _cellMenu(nullptr)
 	, _cellGameInterface(nullptr)
 {
+	MessageManager::Instance().RegisterReceiver(this, "AddInvestigatorWidget");
+	MessageManager::Instance().RegisterReceiver(this, "DeleteInvestigatorWidget");
+	MessageManager::Instance().RegisterReceiver(this, "DeleteCellWidget");
+	MessageManager::Instance().RegisterReceiver(this, "SpinoffWithDragEnded");
+	MessageManager::Instance().RegisterReceiver(this, "RelinkWithDragEnded");
+	MessageManager::Instance().RegisterReceiver(this, "SpinoffWithDragBegan");
+	MessageManager::Instance().RegisterReceiver(this, "RelinkWithDragBegan");
+	MessageManager::Instance().RegisterReceiver(this, "EnableMapScrolling");
+	MessageManager::Instance().RegisterReceiver(this, "DisableMapScrolling");
+	MessageManager::Instance().RegisterReceiver(this, "RelinkCell");
+	MessageManager::Instance().RegisterReceiver(this, "CreateCell");
+
 	init();
 }
 

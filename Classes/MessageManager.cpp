@@ -2,22 +2,17 @@
 
 #include "Log.h"
 
-MessageReceiver::MessageReceiver()
-{
-	MessageManager::Instance().RegisterReceiver(this);
-}
-
-MessageReceiver::~MessageReceiver()
-{
-	MessageManager::Instance().UnregisterReceiver(this);
-}
-
 MessageManager::MessageManager(void)
 {
 }
 
 MessageManager::~MessageManager(void)
 {
+}
+
+MessageReceiver::~MessageReceiver()
+{
+	MessageManager::Instance().UnregisterReceiver(this);
 }
 
 MessageManager& MessageManager::Instance(void)
@@ -38,32 +33,52 @@ void MessageManager::FlushMessages(void)
 	}
 }
 
-void MessageManager::RegisterReceiver(MessageReceiver *receiver)
+void MessageManager::RegisterReceiver(MessageReceiver *receiver, const std::string& messageName)
 {
 	if (!receiver)
 	{
-		WRITE_ERR("Trying to add nullptr message receiver.");
+		WRITE_ERR("Trying to add nullptr as message receiver.");
 		return;
 	}
 
-	for (MessageReceiver *rec : _receivers) {
-		if (rec == receiver) {
-			WRITE_WARN("Trying to put existed message.");
-			return;
-		}
-	}
-	_receivers.push_back(receiver);
+	_receivers.insert(std::pair<const std::string, MessageReceiver*>(messageName, receiver));
 }
 
-void MessageManager::UnregisterReceiver(MessageReceiver *receiver)
+void MessageManager::UnregisterReceiver(const MessageReceiver *receiver)
 {
-	for (std::list<MessageReceiver *>::iterator iter = _receivers.begin(); iter != _receivers.end(); ++iter)
+	std::list<Receivers::iterator> receiversToDelete;
+
+	for (auto receiverIt = _receivers.begin(), endRes = _receivers.end(); receiverIt != endRes; receiverIt++)
 	{
-		if ((*iter) == receiver)
+		if (receiverIt->second == receiver)
 		{
-			iter = _receivers.erase(iter);
-			break;
+			receiversToDelete.push_back(receiverIt);
 		}
+	}
+
+	for (Receivers::iterator& receiverTodelete : receiversToDelete)
+	{
+		_receivers.erase(receiverTodelete);
+	}
+}
+
+void MessageManager::UnregisterReceiver(const MessageReceiver *receiver, const std::string& messageName)
+{
+	auto receivers = _receivers.equal_range(messageName);
+
+	std::list<Receivers::iterator> receiversToDelete;
+
+	for (auto receiverIt = receivers.first, endRes = receivers.second; receiverIt != endRes; receiverIt++)
+	{
+		if (receiverIt->second == receiver)
+		{
+			receiversToDelete.push_back(receiverIt);
+		}
+	}
+
+	for (Receivers::iterator& receiverTodelete : receiversToDelete)
+	{
+		_receivers.erase(receiverTodelete);
 	}
 }
 
@@ -73,8 +88,11 @@ void MessageManager::CallAcceptMessages(void)
 	{
 		Message &message = _messages.front();
 		
-		for (MessageReceiver *rec : _receivers) {
-			rec->AcceptMessage(message);
+		auto receivers = _receivers.equal_range(message.getName());
+
+		for (Receivers::iterator& receiver = receivers.first, endRes = receivers.second; receiver != endRes; receiver++)
+		{
+			receiver->second->AcceptMessage(message);
 		}
 		
 		_messages.pop();

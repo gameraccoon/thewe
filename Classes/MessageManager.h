@@ -13,30 +13,37 @@ public:
 	Message(const std::string &n)
 		: name(n)
 	{}
-	bool is(const std::string &n) const {
+
+	inline bool is(const std::string &n) const {
 		return name == n;
+	}
+
+	inline const std::string& getName() const
+	{
+		return name;
 	}
 };
 
 class MessageReceiver
 {
 public:
-	MessageReceiver();
-	virtual ~MessageReceiver(void);
-
+	virtual ~MessageReceiver();
 	virtual void AcceptMessage(const Message &msg) = 0;
 };
 
 class MessageManager
 {
+private:
+	typedef std::multimap<const std::string, MessageReceiver *> Receivers;
 public:
 	static MessageManager& Instance(void);
 
 	void PutMessage(const Message &msg);
 	void FlushMessages(void);
 
-	void RegisterReceiver(MessageReceiver *receiver);
-	void UnregisterReceiver(MessageReceiver *receiver);
+	void RegisterReceiver(MessageReceiver *receiver, const std::string& messageName);
+	void UnregisterReceiver(const MessageReceiver *receiver);
+	void UnregisterReceiver(const MessageReceiver *receiver, const std::string& messageName);
 
 	/**
 	 * Send all scheduled messages to the receivers
@@ -44,7 +51,7 @@ public:
 	void CallAcceptMessages(void);
 
 private:
-	std::list<MessageReceiver *> _receivers;
+	Receivers _receivers;
 	std::queue<Message> _messages;
 
 private:

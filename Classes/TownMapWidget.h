@@ -6,15 +6,13 @@
 
 #include <cocos2d.h>
 
-class TownMapWidget : public cocos2d::Node, public MessageReceiver
+class TownMapWidget : public cocos2d::Node
 {
 public:
 	TownMapWidget(Town::Ptr town);
 	~TownMapWidget(void);
 
 	virtual bool init(void) override;
-
-	void AcceptMessage(const Message &message) override;
 
 	void SetHitArea(const cocos2d::Rect& hitArea);
 	cocos2d::Rect GetHitArea() const;
