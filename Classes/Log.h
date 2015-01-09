@@ -60,11 +60,11 @@ private:
 	Log::Instance().writeLog(message)	\
 
 #define WRITE_WARN(message)					\
-	Log::Instance().writeWarning(message),	\
+	Log::Instance().writeWarning(message);	\
 	DEBUG_ASSERT
 
 #define WRITE_ERR(message)					\
-	Log::Instance().writeError(message),	\
+	Log::Instance().writeError(message);	\
 	DEBUG_ASSERT
 
 #endif
