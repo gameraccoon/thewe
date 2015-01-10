@@ -9,6 +9,8 @@ public:
 	AppDelegate();
     virtual ~AppDelegate();
 
+	static bool CreateAllShaders(void);
+
     virtual bool applicationDidFinishLaunching() override;
     virtual void applicationDidEnterBackground() override;
 	virtual void applicationWillEnterForeground() override;

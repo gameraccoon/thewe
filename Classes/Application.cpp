@@ -67,6 +67,8 @@ bool AppDelegate::applicationDidFinishLaunching()
 	// ready to unload the SplashScreen
 	splashScreenScene->autorelease();
 
+	CreateAllShaders();
+
 	std::string systemLanguageCode = getCurrentLanguageCode();
 
 	auto dataLoading([systemLanguageCode](){ // lambda-method for background loading

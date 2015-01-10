@@ -414,6 +414,9 @@
     <ClCompile Include="..\Classes\ThreadUtils.cpp">
       <Filter>Classes\Utils</Filter>
     </ClCompile>
+    <ClCompile Include="..\Classes\Shaders.cpp">
+      <Filter>Classes</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="main.h">

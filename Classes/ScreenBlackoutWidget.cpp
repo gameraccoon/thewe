@@ -65,21 +65,8 @@ void ScreenBlackoutWidget::SetBackgroundColor(const cocos2d::Color4F &color)
 
 bool ScreenBlackoutWidget::initWithColor(cocos2d::Color4F color)
 {
-	_maskProg = cocos2d::GLProgram::createWithFilenames("create_alpha_mask.vsh", "create_alpha_mask.fsh");
-	_maskProg->bindAttribLocation(cocos2d::GLProgram::ATTRIBUTE_NAME_POSITION, cocos2d::GLProgram::VERTEX_ATTRIB_POSITION);
-	_maskProg->bindAttribLocation(cocos2d::GLProgram::ATTRIBUTE_NAME_TEX_COORD, cocos2d::GLProgram::VERTEX_ATTRIB_TEX_COORD);
-	_maskProg->bindAttribLocation(cocos2d::GLProgram::ATTRIBUTE_NAME_COLOR, cocos2d::GLProgram::VERTEX_ATTRIB_COLOR);
-	_maskProg->link();
-	_maskProg->updateUniforms();
-	_maskProg->retain();
-
-	_drawProg = cocos2d::GLProgram::createWithFilenames("tutorial_blackout.vsh", "tutorial_blackout.fsh");
-	_drawProg->bindAttribLocation(cocos2d::GLProgram::ATTRIBUTE_NAME_POSITION, cocos2d::GLProgram::VERTEX_ATTRIB_POSITION);
-	_drawProg->bindAttribLocation(cocos2d::GLProgram::ATTRIBUTE_NAME_TEX_COORD, cocos2d::GLProgram::VERTEX_ATTRIB_TEX_COORD);
-	_drawProg->bindAttribLocation(cocos2d::GLProgram::ATTRIBUTE_NAME_COLOR, cocos2d::GLProgram::VERTEX_ATTRIB_COLOR);
-	_drawProg->link();
-	_drawProg->updateUniforms();
-	_drawProg->retain();
+	_maskProg = cocos2d::ShaderCache::getInstance()->getGLProgram("CreateAlphaMask");
+	_drawProg = cocos2d::ShaderCache::getInstance()->getGLProgram("TutorialBlackout");
 
 	cocos2d::Size size = cocos2d::Director::getInstance()->getWinSize();
 	_mask = cocos2d::RenderTexture::create(size.width, size.height);
