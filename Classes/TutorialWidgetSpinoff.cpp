@@ -151,8 +151,7 @@ void TutorialWidgetSpinoff::update(float dt)
 		_arrow->setVisible(false);
 		_hand->setVisible(true);
 		_hand->stopAllActions();
-		_hand->runAction(MakeHandAction(pos1, pos2));
-		_text->runAction(cocos2d::MoveTo::create(0.5f, cocos2d::Vec2(-view.x, 0.0f)));
+		_hand->runAction(MakeHandDragAction(pos1, pos2));
 
 		_prevAlpha = _nextAlpha;
 		_nextAlpha = 0.0f;
@@ -166,12 +165,13 @@ void TutorialWidgetSpinoff::update(float dt)
 		cocos2d::Size view = cocos2d::Director::getInstance()->getVisibleSize();
 		Vector2 pos = _cell.lock()->GetInfo().location;
 
+		_text->runAction(cocos2d::MoveTo::create(0.5f, cocos2d::Vec2(-view.width, 0.0f)));
 		_roundSpot->setPosition(_roundSpot->getPosition() + cocos2d::Vec2(0.0f, 45.0f));
 		_roundSpot->setScale(0.315f);
-		_arrow->stopAllActions();
-		_arrow->setPosition(_projector->ProjectOnScreen(pos) + cocos2d::Vec2(0.0f, 135.0f) - view/2.0f);
-		_arrow->runAction(TutorialWidget::Arrow(cocos2d::Vec2(0,-1), 40.0f, 0.9f));
-		_arrow->setVisible(true);
+		_hand->setVisible(true);
+		_hand->stopAllActions();
+		_hand->runAction(MakeHandPressAction(_projector->ProjectOnScreen(pos) + cocos2d::Vec2(0.0f, 45.0f) - view/2.0f));
+		_arrow->setVisible(false);
 
 		_prevAlpha = _nextAlpha;
 		_nextAlpha = 0.6f;
@@ -234,16 +234,37 @@ Town::WeakPtr TutorialWidgetSpinoff::FindSuitableSpinoffTown(void) const
 	return Town::WeakPtr();
 }
 
-cocos2d::Action* TutorialWidgetSpinoff::MakeHandAction(cocos2d::Vec2 point1, cocos2d::Vec2 point2)
+cocos2d::Action* TutorialWidgetSpinoff::MakeHandDragAction(cocos2d::Vec2 point1, cocos2d::Vec2 point2)
 {
 	cocos2d::FadeIn *fadein = cocos2d::FadeIn::create(0.3f);
 	cocos2d::FadeOut *fadeout = cocos2d::FadeOut::create(0.3f);
 	cocos2d::DelayTime *wait = cocos2d::DelayTime::create(0.2f);
 	cocos2d::MoveTo *move0 = cocos2d::MoveTo::create(0.0f, point1 + cocos2d::Vec2(0.0f, 30.0f));
-	cocos2d::MoveTo *move1 = cocos2d::MoveTo::create(1.0f, point1);
-	cocos2d::MoveTo *move2 = cocos2d::MoveTo::create(1.5f, point2);
+	cocos2d::MoveTo *move1 = cocos2d::MoveTo::create(0.6f, point1);
+	cocos2d::MoveTo *move2 = cocos2d::MoveTo::create(1.1f, point2);
 
 	cocos2d::Sequence *sequence = cocos2d::Sequence::create(move0, fadein, move1, wait, move2, fadeout, nullptr);
+
+	return cocos2d::RepeatForever::create(sequence);
+}
+
+cocos2d::Action* TutorialWidgetSpinoff::MakeHandPressAction(cocos2d::Vec2 point)
+{
+	cocos2d::Vec2 point_from = point + cocos2d::Vec2(30.0f, 70.0f);
+
+	cocos2d::MoveBy *shake1 = cocos2d::MoveBy::create(0.2f, cocos2d::Vec2(0.0f, 15.0f));
+	cocos2d::MoveBy *shake2 = cocos2d::MoveBy::create(0.17f, cocos2d::Vec2(0.0f, -30.0f));
+	cocos2d::MoveBy *shake3 = cocos2d::MoveBy::create(0.15f, cocos2d::Vec2(0.0f, 20.0f));
+	cocos2d::MoveBy *shake4 = cocos2d::MoveBy::create(0.12f, cocos2d::Vec2(0.0f, -15.0f));
+	cocos2d::MoveBy *shake5 = cocos2d::MoveBy::create(0.1f, cocos2d::Vec2(0.0f, 10.0f));
+	cocos2d::Sequence *shaking = cocos2d::Sequence::create(shake1, shake2, shake3, shake4, shake5, nullptr);
+
+	cocos2d::FadeIn *fadein = cocos2d::FadeIn::create(0.3f);
+	cocos2d::FadeOut *fadeout = cocos2d::FadeOut::create(0.3f);
+	cocos2d::MoveTo *move0 = cocos2d::MoveTo::create(0.0f, point_from);
+	cocos2d::MoveTo *move1 = cocos2d::MoveTo::create(0.8f, point);
+
+	cocos2d::Sequence *sequence = cocos2d::Sequence::create(move0, fadein, move1, shaking, fadeout, nullptr);
 
 	return cocos2d::RepeatForever::create(sequence);
 }

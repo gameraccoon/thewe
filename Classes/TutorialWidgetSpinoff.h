@@ -18,7 +18,8 @@ protected:
     virtual bool init() override;
 	virtual void update(float dt) override;
 
-	static cocos2d::Action* MakeHandAction(cocos2d::Vec2 point1, cocos2d::Vec2 point2);
+	static cocos2d::Action* MakeHandDragAction(cocos2d::Vec2 point1, cocos2d::Vec2 point2);
+	static cocos2d::Action* MakeHandPressAction(cocos2d::Vec2 point);
 
 private:
 	enum class State
