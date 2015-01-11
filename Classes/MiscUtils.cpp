@@ -90,7 +90,7 @@ namespace Utils
 
 	GameTime GetGameTime(void)
 	{
-		return World::Instance().GetTimeCurrent();
+		return World::Instance().GetCurrentTime();
 	}
 
 	std::string TimeToString(GameTime time)

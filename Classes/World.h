@@ -61,7 +61,7 @@ public:
 	const Town::WeakPtr GetTownByName(const std::string &name) const;
 
 	void Update(float deltaTime);
-	Utils::GameTime GetTimeCurrent() const;
+	Utils::GameTime GetCurrentTime() const;
 	void InitTime(Utils::GameTime time);
 
 	void SetPause(bool pause);
