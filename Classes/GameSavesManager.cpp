@@ -1,5 +1,8 @@
 #include "GameSavesManager.h"
 
+#include <mutex>
+#include <string>
+
 #include <cocos2d.h>
 
 #include "World.h"
@@ -7,7 +10,6 @@
 #include "Vector2.h"
 #include "MiscUtils.h"
 
-#include <string>
 #include "SqliteDataReader.h"
 #include "SqliteConnection.h"
 

@@ -117,12 +117,12 @@ set(GAME_SRC
 	Classes/TutorialManager.cpp
 	Classes/TutorialWidget.cpp
 	Classes/TutorialWidgetAfterFirstCell.cpp
-	Classes/TutorialWidgetAfterFirstTask.cpp
 	Classes/TutorialWidgetFirstCell.cpp
+	Classes/TutorialWidgetInvestigationStarted.cpp
+	Classes/TutorialWidgetSpinoff.cpp
 	Classes/TutorialWidgetStartFirstTask.cpp
-	Classes/TutorialWidgetWaitFirstTask.cpp
+	Classes/TutorialWidgetTextual.cpp
 	Classes/TutorialWidgetWelcome.cpp
-	Classes/TutorialWidget.cpp
 	Classes/UserMessage.cpp
 	Classes/Vector2.cpp
 	Classes/World.cpp

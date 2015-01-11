@@ -7,9 +7,7 @@ class AppDelegate : private cocos2d::Application
 {
 public:
 	AppDelegate();
-    virtual ~AppDelegate();
-
-	static bool CreateAllShaders(void);
+	virtual ~AppDelegate();
 
     virtual bool applicationDidFinishLaunching() override;
     virtual void applicationDidEnterBackground() override;
