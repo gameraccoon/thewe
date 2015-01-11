@@ -9,6 +9,7 @@
 #include "TutorialWidgetStartFirstTask.h"
 #include "TutorialWidgetTextual.h"
 #include "TutorialWidgetSpinoff.h"
+#include "TutorialWidgetInfluence.h"
 #include "TutorialWidgetInvestigationStarted.h"
 
 TutorialWidget* TutorialWidget::Make(Tutorial::WeakPtr tutorial, WorldMapLayer *worldMapLayer, MapProjector *projector)
@@ -33,7 +34,7 @@ TutorialWidget* TutorialWidget::Make(Tutorial::WeakPtr tutorial, WorldMapLayer *
 	} else if (name == "SpinoffStep1") {
 		widget = TutorialWidgetTextual::create(tutorial);
 	} else if (name == "SpinoffStep2") {
-		widget = TutorialWidgetTextual::create(tutorial);
+		widget = TutorialWidgetInfluence::create(tutorial);
 	} else if (name == "tutorial") {
 		widget = TutorialWidgetInvestigationStarted::create(tutorial);
 	} else if (name == "tutorial_a") {

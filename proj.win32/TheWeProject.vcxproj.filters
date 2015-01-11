@@ -414,6 +414,9 @@
     <ClCompile Include="..\Classes\InvestigatorTapButton.cpp">
       <Filter>Classes\Widgets</Filter>
     </ClCompile>
+    <ClCompile Include="..\Classes\TutorialWidgetInfluence.cpp">
+      <Filter>Classes\Tutorial\Widgets</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="main.h">
@@ -718,6 +721,9 @@
     </ClInclude>
     <ClInclude Include="..\Classes\InvestigatorTapButton.h">
       <Filter>Classes\Widgets</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\TutorialWidgetInfluence.h">
+      <Filter>Classes\Tutorial\Widgets</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
