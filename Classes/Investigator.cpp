@@ -33,11 +33,9 @@ void Investigator::InitInvestigator(const Investigator::Branches &branches)
 	_activeBranches = branches;
 }
 
-void Investigator::BeginCatchTime(float time)
+void Investigator::BeginCatchTime(void)
 {
 	_state = State::START_CATCH_DELAY;
-	_catchTimeBegin = Utils::GetGameTime();
-	_catchTimeEnd = _catchTimeBegin + (Utils::GameTime)time;
 }
 
 void Investigator::BeginInvestigation(void)
@@ -82,19 +80,7 @@ void Investigator::StayInvestigation(bool stay)
 
 void Investigator::UpdateToTime(Utils::GameTime time)
 {
-	if (IsStateType(State::START_CATCH_DELAY))
-	{
-		float allTime = _catchTimeEnd - _catchTimeBegin;
-		float eta = _catchTimeEnd - time;
-		float progress = 1.0f - eta / allTime;
-		
-		if (progress >= 1.0f)
-		{
-			BeginInvestigation();
-			MessageManager::Instance().PutMessage(Message("SaveGame"));
-		}
-	}
-	else if (IsStateType(State::INVESTIGATION))
+	if (IsStateType(State::INVESTIGATION))
 	{
 		for (std::size_t index = 0; index < _activeBranches.size(); ++index)
 		{

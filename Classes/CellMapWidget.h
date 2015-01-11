@@ -2,7 +2,7 @@
 #define CELL_MAP_WIDGET_H
 
 #include "CellGameInterface.h"
-#include "ProgressTapWidget.h"
+#include "InvestigatorTapButton.h"
 #include "MessageManager.h"
 #include "InvestigatorMapWidget.h"
 #include "TaskRewardMapWidget.h"
@@ -22,7 +22,7 @@ public:
 
 	void AcceptMessage(const Message &message) override;
 
-	void ShowInvestigatorLaunchButton(ProgressTapWidget::Callback sucessCallback, ProgressTapWidget::Callback failureCallback);
+	void ShowInvestigatorLaunchButton(InvestigatorTapButton::Callback sucessCallback, InvestigatorTapButton::Callback failureCallback);
 	void HideInvestigatorLaunchButton();
 
 	void SetHitArea(const cocos2d::Rect& hitArea);
@@ -62,7 +62,7 @@ private:
 	MultipleImageSprite *_cellMapSprite;
 	RoundProgressBar *_cellMapTaskProgressBar;
 	RoundProgressBar *_cellCommonProgressBar;
-	ProgressTapWidget *_popupCatchInvestigator;
+	InvestigatorTapButton *_popupCatchInvestigator;
 
 	Cell::State _lastCellState;
 

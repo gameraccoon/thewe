@@ -1,25 +1,27 @@
-#ifndef PROGRESS_TAP_WIDGET_H
-#define PROGRESS_TAP_WIDGET_H
+#ifndef INVESTIGATOR_TAP_BUTTON_H
+#define INVESTIGATOR_TAP_BUTTON_H
 
 #include <functional>
 #include <cocos2d.h>
 #include "ProgressBar.h"
 
-class ProgressTapWidget : public cocos2d::Node
+class InvestigatorTapButton : public cocos2d::Node
 {
 public:
 	typedef std::function<void()> Callback;
 
 public:
-	ProgressTapWidget();
-	~ProgressTapWidget();
-	static ProgressTapWidget* create();
+	InvestigatorTapButton();
+	~InvestigatorTapButton();
+	static InvestigatorTapButton* create();
 
 	virtual bool init(void) override;
 	virtual void update(float dt) override;
 
-	void initRounding();
-	void startRounding();
+	void appear(float jumpHeight);
+	void hide(void);
+	void initRounding(float tickChange, float tapChange);
+	void startRounding(float delay);
 	void pauseRounding();
 	void stopRounding(bool success);
 
@@ -31,6 +33,9 @@ private:
 	float _tapChangeValue;
 	float _tickChangeValue;
 	float _progress;
+	float _initialScale;
+	float _startDelay;
+	float _startDelayTime;
 
 	cocos2d::Sprite *_backgroundSprite;
 	cocos2d::Label *_roundsCountLabel;
@@ -44,5 +49,5 @@ private:
 	void touchBegan(const std::vector<cocos2d::Touch *> &touches, cocos2d::Event *event);
 };
 
-#endif
+#endif // INVESTIGATOR_TAP_BUTTON_H
 

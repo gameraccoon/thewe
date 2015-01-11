@@ -56,15 +56,14 @@ bool CellMapWidget::init(void)
 	_cellCommonProgressBar->setPosition(0.0f, 0.0f);
 	_cellCommonProgressBar->SetProgressImmediately(0.0f);
 
-	_popupCatchInvestigator = ProgressTapWidget::create();
+	_popupCatchInvestigator = InvestigatorTapButton::create();
 	_popupCatchInvestigator->setPosition(0.0f, 0.0f);
-	_popupCatchInvestigator->setScale(6.0f);
+	_popupCatchInvestigator->setScale(8.5f);
 
 	addChild(_cellMapSprite, DrawOrder::SPRITE);
 	addChild(_cellMapTaskProgressBar, DrawOrder::PROGRESS);
 	addChild(_cellCommonProgressBar, DrawOrder::PROGRESS);
 	addChild(_popupCatchInvestigator, DrawOrder::BUTTON);
-	_popupCatchInvestigator->setVisible(false);
 	scheduleUpdate();
 
 	setContentSize(_cellMapTaskProgressBar->getContentSize());
@@ -197,18 +196,27 @@ void CellMapWidget::AcceptMessage(const Message &message)
 	}
 }
 
-void CellMapWidget::ShowInvestigatorLaunchButton(ProgressTapWidget::Callback sucessCallback, ProgressTapWidget::Callback failureCallback)
+void CellMapWidget::ShowInvestigatorLaunchButton(InvestigatorTapButton::Callback sucessCallback, InvestigatorTapButton::Callback failureCallback)
 {
+	float tickChange;
+	float tapChange;
+	tickChange = GameInfo::Instance().GetFloat("INVESTIGATOR_CATCH_TICK_CHANGE");
+	tapChange = GameInfo::Instance().GetFloat("INVESTIGATOR_CATCH_TAP_CHANGE");
+	
+	if (World::Instance().GetTutorialManager().IsTutorialStateAvailable("WaitForFirstInvestigator")) {
+		tickChange = GameInfo::Instance().GetFloat("INVESTIGATOR_TUTORIAL_CATCH_TICK_CHANGE");
+	}
+
 	_popupCatchInvestigator->setSuccessCallback(sucessCallback);
 	_popupCatchInvestigator->setFailureCallback(failureCallback);
-	_popupCatchInvestigator->initRounding();
-	_popupCatchInvestigator->startRounding();
-	_popupCatchInvestigator->setVisible(true);
+	_popupCatchInvestigator->appear(10.0f);
+	_popupCatchInvestigator->initRounding(tickChange, tapChange);
+	_popupCatchInvestigator->startRounding(1.0f);
 }
 
 void CellMapWidget::HideInvestigatorLaunchButton()
 {
-	_popupCatchInvestigator->setVisible(false);
+	_popupCatchInvestigator->hide();
 }
 
 void CellMapWidget::SetHitArea(const cocos2d::Rect& hitArea)

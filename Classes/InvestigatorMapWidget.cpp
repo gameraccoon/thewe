@@ -99,6 +99,7 @@ void InvestigatorMapWidget::OnUncachedInFirstCell()
 {
 	_invesRootCellWidget->HideInvestigatorLaunchButton();
 	_lastState = _investigator->GetState();
+	_investigator->BeginInvestigation();
 }
 
 Investigator::Ptr InvestigatorMapWidget::GetInvestigator(void) const
