@@ -197,6 +197,7 @@ xcopy /Y /Q "$(EngineRoot)external\websockets\prebuilt\win32\*.lib" "$(SolutionD
     <ClCompile Include="..\Classes\TutorialWidgetAfterFirstCell.cpp" />
     <ClCompile Include="..\Classes\TutorialWidgetInfluence.cpp" />
     <ClCompile Include="..\Classes\TutorialWidgetInvestigationStarted.cpp" />
+    <ClCompile Include="..\Classes\TutorialWidgetInvestigatorUncatched.cpp" />
     <ClCompile Include="..\Classes\TutorialWidgetSpinoff.cpp" />
     <ClCompile Include="..\Classes\TutorialWidgetStartFirstTask.cpp" />
     <ClCompile Include="..\Classes\TutorialWidgetFirstCell.cpp" />
@@ -323,6 +324,7 @@ xcopy /Y /Q "$(EngineRoot)external\websockets\prebuilt\win32\*.lib" "$(SolutionD
     <ClInclude Include="..\Classes\TutorialWidgetAfterFirstCell.h" />
     <ClInclude Include="..\Classes\TutorialWidgetInfluence.h" />
     <ClInclude Include="..\Classes\TutorialWidgetInvestigationStarted.h" />
+    <ClInclude Include="..\Classes\TutorialWidgetInvestigatorUncatched.h" />
     <ClInclude Include="..\Classes\TutorialWidgetSpinoff.h" />
     <ClInclude Include="..\Classes\TutorialWidgetStartFirstTask.h" />
     <ClInclude Include="..\Classes\TutorialWidgetFirstCell.h" />

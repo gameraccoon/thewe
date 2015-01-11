@@ -11,6 +11,7 @@
 #include "TutorialWidgetSpinoff.h"
 #include "TutorialWidgetInfluence.h"
 #include "TutorialWidgetInvestigationStarted.h"
+#include "TutorialWidgetInvestigatorUncatched.h"
 
 TutorialWidget* TutorialWidget::Make(Tutorial::WeakPtr tutorial, WorldMapLayer *worldMapLayer, MapProjector *projector)
 {
@@ -35,13 +36,17 @@ TutorialWidget* TutorialWidget::Make(Tutorial::WeakPtr tutorial, WorldMapLayer *
 		widget = TutorialWidgetTextual::create(tutorial);
 	} else if (name == "SpinoffStep2") {
 		widget = TutorialWidgetInfluence::create(tutorial);
+	} else if (name == "InvestigationStarted") {
+		widget = TutorialWidgetInvestigationStarted::create(tutorial, worldMapLayer, projector);
+	} else if (name == "InvestigationCatched") {
+		widget = TutorialWidgetTextual::create(tutorial);
 	} else if (name == "tutorial") {
-		widget = TutorialWidgetInvestigationStarted::create(tutorial);
+		widget = TutorialWidgetInvestigatorUncatched::create(tutorial);
 	} else if (name == "tutorial_a") {
-		widget = TutorialWidgetInvestigationStarted::create(tutorial);
+		widget = TutorialWidgetInvestigatorUncatched::create(tutorial);
 	} else {
 		WRITE_ERR("Unknown tutorial widget: " + name);
-		widget = TutorialWidgetInvestigationStarted::create(tutorial);
+		widget = TutorialWidgetInvestigatorUncatched::create(tutorial);
 	}
 
 	return widget;

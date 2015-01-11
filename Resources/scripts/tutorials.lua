@@ -66,14 +66,14 @@ function RunTutorial_OnCreateFirstSpinoff()
 end
 
 function RunTutorial_FirstInvestigationStarted()
-	TutorialManager:addTutorial(Tutorial(ACTION_TUTORIAL, GetLocalizedString("Tutorial_FirstInvestigationStarted")))
+	TutorialManager:addTutorial(Tutorial("InvestigationStarted", GetLocalizedString("Tutorial_FirstInvestigationStarted")))
 
 	TutorialManager:addTutorialState("WaitForCatchingFirstInvestigator");
 	TutorialManager:removeTutorialState("WaitForFirstInvestigator");
 end
 
 function RunTutorial_FirstInvestigationCatched()
-	TutorialManager:addTutorial(Tutorial(TEXT_TUTORIAL, GetLocalizedString("Tutorial_FirstInvestigationCatched"), ContinueText))
+	TutorialManager:addTutorial(Tutorial("InvestigationCatched", GetLocalizedString("Tutorial_FirstInvestigationCatched"), ContinueText))
 
 	TutorialManager:addTutorialState("WaitForUncatchedInvestigator");
 	TutorialManager:removeTutorialState("WaitForCatchingFirstInvestigator");

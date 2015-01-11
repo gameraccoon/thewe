@@ -19,7 +19,7 @@
 
 	<Const name="INVESTIGATION_DURATION" type="time" value="45" />
 	<Const name="INVESTIGATOR_CATCH_TICK_CHANGE" type="float" value="0.09" />
-	<Const name="INVESTIGATOR_TUTORIAL_CATCH_TICK_CHANGE" type="float" value="0.0" /> <!-- не увеличиваем в туториале -->
+	<Const name="INVESTIGATOR_TUTORIAL_CATCH_TICK_CHANGE" type="float" value="0.005" /> <!-- не увеличиваем в туториале -->
 	<Const name="INVESTIGATOR_CATCH_TAP_CHANGE" type="float" value="0.06" />
 
 	<Const name="TASK_REWARD_WAIT_TIME" type="time" value="30" />

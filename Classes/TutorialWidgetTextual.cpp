@@ -74,7 +74,7 @@ bool TutorialWidgetTextual::init()
 	_tapToContinue = cocos2d::ui::Text::create(_tutorial.lock()->buttonText, "EuropeNormal.ttf", 18);
 	_tapToContinue->setPosition(cocos2d::Vec2(0.0f, -170.0f));
 	_tapToContinue->runAction(pulsation);
-	//LocalizationManager::Instance().getText("TapToContinue")
+	
 	addChild(_fsQuad, 0);
 	addChild(_tutorialText, 1);
 	addChild(_tapToContinue, 1);

@@ -417,6 +417,9 @@
     <ClCompile Include="..\Classes\TutorialWidgetInfluence.cpp">
       <Filter>Classes\Tutorial\Widgets</Filter>
     </ClCompile>
+    <ClCompile Include="..\Classes\TutorialWidgetInvestigatorUncatched.cpp">
+      <Filter>Classes\Tutorial\Widgets</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="main.h">
@@ -723,6 +726,9 @@
       <Filter>Classes\Widgets</Filter>
     </ClInclude>
     <ClInclude Include="..\Classes\TutorialWidgetInfluence.h">
+      <Filter>Classes\Tutorial\Widgets</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\TutorialWidgetInvestigatorUncatched.h">
       <Filter>Classes\Tutorial\Widgets</Filter>
     </ClInclude>
   </ItemGroup>
