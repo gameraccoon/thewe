@@ -354,9 +354,6 @@
     <ClCompile Include="..\Classes\BonusMapWidget.cpp">
       <Filter>Classes\Widgets</Filter>
     </ClCompile>
-    <ClCompile Include="..\Classes\ProgressTapWidget.cpp">
-      <Filter>Classes\Widgets</Filter>
-    </ClCompile>
     <ClCompile Include="..\Classes\CircleMenu.cpp">
       <Filter>Classes\Widgets</Filter>
     </ClCompile>
@@ -414,8 +411,8 @@
     <ClCompile Include="..\Classes\ThreadUtils.cpp">
       <Filter>Classes\Utils</Filter>
     </ClCompile>
-    <ClCompile Include="..\Classes\Shaders.cpp">
-      <Filter>Classes</Filter>
+    <ClCompile Include="..\Classes\InvestigatorTapButton.cpp">
+      <Filter>Classes\Widgets</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -659,9 +656,6 @@
     <ClInclude Include="..\Classes\BonusMapWidget.h">
       <Filter>Classes\Widgets</Filter>
     </ClInclude>
-    <ClInclude Include="..\Classes\ProgressTapWidget.h">
-      <Filter>Classes\Widgets</Filter>
-    </ClInclude>
     <ClInclude Include="..\Classes\CircleMenu.h">
       <Filter>Classes\Widgets</Filter>
     </ClInclude>
@@ -721,6 +715,9 @@
     </ClInclude>
     <ClInclude Include="..\Classes\ThreadUtils.h">
       <Filter>Classes\Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\InvestigatorTapButton.h">
+      <Filter>Classes\Widgets</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

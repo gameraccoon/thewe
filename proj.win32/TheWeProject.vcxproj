@@ -173,12 +173,11 @@ xcopy /Y /Q "$(EngineRoot)external\websockets\prebuilt\win32\*.lib" "$(SolutionD
     <ClCompile Include="..\Classes\NotificationMessageManager.cpp" />
     <ClCompile Include="..\Classes\NotificationMessageWidget.cpp" />
     <ClCompile Include="..\Classes\ProgressBar.cpp" />
-    <ClCompile Include="..\Classes\ProgressTapWidget.cpp" />
+    <ClCompile Include="..\Classes\InvestigatorTapButton.cpp" />
     <ClCompile Include="..\Classes\Region.cpp" />
     <ClCompile Include="..\Classes\RelinkDragAndDrop.cpp" />
     <ClCompile Include="..\Classes\ScreenBlackoutWidget.cpp" />
     <ClCompile Include="..\Classes\SessionEndScreen.cpp" />
-    <ClCompile Include="..\Classes\Shaders.cpp" />
     <ClCompile Include="..\Classes\SpinoffDragAndDrop.cpp" />
     <ClCompile Include="..\Classes\SplashScreenScene.cpp" />
     <ClCompile Include="..\Classes\Spline.cpp" />
@@ -298,7 +297,7 @@ xcopy /Y /Q "$(EngineRoot)external\websockets\prebuilt\win32\*.lib" "$(SolutionD
     <ClInclude Include="..\Classes\NotificationMessageManager.h" />
     <ClInclude Include="..\Classes\NotificationMessageWidget.h" />
     <ClInclude Include="..\Classes\ProgressBar.h" />
-    <ClInclude Include="..\Classes\ProgressTapWidget.h" />
+    <ClInclude Include="..\Classes\InvestigatorTapButton.h" />
     <ClInclude Include="..\Classes\Region.h" />
     <ClInclude Include="..\Classes\RelinkDragAndDrop.h" />
     <ClInclude Include="..\Classes\SessionEndScreen.h" />
