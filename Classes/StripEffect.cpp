@@ -146,8 +146,8 @@ void StripEffect::setStripGeometry(const Utils::Spline<cocos2d::Vec3> &path, int
 		cocos2d::Vec2 dir = cocos2d::Vec2(basis.x, basis.y).getNormalized();
 
 		if (q == 0) {
-			cocos2d::Vec2 dir0 = dir.rotateByAngle(cocos2d::Vec2::ZERO,  Utils::PI*0.5f) * quad_p1.z*0.5f;
-			cocos2d::Vec2 dir1 = dir.rotateByAngle(cocos2d::Vec2::ZERO, -Utils::PI*0.5f) * quad_p1.z*0.5f;
+			cocos2d::Vec2 dir0 = dir.rotateByAngle(cocos2d::Vec2::ZERO,  Math::PI*0.5f) * quad_p1.z*0.5f;
+			cocos2d::Vec2 dir1 = dir.rotateByAngle(cocos2d::Vec2::ZERO, -Math::PI*0.5f) * quad_p1.z*0.5f;
 
 			quad.bl.vertices.x = quad_p1.x + dir0.x;
 			quad.bl.vertices.y = quad_p1.y + dir0.y;
@@ -177,8 +177,8 @@ void StripEffect::setStripGeometry(const Utils::Spline<cocos2d::Vec3> &path, int
 			quad.br = _quads[q-1].tr;
 		}
 
-		cocos2d::Vec2 dir0 = dir.rotateByAngle(cocos2d::Vec2::ZERO,  Utils::PI*0.5f) * quad_p2.z*0.5f;
-		cocos2d::Vec2 dir1 = dir.rotateByAngle(cocos2d::Vec2::ZERO, -Utils::PI*0.5f) * quad_p2.z*0.5f;
+		cocos2d::Vec2 dir0 = dir.rotateByAngle(cocos2d::Vec2::ZERO,  Math::PI*0.5f) * quad_p2.z*0.5f;
+		cocos2d::Vec2 dir1 = dir.rotateByAngle(cocos2d::Vec2::ZERO, -Math::PI*0.5f) * quad_p2.z*0.5f;
 
 		quad.tl.vertices.x = quad_p2.x + dir0.x;
 		quad.tl.vertices.y = quad_p2.y + dir0.y;

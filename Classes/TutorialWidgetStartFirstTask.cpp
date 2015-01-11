@@ -82,7 +82,7 @@ void TutorialWidgetStartFirstTask::update(float dt)
 	if (_state == State::APPEAR) {
 		float scale = 1.0f / 1.0f;
 		_time += dt * scale;
-		float alpha = Utils::Lerp(0.0f, 0.9f, _time);
+		float alpha = Math::Lerp(0.0f, 0.9f, _time);
 		_blackout->SetBackgroundColor(cocos2d::Color4F(0.0f, 0.0f, 0.0f, alpha));
 		if (_time > 1.0f) {
 			_time = 0.0f;
@@ -92,8 +92,8 @@ void TutorialWidgetStartFirstTask::update(float dt)
 	} else if (_state == State::FOCUS) {
 		float scale = 1.0f / 0.5f;
 		_time += dt * scale;
-		_spot->setScaleY(Utils::Lerp(1.0f, 0.27f, _time));
-		_spot->setPositionY(_spotStartPos.y + Utils::Lerp(0.0f, 73.0f, _time)); 
+		_spot->setScaleY(Math::Lerp(1.0f, 0.27f, _time));
+		_spot->setPositionY(_spotStartPos.y + Math::Lerp(0.0f, 73.0f, _time));
 		if (_time > 1.0f) {
 			_time = 0.0f;
 			_state = State::WAIT;
@@ -103,7 +103,7 @@ void TutorialWidgetStartFirstTask::update(float dt)
 	} else if (_state == State::DISAPPEAR) {
 		float scale = 1.0f / 0.6f;
 		_time += dt * scale;
-		float alpha = Utils::Lerp(0.9f, 0.0f, _time);
+		float alpha = Math::Lerp(0.9f, 0.0f, _time);
 		_blackout->SetBackgroundColor(cocos2d::Color4F(0.0f, 0.0f, 0.0f, alpha));
 		if (_time > 1.0f) {
 			_time = 0.0f;

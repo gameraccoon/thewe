@@ -57,7 +57,10 @@ namespace Utils
 		Utils::GameTime GetTime(const std::string &name) const;
 		std::string GetString(const std::string &name) const;
 	};
+}
 
+namespace Math
+{
 	const float PI = 3.14159265359f;
 
 	template <class T>

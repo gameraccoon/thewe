@@ -75,8 +75,8 @@ void TutorialWidgetFirstCell::update(float dt)
 		float scale = 1.0f / 1.5f;
 		_time += dt * scale;
 
-		_projector->SetScale(Utils::Lerp(_startViewScale, 1.2f, _time));
-		_projector->SetLocation(Utils::Lerp(_startViewPos, Vector2(300.0f, 280.0f), _time));
+		_projector->SetScale(Math::Lerp(_startViewScale, 1.2f, _time));
+		_projector->SetLocation(Math::Lerp(_startViewPos, Vector2(300.0f, 280.0f), _time));
 		_worldMapLayer->UpdateMapElements();
 
 		if (_time > 1.0f) {

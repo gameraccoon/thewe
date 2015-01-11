@@ -108,11 +108,11 @@ void TutorialWidgetSpinoff::update(float dt)
 		float scale = 1.0f / 1.0f;
 		_viewFocusTime += dt * scale;
 		
-		float t = Utils::Clamp(1.0f, 0.0f, _viewFocusTime);
+		float t = Math::Clamp(1.0f, 0.0f, _viewFocusTime);
 		Vector2 pos = _cell.lock()->GetInfo().location;
-		_projector->SetLocation(Utils::Lerp(_viewStartLocation, pos, t));
-		_projector->SetScale(Utils::Lerp(_viewStartScale, 1.0f, t));
-		_blackout->SetBackgroundColor(cocos2d::Color4F(0.0f, 0.0f, 0.0f, Utils::Lerp(0.0f, _nextAlpha, t)));
+		_projector->SetLocation(Math::Lerp(_viewStartLocation, pos, t));
+		_projector->SetScale(Math::Lerp(_viewStartScale, 1.0f, t));
+		_blackout->SetBackgroundColor(cocos2d::Color4F(0.0f, 0.0f, 0.0f, Math::Lerp(0.0f, _nextAlpha, t)));
 
 		_roundSpot->setPosition(_projector->ProjectOnScreen(pos));
 		_roundSpot->setScale(_worldMapLayer->GetCellMapWidget(_cell)->getScale());
@@ -131,8 +131,8 @@ void TutorialWidgetSpinoff::update(float dt)
 	if (_mustChangeState) {
 		float scale = 1.0f / 0.5f;
 		_stateChangeTime += dt * scale;
-		float time = Utils::Clamp(1.0f, 0.0f, _stateChangeTime);
-		float alpha = Utils::Lerp(_prevAlpha, _nextAlpha, time);
+		float time = Math::Clamp(1.0f, 0.0f, _stateChangeTime);
+		float alpha = Math::Lerp(_prevAlpha, _nextAlpha, time);
 		_blackout->SetBackgroundColor(cocos2d::Color4F(0.0f, 0.0f, 0.0f, alpha));
 		if (_stateChangeTime > 1.0f) {
 			_stateChangeTime = 0.0f;

@@ -89,10 +89,10 @@ void TutorialWidgetAfterFirstCell::update(float dt)
 	{
 		float scale = 1.0f / 0.8f;
 		_time += dt * scale;
-		_projector->SetLocation(Utils::Lerp(_startViewLocation, _targetViewLocation, _time));
+		_projector->SetLocation(Math::Lerp(_startViewLocation, _targetViewLocation, _time));
 
-		float t = Utils::Clamp(1.0f, 0.0f, _time*2.5f);
-		float alpha = Utils::Lerp(0.0f, 0.85f, t);
+		float t = Math::Clamp(1.0f, 0.0f, _time*2.5f);
+		float alpha = Math::Lerp(0.0f, 0.85f, t);
 		_blackout->SetBackgroundColor(cocos2d::Color4F(0.0f, 0.0f, 0.0f, alpha));
 
 		_spot->setPosition(_projector->ProjectOnScreen(_targetViewLocation));
@@ -117,7 +117,7 @@ void TutorialWidgetAfterFirstCell::update(float dt)
 	if (_state == State::DISAPPEAR) {
 		float scale = 1.0f / 0.25f;
 		_time += dt * scale;
-		float alpha = Utils::Lerp(0.85f, 0.0f, _time);
+		float alpha = Math::Lerp(0.85f, 0.0f, _time);
 		_blackout->SetBackgroundColor(cocos2d::Color4F(0.0f, 0.0f, 0.0f, alpha));
 		if (_time > 1.0f) {
 			_time = 0.0f;
