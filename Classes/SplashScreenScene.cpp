@@ -8,12 +8,25 @@ SplashScreenScene::SplashScreenScene(void)
 	, _timeToShow(1.5f)
 	, _isLoadingComplete(false)
 {
-	init();
 }
 
 SplashScreenScene::~SplashScreenScene(void)
 {
 	WRITE_LOG("SplashScreen unloaded sucessfully");
+}
+
+SplashScreenScene* SplashScreenScene::create()
+{
+	SplashScreenScene* ret = new SplashScreenScene();
+	if (ret && ret->init())
+	{
+		ret->autorelease();
+	}
+	else
+	{
+		CC_SAFE_DELETE(ret);
+	}
+	return ret;
 }
 
 bool SplashScreenScene::init(void)

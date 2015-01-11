@@ -15,6 +15,7 @@ namespace Utils
 {
 	typedef float GameTime;
 
+	void CachePaths();
 	std::string GetResourcesPath();
 	std::string GetDocumentsPath();
 	std::string GetWritablePath();

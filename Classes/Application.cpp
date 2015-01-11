@@ -94,13 +94,13 @@ bool AppDelegate::applicationDidFinishLaunching()
 	srand(time(nullptr));
 
 	MainMenuScene* mainMenuScene = new MainMenuScene(); // there is no automatic init()
-	SplashScreenScene* splashScreenScene = new SplashScreenScene();
+	SplashScreenScene* splashScreenScene = SplashScreenScene::create();
 	// make Menu as the main scene
 	director->runWithScene(mainMenuScene);
 	// put SplashScreen onto the stack
 	director->pushScene(splashScreenScene);
-	// ready to unload the SplashScreen
-	splashScreenScene->autorelease();
+
+	Utils::CachePaths();
 
 	std::string systemLanguageCode = getCurrentLanguageCode();
 

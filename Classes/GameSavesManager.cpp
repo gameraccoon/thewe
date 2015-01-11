@@ -3,8 +3,6 @@
 #include <mutex>
 #include <string>
 
-#include <cocos2d.h>
-
 #include "World.h"
 #include "Log.h"
 #include "Vector2.h"
@@ -21,6 +19,10 @@ static const std::string INVESIGATIONS_TABLE = "investigation_branches";
 static const std::string INVESIGATORS_TABLE = "investigators";
 static const std::string TUTORIAL_STATES_TABLE = "tutorial_states";
 
+static std::recursive_mutex InstanceMutex;
+static std::recursive_mutex SavesManagerMutex;
+
+
 struct GameSavesManagerImpl
 {
 public:
@@ -36,7 +38,7 @@ public:
 GameSavesManager::GameSavesManager()
 	:_isWorking(false)
 {
-	std::string dbPath = cocos2d::FileUtils::getInstance()->getWritablePath();
+	std::string dbPath = Utils::GetWritablePath();
 	dbPath.append("userdata.db");
 	_impl = new GameSavesManagerImpl(dbPath);
 
@@ -53,6 +55,8 @@ GameSavesManager::~GameSavesManager()
 
 GameSavesManager& GameSavesManager::Instance()
 {
+	std::lock_guard<std::recursive_mutex> lock(::InstanceMutex);
+
 	static GameSavesManager singleInstance;
 	return singleInstance;
 }
@@ -406,6 +410,8 @@ void GameSavesManager::LoadTutorialStates()
 
 void GameSavesManager::LoadGameState(void)
 {
+	std::lock_guard<std::recursive_mutex> lock(::SavesManagerMutex);
+
 	if (_isWorking)
 		return;
 
@@ -705,6 +711,8 @@ static bool FillTutorialStatesAdditionStatement(std::string* const tutorialState
 
 void GameSavesManager::SaveGameState(void)
 {
+	std::lock_guard<std::recursive_mutex> lock(::SavesManagerMutex);
+
 	if (_isWorking)
 		return;
 
@@ -756,6 +764,8 @@ void GameSavesManager::SaveGameState(void)
 
 void GameSavesManager::SaveGameTime()
 {
+	std::lock_guard<std::recursive_mutex> lock(::SavesManagerMutex);
+
 	if (_isWorking)
 		return;
 

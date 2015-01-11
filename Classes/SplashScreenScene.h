@@ -8,6 +8,7 @@ class SplashScreenScene : public cocos2d::Scene
 public:
 	SplashScreenScene();
 	virtual ~SplashScreenScene();
+	static SplashScreenScene* create();
 
 	virtual bool init() override;
 	virtual void update(float delta) override;

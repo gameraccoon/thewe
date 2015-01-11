@@ -2,28 +2,90 @@
 
 #include <cocos2d.h>
 #include <string>
+#include <mutex>
 
 #include "World.h"
 
 namespace Utils
 {
+	static std::string CachedResourcesPath;
+	static std::string CachedDocumentsPath;
+	static std::string CachedWritablePath;
+
+	static std::mutex CachedResourcesPathMutex;
+	static std::mutex CachedDocumentsPathMutex;
+	static std::mutex CachedWritablePathMutex;
+
+	std::string GetPureResourcesPath()
+	{
+#if CC_TARGET_PLATFORM == CC_PLATFORM_WIN32
+		return "../../Resources/";
+#else
+		return "";
+#endif
+	}
+
+	std::string GetPureDocumentsPath()
+	{
+		return cocos2d::FileUtils::getInstance()->getWritablePath();
+	}
+
+	std::string GetPureWritablePath()
+	{
+		return cocos2d::FileUtils::getInstance()->getWritablePath();
+	}
+
+	void CachePaths()
+	{
+		std::lock_guard<std::mutex> lock1(CachedResourcesPathMutex);
+		std::lock_guard<std::mutex> lock2(CachedDocumentsPathMutex);
+		std::lock_guard<std::mutex> lock3(CachedWritablePathMutex);
+
+		CachedResourcesPath = GetPureResourcesPath();
+		CachedDocumentsPath = GetPureDocumentsPath();
+		CachedWritablePath = GetPureWritablePath();
+	}
+
 	std::string GetResourcesPath()
 	{
-	#if CC_TARGET_PLATFORM == CC_PLATFORM_WIN32
-		return "../../Resources/";
-	#else
-		return "";
-	#endif
+		std::lock_guard<std::mutex> lock(CachedResourcesPathMutex);
+
+		if (!CachedResourcesPath.empty())
+		{
+			return CachedResourcesPath;
+		}
+		else
+		{
+			return GetPureResourcesPath();
+		}
 	}
 
 	std::string GetDocumentsPath()
 	{
-		return cocos2d::FileUtils::getInstance()->getWritablePath();
+		std::lock_guard<std::mutex> lock(CachedDocumentsPathMutex);
+
+		if (!CachedDocumentsPath.empty())
+		{
+			return CachedDocumentsPath;
+		}
+		else
+		{
+			return GetPureDocumentsPath();
+		}
 	}
 
 	std::string GetWritablePath()
 	{
-		return cocos2d::FileUtils::getInstance()->getWritablePath();
+		std::lock_guard<std::mutex> lock(CachedWritablePathMutex);
+
+		if (!CachedWritablePath.empty())
+		{
+			return CachedWritablePath;
+		}
+		else
+		{
+			return GetPureWritablePath();
+		}
 	}
 
 	GameTime GetGameTime(void)
