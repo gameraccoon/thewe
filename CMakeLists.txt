@@ -82,6 +82,7 @@ set(GAME_SRC
 	Classes/GameScene.cpp
 	Classes/Investigator.cpp
 	Classes/InvestigatorMapWidget.cpp
+	Classes/InvestigatorTapButton.cpp
 	Classes/Log.cpp
 	Classes/LuaBindings.cpp
 	Classes/LuaInstance.cpp
@@ -96,7 +97,6 @@ set(GAME_SRC
 	Classes/NotificationMessageWidget.cpp
 	Classes/MiscUtils.cpp
 	Classes/ProgressBar.cpp
-	Classes/ProgressTapWidget.cpp
 	Classes/RelinkDragAndDrop.cpp
 	Classes/Region.cpp
 	Classes/ScreenBlackoutWidget.cpp
@@ -118,7 +118,9 @@ set(GAME_SRC
 	Classes/TutorialWidget.cpp
 	Classes/TutorialWidgetAfterFirstCell.cpp
 	Classes/TutorialWidgetFirstCell.cpp
+	Classes/TutorialWidgetInfluence.cpp
 	Classes/TutorialWidgetInvestigationStarted.cpp
+	Classes/TutorialWidgetInvestigatorUncatched.cpp
 	Classes/TutorialWidgetSpinoff.cpp
 	Classes/TutorialWidgetStartFirstTask.cpp
 	Classes/TutorialWidgetTextual.cpp

@@ -96,8 +96,8 @@ void TutorialWidgetInfluence::update(float dt)
 	if (_state == State::SHOW) {
 		float scale = 1.0f / 0.6f;
 		_time += dt * scale;
-		alpha = Utils::Lerp(0.0f, 0.5f, _time);
-		_tapToContinue->setOpacity(Utils::Clamp(255, 0, (int)(255 * _time)));
+		alpha = Math::Lerp(0.0f, 0.5f, _time);
+		_tapToContinue->setOpacity(Math::Clamp(255, 0, (int)(255 * _time)));
 		if (_time > 1.0f) {
 			_time = 0.0f;
 			_state = State::STAND;
@@ -106,8 +106,8 @@ void TutorialWidgetInfluence::update(float dt)
 	if (_state == State::HIDE) {
 		float scale = 1.0f / 0.6f;
 		_time += dt * scale;
-		alpha = Utils::Lerp(0.5f, 0.0f, _time);
-		_tapToContinue->setOpacity((Utils::Clamp(255, 0, (int)(255 - 255*_time))));
+		alpha = Math::Lerp(0.5f, 0.0f, _time);
+		_tapToContinue->setOpacity((Math::Clamp(255, 0, (int)(255 - 255*_time))));
 		if (_time > 1.0f) {
 			_time = 0.0f;
 			_state = State::FINISH;

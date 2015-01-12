@@ -95,9 +95,9 @@ void TutorialWidgetInvestigationStarted::update(float dt)
 	if (_state == State::MOVE) {
 		float scale = 1.0f / 0.5f;
 		_time += dt * scale;
-		float t = Utils::Clamp(1.0f, 0.0f, _time);
-		_projector->SetLocation(Utils::Lerp(_startViewPos, _cell.lock()->GetInfo().location, t));
-		_projector->SetScale(Utils::Lerp(_startViewScale, 1.2f, t));
+		float t = Math::Clamp(1.0f, 0.0f, _time);
+		_projector->SetLocation(Math::Lerp(_startViewPos, _cell.lock()->GetInfo().location, t));
+		_projector->SetScale(Math::Lerp(_startViewScale, 1.2f, t));
 		_worldMapLayer->UpdateMapElements();
 		
 		if (_time > 1.0f) {
