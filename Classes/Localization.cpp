@@ -1,10 +1,6 @@
 #include "Localization.h"
 
-#include <memory>
-#include <functional>
-
-#include "pugixml.hpp"
-#include "cocos2d.h"
+#include <pugixml.hpp>
 
 #include "Log.h"
 #include "MiscUtils.h"
@@ -26,7 +22,7 @@ LocalizationManager& LocalizationManager::Instance()
 	return singleInstance;
 }
 
-void LocalizationManager::InitWithLocale(const std::string& localizationFile, const std::string& locale)
+void LocalizationManager::InitWithLocale(const std::string& localizationsXml, const std::string& locale)
 {
 	pugi::xml_parse_result parsedXml;
 
@@ -35,9 +31,7 @@ void LocalizationManager::InitWithLocale(const std::string& localizationFile, co
 	pugi::xml_node headNode;
 	pugi::xml_node childNode;
 
-	cocos2d::FileUtils * fileUtils = cocos2d::FileUtils::getInstance();
-	std::string fullName = fileUtils->fullPathForFilename(localizationFile);
-	std::string fileBuff = fileUtils->getStringFromFile(fullName);
+	std::string fileBuff = localizationsXml;
 
 	parsedXml = xmlDocument.load_buffer(fileBuff.c_str(), fileBuff.size());
 
@@ -66,7 +60,7 @@ void LocalizationManager::InitWithLocale(const std::string& localizationFile, co
 		{
 			WRITE_LOG(std::string("Locale \"").append(locale).append("\" not found. Trying to use default locale"));
 			// Warning: recursive call
-			InitWithLocale(localizationFile, defaultLocale);
+			InitWithLocale(localizationsXml, defaultLocale);
 			return;
 		}
 		else

@@ -37,6 +37,7 @@ LOCAL_SRC_FILES := hellocpp/main.cpp \
 				   	../../Classes/GameScene.cpp \
 				   	../../Classes/Investigator.cpp \
 				   	../../Classes/InvestigatorMapWidget.cpp \
+				   	../../Classes/InvestigatorTapButton.cpp \
 				   	../../Classes/Log.cpp \
 				   	../../Classes/Localization.cpp \
 				   	../../Classes/LuaBindings.cpp \
@@ -51,7 +52,6 @@ LOCAL_SRC_FILES := hellocpp/main.cpp \
 				   	../../Classes/NotificationMessageLayer.cpp \
 				   	../../Classes/NotificationMessageWidget.cpp \
 				   	../../Classes/ProgressBar.cpp \
-				   	../../Classes/ProgressTapWidget.cpp \
 				   	../../Classes/Region.cpp \
 				   	../../Classes/RelinkDragAndDrop.cpp \
 				   	../../Classes/ScreenBlackoutWidget.cpp \
@@ -75,10 +75,12 @@ LOCAL_SRC_FILES := hellocpp/main.cpp \
 				   	../../Classes/TutorialWidgetWelcome.cpp \
 				   	../../Classes/TutorialWidgetAfterFirstCell.cpp \
 				   	../../Classes/TutorialWidgetFirstCell.cpp \
+				   	../../Classes/TutorialWidgetInfluence.cpp \
 				   	../../Classes/TutorialWidgetStartFirstTask.cpp \
 				   	../../Classes/TutorialWidgetTextual.cpp \
 				   	../../Classes/TutorialWidgetSpinoff.cpp \
 				   	../../Classes/TutorialWidgetInvestigationStarted.cpp \
+				   	../../Classes/TutorialWidgetInvestigatorUncatched.cpp \
 				   	../../Classes/UserMessage.cpp \
 				   	../../Classes/Vector2.cpp \
 				   	../../Classes/World.cpp \

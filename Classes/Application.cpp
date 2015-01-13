@@ -104,28 +104,32 @@ bool AppDelegate::applicationDidFinishLaunching()
 
 	std::string systemLanguageCode = getCurrentLanguageCode();
 
-	auto dataLoading([systemLanguageCode](){ // lambda-method for background loading
-		GameInfo::Instance().ParseXml("gameInfo.xml"); // load game info
+	auto cachedGameinfo = WorldLoader::LoadGameInfo();
+	auto cachedLuaScripts = WorldLoader::LoadLuaScripts();
+
+	// lambda-method for background loading
+	auto dataLoading([systemLanguageCode, cachedGameinfo, cachedLuaScripts](){
+		GameInfo::Instance().ParseXml(cachedGameinfo->GetResource("gameinfoXml"));
 
 		if (Utils::IsPlatformDesktop()){ // load localizations
 			std::string languageCode = GameInfo::Instance().GetString("DESKTOP_LOCALE");
-			LocalizationManager::Instance().InitWithLocale("content.xml", languageCode);
+			LocalizationManager::Instance().InitWithLocale(cachedGameinfo->GetResource("l10nsXml"), languageCode);
 		}
 		else{
 			// use system language
-			LocalizationManager::Instance().InitWithLocale("content.xml", systemLanguageCode);
+			LocalizationManager::Instance().InitWithLocale(cachedGameinfo->GetResource("l10nsXml"), systemLanguageCode);
 		}
+
+		// load game data
+		WorldLoader::ParseGameInfo(cachedGameinfo);
+		World::Instance().InitLuaContext(cachedLuaScripts);
+		GameSavesManager::Instance().LoadGameState();
 
 		// sleep the thread for some time
 		std::this_thread::sleep_for(std::chrono::seconds(1));
 	});
 
 	auto onFinishDataLoading([mainMenuScene, splashScreenScene](){
-		// load game data
-		World::Instance().InitLuaContext();
-		WorldLoader::LoadGameInfo();
-		GameSavesManager::Instance().LoadGameState();
-
 		CreateAllShaders();
 
 		// initialize graphics after all data is loaded

@@ -1,7 +1,6 @@
 #include "MapGuiLayer.h"
 
 #include "World.h"
-#include "WorldLoader.h"
 #include "GameScene.h"
 #include "WorldMapLayer.h"
 #include "CellsNetLayer.h"

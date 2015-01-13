@@ -17,6 +17,7 @@
 #include "TutorialManager.h"
 #include "LuaInstance.h"
 #include "MiscUtils.h"
+#include "ResourceCache.h"
 
 class World
 {
@@ -39,7 +40,7 @@ public:
 
 	/** Removes all the regions */
 	void CleanupMapContent(void);
-	void InitLuaContext();
+	void InitLuaContext(ResourceCacheQueue<std::string>::Ptr cachedScripts);
 	void StartLogic();
 
 	const Regions& GetRegions() const;

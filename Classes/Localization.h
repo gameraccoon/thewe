@@ -13,7 +13,7 @@ public:
 	* Load the texts for the locale
 	* Sets dafault locale if doesn't find requested locale
 	*/
-	void InitWithLocale(const std::string& localizationFile, const std::string& locale);
+	void InitWithLocale(const std::string& localizationsXml, const std::string& locale);
 
 	/**
 	*  Return the word of determined locality

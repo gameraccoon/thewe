@@ -10,7 +10,6 @@
 #include "WorldLoader.h"
 #include "MessageManager.h"
 
-#include <cocos2d.h>
 #include <luabind/luabind.hpp>
 
 World::World()
@@ -55,14 +54,7 @@ TutorialManager& World::GetTutorialManager()
 	return _tutorialManager;
 }
 
-void ExecScript(LuaInstance* instance, std::string filename)
-{
-	std::string fullPath = cocos2d::FileUtils::getInstance()->fullPathForFilename(filename);
-	std::string script = cocos2d::FileUtils::getInstance()->getStringFromFile(fullPath);
-	instance->ExecScript(script.c_str());
-}
-
-void World::InitLuaContext()
+void World::InitLuaContext(ResourceCacheQueue<std::string>::Ptr cachedScripts)
 {
 	if (!_isLuaInited)
 	{
@@ -72,9 +64,10 @@ void World::InitLuaContext()
 		lua::BindFunctions(_luaScript);
 		lua::BindGlobalData(_luaScript);
 
-		ExecScript(_luaScript, "mainLogic.lua");
-		ExecScript(_luaScript, "tasks.lua");
-		ExecScript(_luaScript, "tutorials.lua");
+		while (!cachedScripts->IsEmpty())
+		{
+			_luaScript->ExecScript(cachedScripts->PopFrontResource().c_str());
+		}
 	}
 	else
 	{

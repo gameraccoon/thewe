@@ -3,7 +3,6 @@
 #include "Log.h"
 #include "World.h"
 #include "LuaInstance.h"
-#include "WorldLoader.h"
 #include "MessageManager.h"
 #include "GameInfo.h"
 

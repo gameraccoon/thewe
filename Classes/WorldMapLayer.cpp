@@ -6,7 +6,6 @@
 #include "MapGuiLayer.h"
 #include "TaskManager.h"
 #include "SessionEndScreen.h"
-#include "WorldLoader.h"
 #include "Log.h"
 #include <luabind/luabind.hpp>
 
