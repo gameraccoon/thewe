@@ -198,11 +198,6 @@ namespace WorldLoader
 		result &= LoadWorld(gamedata);
 		result &= LoadTasksInfo(gamedata);
 
-		if (result == true)
-		{
-			WRITE_INIT("World info load successfully");
-		}
-
 		return result;
 	}
 

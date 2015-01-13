@@ -104,6 +104,7 @@ bool AppDelegate::applicationDidFinishLaunching()
 
 	std::string systemLanguageCode = getCurrentLanguageCode();
 
+	WRITE_INIT("Load and cache text files");
 	auto cachedGameinfo = WorldLoader::LoadGameInfo();
 	auto cachedLuaScripts = WorldLoader::LoadLuaScripts();
 
@@ -125,11 +126,15 @@ bool AppDelegate::applicationDidFinishLaunching()
 		World::Instance().InitLuaContext(cachedLuaScripts);
 		GameSavesManager::Instance().LoadGameState();
 
+		WRITE_INIT("Finish background data loading");
+
 		// sleep the thread for some time
 		std::this_thread::sleep_for(std::chrono::seconds(1));
 	});
 
 	auto onFinishDataLoading([mainMenuScene, splashScreenScene](){
+		WRITE_INIT("Preparing graphics");
+
 		CreateAllShaders();
 
 		// initialize graphics after all data is loaded
@@ -142,9 +147,13 @@ bool AppDelegate::applicationDidFinishLaunching()
 		World::Instance().StartLogic();
 
 		splashScreenScene->SetLoadingFinished();
+
+		WRITE_INIT("Game is ready");
 	});
 
 	Utils::RunInBackgroundThread(dataLoading, onFinishDataLoading);
+
+	WRITE_INIT("Start background data loading");
 
 	return true;
 }
