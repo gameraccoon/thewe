@@ -59,12 +59,16 @@ void ScreenBlackoutWidget::ClearSpots(void)
 
 void ScreenBlackoutWidget::SetBackgroundColor(const cocos2d::Color4F &color)
 {
+	_background = color;
+
 	_mask->getSprite()->getGLProgramState()->setUniformVec4("u_backgroundColor",
 		cocos2d::Vec4(color.r, color.g, color.b, color.a));
 }
 
 bool ScreenBlackoutWidget::initWithColor(cocos2d::Color4F color)
 {
+	_background = color;
+
 	_maskProg = cocos2d::ShaderCache::getInstance()->getGLProgram("CreateAlphaMask");
 	_drawProg = cocos2d::ShaderCache::getInstance()->getGLProgram("TutorialBlackout");
 
@@ -83,6 +87,10 @@ bool ScreenBlackoutWidget::initWithColor(cocos2d::Color4F color)
 
 void ScreenBlackoutWidget::update(float dt)
 {
+	if (_background.a <= 0.0f) {
+		return;
+	}
+
 	_mask->beginWithClear(1.0f, 1.0f, 1.0f, 1.0f);
 	for (auto spot : _spots) {
 		spot->setGLProgram(_maskProg);

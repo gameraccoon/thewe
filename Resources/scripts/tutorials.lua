@@ -80,14 +80,14 @@ function RunTutorial_FirstInvestigationCatched()
 end
 
 function RunTutorial_FirstUncatchedInvestigator()
-	TutorialManager:addTutorial(Tutorial(ACTION_TUTORIAL, GetLocalizedString("Tutorial_FirstUncatchedInvestigator")))
+	TutorialManager:addTutorial(Tutorial("InvestigatorUncatched", GetLocalizedString("Tutorial_FirstUncatchedInvestigator")))
 
 	TutorialManager:addTutorialState("WaitForCatchUncatchedInvestigator");
 	TutorialManager:removeTutorialState("WaitForUncatchedInvestigator");
 end
 
 function RunTutorial_FirstUncatchedInvestigatorCatched()
-	TutorialManager:addTutorial(Tutorial(TEXT_TUTORIAL, GetLocalizedString("Tutorial_FirstUncatchedInvestigatorCatched"), ContinueText))
+	TutorialManager:addTutorial(Tutorial("Relink", GetLocalizedString("Tutorial_FirstUncatchedInvestigatorCatched"), ContinueText))
 
 	-- конец цепочки
 	TutorialManager:removeTutorialState("WaitForCatchUncatchedInvestigator");

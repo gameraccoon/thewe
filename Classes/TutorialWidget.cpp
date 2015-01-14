@@ -15,7 +15,7 @@
 
 TutorialWidget* TutorialWidget::Make(Tutorial::WeakPtr tutorial, WorldMapLayer *worldMapLayer, MapProjector *projector)
 {
-	TutorialWidget *widget;
+	TutorialWidget *widget = nullptr;
 	std::string name = tutorial.lock()->widgetName;
 
 	if (name == "Welcome") {
@@ -40,13 +40,12 @@ TutorialWidget* TutorialWidget::Make(Tutorial::WeakPtr tutorial, WorldMapLayer *
 		widget = TutorialWidgetInvestigationStarted::create(tutorial, worldMapLayer, projector);
 	} else if (name == "InvestigationCatched") {
 		widget = TutorialWidgetTextual::create(tutorial);
-	} else if (name == "tutorial") {
-		widget = TutorialWidgetInvestigatorUncatched::create(tutorial);
-	} else if (name == "tutorial_a") {
-		widget = TutorialWidgetInvestigatorUncatched::create(tutorial);
+	} else if (name == "InvestigatorUncatched") {
+		widget = TutorialWidgetInvestigatorUncatched::create(tutorial, worldMapLayer, projector);
+	} else if (name == "Relink") {
+		widget = TutorialWidgetTextual::create(tutorial);
 	} else {
 		WRITE_ERR("Unknown tutorial widget: " + name);
-		widget = TutorialWidgetInvestigatorUncatched::create(tutorial);
 	}
 
 	return widget;

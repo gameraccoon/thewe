@@ -400,6 +400,14 @@ bool WorldMapLayer::IsCellMenuOpened(void) const
 	return _cellMenu->isOpened();
 }
 
+bool WorldMapLayer::IsCellMenuOpenedFor(Cell::WeakPtr cell) const
+{
+	if (IsCellMenuOpened()) {
+		return _cellMenu->IsBelongToCell(cell);
+	}
+	return false;
+}
+
 bool WorldMapLayer::IsCellMenuSpinoffMode(void) const
 {
 	return _cellMenu->isSpinoffMode();

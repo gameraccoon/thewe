@@ -184,6 +184,11 @@ bool CellMenuSelector::isSpinoffMode() const
 	return _isSpinoffMode;
 }
 
+bool CellMenuSelector::IsBelongToCell(Cell::WeakPtr cell) const
+{
+	return _cell.lock() == cell.lock();
+}
+
 void CellMenuSelector::CreateMenu(cocos2d::Layer* menu)
 {
 	if (_cell.lock()->GetInfo().state != Cell::State::READY)

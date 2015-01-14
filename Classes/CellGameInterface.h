@@ -38,6 +38,7 @@ public:
 
 	bool isOpened() const;
 	bool isSpinoffMode() const;
+	bool IsBelongToCell(Cell::WeakPtr cell) const;
 
 private:
 	void CreateMenu(cocos2d::Layer* menu);

@@ -731,6 +731,9 @@
     <ClInclude Include="..\Classes\TutorialWidgetInvestigatorUncatched.h">
       <Filter>Classes\Tutorial\Widgets</Filter>
     </ClInclude>
+    <ClInclude Include="..\Classes\ResourceCache.h">
+      <Filter>Classes\Utils</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="game.rc">

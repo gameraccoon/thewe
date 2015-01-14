@@ -32,6 +32,7 @@ private:
 	cocos2d::RenderTexture *_mask;
 	cocos2d::GLProgram *_maskProg;
 	cocos2d::GLProgram *_drawProg;
+	cocos2d::Color4F _background;
 
 	CC_DISALLOW_COPY_AND_ASSIGN(ScreenBlackoutWidget);
 };

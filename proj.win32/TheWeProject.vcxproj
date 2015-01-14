@@ -302,6 +302,7 @@ xcopy /Y /Q "$(EngineRoot)external\websockets\prebuilt\win32\*.lib" "$(SolutionD
     <ClInclude Include="..\Classes\InvestigatorTapButton.h" />
     <ClInclude Include="..\Classes\Region.h" />
     <ClInclude Include="..\Classes\RelinkDragAndDrop.h" />
+    <ClInclude Include="..\Classes\ResourceCache.h" />
     <ClInclude Include="..\Classes\SessionEndScreen.h" />
     <ClInclude Include="..\Classes\SpinoffDragAndDrop.h" />
     <ClInclude Include="..\Classes\SplashScreenScene.h" />

@@ -50,6 +50,7 @@ public:
 	CellMapWidget* GetNearestCellWidget(const Vector2 &pointOnScreen, float radius) const;
 
 	bool IsCellMenuOpened(void) const;
+	bool IsCellMenuOpenedFor(Cell::WeakPtr cell) const;
 	bool IsCellMenuSpinoffMode(void) const;
 
 	void AddEffectAbsolute(Effect *effect);
