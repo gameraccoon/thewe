@@ -42,7 +42,7 @@ public:
 	void CleanupMapContent(void);
 	void InitLuaContext(ResourceCacheQueue<std::string>::Ptr cachedScripts);
 	void StartLogic();
-
+	
 	const Regions& GetRegions() const;
 	const Towns& GetTowns() const;
 	const Investigators& GetInvestigators(void) const;
@@ -62,7 +62,7 @@ public:
 	const Town::WeakPtr GetTownByName(const std::string &name) const;
 
 	void Update(float deltaTime);
-	Utils::GameTime GetCurrentTime() const;
+	Utils::GameTime GetGameTime() const;
 	void InitTime(Utils::GameTime time);
 
 	void SetPause(bool pause);
