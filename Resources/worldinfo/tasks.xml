@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <Tasks>
-	<!--
+	
 	<Task id="debug_cheatMission" duration="1" moralLevel="0.5" fameImpact="0.0" heartPoundingLevel="0.0" level="1" needCash="0" needMembers="1" needTech="1" chanceToLooseMembers="0.0" politicalImpact="0.0" successFn="MissionSuccess_CheatMission" failFn="MissionSuccess_CheatMission" abortFn="MissionAbort_Test" />
 	<Task id="debug_investigatorTask" duration="5" moralLevel="0.7" fameImpact="0.0" heartPoundingLevel="0.0" level="1" needCash="0" needMembers="1" needTech="1" chanceToLooseMembers="0.0" politicalImpact="0.0" successFn="MissionSuccess_InvestigatorTest" failFn="MissionFail_InvestigatorTest" abortFn="MissionAbort_Test" />
 	<Task id="debug_testLongTask" duration="300" moralLevel="0.7" fameImpact="0.0" heartPoundingLevel="0.0" level="1" needCash="0" needMembers="1" needTech="1" chanceToLooseMembers="0.0" politicalImpact="0.0" successFn="MissionSuccess_Test" failFn="MissionFail_Test" abortFn="MissionAbort_Test" />

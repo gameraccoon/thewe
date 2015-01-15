@@ -50,9 +50,11 @@ bool CellTasksScreen::init(void)
 	_widget->setOpacity(0);
 	_widget->runAction(cocos2d::Spawn::create(elastic_scale, fade, nullptr));
 	
-	cocos2d::ui::Text *txtHeader = dynamic_cast<cocos2d::ui::Text *>(_widget->getChildByName("Header"));
-	cocos2d::ui::Button *btnClose = dynamic_cast<cocos2d::ui::Button *>(_widget->getChildByName("Close"));
-	cocos2d::ui::ScrollView *scroller = dynamic_cast<cocos2d::ui::ScrollView *>(_widget->getChildByName("Scroller"));
+	cocos2d::ui::Widget *window = dynamic_cast<cocos2d::ui::Widget *>(_widget->getChildByName("Window"));
+
+	cocos2d::ui::Text *txtHeader = dynamic_cast<cocos2d::ui::Text *>(window->getChildByName("Header"));
+	cocos2d::ui::Button *btnClose = dynamic_cast<cocos2d::ui::Button *>(window->getChildByName("Close"));
+	cocos2d::ui::ScrollView *scroller = dynamic_cast<cocos2d::ui::ScrollView *>(window->getChildByName("Scroller"));
 	
 	if (!txtHeader) {WRITE_WARN("Failed to get widget with Header name from UICellTaskSelect widget"); return false;}
 	if (!btnClose) {WRITE_WARN("Failed to get widget with Close name from UICellTaskSelect widget"); return false;}

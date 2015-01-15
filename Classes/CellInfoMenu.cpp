@@ -37,17 +37,19 @@ bool CellInfoMenu::init(void)
 	_widget->setOpacity(0);
 	_widget->runAction(cocos2d::Spawn::create(elastic_scale, fade, nullptr));
 	
-	cocos2d::ui::Button *btnClose = dynamic_cast<cocos2d::ui::Button *>(_widget->getChildByName("Close"));
-	cocos2d::ui::Text *txtHeader = dynamic_cast<cocos2d::ui::Text *>(_widget->getChildByName("Header"));
-	_txtMembers = dynamic_cast<cocos2d::ui::TextBMFont *>(_widget->getChildByName("Members"));
-	_txtCach = dynamic_cast<cocos2d::ui::TextBMFont *>(_widget->getChildByName("Cach"));
-	_txtPursuedLevel = dynamic_cast<cocos2d::ui::TextBMFont *>(_widget->getChildByName("PursuedLevel"));
-	_txtMorale = dynamic_cast<cocos2d::ui::TextBMFont *>(_widget->getChildByName("MoraleLabel"));
-	_txtDevotion = dynamic_cast<cocos2d::ui::TextBMFont *>(_widget->getChildByName("DevotionLabel"));
-	_txtLevel = dynamic_cast<cocos2d::ui::TextBMFont *>(_widget->getChildByName("LevelProgress")->getChildByName("Level"));
-	_levelProgressBar = dynamic_cast<cocos2d::ui::LoadingBar *>(_widget->getChildByName("LevelProgress")->getChildByName("Progress"));
-	_moraleProgressBar = dynamic_cast<cocos2d::ui::LoadingBar *>(_widget->getChildByName("MoraleLevel")->getChildByName("Progress"));
-	_devotionProgressBar = dynamic_cast<cocos2d::ui::LoadingBar *>(_widget->getChildByName("DevotionLevel")->getChildByName("Progress"));
+	cocos2d::ui::Widget *window = dynamic_cast<cocos2d::ui::Widget *>(_widget->getChildByName("Window"));
+
+	cocos2d::ui::Button *btnClose = dynamic_cast<cocos2d::ui::Button *>(window->getChildByName("Close"));
+	cocos2d::ui::Text *txtHeader = dynamic_cast<cocos2d::ui::Text *>(window->getChildByName("Header"));
+	_txtMembers = dynamic_cast<cocos2d::ui::TextBMFont *>(window->getChildByName("Members"));
+	_txtCach = dynamic_cast<cocos2d::ui::TextBMFont *>(window->getChildByName("Cach"));
+	_txtPursuedLevel = dynamic_cast<cocos2d::ui::TextBMFont *>(window->getChildByName("PursuedLevel"));
+	_txtMorale = dynamic_cast<cocos2d::ui::TextBMFont *>(window->getChildByName("MoraleLabel"));
+	_txtDevotion = dynamic_cast<cocos2d::ui::TextBMFont *>(window->getChildByName("DevotionLabel"));
+	_txtLevel = dynamic_cast<cocos2d::ui::TextBMFont *>(window->getChildByName("LevelProgress")->getChildByName("Level"));
+	_levelProgressBar = dynamic_cast<cocos2d::ui::LoadingBar *>(window->getChildByName("LevelProgress")->getChildByName("Progress"));
+	_moraleProgressBar = dynamic_cast<cocos2d::ui::LoadingBar *>(window->getChildByName("MoraleLevel")->getChildByName("Progress"));
+	_devotionProgressBar = dynamic_cast<cocos2d::ui::LoadingBar *>(window->getChildByName("DevotionLevel")->getChildByName("Progress"));
 	
 	if (!btnClose) {WRITE_WARN("CellInfo: Failed to get widget with name Close"); return false;}
 	if (!txtHeader) {WRITE_WARN("CellInfo: Failed to get widget with name Header"); return false;}

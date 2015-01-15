@@ -23,44 +23,6 @@
 				<key>offsetY</key>
 				<real>0</real>
 			</dict>
-			<key>cell-tasks-menu-close-normal.png</key>
-			<dict>
-				<key>width</key>
-				<integer>53</integer>
-				<key>height</key>
-				<integer>34</integer>
-				<key>originalWidth</key>
-				<integer>53</integer>
-				<key>originalHeight</key>
-				<integer>34</integer>
-				<key>x</key>
-				<integer>0</integer>
-				<key>y</key>
-				<integer>286</integer>
-				<key>offsetX</key>
-				<real>0</real>
-				<key>offsetY</key>
-				<real>0</real>
-			</dict>
-			<key>cell-tasks-menu-close-pressed.png</key>
-			<dict>
-				<key>width</key>
-				<integer>53</integer>
-				<key>height</key>
-				<integer>34</integer>
-				<key>originalWidth</key>
-				<integer>53</integer>
-				<key>originalHeight</key>
-				<integer>34</integer>
-				<key>x</key>
-				<integer>0</integer>
-				<key>y</key>
-				<integer>322</integer>
-				<key>offsetX</key>
-				<real>0</real>
-				<key>offsetY</key>
-				<real>0</real>
-			</dict>
 			<key>new-cell-button-active.png</key>
 			<dict>
 				<key>width</key>
@@ -72,7 +34,7 @@
 				<key>originalHeight</key>
 				<integer>115</integer>
 				<key>x</key>
-				<integer>55</integer>
+				<integer>0</integer>
 				<key>y</key>
 				<integer>286</integer>
 				<key>offsetX</key>
@@ -156,6 +118,44 @@
 				<key>offsetY</key>
 				<real>0</real>
 			</dict>
+			<key>cell-tasks-menu-close-normal.png</key>
+			<dict>
+				<key>width</key>
+				<integer>53</integer>
+				<key>height</key>
+				<integer>34</integer>
+				<key>originalWidth</key>
+				<integer>53</integer>
+				<key>originalHeight</key>
+				<integer>34</integer>
+				<key>x</key>
+				<integer>0</integer>
+				<key>y</key>
+				<integer>671</integer>
+				<key>offsetX</key>
+				<real>0</real>
+				<key>offsetY</key>
+				<real>0</real>
+			</dict>
+			<key>cell-tasks-menu-close-pressed.png</key>
+			<dict>
+				<key>width</key>
+				<integer>53</integer>
+				<key>height</key>
+				<integer>34</integer>
+				<key>originalWidth</key>
+				<integer>53</integer>
+				<key>originalHeight</key>
+				<integer>34</integer>
+				<key>x</key>
+				<integer>437</integer>
+				<key>y</key>
+				<integer>234</integer>
+				<key>offsetX</key>
+				<real>0</real>
+				<key>offsetY</key>
+				<real>0</real>
+			</dict>
 			<key>TasksLine.png</key>
 			<dict>
 				<key>width</key>
@@ -167,9 +167,9 @@
 				<key>originalHeight</key>
 				<integer>75</integer>
 				<key>x</key>
-				<integer>0</integer>
+				<integer>403</integer>
 				<key>y</key>
-				<integer>671</integer>
+				<integer>286</integer>
 				<key>offsetX</key>
 				<real>0</real>
 				<key>offsetY</key>
@@ -186,9 +186,9 @@
 				<key>originalHeight</key>
 				<integer>24</integer>
 				<key>x</key>
-				<integer>437</integer>
+				<integer>0</integer>
 				<key>y</key>
-				<integer>234</integer>
+				<integer>707</integer>
 				<key>offsetX</key>
 				<real>0</real>
 				<key>offsetY</key>
@@ -205,9 +205,9 @@
 				<key>originalHeight</key>
 				<integer>24</integer>
 				<key>x</key>
-				<integer>437</integer>
+				<integer>492</integer>
 				<key>y</key>
-				<integer>260</integer>
+				<integer>234</integer>
 				<key>offsetX</key>
 				<real>0</real>
 				<key>offsetY</key>

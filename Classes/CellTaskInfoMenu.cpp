@@ -50,10 +50,12 @@ bool CellTaskInfoMenu::init(void)
 	_widget->setOpacity(0);
 	_widget->runAction(cocos2d::Spawn::create(elastic_scale, fade, nullptr));
 
-	cocos2d::ui::Button *btnClose = dynamic_cast<cocos2d::ui::Button *>(_widget->getChildByName("Close"));
-	cocos2d::ui::Button *btnAbort = dynamic_cast<cocos2d::ui::Button *>(_widget->getChildByName("Abort"));
-	_progressBar = dynamic_cast<cocos2d::ui::LoadingBar *>(_widget->getChildByName("TaskProgress")->getChildByName("Progress"));
-	_textPercentage = dynamic_cast<cocos2d::ui::TextBMFont *>(_widget->getChildByName("TaskProgress")->getChildByName("Persentage"));
+	cocos2d::ui::Widget *window = dynamic_cast<cocos2d::ui::Widget *>(_widget->getChildByName("Window"));
+
+	cocos2d::ui::Button *btnClose = dynamic_cast<cocos2d::ui::Button *>(window->getChildByName("Close"));
+	cocos2d::ui::Button *btnAbort = dynamic_cast<cocos2d::ui::Button *>(window->getChildByName("Abort"));
+	_progressBar = dynamic_cast<cocos2d::ui::LoadingBar *>(window->getChildByName("TaskProgress")->getChildByName("Progress"));
+	_textPercentage = dynamic_cast<cocos2d::ui::TextBMFont *>(window->getChildByName("TaskProgress")->getChildByName("Persentage"));
 
 	if (!btnClose) {WRITE_ERR("Failed to get element with name Close from ui_cell_current_task widget"); return false;}
 	if (!btnAbort) {WRITE_ERR("Failed to get element with name Abort from ui_cell_current_task widget"); return false;}

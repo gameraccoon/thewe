@@ -10,7 +10,6 @@
     <string>ui_cell_current_task.json</string>
     <string>ui_cell_info.json</string>
     <string>ui_cell_select_task.json</string>
-    <string>ui_cell_spinoff.json</string>
     <string>ui_cell_task_item.json</string>
   </JsonList>
   <CanvasSize>
@@ -24,7 +23,6 @@
     <string>ui_cell_ingame0.plist</string>
   </imageFileList>
   <imagePngList>
-    <string>ui_cell_ingame0.png</string>
     <string>ui_cell_ingame0.png</string>
     <string>ui_cell_ingame0.png</string>
     <string>ui_cell_ingame0.png</string>
