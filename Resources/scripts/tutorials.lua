@@ -1,6 +1,3 @@
-local TEXT_TUTORIAL = "tutorial"
-local ACTION_TUTORIAL = "tutorial_a"
-
 local ContinueText = GetLocalizedString("Tutorial_BtnContinue")
 
 local TutorialManager = World:getTutorialManager()
@@ -44,7 +41,7 @@ end
 
 function RunTutorial_StartingFirstRealWork()
 	-- пока отключаем туториал про бустеры
-	--TutorialManager:addTutorial(Tutorial(ACTION_TUTORIAL, GetLocalizedString("Tutorial_StartingFirstRealWork")))
+	--TutorialManager:addTutorial(Tutorial("", GetLocalizedString("Tutorial_StartingFirstRealWork")))
 
 	TutorialManager:addTutorialState("ReadyToFinishFirstRealWork");
 	TutorialManager:removeTutorialState("ReadyToFirstRealWork");
