@@ -6,7 +6,6 @@ CellTaskInfoMenu::CellTaskInfoMenu(Cell::WeakPtr cell, CellMenuSelector *selecto
 	: _cell(cell)
 	, _cellMenuSelector(selector)
 {
-	init();
 }
 
 CellTaskInfoMenu* CellTaskInfoMenu::create(Cell::WeakPtr cell, CellMenuSelector *cellMenu)

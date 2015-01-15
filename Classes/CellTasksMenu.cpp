@@ -8,7 +8,6 @@ CellTasksScreen::CellTasksScreen(Cell::WeakPtr cell, CellMenuSelector *cellMenu)
 	: _cell(cell)
 	, _cellMenu(cellMenu)
 {
-	init();
 }
 
 CellTasksScreen* CellTasksScreen::create(Cell::WeakPtr cell, CellMenuSelector *cellMenu)
