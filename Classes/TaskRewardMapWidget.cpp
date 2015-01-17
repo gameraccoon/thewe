@@ -31,7 +31,6 @@ bool TaskRewardMapWidget::init(void)
 
 	cocos2d::EventListenerTouchAllAtOnce *touch = cocos2d::EventListenerTouchAllAtOnce::create();
 	touch->onTouchesBegan = CC_CALLBACK_2(TaskRewardMapWidget::TouchBegan, this);
-	touch->onTouchesEnded = CC_CALLBACK_2(TaskRewardMapWidget::TouchEnded, this);
 	cocos2d::Director::getInstance()->getEventDispatcher()->addEventListenerWithSceneGraphPriority(touch, this);
 	
 	cocos2d::CallFunc *func_begin = cocos2d::CallFunc::create([&]() {_isPickEnabled = false;});
@@ -103,7 +102,7 @@ bool TaskRewardMapWidget::IsFinished(void) const
 	return _isLiveFinished;
 }
 
-void TaskRewardMapWidget::PickReward(void)
+void TaskRewardMapWidget::PickReward(bool squeeze)
 {
 	cocos2d::CallFunc *func_begin = cocos2d::CallFunc::create([&]() {_isPickEnabled = false;});
 	cocos2d::CallFunc *func_end = cocos2d::CallFunc::create(
@@ -112,7 +111,17 @@ void TaskRewardMapWidget::PickReward(void)
 			_isLiveFinished = true;
 		});
 
-	_texture->runAction(cocos2d::Sequence::create(func_begin, GetPickAnimation(), func_end, nullptr));
+	cocos2d::Sequence *pick = cocos2d::Sequence::create(func_begin, GetPickAnimation(), func_end, nullptr);
+	cocos2d::Action *action;
+	if (squeeze) {
+		cocos2d::ScaleTo *scale1 = cocos2d::ScaleTo::create(0.1f, _scale*1.25f, _scale*0.75f, 1.0f);
+		cocos2d::ScaleTo *scale2 = cocos2d::ScaleTo::create(0.1f, _scale, _scale, 1.0f);
+		cocos2d::Sequence *scale = cocos2d::Sequence::create(scale1, scale2, nullptr);
+		action = cocos2d::Spawn::create(pick, scale, nullptr);
+	} else {
+		action = pick;
+	}
+	_texture->runAction(action);
 }
 
 bool TaskRewardMapWidget::IsTaskId(const std::string &id) const
@@ -129,28 +138,8 @@ void TaskRewardMapWidget::TouchBegan(const std::vector<cocos2d::Touch *> &touche
 	Vector2 location = convertTouchToNodeSpace(touches.at(0));
 	if (_texture) {
 		if (_texture->getBoundingBox().containsPoint(location)) {
-			cocos2d::ScaleTo *scale = cocos2d::ScaleTo::create(0.1f, _scale*1.25f, _scale*0.75f, 1.0f);
-			_texture->runAction(scale);
+			PickReward();
 		}
-	}
-}
-
-void TaskRewardMapWidget::TouchEnded(const std::vector<cocos2d::Touch *> &touches, cocos2d::Event *event)
-{
-	if (!_isPickEnabled) {
-		return;
-	}
-
-	Vector2 location = convertTouchToNodeSpace(touches.at(0));
-	if (_texture->getBoundingBox().containsPoint(location))
-	{
-		PickReward();
-		event->stopPropagation();
-	}
-	else
-	{
-		cocos2d::ScaleTo *scale = cocos2d::ScaleTo::create(0.1f, _scale, _scale, 1.0f);
-		_texture->runAction(scale);
 	}
 }
 

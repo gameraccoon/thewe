@@ -17,9 +17,8 @@ public:
 	bool IsFinished(void) const override;
 
 	bool IsTaskId(const std::string &id) const;
-	void PickReward(void);
+	void PickReward(bool squeeze = true);
 	void TouchBegan(const std::vector<cocos2d::Touch *> &touches, cocos2d::Event *event);
-	void TouchEnded(const std::vector<cocos2d::Touch *> &touches, cocos2d::Event *event);
 
 private:	
 	cocos2d::FiniteTimeAction* GetJumpAnimation(void);
