@@ -22,8 +22,6 @@ ScreenBlackoutWidget::ScreenBlackoutWidget(void)
 ScreenBlackoutWidget::~ScreenBlackoutWidget(void)
 {
 	_mask->release();
-	_maskProg->release();
-	_drawProg->release();
 }
 
 void ScreenBlackoutWidget::AddSpot(cocos2d::Sprite *spot)

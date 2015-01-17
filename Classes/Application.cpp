@@ -35,7 +35,6 @@ static bool CreateAllShaders(void)
 		return false;
 	}
 	alphaMask->updateUniforms();
-	alphaMask->retain();
 
 	blackout = cocos2d::GLProgram::createWithFilenames("tutorial_blackout.vsh", "tutorial_blackout.fsh");
 	blackout->bindAttribLocation(cocos2d::GLProgram::ATTRIBUTE_NAME_POSITION, cocos2d::GLProgram::VERTEX_ATTRIB_POSITION);
@@ -46,7 +45,6 @@ static bool CreateAllShaders(void)
 		return false;
 	}
 	blackout->updateUniforms();
-	blackout->retain();
 
 	cocos2d::ShaderCache::getInstance()->addGLProgram(blackout, "TutorialBlackout");
 	cocos2d::ShaderCache::getInstance()->addGLProgram(alphaMask, "CreateAlphaMask");
