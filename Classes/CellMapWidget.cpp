@@ -212,7 +212,9 @@ void CellMapWidget::ShowInvestigatorLaunchButton(InvestigatorTapButton::Callback
 	tickChange = GameInfo::Instance().GetFloat("INVESTIGATOR_CATCH_TICK_CHANGE");
 	tapChange = GameInfo::Instance().GetFloat("INVESTIGATOR_CATCH_TAP_CHANGE");
 	
-	if (World::Instance().GetTutorialManager().IsTutorialStateAvailable("WaitForCatchingFirstInvestigator")) {
+	if (World::Instance().GetTutorialManager().IsTutorialStateAvailable("WaitForFirstInvestigator"))
+	{
+		World::Instance().GetTutorialManager().RunTutorialFunction("FirstInvestigationStarted");
 		tickChange = GameInfo::Instance().GetFloat("INVESTIGATOR_TUTORIAL_CATCH_TICK_CHANGE");
 	}
 

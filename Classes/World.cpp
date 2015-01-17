@@ -102,12 +102,6 @@ void World::AddTown(Town::Ptr cell)
 
 void World::AddInvestigator(Investigator::Ptr investigator)
 {
-	if (World::Instance().GetTutorialManager().IsTutorialStateAvailable("WaitForFirstInvestigator"))
-	{
-		investigator->BeginCatchTime();
-		World::Instance().GetTutorialManager().RunTutorialFunction("FirstInvestigationStarted");
-	}
-
 	_investigators.push_back(investigator);
 	
 	Message message("AddInvestigatorWidget");

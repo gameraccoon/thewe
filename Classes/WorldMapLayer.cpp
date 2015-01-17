@@ -144,7 +144,7 @@ void WorldMapLayer::AcceptMessage(const Message &msg)
 			addChild(widget, Z_INVESTIGATOR);
 			_investigatorWidgets.push_back(widget);
 
-			if (World::Instance().GetTutorialManager().IsTutorialStateAvailable("WaitForCatchingFirstInvestigator"))
+			if (World::Instance().GetTutorialManager().IsTutorialStateAvailable("WaitForFirstInvestigator"))
 			{
 				dynamic_cast<GameScene*>(getParent())->MoveViewToPoint(
 					investigator->GetInvestigationRoot().lock()->GetInfo().town.lock()->GetLocation());

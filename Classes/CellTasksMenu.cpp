@@ -149,15 +149,13 @@ void CellTasksScreen::OnStartTaskCallback(cocos2d::Ref *sender, cocos2d::ui::Wid
 	{
 		if (_cell.lock()->GetInfo().state == Cell::State::READY)
 		{
-			if (World::Instance().GetTutorialManager().IsTutorialStateAvailable("WaitingForStartFirstTask"))
+			if (World::Instance().GetTutorialManager().IsTutorialStateAvailable("ReadyToFinishFirstRealWork"))
 			{
 				World::Instance().GetTutorialManager().RemoveCurrentTutorial();
-				World::Instance().GetTutorialManager().RunTutorialFunction("StartingFirstTask");
 			}
-			else if (World::Instance().GetTutorialManager().IsTutorialStateAvailable("ReadyToFirstRealWork"))
+			else if (World::Instance().GetTutorialManager().IsTutorialStateAvailable("WaitingForFinishFirstTask"))
 			{
 				World::Instance().GetTutorialManager().RemoveCurrentTutorial();
-				World::Instance().GetTutorialManager().RunTutorialFunction("StartingFirstRealWork");
 			}
 
 			cocos2d::ui::Button *btn = dynamic_cast<cocos2d::ui::Button *>(sender);

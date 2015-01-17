@@ -84,12 +84,6 @@ void InvestigatorMapWidget::OnCatchInFirstCell()
 	_invesRootCellWidget->HideInvestigatorLaunchButton();
 	_investigator->AbortInvestigation();
 
-	if (World::Instance().GetTutorialManager().IsTutorialStateAvailable("WaitForCatchingFirstInvestigator"))
-	{
-		World::Instance().GetTutorialManager().RemoveCurrentTutorial();
-		World::Instance().GetTutorialManager().RunTutorialFunction("FirstInvestigationCatched");
-	}
-
 	World::Instance().RemoveInvestigator(_investigator);
 
 	_invesRootCellWidget->GetCell().lock()->ReturnToNormalState();

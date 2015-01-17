@@ -21,30 +21,15 @@ end
 function RunTutorial_BeforeStartFirstTask()
 	TutorialManager:addTutorial(Tutorial("StartFirstTask", GetLocalizedString("Tutorial_BeforeStartFirstTask")))
 
-	TutorialManager:addTutorialState("WaitingForStartFirstTask");
+	TutorialManager:addTutorialState("WaitingForFinishFirstTask");
 	TutorialManager:removeTutorialState("StartFirstTask");
 end
 
-function RunTutorial_StartingFirstTask()
-	TutorialManager:addTutorial(Tutorial("WaitFirstTask", GetLocalizedString("Tutorial_StartingFirstTask"), ContinueText))
-
-	TutorialManager:addTutorialState("WaitingForFinishFirstTask");
-	TutorialManager:removeTutorialState("WaitingForStartFirstTask");
-end
-
 function RunTutorial_AfterFirstTaskFinished()
-	TutorialManager:addTutorial(Tutorial("AfterFirstTask", GetLocalizedString("Tutorial_AfterFirstTaskFinished"), ContinueText))
-
-	TutorialManager:addTutorialState("ReadyToFirstRealWork");
-	TutorialManager:removeTutorialState("WaitingForFinishFirstTask");
-end
-
-function RunTutorial_StartingFirstRealWork()
-	-- пока отключаем туториал про бустеры
-	--TutorialManager:addTutorial(Tutorial("", GetLocalizedString("Tutorial_StartingFirstRealWork")))
+	TutorialManager:addTutorial(Tutorial("Textual", GetLocalizedString("Tutorial_AfterFirstTaskFinished"), ContinueText))
 
 	TutorialManager:addTutorialState("ReadyToFinishFirstRealWork");
-	TutorialManager:removeTutorialState("ReadyToFirstRealWork");
+	TutorialManager:removeTutorialState("WaitingForFinishFirstTask");
 end
 
 function RunTutorial_AfterRealWorkDone()
@@ -55,7 +40,7 @@ function RunTutorial_AfterRealWorkDone()
 end
 
 function RunTutorial_OnCreateFirstSpinoff()
-	TutorialManager:addTutorial(Tutorial("SpinoffStep1", GetLocalizedString("Tutorial_OnCreateFirstSpinoff_Step1"), ContinueText))
+	TutorialManager:addTutorial(Tutorial("Textual", GetLocalizedString("Tutorial_OnCreateFirstSpinoff_Step1"), ContinueText))
 	TutorialManager:addTutorial(Tutorial("SpinoffStep2", GetLocalizedString("Tutorial_OnCreateFirstSpinoff_Step2"), ContinueText))
 
 	-- конец цепочки
@@ -65,15 +50,8 @@ end
 function RunTutorial_FirstInvestigationStarted()
 	TutorialManager:addTutorial(Tutorial("InvestigationStarted", GetLocalizedString("Tutorial_FirstInvestigationStarted")))
 
-	TutorialManager:addTutorialState("WaitForCatchingFirstInvestigator");
-	TutorialManager:removeTutorialState("WaitForFirstInvestigator");
-end
-
-function RunTutorial_FirstInvestigationCatched()
-	TutorialManager:addTutorial(Tutorial("InvestigationCatched", GetLocalizedString("Tutorial_FirstInvestigationCatched"), ContinueText))
-
 	TutorialManager:addTutorialState("WaitForUncatchedInvestigator");
-	TutorialManager:removeTutorialState("WaitForCatchingFirstInvestigator");
+	TutorialManager:removeTutorialState("WaitForFirstInvestigator");
 end
 
 function RunTutorial_FirstUncatchedInvestigator()
@@ -84,7 +62,7 @@ function RunTutorial_FirstUncatchedInvestigator()
 end
 
 function RunTutorial_FirstUncatchedInvestigatorCatched()
-	TutorialManager:addTutorial(Tutorial("Relink", GetLocalizedString("Tutorial_FirstUncatchedInvestigatorCatched"), ContinueText))
+	TutorialManager:addTutorial(Tutorial("Textual", GetLocalizedString("Tutorial_FirstUncatchedInvestigatorCatched"), ContinueText))
 
 	-- конец цепочки
 	TutorialManager:removeTutorialState("WaitForCatchUncatchedInvestigator");

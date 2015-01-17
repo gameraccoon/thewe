@@ -109,7 +109,7 @@ void TutorialWidgetAfterFirstCell::update(float dt)
 			_arrow->setPosition(pos - view / 2.0f); // compensate node position (in the middle of the screen)
 			_arrow->setVisible(true);
 
-			cocos2d::MoveTo *move = cocos2d::MoveTo::create(0.5f, cocos2d::Vec2(-200.0f, 0.0f));
+			cocos2d::MoveTo *move = cocos2d::MoveTo::create(0.5f, cocos2d::Vec2(-215.0f, 0.0f));
 			_tutorialText->runAction(move);
 		}
 	}

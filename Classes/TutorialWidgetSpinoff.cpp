@@ -68,7 +68,6 @@ bool TutorialWidgetSpinoff::init()
 	_text = cocos2d::ui::Text::create(_tutorial.lock()->text, "EuropeNormal.ttf", 28);
 	_text->setTextVerticalAlignment(cocos2d::TextVAlignment::CENTER);
 	_text->setTextHorizontalAlignment(cocos2d::TextHAlignment::CENTER);
-	_text->setTextAreaSize(cocos2d::Size(300.0f, 500.0f));
 	_text->setPosition(cocos2d::Vec2(-view.width, 0.0f));
 	_text->runAction(cocos2d::MoveTo::create(0.5f, cocos2d::Vec2(-220.0f, 0.0f)));
 

@@ -31,7 +31,7 @@ function IsShowTaskInList(cell, taskInfo)
 		return false
 	end
 
-	if World:getTutorialManager():isTutorialStateAvailable("ReadyToFirstRealWork") then
+	if World:getTutorialManager():isTutorialStateAvailable("ReadyToFinishFirstRealWork") then
 		if taskInfo.id == "tutorial_RealWork" then
 			return true
 		else

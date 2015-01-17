@@ -26,23 +26,15 @@ TutorialWidget* TutorialWidget::Make(Tutorial::WeakPtr tutorial, WorldMapLayer *
 		widget = TutorialWidgetAfterFirstCell::create(tutorial, worldMapLayer, projector);
 	} else if (name == "StartFirstTask") { 
 		widget = TutorialWidgetStartFirstTask::create(tutorial);
-	} else if (name == "WaitFirstTask") {
-		widget = TutorialWidgetTextual::create(tutorial);
-	} else if (name == "AfterFirstTask") {
-		widget = TutorialWidgetTextual::create(tutorial);
 	} else if (name == "SpinoffDrag") {
 		widget = TutorialWidgetSpinoff::create(tutorial, worldMapLayer, projector);
-	} else if (name == "SpinoffStep1") {
-		widget = TutorialWidgetTextual::create(tutorial);
 	} else if (name == "SpinoffStep2") {
 		widget = TutorialWidgetInfluence::create(tutorial);
 	} else if (name == "InvestigationStarted") {
 		widget = TutorialWidgetInvestigationStarted::create(tutorial, worldMapLayer, projector);
-	} else if (name == "InvestigationCatched") {
-		widget = TutorialWidgetTextual::create(tutorial);
 	} else if (name == "InvestigatorUncatched") {
 		widget = TutorialWidgetInvestigatorUncatched::create(tutorial, worldMapLayer, projector);
-	} else if (name == "Relink") {
+	} else if (name == "Textual") {
 		widget = TutorialWidgetTextual::create(tutorial);
 	} else {
 		WRITE_ERR("Unknown tutorial widget: " + name);

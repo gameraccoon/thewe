@@ -57,8 +57,7 @@ bool TutorialWidgetFirstCell::init()
 	_tutorialText = cocos2d::ui::Text::create(LocalizationManager::Instance().getText(_tutorial.lock()->text), "EuropeNormal.ttf", 32);
 	_tutorialText->setTextVerticalAlignment(cocos2d::TextVAlignment::CENTER);
 	_tutorialText->setTextHorizontalAlignment(cocos2d::TextHAlignment::CENTER);
-	_tutorialText->setTextAreaSize(cocos2d::Size(300.0f, 500.0f));
-	_tutorialText->setPosition(cocos2d::Vec2(view.width, -100.0f));
+	_tutorialText->setPosition(cocos2d::Vec2(view.width, -130.0f));
 
 	_startViewScale = _projector->GetScale();
 	_startViewPos = _projector->GetLocation();
@@ -86,7 +85,7 @@ void TutorialWidgetFirstCell::update(float dt)
 			MessageManager::Instance().PutMessage(Message("DisableMapScrolling"));
 
 			cocos2d::Size view = cocos2d::Director::getInstance()->getVisibleSize();
-			cocos2d::MoveTo *move = cocos2d::MoveTo::create(0.5f, cocos2d::Vec2(200.0f, -100.0f));
+			cocos2d::MoveTo *move = cocos2d::MoveTo::create(0.5f, cocos2d::Vec2(200.0f, -130.0f));
 			
 			_tutorialText->runAction(cocos2d::Sequence::create(move, nullptr));
 		}

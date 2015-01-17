@@ -88,11 +88,12 @@ void TutorialWidgetStartFirstTask::update(float dt)
 			_time = 0.0f;
 			_state = State::FOCUS;
 			_text->runAction(cocos2d::MoveTo::create(0.5f, cocos2d::Vec2(0.0, -100.0f)));
+			_spot->setScaleX(_spot->getScaleX()-0.005f);
 		}
 	} else if (_state == State::FOCUS) {
 		float scale = 1.0f / 0.5f;
 		_time += dt * scale;
-		_spot->setScaleY(Math::Lerp(1.0f, 0.27f, _time));
+		_spot->setScaleY(Math::Lerp(1.0f, 0.28f, _time));
 		_spot->setPositionY(_spotStartPos.y + Math::Lerp(0.0f, 73.0f, _time));
 		if (_time > 1.0f) {
 			_time = 0.0f;

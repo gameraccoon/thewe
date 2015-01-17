@@ -45,7 +45,15 @@ void TutorialManager::AddTutorialState(const std::string& state)
 
 void TutorialManager::RemoveTutorialState(const std::string& state)
 {
-	_availableTutorialStates.erase(_availableTutorialStates.find(state));
+	auto stateIterator = _availableTutorialStates.find(state);
+	if (stateIterator != _availableTutorialStates.end())
+	{
+		_availableTutorialStates.erase(_availableTutorialStates.find(state));
+	}
+	else
+	{
+		WRITE_WARN("Trying to remove unavailable tutorial state");
+	}
 }
 
 void TutorialManager::RunTutorialFunction(const std::string& function)
