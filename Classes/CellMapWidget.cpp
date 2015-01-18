@@ -36,6 +36,7 @@ bool CellMapWidget::init(void)
 	}
 
 	cocos2d::EventListenerTouchAllAtOnce *touch = cocos2d::EventListenerTouchAllAtOnce::create();
+	touch->onTouchesBegan = CC_CALLBACK_2(CellMapWidget::TouchBegan, this);
 	touch->onTouchesEnded = CC_CALLBACK_2(CellMapWidget::TouchEnded, this);
 	cocos2d::Director::getInstance()->getEventDispatcher()->addEventListenerWithSceneGraphPriority(touch, this);
 
@@ -159,10 +160,18 @@ void CellMapWidget::update(float dt)
 	}
 }
 
+void CellMapWidget::TouchBegan(const std::vector<cocos2d::Touch *> &touches, cocos2d::Event *event)
+{
+	Vector2 location = convertTouchToNodeSpace(touches.at(0));
+	if (_cellMapSprite->GetCurrentImage()->getBoundingBox().containsPoint(location)) {
+		CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("tap-single.wav");
+	}
+}
+
 void CellMapWidget::TouchEnded(const std::vector<cocos2d::Touch *> &touches, cocos2d::Event *event)
 {
 	Vector2 location = convertTouchToNodeSpace(touches.at(0));
-	if (_cellMapSprite->getBoundingBox().containsPoint(location)) {
+	if (_cellMapSprite->GetCurrentImage()->getBoundingBox().containsPoint(location)) {
 		/*for (TaskRewardMapWidget *reward : _taskRewardsOnMap)
 		{
 			reward->PickReward();

@@ -51,6 +51,8 @@ bool MainMenuScene::init(void)
 	btnCommand->addTouchEventListener(CC_CALLBACK_2(MainMenuScene::MenuInputListener, this));
 	btnSettings->addTouchEventListener(CC_CALLBACK_2(MainMenuScene::MenuInputListener, this));
 
+	CocosDenshion::SimpleAudioEngine::getInstance()->playBackgroundMusic("bg-mainmenu.mp3", true);
+
 	addChild(_widget);
 
 	return true;

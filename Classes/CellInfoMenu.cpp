@@ -70,6 +70,8 @@ bool CellInfoMenu::init(void)
 
 	addChild(_widget);
 
+	CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("appear-menu.wav");
+
 	return true;
 }
 
@@ -119,6 +121,7 @@ void CellInfoMenu::OnCloseCallback(cocos2d::Ref *sender, cocos2d::ui::Widget::To
 {
 	if (eventType == cocos2d::ui::Widget::TouchEventType::ENDED) {
 		CloseMenu();
+		CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("tap-double.wav");
 	}
 }
 

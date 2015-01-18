@@ -47,6 +47,8 @@ bool TaskRewardMapWidget::init(void)
 	addChild(_texture);
 	scheduleUpdate();
 
+	CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("reward-pop.wav");
+
 	return true;
 }
 
@@ -139,6 +141,7 @@ void TaskRewardMapWidget::TouchBegan(const std::vector<cocos2d::Touch *> &touche
 	if (_texture) {
 		if (_texture->getBoundingBox().containsPoint(location)) {
 			PickReward();
+			CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("reward-get.wav");
 		}
 	}
 }

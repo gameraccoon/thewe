@@ -34,6 +34,8 @@ bool GameScene::init(void)
 	addChild(_worldMap);
 	_worldMap->autorelease();
 
+	CocosDenshion::SimpleAudioEngine::getInstance()->playBackgroundMusic("bg-gameplay.mp3", true);
+
 	scheduleUpdate();
 
 	addChild(TutorialLayer::create(_worldMap, &_mapProjector));

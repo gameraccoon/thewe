@@ -82,6 +82,8 @@ bool CellTasksScreen::init(void)
 
 	addChild(_widget);
 
+	CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("appear-menu.wav");
+
 	if (World::Instance().GetTutorialManager().IsTutorialStateAvailable("StartFirstTask"))
 	{
 		World::Instance().GetTutorialManager().RemoveCurrentTutorial();
@@ -137,6 +139,7 @@ void CellTasksScreen::OnCloseCallback(cocos2d::Ref *sender, cocos2d::ui::Widget:
 	if (eventType == cocos2d::ui::Widget::TouchEventType::ENDED)
 	{
 		CloseMenu();
+		CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("tap-double.wav");
 	}
 }
 
@@ -171,6 +174,8 @@ void CellTasksScreen::OnStartTaskCallback(cocos2d::Ref *sender, cocos2d::ui::Wid
 			World::Instance().GetTaskManager().RunTask(_cell, task_info, Utils::GetGameTime());
 			CloseMenu();
 			_cellMenu->DisappearWithAnimation();
+
+			CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("task-get.wav");
 		}
 	}
 }
@@ -180,5 +185,6 @@ void CellTasksScreen::KeyReleased(cocos2d::EventKeyboard::KeyCode key, cocos2d::
 	if (key == cocos2d::EventKeyboard::KeyCode::KEY_ESCAPE)
 	{
 		CloseMenu();
+		CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("tap-double.wav");
 	}
 }

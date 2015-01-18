@@ -76,6 +76,7 @@ bool AppDelegate::applicationDidFinishLaunching()
 	cocos2d::FileUtils::getInstance()->addSearchPath(resourcesPath + "shaders");
 	cocos2d::FileUtils::getInstance()->addSearchPath(resourcesPath + "fonts");
 	cocos2d::FileUtils::getInstance()->addSearchPath(resourcesPath + "texts");
+	cocos2d::FileUtils::getInstance()->addSearchPath(resourcesPath + "audio");
 	
 	director->setOpenGLView(glview);
 	director->setAnimationInterval(1.0 / 60.0);
@@ -88,6 +89,9 @@ bool AppDelegate::applicationDidFinishLaunching()
 #endif
 
 	glview->setDesignResolutionSize(dr_w, dr_h, ResolutionPolicy::FIXED_HEIGHT);
+
+	// Temporary code. We need setting implementation!
+	CocosDenshion::SimpleAudioEngine::getInstance()->setBackgroundMusicVolume(0.5f);
 
 	srand(time(nullptr));
 
@@ -159,8 +163,11 @@ bool AppDelegate::applicationDidFinishLaunching()
 void AppDelegate::applicationDidEnterBackground()
 {
 	GameSavesManager::Instance().SaveGameTime();
+
+	CocosDenshion::SimpleAudioEngine::getInstance()->stopBackgroundMusic();
 }
 
 void AppDelegate::applicationWillEnterForeground()
 {
+	CocosDenshion::SimpleAudioEngine::getInstance()->resumeBackgroundMusic();
 }

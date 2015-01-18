@@ -36,6 +36,8 @@ bool BonusMapWidget::init(void)
 	addChild(_texture);
 	scheduleUpdate();
 
+	CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("bonus-pop.wav");
+
 	return true;
 }
 
@@ -95,6 +97,8 @@ void BonusMapWidget::TouchEnded(const std::vector<cocos2d::Touch *> &touches, co
 
 		cocos2d::Sequence *seq = cocos2d::Sequence::create(GetHideAnimation(), func_bonus, func_end, nullptr);
 		_texture->runAction(seq);
+
+		CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("reward-get.wav");
 	}
 }
 

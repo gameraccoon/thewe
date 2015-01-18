@@ -111,6 +111,8 @@ void InvestigatorTapButton::appear(float jumpHeight)
 	_backgroundSprite->setScale(_initialScale);
 	_backgroundSprite->stopAllActions();
 	_backgroundSprite->runAction(motion);
+
+	CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("investigator.wav");
 }
 
 void InvestigatorTapButton::hide(void)

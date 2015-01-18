@@ -2,6 +2,7 @@
 #define APPLICATION_H
 
 #include <cocos2d.h>
+#include <SimpleAudioEngine.h>
 
 class AppDelegate : private cocos2d::Application
 {

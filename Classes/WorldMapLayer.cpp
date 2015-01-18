@@ -470,9 +470,10 @@ void WorldMapLayer::TouchesEnded(const std::vector<cocos2d::Touch* > &touches, c
 
 					return;
 				}
-				else
+				else if (_cellMenu->isOpened())
 				{
-					_cellMenu->DisappearWithAnimation();		
+					_cellMenu->DisappearWithAnimation();
+					CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("cell-close.wav");
 				}
 
 				Town::WeakPtr town = GetTownUnderPoint(point);
