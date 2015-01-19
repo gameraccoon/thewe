@@ -8,6 +8,7 @@
 #include "TaskRewardMapWidget.h"
 #include "MultipleImageSprite.h"
 #include "BonusMapWidget.h"
+#include "PopUpTextWithIcon.h"
 
 class CellMapWidget : public cocos2d::Node, public MessageReceiver
 {

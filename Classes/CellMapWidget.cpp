@@ -165,6 +165,20 @@ void CellMapWidget::TouchBegan(const std::vector<cocos2d::Touch *> &touches, coc
 	Vector2 location = convertTouchToNodeSpace(touches.at(0));
 	if (_cellMapSprite->GetCurrentImage()->getBoundingBox().containsPoint(location)) {
 		CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("tap-single.wav");
+
+		// test code
+		/*
+		PopUpTextWithIcon::ConstructionInfo info;
+		info.icon = "task_reward.png";
+		info.text = "Very loooooooong text test...";
+		info.position = _cell.lock()->GetInfo().location;
+		info.overralScale = 1.0f;
+		info.iconScale = 0.3f;
+		info.font = "EuropeNormal.ttf";
+		info.fontSize = 25;
+		PopUpTextWithIcon *eff = new PopUpTextWithIcon(info, _projector, 1);
+		_worldMapLayer->AddEffectGameField(eff);
+		*/
 	}
 }
 

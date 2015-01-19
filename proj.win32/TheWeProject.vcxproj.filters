@@ -46,6 +46,9 @@
     <Filter Include="Classes\Tutorial\Widgets">
       <UniqueIdentifier>{da04a231-f4f6-4af1-9075-ae0d3b875785}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Classes\Effects">
+      <UniqueIdentifier>{275fa7ce-196f-4e8b-9870-f18f312b3aa7}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -360,9 +363,6 @@
     <ClCompile Include="..\Classes\MultipleImageSprite.cpp">
       <Filter>Classes\Utils</Filter>
     </ClCompile>
-    <ClCompile Include="..\Classes\EffectsLayer.cpp">
-      <Filter>Classes\Widgets</Filter>
-    </ClCompile>
     <ClCompile Include="..\Classes\Spline.cpp">
       <Filter>Classes\Utils</Filter>
     </ClCompile>
@@ -419,6 +419,12 @@
     </ClCompile>
     <ClCompile Include="..\Classes\TutorialWidgetInvestigatorUncatched.cpp">
       <Filter>Classes\Tutorial\Widgets</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\EffectsLayer.cpp">
+      <Filter>Classes\Effects</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\PopUpTextWithIcon.cpp">
+      <Filter>Classes\Effects</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -668,9 +674,6 @@
     <ClInclude Include="..\Classes\MultipleImageSprite.h">
       <Filter>Classes\Utils</Filter>
     </ClInclude>
-    <ClInclude Include="..\Classes\EffectsLayer.h">
-      <Filter>Classes\Widgets</Filter>
-    </ClInclude>
     <ClInclude Include="..\Classes\Spline.h">
       <Filter>Classes\Utils</Filter>
     </ClInclude>
@@ -733,6 +736,12 @@
     </ClInclude>
     <ClInclude Include="..\Classes\ResourceCache.h">
       <Filter>Classes\Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\PopUpTextWithIcon.h">
+      <Filter>Classes\Effects</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\EffectsLayer.h">
+      <Filter>Classes\Effects</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
