@@ -26,12 +26,12 @@ public:
 	}
 
 protected:
-	TextWithIcon::TextWithIcon(void)
+	TextWithIcon(void)
 		: _text(nullptr)
 		, _icon(nullptr)
 	{}
 
-	bool TextWithIcon::init(const std::string &icon, const std::string &text,
+	bool init(const std::string &icon, const std::string &text,
 		const std::string &font, float iconScale, int textSize)
 	{	
 		_text = cocos2d::ui::Text::create(text, font, textSize);

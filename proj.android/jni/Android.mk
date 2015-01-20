@@ -51,6 +51,7 @@ LOCAL_SRC_FILES := hellocpp/main.cpp \
 				   	../../Classes/NotificationMessageManager.cpp \
 				   	../../Classes/NotificationMessageLayer.cpp \
 				   	../../Classes/NotificationMessageWidget.cpp \
+				   	../../Classes/PopUpTextWithIcon.cpp \
 				   	../../Classes/ProgressBar.cpp \
 				   	../../Classes/Region.cpp \
 				   	../../Classes/RelinkDragAndDrop.cpp \

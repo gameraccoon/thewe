@@ -96,6 +96,7 @@ set(GAME_SRC
 	Classes/NotificationMessageLayer.cpp
 	Classes/NotificationMessageWidget.cpp
 	Classes/MiscUtils.cpp
+	Classes/PopUpTextWithIcon.cpp
 	Classes/ProgressBar.cpp
 	Classes/RelinkDragAndDrop.cpp
 	Classes/Region.cpp
