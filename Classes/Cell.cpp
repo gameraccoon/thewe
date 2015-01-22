@@ -5,12 +5,44 @@
 #include "GameInfo.h"
 #include "MessageManager.h"
 
+int Cell::Info::GetExp() const
+{
+	return experience;
+}
+
+static void CheckExp(int expBefore, int expAfter, Cell::Info* cellInfo)
+{
+	World &world = World::Instance();
+	int levelBefore = world.GetLevelFromExperience(expBefore);
+	int levelAfter = world.GetLevelFromExperience(expAfter);
+	if (levelBefore < levelAfter)
+	{
+		Message message("CellLevelUp");
+		message.variables.SetInt("levelBefore", levelBefore);
+		message.variables.SetInt("levelAfter", levelAfter);
+		message.variables.SetInt("cellUid", (int)cellInfo->self->GetUid());
+		MessageManager::Instance().PutMessage(message);
+	}
+
+	if (levelAfter < levelBefore)
+	{
+		WRITE_WARN("Decrease cell level");
+	}
+}
+
+void Cell::Info::SetExp(int newExp)
+{
+	CheckExp(experience, newExp, this);
+	experience = newExp;
+}
+
 Cell::Cell(const Info &info)
 	: _info(info)
 	, _currentTask()
 	, _uid(World::Instance().GetNewUid())
 {
 	info.town.lock()->SetCellPresented(true);
+	_info.self = this;
 
 	_CheckValues();
 }
@@ -177,70 +209,19 @@ unsigned int Cell::GetUid(void) const
 
 void Cell::_CheckValues() const
 {
-	if (_info.cash < 0.0f)
-	{
-		WRITE_WARN("Negative cash value");
-	}
-
-	if (_info.membersCount <= 0)
-	{
-		WRITE_WARN("Wrong members count");
-	}
-
-	if (_info.techUnitsCount < 0)
-	{
-		WRITE_WARN("Wrong techUnitsCount value");
-	}
-
-	if (_info.ratsCount < 0)
-	{
-		WRITE_WARN("Wrong ratsCount value");
-	}
-
-	if (_info.experience < 0)
-	{
-		WRITE_WARN("Wrong experience value");
-	}
-
-	if (_info.morale < 0.0f || 1.0f < _info.morale)
-	{
-		WRITE_WARN("Wrong morale value");
-	}
-	
-	if (_info.devotion < 0.0f || 1.0f < _info.devotion)
-	{
-		WRITE_WARN("Wrong devotion value");
-	}
-
-	if (_info.fame < 0.0f || 1.0f < _info.fame)
-	{
-		WRITE_WARN("Wrong fame value");
-	}
-
-	if (_info.townHeartPounding < 0.0f || 1.0f < _info.townHeartPounding)
-	{
-		WRITE_WARN("Wrong townHeartPounding value");
-	}
-
-	if (_info.townInfluence < 0.0f || 1.0f < _info.townInfluence)
-	{
-		WRITE_WARN("Wrong townInfluence value");
-	}
-
-	if (_info.townWelfare < 0.0f || 1.0f < _info.townWelfare)
-	{
-		WRITE_WARN("Wrong townWelfare value");
-	}
-
-	if (_info.town.expired())
-	{
-		WRITE_WARN("Dead reference to town");
-	}
-
-	if (IsInTemporaryState() && _info.stateDuration <= 0)
-	{
-		WRITE_WARN("State duration less or equals than zero");
-	}
+	WARN_IF(_info.cash < 0.0f, "Negative cash value");
+	WARN_IF(_info.membersCount <= 0, "Wrong members count");
+	WARN_IF(_info.techUnitsCount < 0, "Wrong techUnitsCount value");
+	WARN_IF(_info.ratsCount < 0, "Wrong ratsCount value");
+	WARN_IF(_info.experience < 0.f, "Wrong experience value");
+	WARN_IF(_info.morale < 0.0f || 1.0f < _info.morale, "Wrong morale value");
+	WARN_IF(_info.devotion < 0.0f || 1.0f < _info.devotion, "Wrong devotion value");
+	WARN_IF(_info.fame < 0.0f || 1.0f < _info.fame, "Wrong fame value");
+	WARN_IF(_info.townHeartPounding < 0.0f || 1.0f < _info.townHeartPounding, "Wrong townHeartPounding value");
+	WARN_IF(_info.townInfluence < 0.0f || 1.0f < _info.townInfluence, "Wrong townInfluence value");
+	WARN_IF(_info.townWelfare < 0.0f || 1.0f < _info.townWelfare, "Wrong townWelfare value");
+	WARN_IF(_info.town.expired(), "Dead reference to town");
+	WARN_IF(IsInTemporaryState() && _info.stateDuration <= 0, "State duration less or equals than zero");
 }
 
 float Cell::GetStateProgress(Utils::GameTime time) const
