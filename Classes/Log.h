@@ -67,4 +67,11 @@ private:
 	Log::Instance().writeError(message);	\
 	DEBUG_ASSERT
 
+#ifdef _DEBUG
+	#define WARN_IF(condition, message)			\
+		if (condition) WRITE_WARN(message)
+#else
+	#define WARN_IF(condition, message)
 #endif
+
+#endif // LOG_H
