@@ -7,8 +7,10 @@ struct Message
 {
 private:
 	const std::string name;
+
 public:
 	Utils::VariablesSet variables;
+
 public:
 	Message(const std::string &n)
 		: name(n)
@@ -18,8 +20,7 @@ public:
 		return name == n;
 	}
 
-	inline const std::string& getName() const
-	{
+	inline const std::string& getName() const {
 		return name;
 	}
 };
@@ -35,6 +36,8 @@ class MessageManager
 {
 private:
 	typedef std::multimap<const std::string, MessageReceiver *> Receivers;
+	typedef std::queue<Message> Messages;
+
 public:
 	static MessageManager& Instance(void);
 
@@ -52,7 +55,7 @@ public:
 
 private:
 	Receivers _receivers;
-	std::queue<Message> _messages;
+	Messages _messages;
 
 private:
 	~MessageManager(void);

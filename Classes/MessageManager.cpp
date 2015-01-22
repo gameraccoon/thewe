@@ -1,5 +1,7 @@
 #include "MessageManager.h"
 
+#include <mutex>
+
 #include "Log.h"
 
 MessageManager::MessageManager(void)
@@ -15,19 +17,26 @@ MessageReceiver::~MessageReceiver()
 	MessageManager::Instance().UnregisterReceiver(this);
 }
 
+static std::mutex InstanceMutex;
+static std::mutex MessagesMutex;
+static std::mutex ReceiversMutex;
+
 MessageManager& MessageManager::Instance(void)
 {
+	std::lock_guard<std::mutex> lock(::InstanceMutex);
 	static MessageManager instance;
 	return instance;
 }
 
 void MessageManager::PutMessage(const Message &msg)
 {
+	std::lock_guard<std::mutex> lock(::MessagesMutex);
 	_messages.push(msg);
 }
 
 void MessageManager::FlushMessages(void)
 {
+	std::lock_guard<std::mutex> lock(::MessagesMutex);
 	while (!_messages.empty()) {
 		_messages.pop();
 	}
@@ -41,11 +50,13 @@ void MessageManager::RegisterReceiver(MessageReceiver *receiver, const std::stri
 		return;
 	}
 
+	std::lock_guard<std::mutex> lock(::ReceiversMutex);
 	_receivers.insert(std::pair<const std::string, MessageReceiver*>(messageName, receiver));
 }
 
 void MessageManager::UnregisterReceiver(const MessageReceiver *receiver)
 {
+	std::lock_guard<std::mutex> lock(::ReceiversMutex);
 	std::list<Receivers::iterator> receiversToDelete;
 
 	for (auto receiverIt = _receivers.begin(), endRes = _receivers.end(); receiverIt != endRes; receiverIt++)
@@ -64,6 +75,7 @@ void MessageManager::UnregisterReceiver(const MessageReceiver *receiver)
 
 void MessageManager::UnregisterReceiver(const MessageReceiver *receiver, const std::string& messageName)
 {
+	std::lock_guard<std::mutex> lock(::ReceiversMutex);
 	auto receivers = _receivers.equal_range(messageName);
 
 	std::list<Receivers::iterator> receiversToDelete;
@@ -76,17 +88,20 @@ void MessageManager::UnregisterReceiver(const MessageReceiver *receiver, const s
 		}
 	}
 
-	for (Receivers::iterator& receiverTodelete : receiversToDelete)
+	for (Receivers::iterator& receiverToDelete : receiversToDelete)
 	{
-		_receivers.erase(receiverTodelete);
+		_receivers.erase(receiverToDelete);
 	}
 }
 
 void MessageManager::CallAcceptMessages(void)
 {
+	std::lock_guard<std::mutex> lock1(::MessagesMutex);
+	std::lock_guard<std::mutex> lock2(::ReceiversMutex);
+
 	while (!_messages.empty())
 	{
-		Message &message = _messages.front();
+		const Message &message = _messages.front();
 		
 		auto receivers = _receivers.equal_range(message.getName());
 
