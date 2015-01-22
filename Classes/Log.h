@@ -48,28 +48,35 @@ private:
 };
 
 #ifdef _DEBUG
-	#define DEBUG_ASSERT assert(false)
+	#define DEBUG_ASSERT { assert(false); }(void)1
 #else
 	#define DEBUG_ASSERT
 #endif
 
-#define WRITE_INIT(message)				\
-	Log::Instance().writeInit(message)	\
+#define WRITE_INIT(message) {				\
+	Log::Instance().writeInit(message);		\
+}(void)1
 
-#define WRITE_LOG(message)				\
-	Log::Instance().writeLog(message)	\
+#define WRITE_LOG(message) {				\
+	Log::Instance().writeLog(message);		\
+}(void)1
 
-#define WRITE_WARN(message)					\
+#define WRITE_WARN(message) {				\
 	Log::Instance().writeWarning(message);	\
-	DEBUG_ASSERT
+	DEBUG_ASSERT;							\
+}(void)1
 
-#define WRITE_ERR(message)					\
+#define WRITE_ERR(message) {				\
 	Log::Instance().writeError(message);	\
-	DEBUG_ASSERT
+	DEBUG_ASSERT;							\
+}(void)1
 
 #ifdef _DEBUG
-	#define WARN_IF(condition, message)			\
-		if (condition) WRITE_WARN(message)
+	#define WARN_IF(condition, message) {	\
+		if (condition) {					\
+			WRITE_WARN(message);			\
+		}									\
+	}(void)1
 #else
 	#define WARN_IF(condition, message)
 #endif
