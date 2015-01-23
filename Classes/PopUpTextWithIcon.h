@@ -2,6 +2,7 @@
 #define POPUP_TEXT_WITH_ICON_H
 
 #include <ui/CocosGUI.h>
+#include <cocos-ext.h>
 
 #include "EffectsLayer.h"
 
@@ -25,7 +26,7 @@ public:
 	};
 
 public:
-	PopUpTextWithIcon(const ConstructionInfo &info, MapProjector *projector, int zOrder);
+	PopUpTextWithIcon(const ConstructionInfo &info, MapProjector *projector, bool worldSpace, int zOrder);
 
 	bool init(void) override;
 	void update(float dt) override;
@@ -36,6 +37,7 @@ private:
 	TextWithIcon *_textWithIcon;
 	ConstructionInfo _descriptor;
 
+	bool _isWorldSpace;
 	bool _isFinished;
 };
 

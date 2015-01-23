@@ -20,6 +20,7 @@ public:
 	{
 		cocos2d::Node::setOpacity(opacity);
 		_text->setOpacity(opacity);
+		_bgRect->setOpacity(opacity);
 		if (_icon) {
 			_icon->setOpacity(opacity);
 		}
@@ -39,6 +40,9 @@ protected:
 		_text->setTextHorizontalAlignment(cocos2d::TextHAlignment::CENTER);
 		_text->setPosition(cocos2d::Vec2(0.0f, 0.0f));
 		_text->setScale(1.0f);
+		
+		float bg_w = _text->getRightBoundary() - _text->getLeftBoundary();
+		float bg_h = _text->getTopBoundary() - _text->getBottomBoundary();
 
 		if (!icon.empty())
 		{
@@ -46,22 +50,34 @@ protected:
 			_icon->setPosition(_text->getLeftBoundary(), 0.0f);
 			_icon->setScale(iconScale);
 			_text->setPositionX(_text->getPositionX() + _icon->getContentSize().width*iconScale/2.0f);
-			addChild(_icon);
+			addChild(_icon, 1);
+
+			bg_w += _icon->getContentSize().width*iconScale;
+			if (_icon->getContentSize().height*iconScale > bg_h) {
+				bg_h = _icon->getContentSize().height * iconScale;
+			}
 		}
 
-		addChild(_text);
+		_bgRect = cocos2d::extension::Scale9Sprite::create("popup-bg.png");
+		_bgRect->setCapInsets(cocos2d::Rect(8.0f, 8.0f, 111.0f, 23.0f));
+		_bgRect->setContentSize(cocos2d::Size(bg_w, bg_h));
+
+		addChild(_bgRect, 0);
+		addChild(_text, 1);
 		return true;
 	}
 
 private:
 	cocos2d::Sprite *_icon;
 	cocos2d::ui::Text *_text;
+	cocos2d::extension::Scale9Sprite *_bgRect; 
 };
 
-PopUpTextWithIcon::PopUpTextWithIcon(const ConstructionInfo &info, MapProjector *projector, int zOrder)
+PopUpTextWithIcon::PopUpTextWithIcon(const ConstructionInfo &info, MapProjector *projector, bool worldSpace, int zOrder)
 	: Effect("PopUpTextWithIcon", zOrder, nullptr)
 	, _projector(projector)
 	, _descriptor(info)
+	, _isWorldSpace(worldSpace)
 	, _isFinished(false)
 {
 	init();
@@ -70,9 +86,6 @@ PopUpTextWithIcon::PopUpTextWithIcon(const ConstructionInfo &info, MapProjector 
 bool PopUpTextWithIcon::init(void)
 {
 	Effect::init();
-
-	Vector2 start_p = _projector->ProjectOnScreen(_descriptor.position);
-	Vector2 finish_p;
 
 	_textWithIcon = TextWithIcon::create(_descriptor.icon, _descriptor.text,
 		_descriptor.font, _descriptor.iconScale, _descriptor.fontSize);
@@ -92,7 +105,7 @@ bool PopUpTextWithIcon::init(void)
 
 	_textWithIcon->runAction(seq);
 
-	setPosition(start_p);
+	setPosition(_isWorldSpace ? _projector->ProjectOnScreen(_descriptor.position) : _descriptor.position);
 	setScale(_descriptor.overralScale);
 	addChild(_textWithIcon);
 
@@ -102,7 +115,9 @@ bool PopUpTextWithIcon::init(void)
 void PopUpTextWithIcon::update(float dt)
 {
 	Effect::update(dt);
-	setPosition(_projector->ProjectOnScreen(_descriptor.position));
+	if (_isWorldSpace) {
+		setPosition(_projector->ProjectOnScreen(_descriptor.position));
+	}
 }
 
 bool PopUpTextWithIcon::IsFinished(void) const
