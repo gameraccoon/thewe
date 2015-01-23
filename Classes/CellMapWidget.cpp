@@ -21,6 +21,7 @@ CellMapWidget::CellMapWidget(WorldMapLayer *worldMapLayer, MapProjector *project
 {
 	MessageManager::Instance().RegisterReceiver(this, "ShowBonus");
 	MessageManager::Instance().RegisterReceiver(this, "PushTaskRewardOnMap");
+	MessageManager::Instance().RegisterReceiver(this, "CellLevelUp");
 	init();
 }
 
@@ -216,6 +217,19 @@ void CellMapWidget::AcceptMessage(const Message &message)
 			2.7f);
 		reward->autorelease();
 		_worldMapLayer->AddEffectGameField(reward);
+	}
+	else if (message.is("CellLevelUp") && _cell.lock()->GetUid() == message.variables.GetInt("cellUid"))
+	{
+		PopUpTextWithIcon::ConstructionInfo info;
+		info.icon = "";
+		info.text = cocos2d::StringUtils::format("Level %d Reached", message.variables.GetInt("levelAfter"));
+		info.position = _cell.lock()->GetInfo().location;
+		info.overralScale = 1.0f;
+		info.iconScale = 0.3f;
+		info.font = "EuropeNormal.ttf";
+		info.fontSize = 20;
+		PopUpTextWithIcon *eff = new PopUpTextWithIcon(info, _projector, true, 1);
+		_worldMapLayer->AddEffectGameField(eff);
 	}
 }
 
