@@ -1,5 +1,7 @@
 #include "PopUpTextWithIcon.h"
 
+static const float POPUP_TEXT_BORDER_SIZE = 15.0f;
+
 class TextWithIcon : public cocos2d::Node
 {
 public:
@@ -43,6 +45,7 @@ protected:
 		
 		float bg_w = _text->getRightBoundary() - _text->getLeftBoundary();
 		float bg_h = _text->getTopBoundary() - _text->getBottomBoundary();
+		bg_w = bg_w + POPUP_TEXT_BORDER_SIZE;
 
 		if (!icon.empty())
 		{
@@ -59,7 +62,7 @@ protected:
 		}
 
 		_bgRect = cocos2d::extension::Scale9Sprite::create("popup-bg.png");
-		_bgRect->setCapInsets(cocos2d::Rect(8.0f, 8.0f, 111.0f, 23.0f));
+		_bgRect->setCapInsets(cocos2d::Rect(5.0f, 5.0f, 54.0f, 10.0f));
 		_bgRect->setContentSize(cocos2d::Size(bg_w, bg_h));
 
 		addChild(_bgRect, 0);
