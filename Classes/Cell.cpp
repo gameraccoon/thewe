@@ -5,44 +5,12 @@
 #include "GameInfo.h"
 #include "MessageManager.h"
 
-int Cell::Info::GetExp() const
-{
-	return experience;
-}
-
-static void CheckExp(int expBefore, int expAfter, Cell::Info* cellInfo)
-{
-	World &world = World::Instance();
-	int levelBefore = world.GetLevelFromExperience(expBefore);
-	int levelAfter = world.GetLevelFromExperience(expAfter);
-	if (levelBefore < levelAfter)
-	{
-		Message message("CellLevelUp");
-		message.variables.SetInt("levelBefore", levelBefore);
-		message.variables.SetInt("levelAfter", levelAfter);
-		message.variables.SetInt("cellUid", (int)cellInfo->self->GetUid());
-		MessageManager::Instance().PutMessage(message);
-	}
-
-	if (levelAfter < levelBefore)
-	{
-		WRITE_WARN("Decrease cell level");
-	}
-}
-
-void Cell::Info::SetExp(int newExp)
-{
-	CheckExp(experience, newExp, this);
-	experience = newExp;
-}
-
 Cell::Cell(const Info &info)
 	: _info(info)
 	, _currentTask()
 	, _uid(World::Instance().GetNewUid())
 {
 	info.town.lock()->SetCellPresented(true);
-	_info.self = this;
 
 	_CheckValues();
 }
@@ -266,4 +234,31 @@ bool Cell::IsReadyToCreateSpinoff() const
 	bool isMembersEnough = _info.membersCount >= GameInfo::Instance().GetInt("CELL_SPINOFF_MEMBERS_PRICE") * 2;
 	bool isCashEnough = _info.cash >= GameInfo::Instance().GetInt("CELL_SPINOFF_CASH_PRICE");
 	return isMembersEnough && isCashEnough;
+}
+
+int Cell::GetExp(void) const
+{
+	return _info.experience;
+}
+
+void Cell::SetExp(int newExp)
+{
+	World &world = World::Instance();
+	int levelBefore = world.GetLevelFromExperience(_info.experience);
+	int levelAfter = world.GetLevelFromExperience(newExp);
+	if (levelBefore < levelAfter)
+	{
+		Message message("CellLevelUp");
+		message.variables.SetInt("levelBefore", levelBefore);
+		message.variables.SetInt("levelAfter", levelAfter);
+		message.variables.SetInt("cellUid", (int)GetUid());
+		MessageManager::Instance().PutMessage(message);
+	}
+
+	if (levelAfter < levelBefore)
+	{
+		WRITE_WARN("Decrease cell level");
+	}
+
+	_info.experience = newExp;
 }

@@ -229,6 +229,7 @@ void CellMapWidget::AcceptMessage(const Message &message)
 		info.font = "EuropeNormal.ttf";
 		info.fontSize = 20;
 		PopUpTextWithIcon *eff = new PopUpTextWithIcon(info, _projector, true, 1);
+		eff->autorelease();
 		_worldMapLayer->AddEffectGameField(eff);
 	}
 }

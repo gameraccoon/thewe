@@ -154,7 +154,7 @@ function MissionSuccess_TutorialRecrutment(cell, taskInfo)
 	World:getTutorialManager():removeCurrentTutorial()
 	World:getTutorialManager():runTutorialFuncton("AfterFirstTaskFinished")
 
-	AddExperience(cellInfo, 5)
+	AddExperience(cell, 5)
 end
 
 function MissionSuccess_TutorialFirstRealWork(cell, taskInfo)
@@ -170,7 +170,7 @@ function MissionSuccess_TutorialFirstRealWork(cell, taskInfo)
 
 	cellInfo.cash = cellInfo.cash + math.random(40, 60) * 1000
 
-	AddExperience(cellInfo, 5)
+	AddExperience(cell, 5)
 	
 	World:getTutorialManager():runTutorialFuncton("AfterRealWorkDone")
 end
@@ -180,7 +180,7 @@ function MissionSuccess_Alpha1Recrutment_university(cell, taskInfo)
 	local newMembersCount = math.random(3, 5)
 	SayCompleted(taskInfo.id)
 	AcceptRecrutmentParams(cell, taskInfo, newMembersCount, 0.05)
-	AddExperience(cellInfo, 2)
+	AddExperience(cell, 2)
 end
 
 function MissionFail_Alpha1Recrutment_university(cell, taskInfo)
@@ -201,7 +201,7 @@ function MissionSuccess_Alpha1Recrutment_government(cell, taskInfo)
 	local newMembersCount = math.random(2, 3)
 	SayCompleted(taskInfo.id)
 	AcceptRecrutmentParams(cell, taskInfo, newMembersCount, 0.15)
-	AddExperience(cellInfo, 15)
+	AddExperience(cell, 15)
 end
 
 function MissionFail_Alpha1Recrutment_government(cell, taskInfo)
@@ -223,7 +223,7 @@ function MissionSuccess_Alpha1Recrutment_military(cell, taskInfo)
 	local newMembersCount = math.random(1, 2)
 	SayCompleted(taskInfo.id)
 	AcceptRecrutmentParams(cell, taskInfo, newMembersCount, 0.25)
-	AddExperience(cellInfo, 350)
+	AddExperience(cell, 350)
 end
 
 function MissionFail_Alpha1Recrutment_military(cell, taskInfo)
@@ -248,7 +248,7 @@ function MissionSuccess_Alpha1DrugsTrading(cell, taskInfo)
 	if cellInfo.fame > 1.0 then cellInfo.fame = 1.0 end
 	local newMorale = taskInfo.morale
 	cellInfo.morale = cellInfo.morale + (newMorale - taskInfo.morale) * 0.3
-	AddExperience(cellInfo, 300)
+	AddExperience(cell, 300)
 end
 
 function MissionFail_Alpha1DrugsTrading(cell, taskInfo)
@@ -278,7 +278,7 @@ function MissionSuccess_Alpha1Autostealings(cell, taskInfo)
 	if cellInfo.fame > 1.0 then cellInfo.fame = 1.0 end
 	local newMorale = taskInfo.morale
 	cellInfo.morale = cellInfo.morale + (newMorale - cellInfo.morale) * 0.25
-	AddExperience(cellInfo, 25)
+	AddExperience(cell, 25)
 end
 
 function MissionFail_Alpha1Autostealings(cell, taskInfo)
@@ -308,7 +308,7 @@ function MissionSuccess_Alpha1Freelance(cell, taskInfo)
 	if cellInfo.fame > 1.0 then cellInfo.fame = 1.0 end
 	local newMorale = 1.0
 	cellInfo.morale = cellInfo.morale + (newMorale - cellInfo.morale) * 0.1
-	AddExperience(cellInfo, 3)
+	AddExperience(cell, 3)
 end
 
 function MissionFail_Alpha1Freelance(cell, taskInfo)
@@ -333,7 +333,7 @@ function MissionSuccess_Alpha1PrivateDetectiveInvestigation(cell, taskInfo)
 	if cellInfo.fame > 1.0 then cellInfo.fame = 1.0 end
 	local newMorale = 0.9
 	cellInfo.morale = cellInfo.morale + (newMorale - cellInfo.morale) * 0.25
-	AddExperience(cellInfo, 5)
+	AddExperience(cell, 5)
 end
 
 function MissionFail_Alpha1PrivateDetectiveInvestigation(cell, taskInfo)

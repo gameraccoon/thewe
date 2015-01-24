@@ -85,6 +85,6 @@ function GetInvestigationChance(cell)
 	return investigationChance
 end
 
-function AddExperience(cellInfo, expAmount)
-	cellInfo.experience = cellInfo.experience + expAmount
+function AddExperience(cell, expAmount)
+	cell:setExp(cell:getExp() + expAmount)
 end

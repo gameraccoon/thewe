@@ -31,7 +31,6 @@ public:
 	{
 		Cell::WeakPtr parent;
 		Town::WeakPtr town;
-		Cell *self;
 		Vector2 location;
 		State state;
 
@@ -51,9 +50,6 @@ public:
 		// current process (construction, destruction, autonomy)
 		Utils::GameTime stateBegin;
 		Utils::GameTime stateDuration;
-
-		int GetExp() const;
-		void SetExp(int newExp);
 	};
 
 public:
@@ -113,6 +109,9 @@ public:
 	bool IsInTemporaryState() const;
 
 	bool IsReadyToCreateSpinoff() const;
+
+	int GetExp(void) const;
+	void SetExp(int newExp);
 
 private:
 	Cell(const Info &info, unsigned int uid);
