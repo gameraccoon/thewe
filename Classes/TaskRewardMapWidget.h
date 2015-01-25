@@ -1,8 +1,10 @@
 #ifndef TASK_RESULT_WIDGET_H
 #define TASK_RESULT_WIDGET_H
 
-#include "CellGameInterface.h"
 #include "EffectsLayer.h"
+#include "Cell.h"
+#include "Task.h"
+#include "MiscUtils.h"
 
 class CellMapWidget;
 

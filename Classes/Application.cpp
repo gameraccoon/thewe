@@ -1,6 +1,7 @@
 #include "Application.h"
 
 #include "GameScene.h"
+#include "World.h"
 #include "MainMenuScene.h"
 #include "SplashScreenScene.h"
 #include "Vector2.h"

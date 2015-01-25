@@ -3,7 +3,6 @@
 #include "GameScene.h"
 #include "World.h"
 #include "GameScene.h"
-#include "MapGuiLayer.h"
 #include "TaskManager.h"
 #include "SessionEndScreen.h"
 #include "Log.h"
@@ -15,14 +14,10 @@ static const float INITIAL_CELL_SCALE = 0.2f;
 
 WorldMapLayer::WorldMapLayer(GameScene *gameScene, MapProjector* projector)
 	: _mapProjector(projector)
-	, _isInputEnabled(true)
 	, _isSessionScreenShowed(false)
 	, _isMapMovementsEnabled(true)
-	, _mapGui(nullptr)
 	, _gameScene(gameScene)
 	, _nextCellParent()
-	, _cellMenu(nullptr)
-	, _cellGameInterface(nullptr)
 {
 	MessageManager::Instance().RegisterReceiver(this, "AddInvestigatorWidget");
 	MessageManager::Instance().RegisterReceiver(this, "DeleteInvestigatorWidget");
@@ -68,7 +63,6 @@ bool WorldMapLayer::init(void)
 	Vector2 origin = cocos2d::Director::getInstance()->getVisibleOrigin();
 	Vector2 screen = cocos2d::Director::getInstance()->getVisibleSize();
 
-	SetGuiEnabled(true);
 
 	for (const Cell::Ptr cell : World::Instance().GetCellsNetwork().GetActiveCells())
 	{
@@ -101,9 +95,6 @@ bool WorldMapLayer::init(void)
 	_mapProjector->SetLocation(Vector2(0.0f, 0.0f));
 	// set scale to first time
 	_mapProjector->SetScale(0.01f);
-
-	_cellMenu = CellMenuSelector::create(_mapProjector, this);
-	addChild(_cellMenu, Z_CELL_MENU);
 
 	scheduleUpdate();
 
@@ -259,26 +250,6 @@ void WorldMapLayer::AcceptMessage(const Message &msg)
 	}
 }
 
-void WorldMapLayer::SetMapInputEnabled(bool isEnabled)
-{
-	_isInputEnabled = isEnabled;
-}
-
-void WorldMapLayer::SetGuiEnabled(bool isEnabled)
-{
-	if (_mapGui && !isEnabled)
-	{
-		removeChild(_mapGui);
-		_mapGui = nullptr;
-	}
-	else if (!_mapGui && isEnabled)
-	{
-		_mapGui = new MapGuiLayer(_mapProjector);
-		addChild(_mapGui, Z_MAP_GUI);
-		_mapGui->autorelease();
-	}
-}
-
 void WorldMapLayer::SetNextCellParent(Cell::WeakPtr parent)
 {
 	_nextCellParent = parent;
@@ -321,9 +292,6 @@ void WorldMapLayer::PushSessionFailScreen(void)
 	screen->setPosition(0.0f, 0.0f);
 	screen->autorelease();
 
-	SetMapInputEnabled(false);
-	SetGuiEnabled(false);
-
 	addChild(screen, Z_MAP_GUI);
 }
 
@@ -340,9 +308,6 @@ void WorldMapLayer::PushSessionWinScreen(void)
 	CustomSessionEndScreen *screen = new CustomSessionEndScreen(desc);
 	screen->setPosition(0.0f, 0.0f);
 	screen->autorelease();
-
-	SetMapInputEnabled(false);
-	SetGuiEnabled(false);
 
 	addChild(screen, Z_MAP_GUI);
 }
@@ -397,20 +362,20 @@ CellMapWidget* WorldMapLayer::GetNearestCellWidget(const Vector2 &pointOnScreen,
 
 bool WorldMapLayer::IsCellMenuOpened(void) const
 {
-	return _cellMenu->isOpened();
+	return false;
 }
 
 bool WorldMapLayer::IsCellMenuOpenedFor(Cell::WeakPtr cell) const
 {
 	if (IsCellMenuOpened()) {
-		return _cellMenu->IsBelongToCell(cell);
+		return false;
 	}
 	return false;
 }
 
 bool WorldMapLayer::IsCellMenuSpinoffMode(void) const
 {
-	return _cellMenu->isSpinoffMode();
+	return false;
 }
 
 void WorldMapLayer::AddEffectAbsolute(Effect *effect)
@@ -429,59 +394,31 @@ void WorldMapLayer::menuCloseCallback(cocos2d::Ref *Sender)
 
 void WorldMapLayer::TouchesBegan(const std::vector<cocos2d::Touch* > &touches, cocos2d::Event* event)
 {
-	if (_isInputEnabled)
-	{
-		cocos2d::Touch *touch = touches.at(0);
-		_touchLastPoint = touch->getLocation();
-		_touchFirstPos = touch->getLocation();
+	cocos2d::Touch *touch = touches.at(0);
+	_touchLastPoint = touch->getLocation();
+	_touchFirstPos = touch->getLocation();
 
-		if (_cellMenu->isOpened())
-		{
-			_cellMenu->DisappearWithAnimation();
-		}
-
-		ResetTouches();
-	}
+	ResetTouches();
 }
 
 void WorldMapLayer::TouchesEnded(const std::vector<cocos2d::Touch* > &touches, cocos2d::Event* event)
 {
-	if (_isInputEnabled)
+	if (touches.size() == 1)
 	{
-		if (touches.size() == 1)
+		cocos2d::Touch *touch = touches.at(0);
+		Vector2 point = touch->getLocation();
+		Vector2 v = _touchFirstPos - point;
+
+		const float size = v.Size();
+		const float tolerance = 5.0f;
+
+		if (size <= tolerance)
 		{
-			cocos2d::Touch *touch = touches.at(0);
-			Vector2 point = touch->getLocation();
-			Vector2 v = _touchFirstPos - point;
-
-			const float size = v.Size();
-			const float tolerance = 5.0f;
-
-			if (size <= tolerance)
+			Town::WeakPtr town = GetTownUnderPoint(point);
+			if (!town.expired())
 			{
-				Cell::Ptr cell = GetCellUnderPoint(point).lock();
-				if (cell)
-				{
-					Vector2 cell_pos = cell->GetInfo().location;
-					Vector2 menu_pos = _mapProjector->ProjectOnScreen(cell_pos);
-
-					_cellMenu->DisappearImmedaitely();
-					_cellMenu->AppearWithAnimation(cell, menu_pos);
-
-					return;
-				}
-				else if (_cellMenu->isOpened())
-				{
-					_cellMenu->DisappearWithAnimation();
-					CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("cell-close.wav");
-				}
-
-				Town::WeakPtr town = GetTownUnderPoint(point);
-				if (!town.expired())
-				{
-					OnTownSelect(town);
-					return;
-				}
+				OnTownSelect(town);
+				return;
 			}
 		}
 	}
@@ -493,7 +430,7 @@ void WorldMapLayer::TouchesMoved(const std::vector<cocos2d::Touch* > &touches, c
 		return;
 	}
 
-	if (_isInputEnabled && touches.size() > 0)
+	if (touches.size() > 0)
 	{
 		if (!_isTouchesCountUpdated && (unsigned)_lastTouchesCount == touches.size())
 		{
@@ -726,7 +663,6 @@ void WorldMapLayer::ModifyZoom(float multiplier)
 
 void WorldMapLayer::HideCellGameInterface(void)
 {
-	_cellMenu->DisappearWithAnimation();
 }
 
 void WorldMapLayer::UpdateMapElements()

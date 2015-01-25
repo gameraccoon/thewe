@@ -24,7 +24,6 @@ public:
 	void ShowMap();
 	void GoToMainMenu(void);
 	void ToggleEditor();
-	void SetInputEnabled(bool enabled);
 
 	void MoveViewToPoint(const Vector2& worldPoint);
 

@@ -237,9 +237,6 @@
     <ClCompile Include="..\Classes\UserMessage.cpp">
       <Filter>Classes\UI</Filter>
     </ClCompile>
-    <ClCompile Include="..\Classes\CellsNetLayer.cpp">
-      <Filter>Classes\UI</Filter>
-    </ClCompile>
     <ClCompile Include="..\Classes\GameInfo.cpp">
       <Filter>Classes</Filter>
     </ClCompile>
@@ -254,9 +251,6 @@
     </ClCompile>
     <ClCompile Include="..\Classes\SessionEndScreen.cpp">
       <Filter>Classes</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Classes\CellNetWidget.cpp">
-      <Filter>Classes\UI</Filter>
     </ClCompile>
     <ClCompile Include="..\Classes\NotificationMessageLayer.cpp">
       <Filter>Classes\UI</Filter>
@@ -300,9 +294,6 @@
     <ClCompile Include="..\Classes\World.cpp">
       <Filter>Classes\Models</Filter>
     </ClCompile>
-    <ClCompile Include="..\Classes\MapGuiLayer.cpp">
-      <Filter>Classes\Widgets</Filter>
-    </ClCompile>
     <ClCompile Include="..\Classes\MapProjector.cpp">
       <Filter>Classes\Widgets</Filter>
     </ClCompile>
@@ -315,22 +306,7 @@
     <ClCompile Include="..\Classes\InvestigatorMapWidget.cpp">
       <Filter>Classes\Widgets</Filter>
     </ClCompile>
-    <ClCompile Include="..\Classes\CellTasksMenu.cpp">
-      <Filter>Classes\Widgets</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Classes\CellTaskInfoMenu.cpp">
-      <Filter>Classes\Widgets</Filter>
-    </ClCompile>
     <ClCompile Include="..\Classes\CellMapWidget.cpp">
-      <Filter>Classes\Widgets</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Classes\CellMapPopupButton.cpp">
-      <Filter>Classes\Widgets</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Classes\CellInfoMenu.cpp">
-      <Filter>Classes\Widgets</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Classes\CellGameInterface.cpp">
       <Filter>Classes\Widgets</Filter>
     </ClCompile>
     <ClCompile Include="..\Classes\GameSavesManager.cpp">
@@ -355,9 +331,6 @@
       <Filter>Classes\Models</Filter>
     </ClCompile>
     <ClCompile Include="..\Classes\BonusMapWidget.cpp">
-      <Filter>Classes\Widgets</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Classes\CircleMenu.cpp">
       <Filter>Classes\Widgets</Filter>
     </ClCompile>
     <ClCompile Include="..\Classes\MultipleImageSprite.cpp">
@@ -545,9 +518,6 @@
     <ClInclude Include="..\Classes\UserMessage.h">
       <Filter>Classes\UI</Filter>
     </ClInclude>
-    <ClInclude Include="..\Classes\CellsNetLayer.h">
-      <Filter>Classes\UI</Filter>
-    </ClInclude>
     <ClInclude Include="..\Classes\GameInfo.h">
       <Filter>Classes</Filter>
     </ClInclude>
@@ -559,9 +529,6 @@
     </ClInclude>
     <ClInclude Include="..\Classes\SessionEndScreen.h">
       <Filter>Classes</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Classes\CellNetWidget.h">
-      <Filter>Classes\UI</Filter>
     </ClInclude>
     <ClInclude Include="..\Classes\NotificationMessageLayer.h">
       <Filter>Classes\UI</Filter>
@@ -605,9 +572,6 @@
     <ClInclude Include="..\Classes\World.h">
       <Filter>Classes\Models</Filter>
     </ClInclude>
-    <ClInclude Include="..\Classes\MapGuiLayer.h">
-      <Filter>Classes\Widgets</Filter>
-    </ClInclude>
     <ClInclude Include="..\Classes\MapProjector.h">
       <Filter>Classes\Widgets</Filter>
     </ClInclude>
@@ -620,22 +584,7 @@
     <ClInclude Include="..\Classes\InvestigatorMapWidget.h">
       <Filter>Classes\Widgets</Filter>
     </ClInclude>
-    <ClInclude Include="..\Classes\CellTasksMenu.h">
-      <Filter>Classes\Widgets</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Classes\CellTaskInfoMenu.h">
-      <Filter>Classes\Widgets</Filter>
-    </ClInclude>
     <ClInclude Include="..\Classes\CellMapWidget.h">
-      <Filter>Classes\Widgets</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Classes\CellMapPopupButton.h">
-      <Filter>Classes\Widgets</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Classes\CellInfoMenu.h">
-      <Filter>Classes\Widgets</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Classes\CellGameInterface.h">
       <Filter>Classes\Widgets</Filter>
     </ClInclude>
     <ClInclude Include="..\Classes\DbConnection.h">
@@ -666,9 +615,6 @@
       <Filter>Classes\Models</Filter>
     </ClInclude>
     <ClInclude Include="..\Classes\BonusMapWidget.h">
-      <Filter>Classes\Widgets</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Classes\CircleMenu.h">
       <Filter>Classes\Widgets</Filter>
     </ClInclude>
     <ClInclude Include="..\Classes\MultipleImageSprite.h">
@@ -742,6 +688,9 @@
     </ClInclude>
     <ClInclude Include="..\Classes\EffectsLayer.h">
       <Filter>Classes\Effects</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\GameInterface.h">
+      <Filter>Classes\UI</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

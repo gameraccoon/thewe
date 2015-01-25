@@ -1,6 +1,7 @@
 #include "TaskRewardMapWidget.h"
 
 #include "CellMapWidget.h"
+#include "World.h"
 #include "MessageManager.h"
 #include "GameInfo.h"
 #include "Log.h"

@@ -1,6 +1,7 @@
 #include "SpinoffDragAndDrop.h"
 
 #include "WorldMapLayer.h"
+#include "World.h"
 #include "MessageManager.h"
 #include "Log.h"
 

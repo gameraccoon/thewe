@@ -1,11 +1,15 @@
 #ifndef RELINK_DRAG_AND_DROP_H
 #define RELINK_DRAG_AND_DROP_H
 
-#include "CellGameInterface.h"
 #include "EffectsLayer.h"
+#include "MiscUtils.h"
+#include "StripEffect.h"
+#include "MultipleImageSprite.h"
+#include "Cell.h"
 
 class WorldMapLayer;
 class CellMapWidget;
+class MapProjector;
 
 class RelinkDragAndDrop : public Effect
 {

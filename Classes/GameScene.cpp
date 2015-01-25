@@ -62,9 +62,6 @@ void GameScene::ShowMap()
 		removeChild(_cellScreen);
 		_cellScreen = nullptr;
 	}
-
-	_worldMap->SetMapInputEnabled(true);
-	_worldMap->SetGuiEnabled(true);
 }
 
 void GameScene::GoToMainMenu(void)
@@ -85,19 +82,12 @@ void GameScene::ToggleEditor()
 		_RegionEditor = new EditorLayer(&_mapProjector);
 		addChild(_RegionEditor);
 		_RegionEditor->autorelease();
-		_worldMap->SetMapInputEnabled(false);
 	}
 	else
 	{
 		ShowMap();
 	}
 }
-
-void GameScene::SetInputEnabled(bool enabled)
-{
-	_worldMap->SetMapInputEnabled(enabled);
-}
-
 
 void GameScene::MoveViewToPoint(const Vector2& worldPoint)
 {
