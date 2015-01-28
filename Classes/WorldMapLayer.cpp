@@ -54,7 +54,7 @@ bool WorldMapLayer::init(void)
 	_networkVisualiser = cocos2d::DrawNode::create();
 	addChild(_networkVisualiser, Z_LINKS);
 
-	cocos2d::Sprite *mapSprite = cocos2d::Sprite::create("WorldMap.png");
+	cocos2d::Sprite *mapSprite = cocos2d::Sprite::create("gamefield/WorldMap.png");
 	mapSprite->retain();
 	_mapProjector->AddMapPart(Drawable::CastFromCocos(mapSprite), Vector2(0.0f, 0.0f), Vector2(0.0f, 0.0f), 1.0f, false);
 	_mapProjector->SetMapSize(mapSprite->getTextureRect().size);

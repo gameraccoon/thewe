@@ -44,17 +44,17 @@ bool CellMapWidget::init(void)
 	_cellMapSprite = MultipleImageSprite::create();
 	_cellMapSprite->setPosition(0.0f, 0.0f);
 	_cellMapSprite->setScale(1.0f);
-	_cellMapSprite->AddImage("normal", "cell.png");
-	_cellMapSprite->AddImage("arrested", "cell_arrested.png");
+	_cellMapSprite->AddImage("normal", "gamefield/cell.png");
+	_cellMapSprite->AddImage("arrested", "gamefield/cell_arrested.png");
 	_cellMapSprite->SetCurrentImage("normal");
 
-	_cellMapTaskProgressBar = RoundProgressBar::create("cell_overlay.png", 1.0f);
+	_cellMapTaskProgressBar = RoundProgressBar::create("gamefield/cell_overlay.png", 1.0f);
 	_cellMapTaskProgressBar->SetProgressImmediately(0.0f);
 	_cellMapTaskProgressBar->setPosition(0.0f, 0.0f);
 	_cellMapTaskProgressBar->setVisible(false);
 	_cellMapTaskProgressBar->ToggleReverse(true);
 
-	_cellCommonProgressBar = RoundProgressBar::create("cell.png", 0.8f);
+	_cellCommonProgressBar = RoundProgressBar::create("gamefield/cell.png", 0.8f);
 	_cellCommonProgressBar->setPosition(0.0f, 0.0f);
 	_cellCommonProgressBar->SetProgressImmediately(0.0f);
 

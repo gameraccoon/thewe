@@ -16,7 +16,7 @@ TownMapWidget::~TownMapWidget(void)
 
 bool TownMapWidget::init(void)
 {
-	_townMapSprite = cocos2d::Sprite::create("town.png");
+	_townMapSprite = cocos2d::Sprite::create("gamefield/town.png");
 	_townMapSprite->setPosition(0.0f, 0.0f);
 	_townMapSprite->setScale(1.0f);
 

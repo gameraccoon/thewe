@@ -37,7 +37,7 @@ bool TaskRewardMapWidget::init(void)
 	cocos2d::CallFunc *func_begin = cocos2d::CallFunc::create([&]() {_isPickEnabled = false;});
 	cocos2d::CallFunc *func_end = cocos2d::CallFunc::create([&]() {_isPickEnabled = true;});
 
-	_texture = cocos2d::Sprite::create("task_reward.png");
+	_texture = cocos2d::Sprite::create("effects/task_reward.png");
 	_texture->setPosition(0.0f, 0.0f);
 	_texture->setScale(0.01f);
 	_texture->setOpacity(0);

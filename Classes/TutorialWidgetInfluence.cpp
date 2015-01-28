@@ -51,7 +51,7 @@ bool TutorialWidgetInfluence::init()
 	cocos2d::Size view = cocos2d::Director::getInstance()->getVisibleSize();
 	cocos2d::Vec2 window = cocos2d::Director::getInstance()->getWinSize();
 
-	_spot = cocos2d::Sprite::create("tutorial_influence.png");
+	_spot = cocos2d::Sprite::create("tutorial/tutorial_influence.png");
 	_spot->setScale(0.85f, 0.2f);
 	_spot->setPosition(cocos2d::Vec2(view.width/2.0f, 14.0f));
 	_spot->retain();
@@ -59,7 +59,7 @@ bool TutorialWidgetInfluence::init()
 	_blackout = ScreenBlackoutWidget::create(cocos2d::Color4F(0.0f, 0.0f, 0.0f, 0.0f));
 	_blackout->AddSpot(_spot);
 
-	_arrow = cocos2d::Sprite::create("tutorial_arrow.png");
+	_arrow = cocos2d::Sprite::create("tutorial/tutorial_arrow.png");
 	_arrow->setPosition(cocos2d::Vec2(200.0f, 75.0f) - view/2.0f);
 	_arrow->setScale(0.35f);
 	_arrow->setRotation(-90.0f);

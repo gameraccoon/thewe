@@ -77,7 +77,7 @@ bool TutorialWidgetInvestigatorUncatched::init()
 	{
 		Cell::Ptr parent_ptr = cell_ptr->GetParent().lock();
 		cocos2d::Sprite *arrow;
-		arrow = cocos2d::Sprite::create("tutorial_arrow.png");
+		arrow = cocos2d::Sprite::create("tutorial/tutorial_arrow.png");
 		arrow->setRotation(-90.0f);
 		arrow->retain();
 		_arrows.push_back(Arrow(parent_ptr, arrow));
@@ -86,14 +86,14 @@ bool TutorialWidgetInvestigatorUncatched::init()
 
 	for (auto cell : cell_ptr->GetChildren()) {
 		cocos2d::Sprite *arrow;
-		arrow = cocos2d::Sprite::create("tutorial_arrow.png");
+		arrow = cocos2d::Sprite::create("tutorial/tutorial_arrow.png");
 		arrow->setRotation(-90.0f);
 		arrow->retain();
 		_arrows.push_back(Arrow(cell, arrow));
 		addChild(arrow, 1);
 	}
 
-	_spot = cocos2d::Sprite::create("cell_tutorial.png");
+	_spot = cocos2d::Sprite::create("tutorial/cell_tutorial.png");
 	_spot->setPosition(100.0f, 100.0f);
 	_spot->setScale(3.0f);
 	_spot->retain();

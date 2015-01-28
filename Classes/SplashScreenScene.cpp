@@ -38,7 +38,7 @@ bool SplashScreenScene::init(void)
 
 	cocos2d::Director *director = cocos2d::Director::getInstance();
 
-	_splashLogo = cocos2d::Sprite::create("TheWe-Splash.png");
+	_splashLogo = cocos2d::Sprite::create("ui/TheWe-Splash.png");
 
 	Vector2 client = director->getVisibleSize();
 	Vector2 origin = director->getVisibleOrigin();

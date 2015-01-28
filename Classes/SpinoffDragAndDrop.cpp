@@ -33,12 +33,12 @@ bool SpinoffDragAndDrop::init(void)
 
 	_texture = MultipleImageSprite::create();
 	_texture->setPosition(0.0f, 0.0f);
-	_texture->AddImage("normal", "1_norm.png");
-	_texture->AddImage("pressed", "1_press.png");
-	_texture->AddImage("disabled", "1_disabled.png");
+	_texture->AddImage("normal", "ui/recrut_normal.png");
+	_texture->AddImage("pressed", "ui/recrut_press.png");
+	_texture->AddImage("disabled", "ui/recrut_disabled.png");
 	_texture->SetCurrentImage("normal");
 
-	_strip = StripEffect::create("spinoff_drag_strip.png");
+	_strip = StripEffect::create("effects/spinoff_drag_strip.png");
 	_strip->setColor(cocos2d::Color4F(1.0f, 1.0f, 1.0f, 0.4f));
 	_strip->setVisible(false);
 
