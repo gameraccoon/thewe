@@ -141,11 +141,13 @@ xcopy /Y /Q "$(EngineRoot)external\websockets\prebuilt\win32\*.lib" "$(SolutionD
     <ClCompile Include="..\Classes\BonusOnMap.cpp" />
     <ClCompile Include="..\Classes\Cell.cpp" />
     <ClCompile Include="..\Classes\CellMapWidget.cpp" />
+    <ClCompile Include="..\Classes\CellRadialMenu.cpp" />
     <ClCompile Include="..\Classes\CellsNetwork.cpp" />
     <ClCompile Include="..\Classes\Color.cpp" />
     <ClCompile Include="..\Classes\Drawable.cpp" />
     <ClCompile Include="..\Classes\EditorLayer.cpp" />
     <ClCompile Include="..\Classes\EffectsLayer.cpp" />
+    <ClCompile Include="..\Classes\GameInterface.cpp" />
     <ClCompile Include="..\Classes\GameSavesManager.cpp" />
     <ClCompile Include="..\Classes\Investigator.cpp" />
     <ClCompile Include="..\Classes\InvestigatorMapWidget.cpp" />
@@ -285,6 +287,7 @@ xcopy /Y /Q "$(EngineRoot)external\websockets\prebuilt\win32\*.lib" "$(SolutionD
     <ClInclude Include="..\Classes\PopUpTextWithIcon.h" />
     <ClInclude Include="..\Classes\ProgressBar.h" />
     <ClInclude Include="..\Classes\InvestigatorTapButton.h" />
+    <ClInclude Include="..\Classes\CellRadialMenu.h" />
     <ClInclude Include="..\Classes\Region.h" />
     <ClInclude Include="..\Classes\RelinkDragAndDrop.h" />
     <ClInclude Include="..\Classes\ResourceCache.h" />

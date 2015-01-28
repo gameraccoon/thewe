@@ -409,6 +409,10 @@ void WorldMapLayer::TouchesEnded(const std::vector<cocos2d::Touch* > &touches, c
 		Vector2 point = touch->getLocation();
 		Vector2 v = _touchFirstPos - point;
 
+		if (GetCellUnderPoint(point).expired()) {
+			MessageManager::Instance().PutMessage(Message("CloseCellMenu"));
+		}
+
 		const float size = v.Size();
 		const float tolerance = 5.0f;
 

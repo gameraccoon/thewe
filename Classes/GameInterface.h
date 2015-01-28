@@ -6,4 +6,36 @@
 #include <cocostudio\CCSGUIReader.h>
 #include <ui\CocosGUI.h>
 
+#include "MessageManager.h"
+#include "MapProjector.h"
+
+class CellRadialMenu;
+
+class GameInterface : public cocos2d::Layer, public MessageReceiver
+{
+public:
+	static GameInterface* create(MapProjector *projector);
+
+	enum class DrawOrder
+	{
+		CELL_INGAME_MENU,
+		CELL_RADIAL_MENU,
+		HUD
+	};
+
+	void AcceptMessage(const Message &message);
+
+protected:
+	GameInterface(MapProjector *projector);
+	virtual ~GameInterface(void);
+
+	bool init(void) override;
+
+private:
+	MapProjector *_projector;
+	CellRadialMenu *_cellRadialMenu;
+
+	cocos2d::ui::Widget *_hudWidget;
+};
+
 #endif

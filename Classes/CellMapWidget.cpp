@@ -191,6 +191,10 @@ void CellMapWidget::TouchEnded(const std::vector<cocos2d::Touch *> &touches, coc
 		{
 			reward->PickReward();
 		}*/
+
+		Message message("OpenCellMenu");
+		message.variables.SetInt("UID", _cell.lock()->GetUid());
+		MessageManager::Instance().PutMessage(message);
 	}
 }
 

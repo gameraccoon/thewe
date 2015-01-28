@@ -7,6 +7,7 @@
 
 #include "MapProjector.h"
 #include "WorldMapLayer.h"
+#include "GameInterface.h"
 #include "MainMenuScene.h"
 #include "GameInfo.h"
 #include "Cell.h"
@@ -32,6 +33,7 @@ private:
 
 	WorldMapLayer *_worldMap;
 	MainMenuScene *_mainMenuScene;
+	GameInterface *_gameInterface;
 	cocos2d::Layer *_RegionEditor;
 	cocos2d::Layer *_cellScreen;
 };

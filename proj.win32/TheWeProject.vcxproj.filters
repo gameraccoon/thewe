@@ -399,6 +399,12 @@
     <ClCompile Include="..\Classes\PopUpTextWithIcon.cpp">
       <Filter>Classes\Effects</Filter>
     </ClCompile>
+    <ClCompile Include="..\Classes\GameInterface.cpp">
+      <Filter>Classes\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\CellRadialMenu.cpp">
+      <Filter>Classes\UI</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="main.h">
@@ -690,6 +696,9 @@
       <Filter>Classes\Effects</Filter>
     </ClInclude>
     <ClInclude Include="..\Classes\GameInterface.h">
+      <Filter>Classes\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\CellRadialMenu.h">
       <Filter>Classes\UI</Filter>
     </ClInclude>
   </ItemGroup>
