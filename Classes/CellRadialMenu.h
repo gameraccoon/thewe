@@ -18,6 +18,7 @@ public:
 
 	bool IsOpened(void) const;
 	bool IsBelongTo(Cell::Ptr cell) const;
+	bool IsEffectsFinished(void) const;
 
 protected:
 	CellRadialMenu(MapProjector *projector);

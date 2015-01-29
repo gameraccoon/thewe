@@ -83,6 +83,7 @@ void HudWidget::DesctopButtonsHandler(cocos2d::Ref *sender, cocos2d::ui::Widget:
 
 			if (!name.empty()) {
 				MessageManager::Instance().PutMessage(Message(name));
+				MessageManager::Instance().PutMessage(Message("CloseCellMenu"));
 			}
 		}
 		else

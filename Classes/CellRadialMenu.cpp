@@ -110,15 +110,15 @@ void CellRadialMenu::AcceptMessage(const Message &message)
 
 	if (message.is("OpenCellMenu") && uid != message.variables.GetInt("UID"))
 	{
-		if (uid) {
+		if (IsEffectsFinished()) {
 			Hide(false);
+			_cell = World::Instance().GetCellsNetwork().GetCellByUid(message.variables.GetInt("UID"));
+			Show(true);
 		}
-		_cell = World::Instance().GetCellsNetwork().GetCellByUid(message.variables.GetInt("UID"));
-		Show(true);
 	}
 	if (message.is("CloseCellMenu"))
 	{
-		Hide(true);
+		Hide(IsEffectsFinished() ? true : false);
 	}
 }
 
@@ -130,6 +130,16 @@ bool CellRadialMenu::IsOpened(void) const
 bool CellRadialMenu::IsBelongTo(Cell::Ptr cell) const
 {
 	return _cell.lock() == cell;
+}
+
+bool CellRadialMenu::IsEffectsFinished(void) const
+{
+	for (auto btn : _buttons) {
+		if (btn->getNumberOfRunningActions() > 0) {
+			return false;
+		}
+	}
+	return true;
 }
 
 bool CellRadialMenu::init(void)
