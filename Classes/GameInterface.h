@@ -9,6 +9,7 @@
 #include "MessageManager.h"
 #include "MapProjector.h"
 
+class HudWidget;
 class CellRadialMenu;
 
 class GameInterface : public cocos2d::Layer, public MessageReceiver
@@ -18,8 +19,8 @@ public:
 
 	enum class DrawOrder
 	{
-		CELL_INGAME_MENU,
 		CELL_RADIAL_MENU,
+		CELL_INGAME_MENU,
 		HUD
 	};
 
@@ -34,8 +35,7 @@ protected:
 private:
 	MapProjector *_projector;
 	CellRadialMenu *_cellRadialMenu;
-
-	cocos2d::ui::Widget *_hudWidget;
+	HudWidget *_hud;
 };
 
 #endif

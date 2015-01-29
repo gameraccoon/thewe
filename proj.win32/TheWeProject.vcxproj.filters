@@ -405,6 +405,9 @@
     <ClCompile Include="..\Classes\CellRadialMenu.cpp">
       <Filter>Classes\UI</Filter>
     </ClCompile>
+    <ClCompile Include="..\Classes\HudWidget.cpp">
+      <Filter>Classes\UI</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="main.h">
@@ -699,6 +702,9 @@
       <Filter>Classes\UI</Filter>
     </ClInclude>
     <ClInclude Include="..\Classes\CellRadialMenu.h">
+      <Filter>Classes\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\HudWidget.h">
       <Filter>Classes\UI</Filter>
     </ClInclude>
   </ItemGroup>

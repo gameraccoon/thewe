@@ -30,6 +30,8 @@ WorldMapLayer::WorldMapLayer(GameScene *gameScene, MapProjector* projector)
 	MessageManager::Instance().RegisterReceiver(this, "DisableMapScrolling");
 	MessageManager::Instance().RegisterReceiver(this, "RelinkCell");
 	MessageManager::Instance().RegisterReceiver(this, "CreateCell");
+	MessageManager::Instance().RegisterReceiver(this, "ScrollZoomIn");
+	MessageManager::Instance().RegisterReceiver(this, "ScrollZoomOut");
 
 	init();
 }
@@ -187,6 +189,10 @@ void WorldMapLayer::AcceptMessage(const Message &msg)
 		_isMapMovementsEnabled = true;
 	} else if (msg.is("DisableMapScrolling")) {
 		_isMapMovementsEnabled = false;
+	} else if (msg.is("ScrollZoomIn")) {
+		ModifyZoom(1.25f);
+	} else if (msg.is("ScrollZoomOut")) {
+		ModifyZoom(0.8f);
 	}
 	else if (msg.is("RelinkCell"))
 	{
