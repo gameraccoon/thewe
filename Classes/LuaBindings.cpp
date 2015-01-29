@@ -85,15 +85,7 @@ void LuaInstance::BindClass<const Task::Info>()
 	luabind::module(_luaState) [
 	luabind::class_<const Task::Info>("TaskInfo")
 		.def_readonly("id", &Task::Info::id)
-		.def_readonly("chanceToLooseMembers", &Task::Info::chanceToLooseMembers)
-		.def_readonly("fameImpact", &Task::Info::fameImpact)
-		.def_readonly("heartPoundingLevel", &Task::Info::heartPoundingLevel)
 		.def_readonly("level", &Task::Info::level)
-		.def_readonly("morale", &Task::Info::moralLevel)
-		.def_readonly("needCash", &Task::Info::needCash)
-		.def_readonly("needMembers", &Task::Info::needMembers)
-		.def_readonly("needTech", &Task::Info::needTech)
-		.def_readonly("politicalImpact", &Task::Info::politicalImpact)
 	];
 }
 

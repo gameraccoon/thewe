@@ -4,8 +4,6 @@ Task::Task(const Task::Info* info, Utils::GameTime startTime)
 	: _info(info)
 	, _startTime(startTime)
 	, _endTime(startTime + info->duration)
-	, _isAborted(false)
-	, _isFastFinished(false)
 {
 }
 
@@ -16,7 +14,7 @@ Task::Ptr Task::Create(const Task::Info* info, Utils::GameTime startTime)
 
 bool Task::CheckCompleteness(Utils::GameTime worldTime)
 {
-	return (worldTime >= _endTime || _isAborted || _isFastFinished);
+	return worldTime >= _endTime;
 }
 
 const Task::Info* Task::GetInfo() const
@@ -48,22 +46,3 @@ float Task::CalculateProgress(Utils::GameTime worldTime) const
 	}
 }
 
-bool Task::IsAborted() const
-{
-	return _isAborted;
-}
-
-bool Task::IsFastFinished() const 
-{
-	return _isFastFinished;
-}
-
-void Task::Abort()
-{
-	_isAborted = true;
-}
-
-void Task::FastFinish()
-{
-	_isFastFinished = true;
-}

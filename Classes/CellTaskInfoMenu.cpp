@@ -52,17 +52,14 @@ bool CellTaskInfoMenu::init(void)
 	cocos2d::ui::Widget *window = dynamic_cast<cocos2d::ui::Widget *>(_widget->getChildByName("Window"));
 
 	cocos2d::ui::Button *btnClose = dynamic_cast<cocos2d::ui::Button *>(window->getChildByName("Close"));
-	cocos2d::ui::Button *btnAbort = dynamic_cast<cocos2d::ui::Button *>(window->getChildByName("Abort"));
 	_progressBar = dynamic_cast<cocos2d::ui::LoadingBar *>(window->getChildByName("TaskProgress")->getChildByName("Progress"));
 	_textPercentage = dynamic_cast<cocos2d::ui::TextBMFont *>(window->getChildByName("TaskProgress")->getChildByName("Persentage"));
 
 	if (!btnClose) {WRITE_ERR("Failed to get element with name Close from ui_cell_current_task widget"); return false;}
-	if (!btnAbort) {WRITE_ERR("Failed to get element with name Abort from ui_cell_current_task widget"); return false;}
 	if (!_progressBar) {WRITE_ERR("Failed to get element with name TaskProgress:Progress from ui_cell_current_task widget"); return false;}
 	if (!_textPercentage) {WRITE_ERR("Failed to get element with name TaskProgress:Persentage from ui_cell_current_task widget"); return false;}
 
 	btnClose->addTouchEventListener(CC_CALLBACK_2(CellTaskInfoMenu::OnCloseCallback, this));
-	btnAbort->addTouchEventListener(CC_CALLBACK_2(CellTaskInfoMenu::OnAbortCallback, this));
 
 	addChild(_widget);
 	scheduleUpdate();
@@ -112,17 +109,5 @@ void CellTaskInfoMenu::OnCloseCallback(cocos2d::Ref *sender, cocos2d::ui::Widget
 	{
 		CloseMenu();
 		CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("tap-double.wav");
-	}
-}
-
-void CellTaskInfoMenu::OnAbortCallback(cocos2d::Ref *sender, cocos2d::ui::Widget::TouchEventType eventType)
-{
-	if (eventType == cocos2d::ui::Widget::TouchEventType::ENDED)
-	{
-		Task::Ptr currentTask = _cellCurrentTask.lock();
-		if (currentTask)
-		{
-			currentTask->Abort();
-		}
 	}
 }

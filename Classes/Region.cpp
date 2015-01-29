@@ -52,8 +52,5 @@ Region::Info Region::GetInfo(void) const
 
 void Region::_CheckValues() const
 {
-	if (_population < 0.0f)
-	{
-		WRITE_WARN("Wrong population value");
-	}
+	WARN_IF(_population < 0.0f, "Wrong population value");
 }

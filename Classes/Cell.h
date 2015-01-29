@@ -6,6 +6,7 @@
 #include "Town.h"
 #include "Vector2.h"
 #include "Task.h"
+#include "Resources.h"
 
 class Cell
 {
@@ -46,6 +47,8 @@ public:
 		float townInfluence;
 		float townHeartPounding;
 		float townWelfare;
+
+		Resource::Map resources;
 
 		// current process (construction, destruction, autonomy)
 		Utils::GameTime stateBegin;
@@ -109,6 +112,9 @@ public:
 	bool IsInTemporaryState() const;
 
 	bool IsReadyToCreateSpinoff() const;
+
+	void AddResource(const Resource& reward);
+	void AddReward(const Resource::Vector& reward);
 
 	int GetExp(void) const;
 	void SetExp(int newExp);

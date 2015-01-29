@@ -18,6 +18,7 @@ static const std::string PROCESSES_TABLE = "cell_processes";
 static const std::string INVESIGATIONS_TABLE = "investigation_branches";
 static const std::string INVESIGATORS_TABLE = "investigators";
 static const std::string TUTORIAL_STATES_TABLE = "tutorial_states";
+static const std::string CELLS_RESOURCES_TABLE = "cells_resources";
 
 static std::recursive_mutex InstanceMutex;
 static std::recursive_mutex SavesManagerMutex;
@@ -152,6 +153,15 @@ void GameSavesManager::FirstInitSave()
 	{
 		_impl->database.execSql("CREATE TABLE " + TUTORIAL_STATES_TABLE + " ("
 								"'state' VARCHAR(100) NOT NULL"
+								");");
+	}
+
+	if (!_impl->database.IsTableExists(CELLS_RESOURCES_TABLE))
+	{
+		_impl->database.execSql("CREATE TABLE " + CELLS_RESOURCES_TABLE + " ("
+								"'cell_uid' INTEGER NOT NULL"
+								",'resource_id' VARCHAR(100) NOT NULL"
+								",'count' INTEGER NOT NULL"
 								");");
 	}
 }
@@ -408,6 +418,22 @@ void GameSavesManager::LoadTutorialStates()
 	}
 }
 
+void GameSavesManager::LoadCellsResources()
+{
+	World &world = World::Instance();
+	CellsNetwork &cellsNetwork = world.GetCellsNetwork();
+
+	SqliteDataReader::Ptr reader = _impl->database.execQuery("SELECT * FROM " + CELLS_RESOURCES_TABLE);
+	while (reader->next())
+	{
+		unsigned int cell_uid = reader->getValueByName("cell_uid")->asInt();
+		Cell::Ptr cell = cellsNetwork.GetCellByUid(cell_uid);
+
+		Resource resource(reader->getValueByName("resource_id")->asString(), reader->getValueByName("count")->asInt());
+		cell->AddResource(resource);
+	}
+}
+
 void GameSavesManager::LoadGameState(void)
 {
 	std::lock_guard<std::recursive_mutex> lock(::SavesManagerMutex);
@@ -419,6 +445,7 @@ void GameSavesManager::LoadGameState(void)
 	LoadCellsState();
 	LoadRunnedTasks();
 	LoadProcesses();
+	LoadCellsResources();
 	LoadInvestigations();
 	LoadUserInfo();
 	LoadTutorialStates();
@@ -464,6 +491,16 @@ static std::string InitConstrucrionAdditionStatement()
 			",type"
 			",begin_time"
 			",duration"
+			")"
+			"VALUES";
+}
+
+static std::string InitCellsResourcesAdditionStatement()
+{
+	return "INSERT INTO " + CELLS_RESOURCES_TABLE +
+			"(cell_uid"
+			",resource_id"
+			",count"
 			")"
 			"VALUES";
 }
@@ -548,6 +585,15 @@ static void AppendCellProcessToQuery(std::string* const query, Cell* cell)
 		.append("'").append(std::to_string(info.state)).append("',")
 		.append("'").append(Utils::TimeToString(info.stateBegin)).append("',")
 		.append("'").append(Utils::TimeToString(info.stateDuration)).append("'")
+		.append(")");
+}
+
+static void AppendCellResourceToQuery(std::string* const query, unsigned int CellUid, const Resource& resource)
+{
+	query->append("(")
+		.append("'").append(std::to_string(CellUid)).append("',")
+		.append("'").append(resource.name).append("',")
+		.append(Utils::TimeToString(resource.count))
 		.append(")");
 }
 
@@ -648,6 +694,26 @@ static bool FillProcessesAdditionStatement(std::string* const processesSqlStatem
 	return addProcesses;
 }
 
+static bool FillResourcesAdditionStatement(std::string* const resourcesSqlStatement)
+{
+	const CellsNetwork::Cells &cells = World::Instance().GetCellsNetwork().GetActiveCells();
+	bool addResources = false;
+	for (auto& cell : cells)
+	{
+		const Cell::Info& cellInfo = cell->GetInfo();
+		for (const auto& resource : cellInfo.resources)
+		{
+			AppendSeparator(resourcesSqlStatement, addResources);
+			addResources = true;
+
+			AppendCellResourceToQuery(resourcesSqlStatement, cell->GetUid(), resource.second);
+		}
+	}
+	resourcesSqlStatement->append(";");
+
+	return addResources;
+}
+
 static bool FillInvestigationAdditionStatement(std::string* const processesSqlStatement)
 {
 	const World::Investigators& investigators = World::Instance().GetInvestigators();
@@ -727,6 +793,9 @@ void GameSavesManager::SaveGameState(void)
 	std::string processesSqlStatement = InitConstrucrionAdditionStatement();
 	bool addProcesses = FillProcessesAdditionStatement(&processesSqlStatement);
 
+	std::string cellResourcesSqlStatement = InitCellsResourcesAdditionStatement();
+	bool addCellResources = FillResourcesAdditionStatement(&cellResourcesSqlStatement);
+
 	std::string investigationsSqlStatement = InitInvestigationAdditionStatement();
 	bool addInvestigations = FillInvestigationAdditionStatement(&investigationsSqlStatement);
 
@@ -747,13 +816,16 @@ void GameSavesManager::SaveGameState(void)
 							"DELETE FROM " + INVESIGATIONS_TABLE + ";"
 							"DELETE FROM " + INVESIGATORS_TABLE + ";"
 							"DELETE FROM " + TUTORIAL_STATES_TABLE + ";"
-							"DELETE FROM " + USER_DATA_TABLE + ";");
+							"DELETE FROM " + USER_DATA_TABLE + ";"
+							"DELETE FROM " + CELLS_RESOURCES_TABLE + ";"
+							);
 	// adding new data
 	if (addCells) _impl->database.execSql(cellsAdditionSqlStatement);
 	if (addTasks) _impl->database.execSql(taskAdditionSqlStatement);
 	if (addProcesses) _impl->database.execSql(processesSqlStatement);
 	if (addInvestigations) _impl->database.execSql(investigationsSqlStatement);
 	if (addInvestigators) _impl->database.execSql(investigatorsSqlStatement);
+	if (addCellResources) _impl->database.execSql(cellResourcesSqlStatement);
 	_impl->database.execSql(userInfoSqlStatement);
 	if (addTutorialStates) _impl->database.execSql(tutorialStatesSqlStatement);
 	// commiting transaction

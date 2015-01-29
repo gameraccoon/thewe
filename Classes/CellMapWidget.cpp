@@ -218,7 +218,7 @@ void CellMapWidget::AcceptMessage(const Message &message)
 		reward->autorelease();
 		_worldMapLayer->AddEffectGameField(reward);
 	}
-	else if (message.is("CellLevelUp") && _cell.lock()->GetUid() == message.variables.GetInt("cellUid"))
+	else if (message.is("CellLevelUp") && (int)_cell.lock()->GetUid() == message.variables.GetInt("cellUid"))
 	{
 		PopUpTextWithIcon::ConstructionInfo info;
 		info.icon = "";

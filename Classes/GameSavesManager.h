@@ -27,6 +27,7 @@ private:
 	void LoadInvestigations();
 	void LoadUserInfo();
 	void LoadTutorialStates();
+	void LoadCellsResources();
 	void SaveGameState();
 
 private:

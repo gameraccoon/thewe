@@ -109,7 +109,7 @@ void TaskRewardMapWidget::PickReward(bool squeeze)
 	cocos2d::CallFunc *func_begin = cocos2d::CallFunc::create([&]() {_isPickEnabled = false;});
 	cocos2d::CallFunc *func_end = cocos2d::CallFunc::create(
 		[&]() {
-			World::Instance().GetTaskManager().CallCuccessfulCompletition(_cell, &_task);
+			World::Instance().GetTaskManager().CallSuccessfulCompletition(_cell, &_task);
 			_isLiveFinished = true;
 		});
 

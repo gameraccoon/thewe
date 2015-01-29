@@ -57,19 +57,25 @@ namespace WorldLoader
 			Task::Info info;
 
 			info.id = task_node.attribute("id").as_string();
-			info.fameImpact = task_node.attribute("fameImpact").as_float();
 			info.duration = Utils::StringToTime(task_node.attribute("duration").as_string());
-			info.moralLevel = task_node.attribute("moralLevel").as_float();
-			info.heartPoundingLevel = task_node.attribute("heartPoundingLevel").as_float();
 			info.level = task_node.attribute("level").as_int();
-			info.needCash = task_node.attribute("needCash").as_int();
-			info.needMembers = task_node.attribute("needMembers").as_int();
-			info.needTech = task_node.attribute("needTech").as_int();
-			info.chanceToLooseMembers = task_node.attribute("chanceToLooseMembers").as_float();
-			info.politicalImpact = task_node.attribute("politicalImpact").as_float();
 			info.successFn = task_node.attribute("successFn").as_string();
 			info.failFn = task_node.attribute("failFn").as_string();
-			info.abortFn = task_node.attribute("abortFn").as_string();
+
+			pugi::xml_node task_property_node = task_node.first_child();
+			while (task_property_node)
+			{
+				std::string nodeName = task_property_node.name();
+				if (nodeName == "Reward") {
+					info.reward.push_back(Resource(task_property_node.attribute("id").as_string(),
+													task_property_node.attribute("count").as_int()));
+				}
+				else {
+					WRITE_WARN("Unknown task property type: " + nodeName);
+				}
+
+				task_property_node = task_property_node.next_sibling();
+			}
 
 			infos.push_back(info);
 

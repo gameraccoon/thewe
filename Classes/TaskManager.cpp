@@ -38,18 +38,26 @@ void TaskManager::RunTask(Cell::WeakPtr cell, const std::string& id, Utils::Game
 	}
 }
 
-void TaskManager::CallCuccessfulCompletition(Cell::WeakPtr cell, const Task::Info *info)
+void TaskManager::CallSuccessfulCompletition(Cell::WeakPtr cell, const Task::Info *info)
 {
+	Cell::Ptr lockedCell = cell.lock();
+
 	if (!info || cell.expired()) {
-		WRITE_WARN("TaskManager::CallCuccessfulCompletition wrong params");
+		WARN_IF(!info, "dead reference to info");
+		WARN_IF(cell.expired(), "dead reference to cell");
 		return;
 	}
 
-	luabind::call_function<bool>(World::Instance().GetLuaInst()->GetLuaState()
-								, info->successFn.c_str()
-								, cell.lock().get()
-								, info
-								, 0);
+	lockedCell->AddReward(info->reward);
+
+	if (!info->successFn.empty())
+	{
+		luabind::call_function<bool>(World::Instance().GetLuaInst()->GetLuaState()
+									, info->successFn.c_str()
+									, lockedCell.get()
+									, info
+									, 0);
+	}
 }
 
 Task::Info TaskManager::FindTaskById(const std::string &id) const
@@ -63,6 +71,7 @@ Task::Info TaskManager::FindTaskById(const std::string &id) const
 
 void TaskManager::UpdateToTime(Utils::GameTime worldTime)
 {
+	// ToDo: refactor this method
 	std::vector<RunnedTaskInfo>::iterator iterator = _runnedTasks.begin();
 	while (iterator != _runnedTasks.end())
 	{
@@ -82,45 +91,37 @@ void TaskManager::UpdateToTime(Utils::GameTime worldTime)
 				Task::CompletedTaskInfo info;
 				info.taskInfo = task->GetInfo();
 				info.startTime = task->GetStartTime();
-				info.endTime = (task->IsAborted() || task->IsFastFinished()) ? worldTime : task->GetEndTime();
+				info.endTime = task->GetEndTime();
 				
 				std::string funcName;
 
-				if (!task->IsAborted())
+				// call lua function that calculate status of the task
+				bool isSuccess = luabind::call_function<bool>(World::Instance().GetLuaInst()->GetLuaState()
+															  , "CheckTaskStatus"
+															  , cellInfo
+															  , taskInfo
+															  , 0);
+
+				if (isSuccess)
 				{
-					// call lua function that calculate status of the task
-					bool isSuccess = luabind::call_function<bool>(World::Instance().GetLuaInst()->GetLuaState()
-																  , "CheckTaskStatus"
-																  , cellInfo
-																  , taskInfo
-																  , 0);
-
-					if (isSuccess)
-					{
-						Utils::GameTime waitTime;
-						if (World::Instance().GetTutorialManager().IsTutorialStateAvailable("WaitingForFinishFirstTask") ||
-							World::Instance().GetTutorialManager().IsTutorialStateAvailable("ReadyToFinishFirstRealWork")) {
-							waitTime = GameInfo::Instance().GetTime("TASK_REWARD_TUTORIAL_WAIT_TIME");
-						} else {
-							waitTime = GameInfo::Instance().GetTime("TASK_REWARD_WAIT_TIME");
-						}
-
-						Message message("PushTaskRewardOnMap");
-						message.variables.SetInt("CELL_UID", cell->GetUid());
-						message.variables.SetString("TASK_ID", taskInfo->id);
-						message.variables.SetTime("WAIT_TIME", waitTime);
-						MessageManager::Instance().PutMessage(message);
+					Utils::GameTime waitTime;
+					if (World::Instance().GetTutorialManager().IsTutorialStateAvailable("WaitingForFinishFirstTask") ||
+						World::Instance().GetTutorialManager().IsTutorialStateAvailable("ReadyToFinishFirstRealWork")) {
+						waitTime = GameInfo::Instance().GetTime("TASK_REWARD_TUTORIAL_WAIT_TIME");
+					} else {
+						waitTime = GameInfo::Instance().GetTime("TASK_REWARD_WAIT_TIME");
 					}
-					else
-					{
-						funcName = taskInfo->failFn;
-						info.status = Task::Status::Failed;
-					}
+
+					Message message("PushTaskRewardOnMap");
+					message.variables.SetInt("CELL_UID", cell->GetUid());
+					message.variables.SetString("TASK_ID", taskInfo->id);
+					message.variables.SetTime("WAIT_TIME", waitTime);
+					MessageManager::Instance().PutMessage(message);
 				}
 				else
 				{
-					funcName = taskInfo->abortFn;
-					info.status = Task::Status::Aborted;
+					funcName = taskInfo->failFn;
+					info.status = Task::Status::Failed;
 				}
 
 				if (!funcName.empty())
@@ -154,6 +155,7 @@ void TaskManager::FillTasks(const std::vector<Task::Info>& tasks)
 	if (_isTasksFilled)
 	{
 		WRITE_WARN("Trying to fill tasks info twice");
+		return;
 	}
 
 	for (const Task::Info& info : tasks)
@@ -201,70 +203,9 @@ TaskManager::Tasks TaskManager::GetAvailableTasks(Cell::WeakPtr cell) const
 
 void TaskManager::_CheckTask(const Task::Info& taskInfo) const
 {
-	if (taskInfo.id == "")
-	{
-		WRITE_WARN("Empty task id");
-	}
-
-	if (taskInfo.successFn == "")
-	{
-		WRITE_WARN("Empty success function name");
-	}
-
-	if (taskInfo.failFn == "")
-	{
-		WRITE_WARN("Empty fail function name");
-	}
-
-	if (taskInfo.abortFn == "")
-	{
-		WRITE_WARN("Empty abort function name");
-	}
-
-	if (taskInfo.moralLevel < 0.0f || 1.0f < taskInfo.moralLevel)
-	{
-		WRITE_WARN("Wrong task moral level");
-	}
-
-	if (taskInfo.fameImpact < 0.0f || 1.0f < taskInfo.fameImpact)
-	{
-		WRITE_WARN("Wrong fameImpact level");
-	}
-
-	if (taskInfo.chanceToLooseMembers < 0.0f || 1.0f < taskInfo.chanceToLooseMembers)
-	{
-		WRITE_WARN("Wrong chanceToLooseMembers value");
-	}
-
-	if (taskInfo.heartPoundingLevel < 0.0f || 1.0f < taskInfo.heartPoundingLevel)
-	{
-		WRITE_WARN("Wrong heartPoundingLevel value");
-	}
-
-	if (taskInfo.duration < 0.0f)
-	{
-		WRITE_WARN("Negative task duration");
-	}
-
-	if (taskInfo.level < 0.0f)
-	{
-		WRITE_WARN("Negative task level");
-	}
-
-	if (taskInfo.needCash < 0)
-	{
-		WRITE_WARN("Negative needCash value");
-	}
-
-	if (taskInfo.needMembers < 0)
-	{
-		WRITE_WARN("Negative needMembers value");
-	}
-
-	if (taskInfo.needTech < 0)
-	{
-		WRITE_WARN("Negative needTech value");
-	}
+	WARN_IF(taskInfo.id.empty(), "Empty task id");
+	WARN_IF(taskInfo.duration < 0.0f, "Negative task duration");
+	WARN_IF(taskInfo.level < 0.0f, "Negative task level");
 }
 
 const Task::Info* TaskManager::GetTaskInfoById(const std::string& id)

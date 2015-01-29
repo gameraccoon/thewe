@@ -75,20 +75,9 @@ Town& Town::operator= (const Town & other)
 
 void Town::_CheckValues() const
 {
-	if (_population < 0.0f)
-	{
-		WRITE_WARN("Wrong population value");
-	}
-
-	if (_region.expired())
-	{
-		WRITE_WARN("Dead reference to region");
-	}
-
-	if (_spriteScale < 0.0f)
-	{
-		WRITE_WARN("Negative sprite scale");
-	}
+	WARN_IF(_population < 0.0f, "Wrong population value");
+	WARN_IF(_region.expired(), "Dead reference to region");
+	WARN_IF(_spriteScale < 0.0f, "Negative sprite scale");
 }
 
 void Town::SetCellPresented(bool presented)

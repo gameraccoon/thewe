@@ -187,7 +187,7 @@ set(GAME_SRC
 
 )
 elseif ( WIN32 )
-set(GAME_SRCcos2d::c
+set(GAME_SRC
 	proj.win32/main.cpp
 	proj.win32/main.h
 	proj.win32/resource.h

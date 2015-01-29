@@ -236,6 +236,33 @@ bool Cell::IsReadyToCreateSpinoff() const
 	return isMembersEnough && isCashEnough;
 }
 
+void Cell::AddResource(const Resource& resource)
+{
+	if (_info.resources.find(resource.name) != _info.resources.end())
+	{
+		_info.resources.at(resource.name).count += resource.count;
+	}
+	else
+	{
+		_info.resources.insert(std::pair<const std::string, Resource>(resource.name, resource));
+	}
+}
+
+void Cell::AddReward(const Resource::Vector& reward)
+{
+	for (const auto& resource : reward)
+	{
+		if (resource.name == "money")
+		{
+			_info.cash += resource.count;
+		}
+		else
+		{
+			AddResource(resource);
+		}
+	}
+}
+
 int Cell::GetExp(void) const
 {
 	return _info.experience;
