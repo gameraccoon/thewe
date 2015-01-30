@@ -2,24 +2,42 @@
 <Tasks>
 	
 	<Task id="debug_cheatMission" duration="1" level="1">
-		<Reward id="money" count="20000"/>
-		<Reward id="test" count="1000"/>
+		<Reward id="money" count="200000"/>
+		<Reward id="people" count="100"/>
 	</Task>
 
 	<Task id="debug_investigatorTask" duration="5" level="1" successFn="MissionSuccess_InvestigatorTest" />
 
 	<!-- -->
 	<!-- Tutorial -->
-	<Task id="tutorial_Recrutment" duration="10" level="1" />
-	<Task id="tutorial_RealWork" duration="20" level="1" />
+	<Task id="tutorial_Recrutment" duration="10" level="1">
+		<Reward id="people" count="6"/>
+	</Task>
+	<Task id="tutorial_RealWork" duration="20" level="1">
+		<Reward id="money" count="50000"/>
+	</Task>
 	<!-- Main missions -->
-	<Task id="alpha1_Recrutment_university" duration="10" level="1"  />
-	<Task id="alpha1_Recrutment_government" duration="21" level="3" />
-	<Task id="alpha1_Recrutment_military" duration="42" level="5" />
+	<Task id="alpha1_Recrutment_university" duration="10" level="1">
+		<Reward id="people" count="4"/>
+	</Task>
+	<Task id="alpha1_Recrutment_government" duration="21" level="3">
+		<Reward id="people" count="4"/>
+	</Task>
+	<Task id="alpha1_Recrutment_military" duration="42" level="5">
+		<Reward id="people" count="2"/>
+	</Task>
 	
-	<Task id="alpha1_DrugsTrading" duration="56" level="5"  />
-	<Task id="alpha1_Autostealings" duration="28" level="3"/>
-	<Task id="alpha1_Freelance" duration="14" level="1" />
-	<Task id="alpha1_PrivateDetectiveInvestigation" duration="21" level="2" />
+	<Task id="alpha1_DrugsTrading" duration="56" level="5">
+		<Reward id="money" count="150000"/>
+	</Task>
+	<Task id="alpha1_Autostealings" duration="28" level="3">
+		<Reward id="money" count="40000"/>
+	</Task>
+	<Task id="alpha1_Freelance" duration="14" level="1">
+		<Reward id="money" count="8000"/>
+	</Task>
+	<Task id="alpha1_PrivateDetectiveInvestigation" duration="21" level="2">
+		<Reward id="money" count="14000"/>
+	</Task>
 
 </Tasks>

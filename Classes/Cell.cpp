@@ -132,7 +132,7 @@ void Cell::UpdateToTime(Utils::GameTime time)
 	{
 		Cell::Ptr ptr = World::Instance().GetCellsNetwork().GetCellByUid(_uid);
 		World::Instance().GetCellsNetwork().RemoveCell(ptr);
-		
+
 		Message message("DeleteCellWidget");
 		message.variables.SetInt("UID", _uid);
 		MessageManager::Instance().PutMessage(message);
@@ -255,6 +255,10 @@ void Cell::AddReward(const Resource::Vector& reward)
 		if (resource.name == "money")
 		{
 			_info.cash += resource.count;
+		}
+		else if (resource.name == "people")
+		{
+			_info.membersCount += resource.count;
 		}
 		else
 		{
