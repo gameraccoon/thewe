@@ -92,7 +92,7 @@ void TaskManager::UpdateToTime(Utils::GameTime worldTime)
 				info.taskInfo = task->GetInfo();
 				info.startTime = task->GetStartTime();
 				info.endTime = task->GetEndTime();
-				
+
 				std::string funcName;
 
 				// call lua function that calculate status of the task
@@ -122,6 +122,8 @@ void TaskManager::UpdateToTime(Utils::GameTime worldTime)
 				{
 					funcName = taskInfo->failFn;
 					info.status = Task::Status::Failed;
+
+					World::Instance().AddInvestigatorByCell(cell);
 				}
 
 				if (!funcName.empty())
