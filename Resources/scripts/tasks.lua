@@ -6,7 +6,13 @@ end
 
 -- возвращает вероятность выполнения конкретного задания конкретной ячейкой
 function CalcTaskSuccessChance(cellInfo, taskInfo)
-	local successChance = 1 - math.abs(cellInfo.morale - taskInfo.moraleLevel)
+	local successChance = 1 - math.abs(cellInfo.morale - taskInfo.morale)
+	successChance = successChance * (0.5 + cellInfo.devotion * 0.5)
+
+	successChance = successChance * math.pow(1.3, LevelFromExperience(cellInfo.experience) - taskInfo.level)
+
+	if successChance > 1.0 then successChance = 1.0 end
+	if successChance < 0.0 then successChance = 0.0 end
 	return successChance
 end
 
@@ -15,7 +21,7 @@ function IsShowTaskInList(cell, taskInfo)
 	local cellInfo = cell:getInfo()
 
 	-- задачи для туториала
-	if World:getTutorialState() == "WaitingForStartFirstTask" then
+	if World:getTutorialManager():isTutorialStateAvailable("StartFirstTask") then
 		if taskInfo.id == "tutorial_Recrutment" then
 			return true
 		else
@@ -25,7 +31,7 @@ function IsShowTaskInList(cell, taskInfo)
 		return false
 	end
 
-	if World:getTutorialState() == "ReadyToFirstRealWork" then
+	if World:getTutorialManager():isTutorialStateAvailable("ReadyToFinishFirstRealWork") then
 		if taskInfo.id == "tutorial_RealWork" then
 			return true
 		else
@@ -35,13 +41,12 @@ function IsShowTaskInList(cell, taskInfo)
 		return false
 	end
 
-	-- для первой альфы делаем не очень хорошие проверки
-	if taskInfo.id == "alpha1_Recrutment1" then
-		return cellInfo.cash <= 50000
-	elseif taskInfo.id == "alpha1_Recrutment2" then
-		return cellInfo.cash > 50000 
-	elseif taskInfo.id == "alpha1_BankRobbery" then
-		return cellInfo.membersCount >= 10
+	if (cellInfo.membersCount <= taskInfo.needMembers) then
+		return false
+	end
+
+	if (cellInfo.cash <= taskInfo.needCash) then
+		return false
 	end
 
 	return true
@@ -57,19 +62,37 @@ function TryToStartInvestigation(cell)
 	end
 end
 
+function CalcRecruitmentParams(cellInfo, addedMembersCount, newMembersMorale)
+	local newMorale = (cellInfo.membersCount * cellInfo.morale + addedMembersCount * newMembersMorale) / (cellInfo.membersCount + addedMembersCount)
+	local newDevotion = cellInfo.devotion * 2 * (1 - math.abs(cellInfo.morale - newMorale))
+	if newDevotion > 1.0 then newDevotion = 1.0 end
+	return newMorale, newDevotion
+end
+
+function AcceptRecrutmentParams(cell, taskInfo, newMembersCount, fameAdd)
+	local cellInfo = cell:getInfo()
+	local newMembersMorale = taskInfo.morale
+	local newMorale, newDevotion = CalcRecruitmentParams(cellInfo, newMembersCount, newMembersMorale)
+	cellInfo.membersCount = cellInfo.membersCount + newMembersCount
+	cellInfo.morale = newMorale
+	cellInfo.devotion = newDevotion
+	cellInfo.fame = cellInfo.fame + fameAdd
+	if cellInfo.fame > 1.0 then cellInfo.fame = 1.0 end
+end
+
 -- отправляем игроку сообщение, о том что задание выполнено
-function SayCompleted(taskName)
-	MessageManager:sendMessage("Task " .. taskName .. " completed")
+function SayCompleted(taskId)
+	MessageManager:sendMessage("Задание выполнено\n" .. GetLocalizedString("Task_" .. taskId))
 end
 
 -- отправляем игроку сообщение, о том что задание провалено
-function SayFailed(taskName)
-	MessageManager:sendMessage("Task " .. taskName .. " failed")
+function SayFailed(taskId)
+	MessageManager:sendMessage("Задание провалено\n" .. GetLocalizedString("Task_" .. taskId))
 end
 
 function MissionSuccess_Test(cell, taskInfo)
 	local cellInfo = cell:getInfo()
-	SayCompleted(taskInfo.title)
+	SayCompleted(taskInfo.id)
 
 	-- увеличивем преданность на 10% от текущего
 	cellInfo.devotion = cellInfo.devotion + (cellInfo.devotion * 0.1)
@@ -84,7 +107,7 @@ end
 
 function MissionFail_Test(cell, taskInfo)
 	local cellInfo = cell:getInfo()
-	SayFailed(taskInfo.title)
+	SayFailed(taskInfo.id)
 
 	-- уменьшаем преданность на 10% от текущего
 	cellInfo.devotion = cellInfo.devotion - (cellInfo.devotion * 0.1)
@@ -97,7 +120,6 @@ end
 
 function MissionAbort_Test(cell, taskInfo)
 	local cellInfo = cell:getInfo()
-	Log:log("Task "..taskInfo.title.." aborted")
 
 	-- уменьшаем довольство на 20% от текущего
 	cellInfo.devotion = cellInfo.devotion - (cellInfo.devotion * 0.2)
@@ -111,80 +133,219 @@ end
 
 function MissionFail_InvestigatorTest(cell, taskInfo)
 	local cellInfo = cell:getInfo()
-	SayFailed(taskInfo.title)
+	SayFailed(taskInfo.id)
 	MessageManager:sendMessage("Investigation launched")
 	World:addInvestigatorByCellUid(cell:getUid())
 end
 
 function MissionSuccess_CheatMission(cell, taskInfo)
 	local cellInfo = cell:getInfo()
-	SayCompleted("CheatMission")
+	SayCompleted(taskInfo.id)
 	cellInfo.membersCount = 100
 	cellInfo.cash = 100000
 end
 
 function MissionSuccess_TutorialRecrutment(cell, taskInfo)
 	local cellInfo = cell:getInfo()
-	SayCompleted(taskInfo.title)
+	SayCompleted(taskInfo.id)
 
 	cellInfo.membersCount = cellInfo.membersCount + 6
 
-	World:runTutorialFuncton("AfterFirstTaskFinished")
+	World:getTutorialManager():removeCurrentTutorial()
+	World:getTutorialManager():runTutorialFuncton("AfterFirstTaskFinished")
+
+	AddExperience(cellInfo, 5)
 end
 
 function MissionSuccess_TutorialFirstRealWork(cell, taskInfo)
 	local cellInfo = cell:getInfo()
-	SayCompleted(taskInfo.title)
+	SayCompleted(taskInfo.id)
 
 	-- мораль ячейки приближается к морали задания
-	cellInfo.morale = cellInfo.morale + (taskInfo.moraleLevel - cellInfo.morale) * 0.3
+	cellInfo.morale = cellInfo.morale + (taskInfo.morale - cellInfo.morale) * 0.3
 
 	-- увеличивем преданность на 10% от текущего
 	cellInfo.devotion = cellInfo.devotion + (cellInfo.devotion * 0.1)
 	if (cellInfo.devotion > 1.0) then cellInfo.devotion = 1.0 end
 
-	cellInfo.cash = cellInfo.cash + math.random(150, 200) * 1000
+	cellInfo.cash = cellInfo.cash + math.random(40, 60) * 1000
 
-	World:runTutorialFuncton("AfterRealWorkDone")
+	AddExperience(cellInfo, 5)
+	
+	World:getTutorialManager():runTutorialFuncton("AfterRealWorkDone")
 end
 
-function MissionSuccess_Alpha1Recrutment(cell, taskInfo)
+function MissionSuccess_Alpha1Recrutment_university(cell, taskInfo)
 	local cellInfo = cell:getInfo()
-	SayCompleted(taskInfo.title)
-
-	cellInfo.membersCount = cellInfo.membersCount + math.random(2, 5)
+	local newMembersCount = math.random(3, 5)
+	SayCompleted(taskInfo.id)
+	AcceptRecrutmentParams(cell, taskInfo, newMembersCount, 0.05)
+	AddExperience(cellInfo, 2)
 end
 
-function MissionFail_Alpha1Recrutment(cell, taskInfo)
+function MissionFail_Alpha1Recrutment_university(cell, taskInfo)
 	local cellInfo = cell:getInfo()
-	SayFailed(taskInfo.title)
+	SayFailed(taskInfo.id)
+	cellInfo.fame = cellInfo.fame + 0.1
+	if cellInfo.fame > 1.0 then cellInfo.fame = 1.0 end
 end
 
-function MissionSuccess_Alpha1BankRobbery(cell, taskInfo)
+function MissionAbort_Alpha1Recrutment_university(cell, taskInfo)
 	local cellInfo = cell:getInfo()
-	SayCompleted(taskInfo.title)
-
-	-- мораль ячейки приближается к морали задания
-	cellInfo.morale = cellInfo.morale + (taskInfo.moraleLevel - cellInfo.morale) * 0.3
-
-	-- увеличивем преданность на 10% от текущего
-	cellInfo.devotion = cellInfo.devotion + (cellInfo.devotion * 0.1)
-	if (cellInfo.devotion > 1.0) then cellInfo.devotion = 1.0 end
-
-	cellInfo.cash = cellInfo.cash + math.random(150, 200) * 1000
+	cellInfo.fame = cellInfo.fame + 0.1
+	if cellInfo.fame > 1.0 then cellInfo.fame = 1.0 end
 end
 
-function MissionFail_Alpha1BankRobbery(cell, taskInfo)
+function MissionSuccess_Alpha1Recrutment_government(cell, taskInfo)
 	local cellInfo = cell:getInfo()
-	SayFailed(taskInfo.title)
+	local newMembersCount = math.random(2, 3)
+	SayCompleted(taskInfo.id)
+	AcceptRecrutmentParams(cell, taskInfo, newMembersCount, 0.15)
+	AddExperience(cellInfo, 15)
+end
 
-	-- мораль ячейки приближается к морали задания
-	cellInfo.morale = cellInfo.morale + (taskInfo.moraleLevel - cellInfo.morale) * 0.3
-
-	-- уменьшаем преданность на 25-35% от текущего
-	cellInfo.devotion = cellInfo.devotion - (cellInfo.devotion * 0.01 * math.random(25, 35))
-
-	cellInfo.membersCount = cellInfo.membersCount - math.random(0, 3)
-
+function MissionFail_Alpha1Recrutment_government(cell, taskInfo)
+	local cellInfo = cell:getInfo()
+	SayFailed(taskInfo.id)
+	cellInfo.fame = cellInfo.fame + 0.3
+	if cellInfo.fame > 1.0 then cellInfo.fame = 1.0 end
 	TryToStartInvestigation(cell)
+end
+
+function MissionAbort_Alpha1Recrutment_government(cell, taskInfo)
+	local cellInfo = cell:getInfo()
+	cellInfo.fame = cellInfo.fame + 0.3
+	if cellInfo.fame > 1.0 then cellInfo.fame = 1.0 end
+end
+
+function MissionSuccess_Alpha1Recrutment_military(cell, taskInfo)
+	local cellInfo = cell:getInfo()
+	local newMembersCount = math.random(1, 2)
+	SayCompleted(taskInfo.id)
+	AcceptRecrutmentParams(cell, taskInfo, newMembersCount, 0.25)
+	AddExperience(cellInfo, 350)
+end
+
+function MissionFail_Alpha1Recrutment_military(cell, taskInfo)
+	local cellInfo = cell:getInfo()
+	SayFailed(taskInfo.id)
+	cellInfo.fame = cellInfo.fame + 0.5
+	if cellInfo.fame > 1.0 then cellInfo.fame = 1.0 end
+	TryToStartInvestigation(cell)
+end
+
+function MissionAbort_Alpha1Recrutment_military(cell, taskInfo)
+	local cellInfo = cell:getInfo()
+	cellInfo.fame = cellInfo.fame + 0.5
+	if cellInfo.fame > 1.0 then cellInfo.fame = 1.0 end
+end
+
+function MissionSuccess_Alpha1DrugsTrading(cell, taskInfo)
+	local cellInfo = cell:getInfo()
+	SayCompleted(taskInfo.id)
+	cellInfo.cash = cellInfo.cash + math.random(120, 170) * 1000
+	cellInfo.fame = cellInfo.fame + 0.3
+	if cellInfo.fame > 1.0 then cellInfo.fame = 1.0 end
+	local newMorale = taskInfo.morale
+	cellInfo.morale = cellInfo.morale + (newMorale - taskInfo.morale) * 0.3
+	AddExperience(cellInfo, 300)
+end
+
+function MissionFail_Alpha1DrugsTrading(cell, taskInfo)
+	local cellInfo = cell:getInfo()
+	SayFailed(taskInfo.id)
+	cellInfo.fame = cellInfo.fame + 0.5
+	if cellInfo.fame > 1.0 then cellInfo.fame = 1.0 end
+	local newMorale = cellInfo.morale
+	cellInfo.morale = cellInfo.morale + (newMorale - cellInfo.morale) * 0.3
+	TryToStartInvestigation(cell)
+end
+
+function MissionAbort_Alpha1DrugsTrading(cell, taskInfo)
+	local cellInfo = cell:getInfo()
+	SayFailed(taskInfo.id)
+	cellInfo.fame = cellInfo.fame + 0.5
+	if cellInfo.fame > 1.0 then cellInfo.fame = 1.0 end
+	local newMorale = cellInfo.morale
+	cellInfo.morale = cellInfo.morale + (newMorale - cellInfo.morale) * 0.3
+end
+
+function MissionSuccess_Alpha1Autostealings(cell, taskInfo)
+	local cellInfo = cell:getInfo()
+	SayCompleted(taskInfo.id)
+	cellInfo.cash = cellInfo.cash + math.random(38, 42) * 1000
+	cellInfo.fame = cellInfo.fame + 0.2
+	if cellInfo.fame > 1.0 then cellInfo.fame = 1.0 end
+	local newMorale = taskInfo.morale
+	cellInfo.morale = cellInfo.morale + (newMorale - cellInfo.morale) * 0.25
+	AddExperience(cellInfo, 25)
+end
+
+function MissionFail_Alpha1Autostealings(cell, taskInfo)
+	local cellInfo = cell:getInfo()
+	SayFailed(taskInfo.id)
+	cellInfo.fame = cellInfo.fame + 0.4
+	if cellInfo.fame > 1.0 then cellInfo.fame = 1.0 end
+	local newMorale = taskInfo.morale
+	cellInfo.morale = cellInfo.morale + (newMorale - cellInfo.morale) * 0.4
+	TryToStartInvestigation(cell)
+end
+
+function MissionAbort_Alpha1Autostealings(cell, taskInfo)
+	local cellInfo = cell:getInfo()
+	SayFailed(taskInfo.id)
+	cellInfo.fame = cellInfo.fame + 0.4
+	if cellInfo.fame > 1.0 then cellInfo.fame = 1.0 end
+	local newMorale = taskInfo.morale
+	cellInfo.morale = cellInfo.morale + (newMorale - cellInfo.morale) * 0.4
+end
+
+function MissionSuccess_Alpha1Freelance(cell, taskInfo)
+	local cellInfo = cell:getInfo()
+	SayCompleted(taskInfo.id)
+	cellInfo.cash = cellInfo.cash + math.random(7, 9) * 1000
+	cellInfo.fame = cellInfo.fame + 0.05
+	if cellInfo.fame > 1.0 then cellInfo.fame = 1.0 end
+	local newMorale = 1.0
+	cellInfo.morale = cellInfo.morale + (newMorale - cellInfo.morale) * 0.1
+	AddExperience(cellInfo, 3)
+end
+
+function MissionFail_Alpha1Freelance(cell, taskInfo)
+	local cellInfo = cell:getInfo()
+	SayFailed(taskInfo.id)
+	local newMorale = 0.0
+	cellInfo.morale = cellInfo.morale + (newMorale - cellInfo.morale) * 0.05
+end
+
+function MissionAbort_Alpha1Freelance(cell, taskInfo)
+	local cellInfo = cell:getInfo()
+	SayFailed(taskInfo.id)
+	local newMorale = 0.0
+	cellInfo.morale = cellInfo.morale + (newMorale - cellInfo.morale) * 0.05
+end
+
+function MissionSuccess_Alpha1PrivateDetectiveInvestigation(cell, taskInfo)
+	local cellInfo = cell:getInfo()
+	SayCompleted(taskInfo.id)
+	cellInfo.cash = cellInfo.cash + math.random(12, 16) * 1000
+	cellInfo.fame = cellInfo.fame + 0.1
+	if cellInfo.fame > 1.0 then cellInfo.fame = 1.0 end
+	local newMorale = 0.9
+	cellInfo.morale = cellInfo.morale + (newMorale - cellInfo.morale) * 0.25
+	AddExperience(cellInfo, 5)
+end
+
+function MissionFail_Alpha1PrivateDetectiveInvestigation(cell, taskInfo)
+	local cellInfo = cell:getInfo()
+	SayFailed(taskInfo.id)
+	local newMorale = 0.0
+	cellInfo.morale = cellInfo.morale + (newMorale - cellInfo.morale) * 0.05
+end
+
+function MissionAbort_Alpha1PrivateDetectiveInvestigation(cell, taskInfo)
+	local cellInfo = cell:getInfo()
+	SayFailed(taskInfo.id)
+	local newMorale = 0.0
+	cellInfo.morale = cellInfo.morale + (newMorale - cellInfo.morale) * 0.05
 end

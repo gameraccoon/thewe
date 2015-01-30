@@ -1,43 +1,58 @@
 #ifndef MESSAGE_MANAGER_H
 #define MESSAGE_MANAGER_H
 
-#include <string>
-#include <vector>
-#include <queue>
+#include "MiscUtils.h"
 
 struct Message
 {
-	std::string name;
-	int param;
-	Message(const std::string &n, int p)
-		: name(n), param(p)
+private:
+	const std::string name;
+public:
+	Utils::VariablesSet variables;
+public:
+	Message(const std::string &n)
+		: name(n)
 	{}
+
+	inline bool is(const std::string &n) const {
+		return name == n;
+	}
+
+	inline const std::string& getName() const
+	{
+		return name;
+	}
 };
 
 class MessageReceiver
 {
 public:
-	virtual ~MessageReceiver(void) {}
+	virtual ~MessageReceiver();
 	virtual void AcceptMessage(const Message &msg) = 0;
 };
 
 class MessageManager
 {
 private:
-	std::vector<MessageReceiver *> _receivers;
-	std::queue<Message> _messages;
-
+	typedef std::multimap<const std::string, MessageReceiver *> Receivers;
 public:
 	static MessageManager& Instance(void);
 
 	void PutMessage(const Message &msg);
 	void FlushMessages(void);
 
-	void RegisterReceiver(MessageReceiver *receiver);
-	void UnregisterReceiver(MessageReceiver *receiver);
-	void UnregisteraAllReceivers(void);
+	void RegisterReceiver(MessageReceiver *receiver, const std::string& messageName);
+	void UnregisterReceiver(const MessageReceiver *receiver);
+	void UnregisterReceiver(const MessageReceiver *receiver, const std::string& messageName);
 
+	/**
+	 * Send all scheduled messages to the receivers
+	 */
 	void CallAcceptMessages(void);
+
+private:
+	Receivers _receivers;
+	std::queue<Message> _messages;
 
 private:
 	~MessageManager(void);

@@ -48,7 +48,7 @@ void CellsNetwork::AddCell(Cell::Ptr cell)
 	{
 		if (cell == existedCell)
 		{
-			Log::Instance().writeWarning("Trying to add duplicate cell");
+			WRITE_WARN("Trying to add duplicate cell");
 			return;
 		}
 	}

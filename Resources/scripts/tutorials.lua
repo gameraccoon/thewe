@@ -1,170 +1,78 @@
-local ContinueText = "Продолжить"
+local ContinueText = GetLocalizedString("Tutorial_BtnContinue")
+
+local TutorialManager = World:getTutorialManager()
 
 function RunTutorial_Welcome()
-	-- ToDo: make localizations
-	local text1 =
-		"Добро пожаловать в систему $Username$!\n"..
-		"На данный момент состояние классифицируется \n"..
-		"как альфа-версия \"The We\"."
+	TutorialManager:addTutorial(Tutorial("Welcome", GetLocalizedString("Tutorial_Welcome_Step1"), ContinueText))
+	TutorialManager:addTutorial(Tutorial("FirstCell", GetLocalizedString("Tutorial_Welcome_Step2")))
 
-	local text2 =
-		"Выберите город в котором сделаете\n" ..
-		"свой первый шаг. На данный момент\n"..
-		"выбор города никак не влияет на сложность."
-
-	World:addTutorial(Tutorial(text1, ContinueText))
-	World:addTutorial(Tutorial(text2, ContinueText))
-
-	World:setTutorialState("FirstCell")
+	-- запускаем цепочки туториалов
+	TutorialManager:addTutorialState("FirstCell")
+	TutorialManager:addTutorialState("WaitForFirstInvestigator");
 end
 
 function RunTutorial_AfterCreatingFirstCell()
-	local text =
-		"Поздравляю!\n\n"..
-		"Но в ячейке недостаточно сотрудников для\n"..
-		"полноценного функционирования.\n"..
-		"Рекоммендую начать вербовку.\n\n"..
-		"Нажмите на ячейку и зайдите в меню заданий."
+	TutorialManager:addTutorial(Tutorial("AfterFirstCell", GetLocalizedString("Tutorial_AfterCreatingFirstCell")))
 
-	World:addTutorial(Tutorial(text, ContinueText))
-
-	World:setTutorialState("StartFirstTask");
+	TutorialManager:addTutorialState("StartFirstTask");
+	TutorialManager:removeTutorialState("FirstCell");
 end
 
 function RunTutorial_BeforeStartFirstTask()
-	local text =
-		"Теперь выберите задачу вербовки."
+	TutorialManager:addTutorial(Tutorial("StartFirstTask", GetLocalizedString("Tutorial_BeforeStartFirstTask")))
 
-	World:addTutorial(Tutorial(text, ContinueText))
-
-	World:setTutorialState("WaitingForStartFirstTask");
-end
-
-function RunTutorial_StartingFirstTask()
-	local text =
-		"Хорошо. Ячейке требуется некоторое время,\n"..
-		"для отсеивания кандидатов и их вербовки,\n"..
-		"рекоммендуется подождать.\n\n"..
-		"В зависимости от уровня ячейки и\n"..
-		"напряжённости обстановки, этот процесс\n"..
-		"может занимать различное время."
-
-	World:addTutorial(Tutorial(text, ContinueText))
-
-	World:setTutorialState("WaitingForFinishFirstTask");
+	TutorialManager:addTutorialState("WaitingForFinishFirstTask");
+	TutorialManager:removeTutorialState("StartFirstTask");
 end
 
 function RunTutorial_AfterFirstTaskFinished()
-	local text =
-		"Ячейка завершила набор агентов!\n\n"..
-		"Теперь у нее достаточно людей\n"..
-		"чтобы взяться за первое серьёзное\n"..
-		"задание. Откройте меню заданий."
+	TutorialManager:addTutorial(Tutorial("Textual", GetLocalizedString("Tutorial_AfterFirstTaskFinished"), ContinueText))
 
-	World:addTutorial(Tutorial(text, ContinueText))
-
-	World:setTutorialState("ReadyToFirstRealWork");
-end
-
-function RunTutorial_StartingFirstRealWork()
-	local text =
-		"Бывают ситуации когда время важнее денег\n"..
-		"Тогда можно используя подкуп определенных\n"..
-		"людей. Мгновенно завершить текущее задание\n"..
-		"ячейки.\n"..
-		"Это для этого потребуются черные кейсы."
-
-	World:addTutorial(Tutorial(text, ContinueText))
-
-	World:setTutorialState("ReadyToFinishFirstRealWork");
+	TutorialManager:addTutorialState("ReadyToFinishFirstRealWork");
+	TutorialManager:removeTutorialState("WaitingForFinishFirstTask");
 end
 
 function RunTutorial_AfterRealWorkDone()
-	local text =
-		"Сложно укрепить свою власть посредством\n"..
-		"такого малого числа людей.\n"..
-		"Рекоммендую создать дочернюю ячейку.\n"..
-		"Откройте меню ячейки и выберите пункт \"Spinoff\" \n"
+	TutorialManager:addTutorial(Tutorial("SpinoffDrag", GetLocalizedString("Tutorial_AfterRealWorkDone")))
 
-	World:addTutorial(Tutorial(text, ContinueText))
-
-	World:setTutorialState("ReadyToCreateSpinoff");
-end
-
-function RunTutorial_OnReadyToCreateFirstSpinoff()
-	local text =
-		"Теперь выберите город,\n"..
-		"в котором вы хотите расположить ее."
-
-	World:addTutorial(Tutorial(text, ContinueText))
+	TutorialManager:addTutorialState("ReadyToCreateSpinoff");
+	TutorialManager:removeTutorialState("ReadyToFinishFirstRealWork");
 end
 
 function RunTutorial_OnCreateFirstSpinoff()
-	local text =
-		"Поздравляю с созданием дочерней ячейки.\n"..
-		"После создания она будет функционировать как\n"..
-		"полценный член вашей сети."
+	TutorialManager:addTutorial(Tutorial("Textual", GetLocalizedString("Tutorial_OnCreateFirstSpinoff_Step1"), ContinueText))
+	TutorialManager:addTutorial(Tutorial("SpinoffStep2", GetLocalizedString("Tutorial_OnCreateFirstSpinoff_Step2"), ContinueText))
 
-	World:addTutorial(Tutorial(text, ContinueText))
-
-	World:setTutorialState("WaitForFirstInvestigator");
+	-- конец цепочки
+	TutorialManager:removeTutorialState("ReadyToCreateSpinoff");
 end
 
 function RunTutorial_FirstInvestigationStarted()
-	local text =
-		"Наши ребята облажались и теперь\n"..
-		"спецслужбы начали расследование.\n\n"..
-		"Мы должны замести следы -\n"..
-		"Жми на красную кнопку,\n"..
-		"чтобы уничтожить ячейку."
+	TutorialManager:addTutorial(Tutorial("InvestigationStarted", GetLocalizedString("Tutorial_FirstInvestigationStarted")))
 
-	World:addTutorial(Tutorial(text, ContinueText))
-
-	World:setTutorialState("WaitForCatchingFirstInvestigator");
-end
-
-function RunTutorial_FirstInvestigationCatched()
-	local text =
-		"Если не уничтожить ячейку, то до неё\n"..
-		"всё равно доберутся и, будь уверен, расколят.\n\n"..
-		"Это небольшая жертва ради нашей цели."
-
-	World:addTutorial(Tutorial(text, ContinueText))
-
-	World:setTutorialState("WaitForUncatchedInvestigator");
+	TutorialManager:addTutorialState("WaitForUncatchedInvestigator");
+	TutorialManager:removeTutorialState("WaitForFirstInvestigator");
 end
 
 function RunTutorial_FirstUncatchedInvestigator()
-	local text =
-		"Спецслужбы добрались до наших парней\n"..
-		"и уже раскалывают их.\n\n"..
-		"Мы должны зачистить ячейки о которых\n"..
-		"знали эти ребята, чтобы остановить\n"..
-		"расследование и защитить остальную сеть."
+	TutorialManager:addTutorial(Tutorial("InvestigatorUncatched", GetLocalizedString("Tutorial_FirstUncatchedInvestigator")))
 
-	World:addTutorial(Tutorial(text, ContinueText))
-
-	World:setTutorialState("WaitForCatchUncatchedInvestigator");
+	TutorialManager:addTutorialState("WaitForCatchUncatchedInvestigator");
+	TutorialManager:removeTutorialState("WaitForUncatchedInvestigator");
 end
 
 function RunTutorial_FirstUncatchedInvestigatorCatched()
-	local text =
-		"После того, как мы избавились от расследования\n"..
-		"спецслужб, могут остатся ячейки,\n"..
-		"не связанные с корневой. Самое вермя проверить\n"..
-		"это и изменить связи\n"
+	TutorialManager:addTutorial(Tutorial("Textual", GetLocalizedString("Tutorial_FirstUncatchedInvestigatorCatched"), ContinueText))
 
-	World:addTutorial(Tutorial(text, ContinueText, "TutorialsLastTutorial"))
+	-- конец цепочки
+	TutorialManager:removeTutorialState("WaitForCatchUncatchedInvestigator");
 end
 
--- продолжить туториал после перезапуска игры (для особых случаев, которые не разрешатся простой загрузкой состояния)
+-- продолжить туториал после перезапуска игры (для особых случаев, которые не разрешаются простой загрузкой состояния)
 function ContinueTutorial()
-	local tutorialState = World:getTutorialState()
+	local tutorialState = TutorialManager:getTutorialState()
 	if tutorialState == "FirstCell" then
 		RunTutorial_AfterCreatingFirstCell()
 	end
 end
 
-function TutorialsLastTutorial()
-	World:setTutorialState("TutorialsEnd");
-end

@@ -3,6 +3,10 @@
 
 #include <string>
 
+#ifdef _DEBUG
+	#include <assert.h>
+#endif
+
 /**
  * Class that realised writing log on several platforms
  * Realised as Phoenix singlton
@@ -42,5 +46,25 @@ private:
 	Log(const Log&);
 	void operator=(const Log&);
 };
+
+#ifdef _DEBUG
+	#define DEBUG_ASSERT assert(false)
+#else
+	#define DEBUG_ASSERT
+#endif
+
+#define WRITE_INIT(message)				\
+	Log::Instance().writeInit(message)	\
+
+#define WRITE_LOG(message)				\
+	Log::Instance().writeLog(message)	\
+
+#define WRITE_WARN(message)					\
+	Log::Instance().writeWarning(message);	\
+	DEBUG_ASSERT
+
+#define WRITE_ERR(message)					\
+	Log::Instance().writeError(message);	\
+	DEBUG_ASSERT
 
 #endif

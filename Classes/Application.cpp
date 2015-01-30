@@ -8,6 +8,8 @@
 #include "Log.h"
 #include "WorldLoader.h"
 #include "GameSavesManager.h"
+#include "Localization.h"
+#include "ThreadUtils.h"
 
 AppDelegate::AppDelegate()
 {
@@ -15,6 +17,39 @@ AppDelegate::AppDelegate()
 
 AppDelegate::~AppDelegate()
 {
+}
+
+static bool CreateAllShaders(void)
+{
+	std::string log;
+
+	cocos2d::GLProgram *blackout;
+	cocos2d::GLProgram *alphaMask;
+
+	alphaMask = cocos2d::GLProgram::createWithFilenames("create_alpha_mask.vsh", "create_alpha_mask.fsh");
+	alphaMask->bindAttribLocation(cocos2d::GLProgram::ATTRIBUTE_NAME_POSITION, cocos2d::GLProgram::VERTEX_ATTRIB_POSITION);
+	alphaMask->bindAttribLocation(cocos2d::GLProgram::ATTRIBUTE_NAME_TEX_COORD, cocos2d::GLProgram::VERTEX_ATTRIB_TEX_COORD);
+	if (!alphaMask->link()) {
+		log = alphaMask->getProgramLog();
+		Log::Instance().writeError(log);
+		return false;
+	}
+	alphaMask->updateUniforms();
+
+	blackout = cocos2d::GLProgram::createWithFilenames("tutorial_blackout.vsh", "tutorial_blackout.fsh");
+	blackout->bindAttribLocation(cocos2d::GLProgram::ATTRIBUTE_NAME_POSITION, cocos2d::GLProgram::VERTEX_ATTRIB_POSITION);
+	blackout->bindAttribLocation(cocos2d::GLProgram::ATTRIBUTE_NAME_TEX_COORD, cocos2d::GLProgram::VERTEX_ATTRIB_TEX_COORD);
+	if (!blackout->link()) {
+		log = blackout->getProgramLog();
+		Log::Instance().writeError(log);
+		return false;
+	}
+	blackout->updateUniforms();
+
+	cocos2d::ShaderCache::getInstance()->addGLProgram(blackout, "TutorialBlackout");
+	cocos2d::ShaderCache::getInstance()->addGLProgram(alphaMask, "CreateAlphaMask");
+
+	return true;
 }
 
 bool AppDelegate::applicationDidFinishLaunching()
@@ -31,18 +66,22 @@ bool AppDelegate::applicationDidFinishLaunching()
 	float dr_w = 800;
 	float dr_h = 480;
 
-	std::string basePath = Utils::GetResourcesPath();
+	std::string resourcesPath = Utils::GetResourcesPath();
 
-	cocos2d::FileUtils::getInstance()->addSearchPath(basePath + "textures");
-	cocos2d::FileUtils::getInstance()->addSearchPath(basePath + "worldinfo");
-	cocos2d::FileUtils::getInstance()->addSearchPath(basePath + "saves");
-	cocos2d::FileUtils::getInstance()->addSearchPath(basePath + "scripts");
-	cocos2d::FileUtils::getInstance()->addSearchPath(basePath + "fonts");
+	cocos2d::FileUtils::getInstance()->addSearchPath(resourcesPath + "textures");
+	cocos2d::FileUtils::getInstance()->addSearchPath(resourcesPath + "gui");
+	cocos2d::FileUtils::getInstance()->addSearchPath(resourcesPath + "worldinfo");
+	cocos2d::FileUtils::getInstance()->addSearchPath(resourcesPath + "saves");
+	cocos2d::FileUtils::getInstance()->addSearchPath(resourcesPath + "scripts");
+	cocos2d::FileUtils::getInstance()->addSearchPath(resourcesPath + "shaders");
+	cocos2d::FileUtils::getInstance()->addSearchPath(resourcesPath + "fonts");
+	cocos2d::FileUtils::getInstance()->addSearchPath(resourcesPath + "texts");
+	cocos2d::FileUtils::getInstance()->addSearchPath(resourcesPath + "audio");
 	
 	director->setOpenGLView(glview);
 	director->setAnimationInterval(1.0 / 60.0);
 
-#if CC_TARGET_PLATFORM != CC_PLATFORM_ANDROID && CC_TARGET_PLATFORM != CC_PLATFORM_IOS
+#if CC_TARGET_PLATFORM != CC_PLATFORM_ANDROID && CC_TARGET_PLATFORM != CC_PLATFORM_IOS && CC_TARGET_PLATFORM != CC_PLATFORM_WP8
 	glview->setFrameZoomFactor(1.0f);
 	glview->setFrameSize(dr_w, dr_h);
 
@@ -51,40 +90,84 @@ bool AppDelegate::applicationDidFinishLaunching()
 
 	glview->setDesignResolutionSize(dr_w, dr_h, ResolutionPolicy::FIXED_HEIGHT);
 
-	MainMenuScene* mainMenuScene = new MainMenuScene(nullptr); // there is no automatic init()
-	SplashScreenScene* splashScreenScene = new SplashScreenScene();
+	// Temporary code. We need setting implementation!
+	CocosDenshion::SimpleAudioEngine::getInstance()->setBackgroundMusicVolume(0.5f);
 
+	srand(time(nullptr));
+
+	MainMenuScene* mainMenuScene = new MainMenuScene(); // there is no automatic init()
+	SplashScreenScene* splashScreenScene = SplashScreenScene::create();
 	// make Menu as the main scene
 	director->runWithScene(mainMenuScene);
 	// put SplashScreen onto the stack
 	director->pushScene(splashScreenScene);
-	// ready to unload the SplashScreen
-	splashScreenScene->autorelease();
 
-	// load game info
-	GameInfo::Instance().ParseXml("gameInfo.xml");
+	Utils::CachePaths();
 
-	// load game data
-	World::Instance().InitLuaContext();
-	WorldLoader::LoadGameInfo();
-	GameSavesManager::Instance().LoadGameState();
+	std::string systemLanguageCode = getCurrentLanguageCode();
 
-	// initialize graphics after all data is loaded
-	mainMenuScene->init();
+	WRITE_INIT("Load and cache text files");
+	auto cachedGameinfo = WorldLoader::LoadGameInfo();
+	auto cachedLuaScripts = WorldLoader::LoadLuaScripts();
 
-	// register scenes in the garbage collector
-	mainMenuScene->autorelease();
+	// lambda-method for background loading
+	auto dataLoading([systemLanguageCode, cachedGameinfo, cachedLuaScripts](){
+		GameInfo::Instance().ParseXml(cachedGameinfo->GetResource("gameinfoXml"));
 
-	// start calculation of game logic
-	World::Instance().StartLogic();
+		if (Utils::IsPlatformDesktop()){ // load localizations
+			std::string languageCode = GameInfo::Instance().GetString("DESKTOP_LOCALE");
+			LocalizationManager::Instance().InitWithLocale(cachedGameinfo->GetResource("l10nsXml"), languageCode);
+		}
+		else{
+			// use system language
+			LocalizationManager::Instance().InitWithLocale(cachedGameinfo->GetResource("l10nsXml"), systemLanguageCode);
+		}
+
+		// load game data
+		WorldLoader::ParseGameInfo(cachedGameinfo);
+		World::Instance().InitLuaContext(cachedLuaScripts);
+		GameSavesManager::Instance().LoadGameState();
+
+		WRITE_INIT("Finish background data loading");
+
+		// sleep the thread for some time
+		std::this_thread::sleep_for(std::chrono::seconds(1));
+	});
+
+	auto onFinishDataLoading([mainMenuScene, splashScreenScene](){
+		WRITE_INIT("Preparing graphics");
+
+		CreateAllShaders();
+
+		// initialize graphics after all data is loaded
+		mainMenuScene->init();
+
+		// register scenes in the garbage collector
+		mainMenuScene->autorelease();
+
+		// start calculation of game logic
+		World::Instance().StartLogic();
+
+		splashScreenScene->SetLoadingFinished();
+
+		WRITE_INIT("Game is ready");
+	});
+
+	Utils::RunInBackgroundThread(dataLoading, onFinishDataLoading);
+
+	WRITE_INIT("Start background data loading");
 
 	return true;
 }
 
 void AppDelegate::applicationDidEnterBackground()
 {
+	GameSavesManager::Instance().SaveGameTime();
+
+	CocosDenshion::SimpleAudioEngine::getInstance()->stopBackgroundMusic();
 }
 
 void AppDelegate::applicationWillEnterForeground()
 {
+	CocosDenshion::SimpleAudioEngine::getInstance()->resumeBackgroundMusic();
 }

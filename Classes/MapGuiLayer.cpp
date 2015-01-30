@@ -1,10 +1,10 @@
 #include "MapGuiLayer.h"
 
 #include "World.h"
-#include "WorldLoader.h"
 #include "GameScene.h"
 #include "WorldMapLayer.h"
 #include "CellsNetLayer.h"
+#include "Log.h"
 
 MapGuiLayer::MapGuiLayer(MapProjector *mapProjector)
 	: _mapProjector(mapProjector)
@@ -19,99 +19,70 @@ bool MapGuiLayer::init(void)
 	{
 		return false;
 	}
-
-	{
-		using namespace cocos2d;
-		_btnZoomIn = cocos2d::CCMenuItemImage::create("Btn_Plus.png", "Btn_Plus_Pressed.png",
-			CC_CALLBACK_1(MapGuiLayer::_MenuInputListener, this));
-		_btnZoomOut = cocos2d::CCMenuItemImage::create("Btn_Minus.png", "Btn_Minus_Pressed.png",
-			CC_CALLBACK_1(MapGuiLayer::_MenuInputListener, this));
-		_btnEditor = cocos2d::CCMenuItemImage::create("Btn_Edit.png", "Btn_Edit_Pressed.png",
-			CC_CALLBACK_1(MapGuiLayer::_MenuInputListener, this));
-		_btnMenu = cocos2d::CCMenuItemImage::create("Btn_Menu.png", "Btn_Menu_Pressed.png",
-			CC_CALLBACK_1(MapGuiLayer::_MenuInputListener, this));
-	}
 	
 	cocos2d::Director *director = cocos2d::Director::getInstance();
 	Vector2 screen = director->getVisibleSize();
 	Vector2 origin = director->getVisibleOrigin();
 
-	cocos2d::Vector<cocos2d::MenuItem*> menuItems;
-
-#if CC_TARGET_PLATFORM != CC_PLATFORM_ANDROID && CC_TARGET_PLATFORM != CC_PLATFORM_IOS
-	Vector2 pos(0.0f, origin.y + screen.y);
-
-	_btnMenu->setScale(1.0f);
-	_btnMenu->setTag(MENU_ITEM_MENU);
-	_btnMenu->setPosition(pos + Vector2(0.0f, -68.0f));
-	_btnMenu->setAnchorPoint(cocos2d::Vec2(0.0f, 1.0f));
-	menuItems.pushBack(_btnMenu);
-
-	_btnEditor->setScale(1.0f);
-	_btnEditor->setTag(MENU_ITEM_EDITOR);
-	_btnEditor->setPosition(pos);
-	_btnEditor->setAnchorPoint(cocos2d::Vec2(0.0f, 1.0f));
-	menuItems.pushBack(_btnEditor);
-
-	pos += Vector2(_btnEditor->getContentSize().width - 7.5f, 0.0f);
+	_widget = dynamic_cast<cocos2d::ui::Layout *>(cocostudio::GUIReader::getInstance()->widgetFromJsonFile("ui_hud/ui_hud.ExportJson"));
+	_widget->setAnchorPoint(cocos2d::Vec2(0.5f, 0.5f));
+	_widget->setPosition(origin + screen / 2.0f);
 	
-	_btnZoomOut->setScale(1.0f);
-	_btnZoomOut->setTag(MENU_ITEM_ZOOM_OUT);
-	_btnZoomOut->setPosition(pos);
-	_btnZoomOut->setAnchorPoint(cocos2d::Vec2(0.0f, 1.0f));
-	menuItems.pushBack(_btnZoomOut);
-	
-	pos += Vector2(_btnZoomOut->getContentSize().width - 7.5f, 0.0f);
-	
-	_btnZoomIn->setScale(1.0f);
-	_btnZoomIn->setTag(MENU_ITEM_ZOOM_IN);
-	_btnZoomIn->setPosition(pos);
-	_btnZoomIn->setAnchorPoint(cocos2d::Vec2(0.0f, 1.0f));
-	menuItems.pushBack(_btnZoomIn);
+	cocos2d::Node *progBarParent = _widget->getChildByName("WorldCapturingState");
+	_worldCapturingBar = dynamic_cast<cocos2d::ui::LoadingBar *>(progBarParent->getChildByName("Progress"));
+
+	cocos2d::ui::Button *btnEdit = dynamic_cast<cocos2d::ui::Button *>(_widget->getChildByName("BtnEdit"));
+	cocos2d::ui::Button *btnMenu = dynamic_cast<cocos2d::ui::Button *>(_widget->getChildByName("BtnMenu"));
+	cocos2d::ui::Button *btnZoomOut = dynamic_cast<cocos2d::ui::Button *>(_widget->getChildByName("BtnZoomOut"));
+	cocos2d::ui::Button *btnZoomIn = dynamic_cast<cocos2d::ui::Button *>(_widget->getChildByName("BtnZoomIn"));
+
+	if (!btnEdit) {WRITE_WARN("GameHud: Failed to get widget with name BtnEdit"); return false;}
+	if (!btnMenu) {WRITE_WARN("GameHud: Failed to get widget with name BtnMenu"); return false;}
+	if (!btnZoomOut) {WRITE_WARN("GameHud: Failed to get widget with name BtnZoomOut"); return false;}
+	if (!btnZoomIn) {WRITE_WARN("GameHud: Failed to get widget with name BtnZoomIn"); return false;}
+	if (!_worldCapturingBar) {WRITE_WARN("GameHud: Failed to get widget with name Progress"); return false;}
+
+	btnEdit->addTouchEventListener(CC_CALLBACK_2(MapGuiLayer::MenuInputListener, this));
+	btnMenu->addTouchEventListener(CC_CALLBACK_2(MapGuiLayer::MenuInputListener, this));
+	btnZoomOut->addTouchEventListener(CC_CALLBACK_2(MapGuiLayer::MenuInputListener, this));
+	btnZoomIn->addTouchEventListener(CC_CALLBACK_2(MapGuiLayer::MenuInputListener, this));
+
+	_worldCapturingBar->setPercent(0.0f);
+
+#if CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID || CC_TARGET_PLATFORM == CC_PLATFORM_IOS
+	btnEdit->setVisible(false);
+	btnMenu->setVisible(false);
+	btnZoomOut->setVisible(false);
+	btnZoomIn->setVisible(false);
 #endif
 
-	cocos2d::Menu *menu = cocos2d::Menu::createWithArray(menuItems);
-	menu->setPosition(0.0f, 0.0f);
-
-	addChild(menu);
-
-	float indentX = 20.0f;
-	_worldCaptureProgressBar = new SquareProgressBar(origin.x + screen.x - indentX * 2,
-													 20.0f,
-													 cocos2d::Color4F(1.0f, 0.5f, 0, 1.0f));
-	_worldCaptureProgressBar->setPosition(indentX, 0);
-	_worldCaptureProgressBar->autorelease();
-	_worldCaptureProgressBar->SetProgressPercentage(World::Instance().GetWorldCapturingState() * 100.0f);
-	addChild(_worldCaptureProgressBar);
-
+	addChild(_widget);
 	scheduleUpdate();
 
 	return true;
 }
 
-void MapGuiLayer::_MenuInputListener(cocos2d::Ref *sender)
-{
-	cocos2d::MenuItemImage *item = dynamic_cast<cocos2d::MenuItemImage*>(sender);
-
-	dynamic_cast<WorldMapLayer*>(getParent())->HideCellGameInterface();
-
-	int tag = item->getTag();
-
-	switch (tag)
+void MapGuiLayer::MenuInputListener(cocos2d::Ref *sender, cocos2d::ui::Widget::TouchEventType eventType)
+{	
+	if (eventType == cocos2d::ui::Widget::TouchEventType::BEGAN)
 	{
-	case MENU_ITEM_ZOOM_IN:
-		dynamic_cast<WorldMapLayer*>(getParent())->ModifyZoom(1.25f);
-		break;
-	case MENU_ITEM_ZOOM_OUT:
-		dynamic_cast<WorldMapLayer*>(getParent())->ModifyZoom(0.8f);
-		break;
-	case MENU_ITEM_EDITOR:
-		dynamic_cast<GameScene*>(getParent()->getParent())->ToggleEditor();
-		break;
-	case MENU_ITEM_MENU:
-		ToggleCellsNetMenu();
-		break;
-	default: break;
+		dynamic_cast<WorldMapLayer*>(getParent())->HideCellGameInterface();
+	}
+	else if (eventType == cocos2d::ui::Widget::TouchEventType::ENDED)
+	{
+		std::string name = dynamic_cast<cocos2d::ui::Button *>(sender)->getName();
+
+		if (name == "BtnZoomIn") {
+			dynamic_cast<WorldMapLayer*>(getParent())->ModifyZoom(1.25f);
+		} else if (name == "BtnZoomOut") {
+			dynamic_cast<WorldMapLayer*>(getParent())->ModifyZoom(0.8f);
+		} else if (name == "BtnEdit") {
+			dynamic_cast<GameScene*>(getParent()->getParent())->ToggleEditor();
+		} else if (name == "BtnMenu") {
+			ToggleCellsNetMenu();
+		} else {
+			WRITE_WARN("Game HUD input listener get unknown widget.");
+		}
 	}
 }
 
@@ -134,5 +105,5 @@ void MapGuiLayer::ToggleCellsNetMenu()
 
 void MapGuiLayer::update(float delta)
 {
-	_worldCaptureProgressBar->SetProgressPercentage(World::Instance().GetWorldCapturingState() * 100.0f);
+	_worldCapturingBar->setPercent(World::Instance().GetWorldCapturingState() * 100.0f);
 }

@@ -5,6 +5,7 @@
 
 #include "ArbitraryHull.h"
 #include "MapProjector.h"
+#include "EffectsLayer.h"
 #include "MessageManager.h"
 #include "Region.h"
 #include "Cell.h"
@@ -33,11 +34,11 @@ public:
 
 	void ModifyZoom(float multiplier);
 	void HideCellGameInterface(void);
+	void UpdateMapElements();
 
 	void SetMapInputEnabled(bool isEnabled);
 	void SetGuiEnabled(bool isEnabled);
 	void SetNextCellParent(Cell::WeakPtr parent);
-	void SetLinkCellChildren(Cell::WeakPtr children);
 
 	Cell::Ptr CreateCell(Cell::Info info, Cell::State state);
 
@@ -45,6 +46,15 @@ public:
 	void PushSessionWinScreen(void);
 
 	CellMapWidget* GetCellMapWidget(Cell::WeakPtr cell) const;
+	TownMapWidget* GetNearestTownWidget(const Vector2 &pointOnScreen, float radius) const;
+	CellMapWidget* GetNearestCellWidget(const Vector2 &pointOnScreen, float radius) const;
+
+	bool IsCellMenuOpened(void) const;
+	bool IsCellMenuOpenedFor(Cell::WeakPtr cell) const;
+	bool IsCellMenuSpinoffMode(void) const;
+
+	void AddEffectAbsolute(Effect *effect);
+	void AddEffectGameField(Effect *effect);
 
 private:
 	enum CONTENT_Z_ORDER
@@ -54,8 +64,10 @@ private:
 		Z_INVESTIGATOR,
 		Z_TOWN,
 		Z_CELL,
+		Z_EFFECTS_GAME_FIELD,
 		Z_CELL_MENU,
-		Z_MAP_GUI
+		Z_MAP_GUI,
+		Z_EFFECTS_ABSOLUTE
 	};
 
 	typedef std::vector<CellMapWidget *> CellWidgets;
@@ -69,19 +81,21 @@ private:
 	GameScene *_gameScene;
 
 	Cell::WeakPtr _nextCellParent;
-	Cell::WeakPtr _linkCellChildren;
 
-	Region::WeakPtr _GetRegionUnderPoint(const Vector2& point) const;
-	Cell::WeakPtr _GetCellUnderPoint(const Vector2& point);
-	Town::WeakPtr _GetTownUnderPoint(const Vector2& point);
+	Region::WeakPtr GetRegionUnderPoint(const Vector2& point) const;
+	Cell::WeakPtr GetCellUnderPoint(const Vector2& point);
+	Town::WeakPtr GetTownUnderPoint(const Vector2& point);
 	
-	CellMapWidget* _CreateCellWidget(Cell::Ptr cell);
-	TownMapWidget* _CreateTownWidget(Town::Ptr town);
-	InvestigatorMapWidget* _CreateInvestigatorWidget(Investigator::Ptr investigator);
+	CellMapWidget* CreateCellWidget(Cell::Ptr cell);
+	TownMapWidget* CreateTownWidget(Town::Ptr town);
+	InvestigatorMapWidget* CreateInvestigatorWidget(Investigator::Ptr investigator);
 
-	void _UpdateNetwork();
-	void _RecursiveUpdateNetworkVisualiser(cocos2d::DrawNode *visualiser, Cell::WeakPtr cell);
-	void _OnTownSelect(Town::WeakPtr town);
+	void UpdateCells();
+	void UpdateTowns();
+	void UpdateNetwork();
+	void RecursiveUpdateNetworkVisualiser(cocos2d::DrawNode *visualiser, Cell::WeakPtr cell);
+	void OnTownSelect(Town::WeakPtr town);
+	void SetTownsVisibility(bool visibility);
 	void RecalculateTouches(const std::vector<cocos2d::Touch* > &touches, bool updateView);
 	void ResetTouches();
 	void BackToMainMenuCallback(cocos2d::Ref *sender);
@@ -90,9 +104,11 @@ private:
 	TownWidgets _townWidgets;
 	InvestigatorWidgets _investigatorWidgets;
 
+	EffectsLayer *_effectsAbsolute;
+	EffectsLayer *_effectsGameField;
+
 	CellMenuSelector *_cellMenu;
 	cocos2d::Layer *_cellGameInterface;
-	cocos2d::Layer *_townsDrawLayer;
 
 	Vector2 _touchLastPoint;
 	Vector2 _touchFirstPos;
@@ -109,6 +125,7 @@ private:
 	int _lastTouchesCount;
 	float _avgTouchDistance;
 	bool _isTouchesCountUpdated;
+	bool _isMapMovementsEnabled;
 };
 
 #endif

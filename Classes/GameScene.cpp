@@ -7,6 +7,7 @@
 #include "TransitionZoomFade.h"
 #include "TutorialLayer.h"
 #include "NotificationMessageLayer.h"
+#include "ThreadUtils.h"
 
 GameScene::GameScene(MainMenuScene *mainMenuScene)
 	: _mapProjector()
@@ -19,12 +20,12 @@ GameScene::GameScene(MainMenuScene *mainMenuScene)
 
 GameScene::~GameScene(void)
 {
-	Log::Instance().writeLog("GameScene unloaded sucessfully");
+	WRITE_LOG("GameScene unloaded sucessfully");
 }
 
 bool GameScene::init(void)
 {
-	if (!cocos2d::CCScene::init())
+	if (!cocos2d::Scene::init())
 	{
 		return false;
 	}
@@ -33,9 +34,11 @@ bool GameScene::init(void)
 	addChild(_worldMap);
 	_worldMap->autorelease();
 
+	CocosDenshion::SimpleAudioEngine::getInstance()->playBackgroundMusic("bg-gameplay.mp3", true);
+
 	scheduleUpdate();
 
-	addChild(TutorialLayer::create());
+	addChild(TutorialLayer::create(_worldMap, &_mapProjector));
 	addChild(NotificationMessageLayer::create());
 
 	return true;
@@ -43,8 +46,7 @@ bool GameScene::init(void)
 
 void GameScene::update(float delta)
 {
-	(void)delta;
-	World::Instance().Update();
+	World::Instance().Update(delta);
 }
 
 void GameScene::ShowMap()
@@ -67,13 +69,11 @@ void GameScene::ShowMap()
 
 void GameScene::GoToMainMenu(void)
 {
-	MainMenuScene* mainMenuScene = new MainMenuScene(nullptr);
+	MainMenuScene* mainMenuScene = new MainMenuScene();
 	mainMenuScene->init();
 	mainMenuScene->autorelease();
-
-	cocos2d::Scene *scene = dynamic_cast<cocos2d::Scene *>(mainMenuScene);
 	
-	cocos2d::TransitionScene* transition = cocos2d::TransitionSlideInL::create(0.5f, scene);
+	cocos2d::TransitionScene* transition = cocos2d::TransitionSlideInL::create(0.5f, mainMenuScene);
 	cocos2d::Director::getInstance()->replaceScene(transition);
 }
 

@@ -12,7 +12,7 @@ Town::Town(const Info &info)
 	, _location(info.location)
 	, _spriteScale(info.spriteScale)
 	, _isCellPresented(false)
-	, _uid(GetUid())
+	, _uid(GenerateUid())
 {
 	_CheckValues();
 }
@@ -20,6 +20,12 @@ Town::Town(const Info &info)
 Town::Ptr Town::Create(const Info &info)
 {
 	return std::make_shared<Town>(info);
+}
+
+unsigned int Town::GenerateUid()
+{
+	static unsigned int uid = 0;
+	return ++uid;
 }
 
 Town::Info Town::GetInfo(void) const
@@ -71,17 +77,17 @@ void Town::_CheckValues() const
 {
 	if (_population < 0.0f)
 	{
-		Log::Instance().writeWarning("Wrong population value");
+		WRITE_WARN("Wrong population value");
 	}
 
 	if (_region.expired())
 	{
-		Log::Instance().writeWarning("Dead reference to region");
+		WRITE_WARN("Dead reference to region");
 	}
 
 	if (_spriteScale < 0.0f)
 	{
-		Log::Instance().writeWarning("Negative sprite scale");
+		WRITE_WARN("Negative sprite scale");
 	}
 }
 
@@ -95,7 +101,7 @@ bool Town::IsCellPresented(void)
 	return _isCellPresented;
 }
 
-unsigned int Town::GetUid() const
+unsigned int Town::GetUid(void) const
 {
 	return _uid;
 }

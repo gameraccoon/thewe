@@ -60,6 +60,8 @@ set(GAME_SRC
 	proj.linux/main.cpp
 	Classes/Application.cpp
 	Classes/ArbitraryHull.cpp
+	Classes/BonusMapWidget.cpp
+	Classes/BonusOnMap.cpp
 	Classes/Cell.cpp
 	Classes/CellGameInterface.cpp
 	Classes/CellInfoMenu.cpp
@@ -67,43 +69,62 @@ set(GAME_SRC
 	Classes/CellMapWidget.cpp
 	Classes/CellNetWidget.cpp
 	Classes/CellsNetwork.cpp
-	Classes/CellSpinoffMenu.cpp
 	Classes/CellTasksMenu.cpp
 	Classes/CellTaskInfoMenu.cpp
 	Classes/CellsNetLayer.cpp
+	Classes/CircleMenu.cpp
 	Classes/Color.cpp
 	Classes/Drawable.cpp
 	Classes/EditorLayer.cpp
+	Classes/EffectsLayer.cpp
 	Classes/GameInfo.cpp
 	Classes/GameSavesManager.cpp
 	Classes/GameScene.cpp
 	Classes/Investigator.cpp
 	Classes/InvestigatorMapWidget.cpp
+	Classes/InvestigatorTapButton.cpp
 	Classes/Log.cpp
 	Classes/LuaBindings.cpp
 	Classes/LuaInstance.cpp
+	Classes/Localization.cpp
 	Classes/MainMenuScene.cpp
 	Classes/MapGuiLayer.cpp
 	Classes/MapProjector.cpp
 	Classes/MessageManager.cpp
+	Classes/MultipleImageSprite.cpp
 	Classes/NotificationMessageManager.cpp
 	Classes/NotificationMessageLayer.cpp
 	Classes/NotificationMessageWidget.cpp
 	Classes/MiscUtils.cpp
 	Classes/ProgressBar.cpp
+	Classes/RelinkDragAndDrop.cpp
 	Classes/Region.cpp
+	Classes/ScreenBlackoutWidget.cpp
 	Classes/SessionEndScreen.cpp
+	Classes/SpinoffDragAndDrop.cpp
 	Classes/SplashScreenScene.cpp
 	Classes/SqliteConnection.cpp
 	Classes/SqliteDataReader.cpp
+	Classes/StripEffect.cpp
 	Classes/Task.cpp
 	Classes/TaskManager.cpp
+	Classes/TaskRewardMapWidget.cpp
+	Classes/ThreadUtils.cpp
 	Classes/Town.cpp
 	Classes/TownMapWidget.cpp
 	Classes/TransitionZoomFade.cpp
-	Classes/Tutorial.cpp
 	Classes/TutorialLayer.cpp
+	Classes/TutorialManager.cpp
 	Classes/TutorialWidget.cpp
+	Classes/TutorialWidgetAfterFirstCell.cpp
+	Classes/TutorialWidgetFirstCell.cpp
+	Classes/TutorialWidgetInfluence.cpp
+	Classes/TutorialWidgetInvestigationStarted.cpp
+	Classes/TutorialWidgetInvestigatorUncatched.cpp
+	Classes/TutorialWidgetSpinoff.cpp
+	Classes/TutorialWidgetStartFirstTask.cpp
+	Classes/TutorialWidgetTextual.cpp
+	Classes/TutorialWidgetWelcome.cpp
 	Classes/UserMessage.cpp
 	Classes/Vector2.cpp
 	Classes/World.cpp
@@ -333,8 +354,9 @@ target_link_libraries(${APP_NAME}
 	spine
 	cocostudio
 	cocosbuilder
-	extensions
 	audio
+	ui # костыльно созданная либа (может перестать работать после смены версии cocos2d)
+	extensions
 	cocos2d
 	# библиотеки для ogl и x11
 	glfw3

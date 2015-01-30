@@ -3,63 +3,65 @@
 
 #include <cocos2d.h>
 #include <cocos-ext.h>
+#include <cocostudio/CCSGUIReader.h>
+#include <ui/CocosGUI.h>
 
 #include "Cell.h"
 #include "TaskManager.h"
 #include "ProgressBar.h"
 #include "World.h"
+#include "CircleMenu.h"
+#include "SpinoffDragAndDrop.h"
 
 class WorldMapLayer;
 class CellMapPopupButton;
 
-class CellMenuSelector : public cocos2d::Layer
+class CellMenuSelector : public cocos2d::Layer, public MessageReceiver
 {
 public:
 	CellMenuSelector(MapProjector *proj, WorldMapLayer *map);
-		
+	~CellMenuSelector(void);
+
+	static CellMenuSelector* create(MapProjector *proj, WorldMapLayer *map);
+
 	virtual bool init() override;
 	virtual void update(float dt) override;
-
-	bool IsCursorOnMenu(const Vector2 &cursorPos) const;
+	virtual void AcceptMessage(const Message &message) override;
 	
 	void AppearImmediately(Cell::WeakPtr cell, const Vector2 &position);
 	void AppearWithAnimation(Cell::WeakPtr cell, const Vector2 &position);
 	void DisappearImmedaitely(void);
 	void DisappearWithAnimation(void);
+	void InitButtons(Cell::Ptr cell);
 
-	void OnCellMenuClosed(void);
+	void OnMenuClosed(void);
 
-private:
-	enum CELL_MENU_TAGS
-	{
-		CELL_OPEN_TASKS = 0,
-		CELL_OPEN_INFO,
-		CELL_OPEN_SPINOFF,
-		CELL_NUM_TAGS
-	};
-
-	typedef std::vector<cocos2d::MenuItemImage *> Buttons;
+	bool isOpened() const;
+	bool isSpinoffMode() const;
+	bool IsBelongToCell(Cell::WeakPtr cell) const;
 
 private:
-	void _PrepearButtonToAppear(cocos2d::MenuItemImage *item, Vector2 pos);
-	void _PrepearButtonToDisappear(cocos2d::MenuItemImage *item);
-	void _MenuInputListener(cocos2d::Ref *sender);
+	void CreateMenu(cocos2d::Layer* menu);
+	void RemoveMenu();
+	// listeners
 	void OnKillButtonPressed(cocos2d::Ref *sender);
-	bool _IsAnimationFinished(void);
+	void OnCellInfoButtonPressed(cocos2d::Ref *sender);
+	void OnTasksButtonPressed(cocos2d::Ref *sender);
+	void OnSpinoffButtonPressed(cocos2d::Ref *sender);
 
 private:
 	WorldMapLayer *_worldMapLayer;
 	MapProjector *_projector;
-	CellMapPopupButton *_killButton;
 
-	cocos2d::Menu *_menu;
+	cocos2d::MenuItemImage *_btnTasks, *_btnInfo;
+	SpinoffDragAndDrop *_btnSpinoff;
 
 	Cell::WeakPtr _cell;
-	Vector2 _position;
-	Buttons _button;
 
-	bool _isDisappearing;
+	CircleMenu *_circleMenu;
 	const std::string _menuNodeName;
+
+	bool _isSpinoffMode;
 };
 
 #endif

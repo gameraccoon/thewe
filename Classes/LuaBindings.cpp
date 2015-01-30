@@ -1,6 +1,8 @@
-#include "LuaInstance.h"
+#include "LuaBindings.h"
 
 #include <luabind/luabind.hpp>
+
+#include "LuaInstance.h"
 
 #include "Log.h"
 #include "NotificationMessageManager.h"
@@ -9,6 +11,8 @@
 #include "Task.h"
 #include "GameInfo.h"
 #include "World.h"
+#include "Localization.h"
+#include "TutorialManager.h"
 
 template<>
 void LuaInstance::BindClass<Cell>()
@@ -79,12 +83,11 @@ void LuaInstance::BindClass<const Task::Info>()
 	luabind::module(_luaState) [
 	luabind::class_<const Task::Info>("TaskInfo")
 		.def_readonly("id", &Task::Info::id)
-		.def_readonly("title", &Task::Info::title)
 		.def_readonly("chanceToLooseMembers", &Task::Info::chanceToLooseMembers)
 		.def_readonly("fameImpact", &Task::Info::fameImpact)
 		.def_readonly("heartPoundingLevel", &Task::Info::heartPoundingLevel)
 		.def_readonly("level", &Task::Info::level)
-		.def_readonly("moraleLevel", &Task::Info::moralLevel)
+		.def_readonly("morale", &Task::Info::moralLevel)
 		.def_readonly("needCash", &Task::Info::needCash)
 		.def_readonly("needMembers", &Task::Info::needMembers)
 		.def_readonly("needTech", &Task::Info::needTech)
@@ -97,8 +100,25 @@ void LuaInstance::BindClass<Tutorial>()
 {
 	luabind::module(_luaState) [
 	luabind::class_<Tutorial>("Tutorial")
-		.def(luabind::constructor<std::string, std::string>())
+		.def(luabind::constructor<std::string, std::string, std::string, std::string>())
 		.def(luabind::constructor<std::string, std::string, std::string>())
+		.def(luabind::constructor<std::string, std::string>())
+		.def(luabind::constructor<std::string>())
+	];
+}
+
+template<>
+void LuaInstance::BindClass<TutorialManager>()
+{
+	luabind::module(_luaState) [
+	luabind::class_<TutorialManager>("TutorialManagerClass")
+		.def("addTutorial", &TutorialManager::AddTutorial)
+		.def("getCurrentTutorial", &TutorialManager::GetCurrentTutorial)
+		.def("removeCurrentTutorial", &TutorialManager::RemoveCurrentTutorial)
+		.def("addTutorialState", &TutorialManager::AddTutorialState)
+		.def("removeTutorialState", &TutorialManager::RemoveTutorialState)
+		.def("isTutorialStateAvailable", &TutorialManager::IsTutorialStateAvailable)
+		.def("runTutorialFuncton", &TutorialManager::RunTutorialFunction)
 	];
 }
 
@@ -119,13 +139,8 @@ void LuaInstance::BindClass<World>()
 	luabind::module(_luaState) [
 	luabind::class_<World>("WorldClass")
 		.def("addInvestigatorByCellUid", &World::AddInvestigatorByCellUid)
-		.def("addTutorial", &World::AddTutorial)
-		.def("getCurrentTutorial", &World::GetCurrentTutorial)
-		.def("removeCurrentTutorial", &World::RemoveCurrentTutorial)
 		.def("isFirstLaunch", &World::IsFirstLaunch)
-		.def("getTutorialState", &World::GetTutorialState)
-		.def("setTutorialState", &World::SetTutorialState)
-		.def("runTutorialFuncton", &World::RunTutorialFunction)
+		.def("getTutorialManager", &World::GetTutorialManager)
 	];
 }
 
@@ -151,4 +166,42 @@ template<>
 void LuaInstance::RegisterVariable<World>(const char* name, World* value)
 {
 	luabind::globals(_luaState)[name] = value;
+}
+
+namespace lua
+{
+	std::string GetLocalizedString(std::string id)
+	{
+		return LocalizationManager::Instance().getText(id.c_str());
+	}
+
+	void BindGameClasses(LuaInstance *luaInstance)
+	{
+		luaInstance->BindClass<Log>();
+		luaInstance->BindClass<NotificationMessageManager>();
+		luaInstance->BindClass<GameInfo>();
+		luaInstance->BindClass<World>();
+		luaInstance->BindClass<Cell::Info>();
+		luaInstance->BindClass<Cell>();
+		luaInstance->BindClass<const Task::Info>();
+		luaInstance->BindClass<Vector2>();
+		luaInstance->BindClass<Tutorial>();
+		luaInstance->BindClass<TutorialManager>();
+	}
+
+	void BindFunctions(LuaInstance* luaInstance)
+	{
+		luabind::module(luaInstance->GetLuaState())
+		[
+			luabind::def("GetLocalizedString", &GetLocalizedString)
+		];
+	}
+
+	void BindGlobalData(LuaInstance* luaInstance)
+	{
+		luaInstance->RegisterVariable("Log", &(Log::Instance()));
+		luaInstance->RegisterVariable("MessageManager", &(World::Instance().GetMessageManager()));
+		luaInstance->RegisterVariable("GameInfo", &(GameInfo::Instance()));
+		luaInstance->RegisterVariable("World", &(World::Instance()));
+	}
 }

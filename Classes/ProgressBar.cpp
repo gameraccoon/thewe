@@ -8,7 +8,20 @@ SquareProgressBar::SquareProgressBar(float maxSizeX, float maxSizeY, cocos2d::Co
 	, _maxSizeY(maxSizeY)
 	, _barColor(color)
 {
-	init();
+}
+
+SquareProgressBar* SquareProgressBar::create(float maxSizeX, float maxSizeY, cocos2d::Color4F color)
+{
+	SquareProgressBar* ret = new SquareProgressBar(maxSizeX, maxSizeY, color);
+	if (ret && ret->init())
+	{
+		ret->autorelease();
+	}
+	else
+	{
+		CC_SAFE_DELETE(ret);
+	}
+	return ret;
 }
 
 void SquareProgressBar::UpdateBarSize(float width, float height)
@@ -93,7 +106,20 @@ RoundProgressBar::RoundProgressBar(const std::string &roundTexture, float scale,
 	, _scale(scale)
 	, _alpha(alpha)
 {
-	init();
+}
+
+RoundProgressBar* RoundProgressBar::create(const std::string& roundTexture, float scale, float alpha)
+{
+	RoundProgressBar* ret = new RoundProgressBar(roundTexture, scale, alpha);
+	if (ret && ret->init())
+	{
+		ret->autorelease();
+	}
+	else
+	{
+		CC_SAFE_DELETE(ret);
+	}
+	return ret;
 }
 
 bool RoundProgressBar::init(void)
@@ -107,6 +133,8 @@ bool RoundProgressBar::init(void)
 	_progressTimer->setPercentage(0.0f);
 
 	addChild(_progressTimer, 0);
+
+	setContentSize(_roundTexture->getContentSize());
 
 	return true;
 }

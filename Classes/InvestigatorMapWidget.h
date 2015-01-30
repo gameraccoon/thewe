@@ -21,7 +21,8 @@ public:
 	int GetInvestigatorUid(void) const;
 
 public:
-	void OnCatchInFirstCell(cocos2d::Ref *sender);
+	void OnCatchInFirstCell();
+	void OnUncachedInFirstCell();
 
 	Investigator::Ptr _investigator;
 	Investigator::State _lastState;

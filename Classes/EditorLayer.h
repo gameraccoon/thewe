@@ -3,7 +3,6 @@
 
 #include "MapProjector.h"
 #include "ArbitraryHull.h"
-#include "WorldLoader.h"
 #include <cocos2d.h>
 #include <pugixml.hpp>
 
@@ -48,7 +47,7 @@ private:
 	ArbitraryHull _hull1;
 	bool _isCreationAllowed;
 
-	void _MenuInputListener(cocos2d::CCObject *sender);
+	void _MenuInputListener(cocos2d::Ref *sender);
 
 	MapProjector *_mapProjector;
 

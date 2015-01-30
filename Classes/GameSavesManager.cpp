@@ -1,13 +1,13 @@
 #include "GameSavesManager.h"
 
-#include <cocos2d.h>
+#include <mutex>
+#include <string>
 
 #include "World.h"
 #include "Log.h"
 #include "Vector2.h"
 #include "MiscUtils.h"
 
-#include <string>
 #include "SqliteDataReader.h"
 #include "SqliteConnection.h"
 
@@ -17,6 +17,11 @@ static const std::string RUNNED_TASKS_TABLE = "runned_tasks";
 static const std::string PROCESSES_TABLE = "cell_processes";
 static const std::string INVESIGATIONS_TABLE = "investigation_branches";
 static const std::string INVESIGATORS_TABLE = "investigators";
+static const std::string TUTORIAL_STATES_TABLE = "tutorial_states";
+
+static std::recursive_mutex InstanceMutex;
+static std::recursive_mutex SavesManagerMutex;
+
 
 struct GameSavesManagerImpl
 {
@@ -31,33 +36,40 @@ public:
 };
 
 GameSavesManager::GameSavesManager()
+	:_isWorking(false)
 {
-	std::string dbPath = cocos2d::FileUtils::getInstance()->getWritablePath();
+	std::string dbPath = Utils::GetWritablePath();
 	dbPath.append("userdata.db");
 	_impl = new GameSavesManagerImpl(dbPath);
 
-	MessageManager::Instance().RegisterReceiver(this);
-
 	FirstInitSave();
+
+	MessageManager::Instance().RegisterReceiver(this, "SaveGame");
+	MessageManager::Instance().RegisterReceiver(this, "SaveTime");
 }
 
 GameSavesManager::~GameSavesManager()
 {
-	MessageManager::Instance().UnregisterReceiver(this);
 	delete _impl;
 }
 
 GameSavesManager& GameSavesManager::Instance()
 {
+	std::lock_guard<std::recursive_mutex> lock(::InstanceMutex);
+
 	static GameSavesManager singleInstance;
 	return singleInstance;
 }
 
 void GameSavesManager::AcceptMessage(const Message &msg)
 {
-	if (msg.name == "SaveGame")
+	if (msg.is("SaveGame"))
 	{
 		SaveGameState();
+	}
+	else if (msg.is("SaveTime"))
+	{
+		SaveGameTime();
 	}
 }
 
@@ -68,7 +80,7 @@ void GameSavesManager::FirstInitSave()
 		_impl->database.execSql("CREATE TABLE " + USER_DATA_TABLE + " ("
 								"last_uid INTEGER NOT NULL"
 								",root_cell INTEGER NOT NULL"
-								",tutorial_state VARCHAR(255) NOT NULL"
+								",current_time VARCHAR(20) NOT NULL"
 								");");
 	}
 
@@ -133,6 +145,13 @@ void GameSavesManager::FirstInitSave()
 								",'catch_time_begin' VARCHAR(20) NOT NULL"
 								",'catch_time_end' VARCHAR(20) NOT NULL"
 								",'state' VARCHAR(100) NOT NULL"
+								");");
+	}
+
+	if (!_impl->database.IsTableExists(TUTORIAL_STATES_TABLE))
+	{
+		_impl->database.execSql("CREATE TABLE " + TUTORIAL_STATES_TABLE + " ("
+								"'state' VARCHAR(100) NOT NULL"
 								");");
 	}
 }
@@ -311,7 +330,7 @@ void GameSavesManager::LoadProcesses()
 		}
 		else
 		{
-			Log::Instance().writeWarning("Loaded old unusual process for a cell. Process type: "
+			WRITE_WARN("Loaded old unusual process for a cell. Process type: "
 				+ processesReader->getValueByName("type")->asString());
 		}
 	}
@@ -376,17 +395,34 @@ void GameSavesManager::LoadUserInfo()
 		Cell::Ptr rootCell = World::Instance().GetCellsNetwork().GetCellByUid(reader->getValueByName("root_cell")->asInt());
 		World::Instance().GetCellsNetwork().SetRootCell(rootCell);
 
-		World::Instance().SetTutorialState(reader->getValueByName("tutorial_state")->asString());
+		World::Instance().InitTime(Utils::StringToTime(reader->getValueByName("current_time")->asString()));
+	}
+}
+
+void GameSavesManager::LoadTutorialStates()
+{
+	SqliteDataReader::Ptr reader = _impl->database.execQuery("SELECT * FROM " + TUTORIAL_STATES_TABLE);
+	while (reader->next())
+	{
+		World::Instance().GetTutorialManager().AddTutorialState(reader->getValueByName("state")->asString());
 	}
 }
 
 void GameSavesManager::LoadGameState(void)
 {
+	std::lock_guard<std::recursive_mutex> lock(::SavesManagerMutex);
+
+	if (_isWorking)
+		return;
+
+	_isWorking = true;
 	LoadCellsState();
 	LoadRunnedTasks();
 	LoadProcesses();
 	LoadInvestigations();
 	LoadUserInfo();
+	LoadTutorialStates();
+	_isWorking = false;
 }
 
 static std::string InitCellsAdditionStatement()
@@ -452,6 +488,14 @@ static std::string InitInvestigatorAdditionStatement()
 			",catch_time_end"
 			",root_cell"
 			",state"
+			")"
+			"VALUES";
+}
+
+static std::string InitTutoraialStatesAdditionStatement()
+{
+	return "INSERT INTO " + TUTORIAL_STATES_TABLE +
+			"(state"
 			")"
 			"VALUES";
 }
@@ -541,15 +585,11 @@ static void AppendInvestigatorsToQuery(std::string* const query,
 		.append(")");
 }
 
-static void AppendSeparator(std::string* const taskAdditionSqlStatement, bool addTasks)
+static void AppendSeparator(std::string* const sqlStatement, bool notFirst)
 {
-	if (addTasks)
+	if (notFirst)
 	{
-		taskAdditionSqlStatement->append(",");
-	}
-	else
-	{
-		addTasks = true;
+		sqlStatement->append(",");
 	}
 }
 
@@ -646,14 +686,38 @@ static bool FillInvestigatorsAdditionStatement(std::string* const processesSqlSt
 static std::string GetUserInfoAdditionStatement()
 {
 	World &world = World::Instance();
-	return std::string("INSERT INTO ").append(USER_DATA_TABLE).append(" (last_uid, root_cell, tutorial_state) VALUES (")
+	return std::string("INSERT INTO ").append(USER_DATA_TABLE).append(" (last_uid, current_time,"
+																	  "root_cell) VALUES (")
 			.append(std::to_string(world.GetLastUid())).append(",")
-			.append(std::to_string(world.GetCellsNetwork().GetRootCell().lock()->GetUid())).append(",")
-			.append("'").append(world.GetTutorialState()).append("');");
+			.append(Utils::TimeToString(Utils::GetGameTime())).append(",")
+			.append(std::to_string(world.GetCellsNetwork().GetRootCell().lock()->GetUid())).append(");");
+}
+
+static bool FillTutorialStatesAdditionStatement(std::string* const tutorialStatesSqlStatement)
+{
+	const TutorialManager& tutorialManager = World::Instance().GetTutorialManager();
+	bool addTutorialStates = false;
+	for (auto& tutorialState : tutorialManager.GetTutorialStatements())
+	{
+		AppendSeparator(tutorialStatesSqlStatement, addTutorialStates);
+		addTutorialStates = true;
+
+		tutorialStatesSqlStatement->append("('").append(tutorialState).append("')");
+	}
+	tutorialStatesSqlStatement->append(";");
+
+	return addTutorialStates;
 }
 
 void GameSavesManager::SaveGameState(void)
 {
+	std::lock_guard<std::recursive_mutex> lock(::SavesManagerMutex);
+
+	if (_isWorking)
+		return;
+
+	_isWorking = true;
+
 	std::string cellsAdditionSqlStatement = InitCellsAdditionStatement();
 	bool addCells = FillCellsAdditionStatement(&cellsAdditionSqlStatement);
 
@@ -671,6 +735,9 @@ void GameSavesManager::SaveGameState(void)
 
 	std::string userInfoSqlStatement = GetUserInfoAdditionStatement();
 
+	std::string tutorialStatesSqlStatement = InitTutoraialStatesAdditionStatement();
+	bool addTutorialStates = FillTutorialStatesAdditionStatement(&tutorialStatesSqlStatement);
+
 	// begining transaction
 	_impl->database.execSql("BEGIN;");
 	// clearing tables
@@ -679,6 +746,7 @@ void GameSavesManager::SaveGameState(void)
 							"DELETE FROM " + PROCESSES_TABLE + ";"
 							"DELETE FROM " + INVESIGATIONS_TABLE + ";"
 							"DELETE FROM " + INVESIGATORS_TABLE + ";"
+							"DELETE FROM " + TUTORIAL_STATES_TABLE + ";"
 							"DELETE FROM " + USER_DATA_TABLE + ";");
 	// adding new data
 	if (addCells) _impl->database.execSql(cellsAdditionSqlStatement);
@@ -687,6 +755,23 @@ void GameSavesManager::SaveGameState(void)
 	if (addInvestigations) _impl->database.execSql(investigationsSqlStatement);
 	if (addInvestigators) _impl->database.execSql(investigatorsSqlStatement);
 	_impl->database.execSql(userInfoSqlStatement);
+	if (addTutorialStates) _impl->database.execSql(tutorialStatesSqlStatement);
 	// commiting transaction
 	_impl->database.execSql("COMMIT;");
+
+	_isWorking = false;
+}
+
+void GameSavesManager::SaveGameTime()
+{
+	std::lock_guard<std::recursive_mutex> lock(::SavesManagerMutex);
+
+	if (_isWorking)
+		return;
+
+	_isWorking = true;
+
+	_impl->database.execSql("UPDATE user_data SET current_time = '" + Utils::TimeToString(Utils::GetGameTime()) + "';");
+
+	_isWorking = false;
 }

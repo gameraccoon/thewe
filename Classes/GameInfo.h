@@ -12,7 +12,7 @@ public:
 	static GameInfo& Instance(void);
 
 public:
-	bool ParseXml(const std::string &filename);
+	bool ParseXml(const std::string& xml);
 
 	int GetInt(const std::string &name, int def = 0) const;
 	bool GetBool(std::string &name, bool def = false) const;

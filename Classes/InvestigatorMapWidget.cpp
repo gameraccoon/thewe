@@ -34,7 +34,12 @@ bool InvestigatorMapWidget::init(void)
 	{
 		Cell::WeakPtr cell = _investigator->GetInvestigationRoot();
 		_invesRootCellWidget = _worldMapLayer->GetCellMapWidget(cell.lock());
-		_invesRootCellWidget->ShowInvestigatorLaunchButton(CC_CALLBACK_1(InvestigatorMapWidget::OnCatchInFirstCell, this));
+
+		_invesRootCellWidget->ShowInvestigatorLaunchButton([&](){
+				this->OnCatchInFirstCell();
+			}, [&](){
+				this->OnUncachedInFirstCell();
+			});
 	}
 
 	return true;
@@ -50,13 +55,6 @@ void InvestigatorMapWidget::update(float dt)
 {
 	if (_investigator)
 	{
-		if (_investigator->IsStateType(Investigator::State::INVESTIGATION) && _lastState == Investigator::State::START_CATCH_DELAY)
-		{
-			// player don't catch investigator in first cell, so investigation will be continued
-			_invesRootCellWidget->HideInvestigatorLaunchButton(true);
-			_lastState = _investigator->GetState();
-		}
-
 		_investigationDrawer->clear();
 		for (const Investigator::Branch &branch : _investigator->GetBranches())
 		{
@@ -81,17 +79,21 @@ void InvestigatorMapWidget::update(float dt)
 	}
 }
 
-void InvestigatorMapWidget::OnCatchInFirstCell(cocos2d::Ref *sender)
+void InvestigatorMapWidget::OnCatchInFirstCell()
 {
-	_invesRootCellWidget->HideInvestigatorLaunchButton(false);
+	_invesRootCellWidget->HideInvestigatorLaunchButton();
 	_investigator->AbortInvestigation();
 
-	if (World::Instance().GetTutorialState() == "WaitForCatchingFirstInvestigator")
-	{
-		World::Instance().RunTutorialFunction("FirstInvestigationCatched");
-	}
-
 	World::Instance().RemoveInvestigator(_investigator);
+
+	_invesRootCellWidget->GetCell().lock()->ReturnToNormalState();
+}
+
+void InvestigatorMapWidget::OnUncachedInFirstCell()
+{
+	_invesRootCellWidget->HideInvestigatorLaunchButton();
+	_lastState = _investigator->GetState();
+	_investigator->BeginInvestigation();
 }
 
 Investigator::Ptr InvestigatorMapWidget::GetInvestigator(void) const

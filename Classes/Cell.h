@@ -76,6 +76,7 @@ public:
 
 	void BeginDestruction(void);
 	void BeginAutonomy(void);
+	void ReturnToNormalState(void);
 
 	/** Returns all child cells */
 	const std::vector<Cell::WeakPtr>& GetChildren() const;
@@ -106,6 +107,8 @@ public:
 	int CalcDistanceToTheRootCell() const;
 
 	bool IsInTemporaryState() const;
+
+	bool IsReadyToCreateSpinoff() const;
 
 private:
 	Cell(const Info &info, unsigned int uid);

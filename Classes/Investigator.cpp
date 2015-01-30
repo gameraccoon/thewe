@@ -33,18 +33,16 @@ void Investigator::InitInvestigator(const Investigator::Branches &branches)
 	_activeBranches = branches;
 }
 
-void Investigator::BeginCatchTime(float time)
+void Investigator::BeginCatchTime(void)
 {
 	_state = State::START_CATCH_DELAY;
-	_catchTimeBegin = Utils::GetGameTime();
-	_catchTimeEnd = _catchTimeBegin + (Utils::GameTime)time;
 }
 
 void Investigator::BeginInvestigation(void)
 {
-	if (World::Instance().GetTutorialState() == "WaitForUncatchedInvestigator")
+	if (World::Instance().GetTutorialManager().IsTutorialStateAvailable("WaitForUncatchedInvestigator"))
 	{
-		World::Instance().RunTutorialFunction("FirstUncatchedInvestigator");
+		World::Instance().GetTutorialManager().RunTutorialFunction("FirstUncatchedInvestigator");
 	}
 
 	Cell::Ptr cell = _investigationRoot.lock();
@@ -82,19 +80,7 @@ void Investigator::StayInvestigation(bool stay)
 
 void Investigator::UpdateToTime(Utils::GameTime time)
 {
-	if (IsStateType(State::START_CATCH_DELAY))
-	{
-		float allTime = _catchTimeEnd - _catchTimeBegin;
-		float eta = _catchTimeEnd - time;
-		float progress = 1.0f - eta / allTime;
-		
-		if (progress >= 1.0f)
-		{
-			BeginInvestigation();
-			MessageManager::Instance().PutMessage(Message("SaveGame", 0));
-		}
-	}
-	else if (IsStateType(State::INVESTIGATION))
+	if (IsStateType(State::INVESTIGATION))
 	{
 		for (std::size_t index = 0; index < _activeBranches.size(); ++index)
 		{
@@ -104,7 +90,10 @@ void Investigator::UpdateToTime(Utils::GameTime time)
 			{
 				if (GetCountOfCellUsageInBranches(branch.cellFrom) <= 1)
 				{
-					MessageManager::Instance().PutMessage(Message("DeleteCellWidget", branch.cellFrom.lock()->GetUid()));
+					Message message("DeleteCellWidget");
+					message.variables.SetInt("UID", branch.cellFrom.lock()->GetUid());
+					MessageManager::Instance().PutMessage(message);
+
 					World::Instance().GetCellsNetwork().RemoveCell(branch.cellFrom);
 				}
 
@@ -115,21 +104,29 @@ void Investigator::UpdateToTime(Utils::GameTime time)
 			if (time >= (branch.timeBegin + branch.timeDuration) && branch.cellTo.lock()->GetInfo().state != Cell::State::ARRESTED)
 			{
 				if (GetCountOfCellUsageInBranches(branch.cellFrom) <= 1)
-				{
-					MessageManager::Instance().PutMessage(Message("DeleteCellWidget", branch.cellFrom.lock()->GetUid()));
+				{					
+					Message message("DeleteCellWidget");
+					message.variables.SetInt("UID", branch.cellFrom.lock()->GetUid());
+					MessageManager::Instance().PutMessage(message);
+
+					MessageManager::Instance().PutMessage(message);
 					World::Instance().GetCellsNetwork().RemoveCell(branch.cellFrom);
 				}
 					
 				int createdBranchesCount = CaptureCellAndReturnNewBranchesCount(branch.cellTo, branch.cellFrom);
 				if (createdBranchesCount == 0)
 				{
-					MessageManager::Instance().PutMessage(Message("DeleteCellWidget", branch.cellTo.lock()->GetUid()));
+					Message message("DeleteCellWidget");
+					message.variables.SetInt("UID", branch.cellFrom.lock()->GetUid());
+					MessageManager::Instance().PutMessage(message);
+
+					MessageManager::Instance().PutMessage(message);
 					World::Instance().GetCellsNetwork().RemoveCell(branch.cellTo);
 				}
 
 				_activeBranches.erase(_activeBranches.begin() + index);
 
-				MessageManager::Instance().PutMessage(Message("SaveGame", 0));
+				MessageManager::Instance().PutMessage(Message("SaveGame"));
 			}
 		}
 
@@ -190,7 +187,7 @@ int Investigator::GetCountOfCellUsageInBranches(Cell::WeakPtr cell) const
 {
 	const Cell::Ptr cellPtr = cell.lock();
 	if (!cellPtr) {
-		Log::Instance().writeWarning("GetCountOfCellUsageInBranches: dead cell pointer in param.");
+		WRITE_WARN("GetCountOfCellUsageInBranches: dead cell pointer in param.");
 		return 0;
 	}
 

@@ -3,13 +3,13 @@
 #include "TaskManager.h"
 #include "NotificationMessageManager.h"
 #include "Log.h"
+#include "LuaBindings.h"
 #include "LuaInstance.h"
 #include "GameInfo.h"
 #include "World.h"
 #include "WorldLoader.h"
 #include "MessageManager.h"
 
-#include <cocos2d.h>
 #include <luabind/luabind.hpp>
 
 World::World()
@@ -17,8 +17,8 @@ World::World()
 	, _isFirstLaunch(true)
 	, _isLuaInited(false)
 	, _isGameOver(false)
-	, _tutorialState("NotInitialized")
 	, _uid(0)
+	, _currentTime(0)
 {
 	_luaScript = new LuaInstance();
 }
@@ -49,41 +49,29 @@ NotificationMessageManager& World::GetMessageManager()
 	return _messageManager;
 }
 
-void ExecScript(LuaInstance* instance, std::string filename)
+TutorialManager& World::GetTutorialManager()
 {
-	std::string fullPath = cocos2d::FileUtils::getInstance()->fullPathForFilename(filename);
-	std::string script = cocos2d::FileUtils::getInstance()->getStringFromFile(fullPath);
-	instance->ExecScript(script.c_str());
+	return _tutorialManager;
 }
 
-void World::InitLuaContext()
+void World::InitLuaContext(ResourceCacheQueue<std::string>::Ptr cachedScripts)
 {
 	if (!_isLuaInited)
 	{
 		_isLuaInited = true;
 
-		_luaScript->BindClass<Log>();
-		_luaScript->BindClass<NotificationMessageManager>();
-		_luaScript->BindClass<GameInfo>();
-		_luaScript->BindClass<World>();
-		_luaScript->BindClass<Cell::Info>();
-		_luaScript->BindClass<Cell>();
-		_luaScript->BindClass<const Task::Info>();
-		_luaScript->BindClass<Vector2>();
-		_luaScript->BindClass<Tutorial>();
+		lua::BindGameClasses(_luaScript);
+		lua::BindFunctions(_luaScript);
+		lua::BindGlobalData(_luaScript);
 
-		_luaScript->RegisterVariable("Log", &(Log::Instance()));
-		_luaScript->RegisterVariable("MessageManager", &(_messageManager));
-		_luaScript->RegisterVariable("GameInfo", &(GameInfo::Instance()));
-		_luaScript->RegisterVariable("World", &(World::Instance()));
-
-		ExecScript(_luaScript, "mainLogic.lua");
-		ExecScript(_luaScript, "tasks.lua");
-		ExecScript(_luaScript, "tutorials.lua");
+		while (!cachedScripts->IsEmpty())
+		{
+			_luaScript->ExecScript(cachedScripts->PopFrontResource().c_str());
+		}
 	}
 	else
 	{
-		Log::Instance().writeWarning("Trying to init Lua context twice");
+		WRITE_WARN("Trying to init Lua context twice");
 	}
 }
 
@@ -92,6 +80,8 @@ void World::StartLogic()
 	luabind::call_function<void>(World::Instance().GetLuaInst()->GetLuaState()
 		, "StartGame"
 		, 0);
+
+	_bonusOnMap.OnStartLogic();
 }
 
 void World::CleanupMapContent(void)
@@ -112,25 +102,21 @@ void World::AddTown(Town::Ptr cell)
 
 void World::AddInvestigator(Investigator::Ptr investigator)
 {
-	if (World::Instance().GetTutorialState() == "WaitForFirstInvestigator")
-	{
-		investigator->BeginCatchTime(GameInfo::Instance().GetTime("INVESTIGATOR_TUTORIAL_CATCH_TIME"));
-		World::Instance().RunTutorialFunction("FirstInvestigationStarted");
-	}
-
 	_investigators.push_back(investigator);
 	
-	MessageManager::Instance().PutMessage(Message("AddInvestigatorWidget", investigator->GetUid()));
+	Message message("AddInvestigatorWidget");
+	message.variables.SetInt("UID", investigator->GetUid());
+	MessageManager::Instance().PutMessage(message);
 }
 
 void World::AddInvestigatorByCell(Cell::WeakPtr investigationRoot)
 {
 	Investigator::Ptr investigator = Investigator::Create((Cell::WeakPtr)investigationRoot);
-	investigator->BeginCatchTime(GameInfo::Instance().GetTime("INVESTIGATOR_CATCH_TIME", 1.0f));
+	investigator->BeginCatchTime();
 
 	AddInvestigator(investigator);
 
-	MessageManager::Instance().PutMessage(Message("SaveGame", 0));
+	MessageManager::Instance().PutMessage(Message("SaveGame"));
 }
 
 void World::AddInvestigatorByCellUid(unsigned int celluid)
@@ -151,12 +137,19 @@ bool World::RemoveInvestigator(Investigator::Ptr investigator)
 	{
 		if ((*it) == investigator)
 		{
-			if (GetTutorialState() == "WaitForCatchUncatchedInvestigator")
+			if (GetTutorialManager().IsTutorialStateAvailable("WaitForUncatchedInvestigator"))
 			{
-				RunTutorialFunction("FirstUncatchedInvestigatorCatched");
+				World::Instance().GetTutorialManager().RemoveCurrentTutorial();
+			}
+			else if (GetTutorialManager().IsTutorialStateAvailable("WaitForCatchUncatchedInvestigator"))
+			{
+				World::Instance().GetTutorialManager().RemoveCurrentTutorial();
+				GetTutorialManager().RunTutorialFunction("FirstUncatchedInvestigatorCatched");
 			}
 
-			MessageManager::Instance().PutMessage(Message("DeleteInvestigatorWidget", investigator->GetUid()));
+			Message message("DeleteInvestigatorWidget");
+			message.variables.SetInt("UID", investigator->GetUid());
+			MessageManager::Instance().PutMessage(message);
 			it = _investigators.erase(it);
 			return true;
 		}
@@ -216,19 +209,20 @@ const World::Investigators& World::GetInvestigators(void) const
 	return _investigators;
 }
 
-void World::Update()
+void World::Update(float deltaTime)
 {
-	Utils::GameTime time = Utils::GetGameTime();
+	_currentTime += deltaTime;
 
 	CalcWorldCapturingState();
 
 	for (Investigator::Ptr investigator : _investigators)
 	{
-		investigator->UpdateToTime(time);
+		investigator->UpdateToTime(_currentTime);
 	}
 
-	_taskManager.UpdateToTime(time);
-	_cellsNetwork.UpdateToTime(time);
+	_taskManager.UpdateToTime(_currentTime);
+	_cellsNetwork.UpdateToTime(_currentTime);
+	_bonusOnMap.UpdateToTime(_currentTime);
 
 	MessageManager::Instance().CallAcceptMessages();
 
@@ -246,6 +240,21 @@ void World::Update()
 			break;
 		}
 	}
+}
+
+Utils::GameTime World::GetGameTime() const
+{
+	return _currentTime;
+}
+
+void World::InitTime(Utils::GameTime time)
+{
+	if (_currentTime != 0)
+	{
+		WRITE_WARN("Trying to init time twice");
+	}
+
+	_currentTime = time;
 }
 
 void World::SetPause(bool pause)
@@ -333,7 +342,7 @@ void World::InitUid(unsigned int uid)
 	}
 	else
 	{
-		Log::Instance().writeWarning("Trying to double initialize UId");
+		WRITE_WARN("Trying to double initialize UId");
 	}
 }
 
@@ -342,57 +351,10 @@ LuaInstance* World::GetLuaInst(void) const
 	return _luaScript;
 }
 
-void World::AddTutorial(Tutorial tutrorial)
-{
-	_tutorials.push(std::make_shared<Tutorial>(tutrorial));
-}
-
-bool World::IsHaveTutorial()
-{
-	return _tutorials.size() > 0;
-}
-
-Tutorial::WeakPtr World::GetCurrentTutorial()
-{
-	return _tutorials.front();
-}
-
-void World::RemoveCurrentTutorial()
-{
-	if (_tutorials.size() > 0)
-	{
-		if (!_tutorials.front()->luaCallback.empty())
-		{
-			luabind::call_function<void>(World::Instance().GetLuaInst()->GetLuaState()
-				, _tutorials.front()->luaCallback.c_str()
-				, 0);
-		}
-
-		_tutorials.pop();
-	}
-}
-
-std::string World::GetTutorialState()
-{
-	return _tutorialState;
-}
-
-void World::SetTutorialState(const std::string& state)
-{
-	_tutorialState = state;
-}
-
-void World::RunTutorialFunction(const std::string& function)
-{
-	luabind::call_function<void>(_luaScript->GetLuaState()
-		, std::string("RunTutorial_" + function).c_str()
-		, 0);
-}
-
 int World::GetExperienceForLevel(int level) const
 {
 	return luabind::call_function<int>(_luaScript->GetLuaState()
-		, std::string("ExperienceForLevel").c_str()
+		, "ExperienceForLevel"
 		, level
 		, 0);
 }
@@ -400,7 +362,7 @@ int World::GetExperienceForLevel(int level) const
 int World::GetLevelFromExperience(int experience) const
 {
 	return luabind::call_function<int>(_luaScript->GetLuaState()
-		, std::string("LevelFromExperience").c_str()
+		, "LevelFromExperience"
 		, experience
 		, 0);
 }
@@ -408,7 +370,16 @@ int World::GetLevelFromExperience(int experience) const
 float World::GetCellPursuedLevel(Cell* cell) const
 {
 	return luabind::call_function<float>(_luaScript->GetLuaState()
-		, std::string("CalcCellPursuedLevel").c_str()
+		, "CalcCellPursuedLevel"
 		, cell
 		, 0);
 }
+
+std::function<void()> World::GetBonusCallback(Cell::WeakPtr cell) const
+{
+	return std::function<void()>([cell, this](){
+		luabind::call_function<void>(_luaScript->GetLuaState()
+			, "BonusBehavior"
+			, cell.lock().get());
+	});
+} 

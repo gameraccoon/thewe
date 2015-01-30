@@ -11,23 +11,11 @@ GameInfo& GameInfo::Instance(void)
 	return singleGameInfo;
 }
 
-bool GameInfo::ParseXml(const std::string &filename)
+bool GameInfo::ParseXml(const std::string &xml)
 {
-	std::string fullPath;
-	std::string buffer;
-
-	fullPath = cocos2d::FileUtils::getInstance()->fullPathForFilename(filename);
-	buffer = cocos2d::FileUtils::getInstance()->getStringFromFile(fullPath);
-
-	if (buffer.empty())
-	{
-		Log::Instance().writeWarning("Failed to get file data: " + fullPath);
-		return false;
-	}
-
 	pugi::xml_document gameInfo;
 
-	if (gameInfo.load_buffer((const void *)buffer.c_str(), buffer.size()))
+	if (gameInfo.load_buffer((const void *)xml.c_str(), xml.size()))
 	{
 		pugi::xml_node root = gameInfo.first_child();
 		pugi::xml_node node = root.first_child();
@@ -60,7 +48,7 @@ bool GameInfo::ParseXml(const std::string &filename)
 			else
 			{
 				std::string message = "Failed to read global constant of name: " + name + ", type: " + type;
-				Log::Instance().writeWarning(message);
+				WRITE_WARN(message);
 			}
 
 			node = node.next_sibling();
@@ -70,7 +58,7 @@ bool GameInfo::ParseXml(const std::string &filename)
 	}
 	else
 	{
-		Log::Instance().writeWarning("Failed to parse file: " + fullPath);
+		WRITE_WARN("Failed to parse gameinfo");
 		return false;
 	}
 }

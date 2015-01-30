@@ -71,7 +71,7 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <Optimization>Disabled</Optimization>
-      <AdditionalIncludeDirectories>../dependencies/luabind-0.9.1;../dependencies/lua-5.1.5;../dependencies/pugixml-1.4;../dependencies/boost-1.55.0;../dependencies/sqlite3-3.8.7;$(EngineRoot)cocos\audio\include;$(EngineRoot)external;$(EngineRoot)external\chipmunk\include\chipmunk;$(EngineRoot);$(EngineRoot)extensions;..\Classes;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(EngineRoot)cocos/editor-support;../dependencies/luabind-0.9.1;../dependencies/lua-5.1.5;../dependencies/pugixml-1.4;../dependencies/boost-1.55.0;../dependencies/sqlite3-3.8.7;$(EngineRoot)cocos\audio\include;$(EngineRoot)external;$(EngineRoot)external\chipmunk\include\chipmunk;$(EngineRoot);$(EngineRoot)extensions;..\Classes;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>LUA_COMPAT_ALL;WIN32;_DEBUG;_WINDOWS;_USE_MATH_DEFINES;GL_GLEXT_PROTOTYPES;CC_ENABLE_CHIPMUNK_INTEGRATION=1;COCOS2D_DEBUG=1;_CRT_SECURE_NO_WARNINGS;_SCL_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <MinimalRebuild>false</MinimalRebuild>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
@@ -84,7 +84,7 @@
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
     <Link>
-      <AdditionalDependencies>libExtensions.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>libExtensions.lib;libCocosStudio.lib;libGUI.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <OutputFile>$(OutDir)TheWe_debug.exe</OutputFile>
       <AdditionalLibraryDirectories>$(SolutionDir)Libraries_$(Configuration).win32\;$(OutDir);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -104,7 +104,7 @@ xcopy /Y /Q "$(EngineRoot)external\websockets\prebuilt\win32\*.lib" "$(SolutionD
     <ClCompile>
       <Optimization>MaxSpeed</Optimization>
       <IntrinsicFunctions>true</IntrinsicFunctions>
-      <AdditionalIncludeDirectories>../dependencies/luabind-0.9.1;../dependencies/lua-5.1.5;../dependencies/pugixml-1.4;../dependencies/boost-1.55.0;../dependencies/sqlite3-3.8.7;$(EngineRoot)cocos\audio\include;$(EngineRoot)external;$(EngineRoot)external\chipmunk\include\chipmunk;$(EngineRoot);$(EngineRoot)extensions;..\Classes;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(EngineRoot)cocos/editor-support;../dependencies/luabind-0.9.1;../dependencies/lua-5.1.5;../dependencies/pugixml-1.4;../dependencies/boost-1.55.0;../dependencies/sqlite3-3.8.7;$(EngineRoot)cocos\audio\include;$(EngineRoot)external;$(EngineRoot)external\chipmunk\include\chipmunk;$(EngineRoot);$(EngineRoot)extensions;..\Classes;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;_USE_MATH_DEFINES;GL_GLEXT_PROTOTYPES;CC_ENABLE_CHIPMUNK_INTEGRATION=1;_CRT_SECURE_NO_WARNINGS;_SCL_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <FunctionLevelLinking>true</FunctionLevelLinking>
@@ -116,7 +116,7 @@ xcopy /Y /Q "$(EngineRoot)external\websockets\prebuilt\win32\*.lib" "$(SolutionD
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
     <Link>
-      <AdditionalDependencies>libcurl_imp.lib;websockets.lib;libExtensions.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>libcurl_imp.lib;websockets.lib;libExtensions.lib;libCocosStudio.lib;libGUI.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <OutputFile>$(OutDir)TheWe.exe</OutputFile>
       <AdditionalLibraryDirectories>$(SolutionDir)Libraries_$(Configuration).win32\;$(OutDir);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -137,6 +137,8 @@ xcopy /Y /Q "$(EngineRoot)external\websockets\prebuilt\win32\*.lib" "$(SolutionD
   <ItemGroup>
     <ClCompile Include="..\Classes\Application.cpp" />
     <ClCompile Include="..\Classes\ArbitraryHull.cpp" />
+    <ClCompile Include="..\Classes\BonusMapWidget.cpp" />
+    <ClCompile Include="..\Classes\BonusOnMap.cpp" />
     <ClCompile Include="..\Classes\Cell.cpp" />
     <ClCompile Include="..\Classes\CellGameInterface.cpp" />
     <ClCompile Include="..\Classes\CellInfoMenu.cpp" />
@@ -145,15 +147,17 @@ xcopy /Y /Q "$(EngineRoot)external\websockets\prebuilt\win32\*.lib" "$(SolutionD
     <ClCompile Include="..\Classes\CellNetWidget.cpp" />
     <ClCompile Include="..\Classes\CellsNetLayer.cpp" />
     <ClCompile Include="..\Classes\CellsNetwork.cpp" />
-    <ClCompile Include="..\Classes\CellSpinoffMenu.cpp" />
     <ClCompile Include="..\Classes\CellTaskInfoMenu.cpp" />
     <ClCompile Include="..\Classes\CellTasksMenu.cpp" />
+    <ClCompile Include="..\Classes\CircleMenu.cpp" />
     <ClCompile Include="..\Classes\Color.cpp" />
     <ClCompile Include="..\Classes\Drawable.cpp" />
     <ClCompile Include="..\Classes\EditorLayer.cpp" />
+    <ClCompile Include="..\Classes\EffectsLayer.cpp" />
     <ClCompile Include="..\Classes\GameSavesManager.cpp" />
     <ClCompile Include="..\Classes\Investigator.cpp" />
     <ClCompile Include="..\Classes\InvestigatorMapWidget.cpp" />
+    <ClCompile Include="..\Classes\Localization.cpp" />
     <ClCompile Include="..\Classes\MessageManager.cpp" />
     <ClCompile Include="..\Classes\MiscUtils.cpp" />
     <ClCompile Include="..\Classes\GameInfo.cpp" />
@@ -164,23 +168,41 @@ xcopy /Y /Q "$(EngineRoot)external\websockets\prebuilt\win32\*.lib" "$(SolutionD
     <ClCompile Include="..\Classes\MainMenuScene.cpp" />
     <ClCompile Include="..\Classes\MapGuiLayer.cpp" />
     <ClCompile Include="..\Classes\MapProjector.cpp" />
+    <ClCompile Include="..\Classes\MultipleImageSprite.cpp" />
     <ClCompile Include="..\Classes\NotificationMessageLayer.cpp" />
     <ClCompile Include="..\Classes\NotificationMessageManager.cpp" />
     <ClCompile Include="..\Classes\NotificationMessageWidget.cpp" />
     <ClCompile Include="..\Classes\ProgressBar.cpp" />
+    <ClCompile Include="..\Classes\InvestigatorTapButton.cpp" />
     <ClCompile Include="..\Classes\Region.cpp" />
+    <ClCompile Include="..\Classes\RelinkDragAndDrop.cpp" />
+    <ClCompile Include="..\Classes\ScreenBlackoutWidget.cpp" />
     <ClCompile Include="..\Classes\SessionEndScreen.cpp" />
+    <ClCompile Include="..\Classes\SpinoffDragAndDrop.cpp" />
     <ClCompile Include="..\Classes\SplashScreenScene.cpp" />
+    <ClCompile Include="..\Classes\Spline.cpp" />
     <ClCompile Include="..\Classes\SqliteConnection.cpp" />
     <ClCompile Include="..\Classes\SqliteDataReader.cpp" />
+    <ClCompile Include="..\Classes\StripEffect.cpp" />
     <ClCompile Include="..\Classes\Task.cpp" />
     <ClCompile Include="..\Classes\TaskManager.cpp" />
+    <ClCompile Include="..\Classes\TaskRewardMapWidget.cpp" />
+    <ClCompile Include="..\Classes\ThreadUtils.cpp" />
     <ClCompile Include="..\Classes\Town.cpp" />
     <ClCompile Include="..\Classes\TownMapWidget.cpp" />
     <ClCompile Include="..\Classes\TransitionZoomFade.cpp" />
-    <ClCompile Include="..\Classes\Tutorial.cpp" />
     <ClCompile Include="..\Classes\TutorialLayer.cpp" />
+    <ClCompile Include="..\Classes\TutorialManager.cpp" />
     <ClCompile Include="..\Classes\TutorialWidget.cpp" />
+    <ClCompile Include="..\Classes\TutorialWidgetAfterFirstCell.cpp" />
+    <ClCompile Include="..\Classes\TutorialWidgetInfluence.cpp" />
+    <ClCompile Include="..\Classes\TutorialWidgetInvestigationStarted.cpp" />
+    <ClCompile Include="..\Classes\TutorialWidgetInvestigatorUncatched.cpp" />
+    <ClCompile Include="..\Classes\TutorialWidgetSpinoff.cpp" />
+    <ClCompile Include="..\Classes\TutorialWidgetStartFirstTask.cpp" />
+    <ClCompile Include="..\Classes\TutorialWidgetFirstCell.cpp" />
+    <ClCompile Include="..\Classes\TutorialWidgetTextual.cpp" />
+    <ClCompile Include="..\Classes\TutorialWidgetWelcome.cpp" />
     <ClCompile Include="..\Classes\UserMessage.cpp" />
     <ClCompile Include="..\Classes\Vector2.cpp" />
     <ClCompile Include="..\Classes\World.cpp" />
@@ -241,6 +263,8 @@ xcopy /Y /Q "$(EngineRoot)external\websockets\prebuilt\win32\*.lib" "$(SolutionD
   <ItemGroup>
     <ClInclude Include="..\Classes\Application.h" />
     <ClInclude Include="..\Classes\ArbitraryHull.h" />
+    <ClInclude Include="..\Classes\BonusMapWidget.h" />
+    <ClInclude Include="..\Classes\BonusOnMap.h" />
     <ClInclude Include="..\Classes\Cell.h" />
     <ClInclude Include="..\Classes\CellGameInterface.h" />
     <ClInclude Include="..\Classes\CellInfoMenu.h" />
@@ -249,16 +273,18 @@ xcopy /Y /Q "$(EngineRoot)external\websockets\prebuilt\win32\*.lib" "$(SolutionD
     <ClInclude Include="..\Classes\CellNetWidget.h" />
     <ClInclude Include="..\Classes\CellsNetLayer.h" />
     <ClInclude Include="..\Classes\CellsNetwork.h" />
-    <ClInclude Include="..\Classes\CellSpinoffMenu.h" />
     <ClInclude Include="..\Classes\CellTaskInfoMenu.h" />
     <ClInclude Include="..\Classes\CellTasksMenu.h" />
+    <ClInclude Include="..\Classes\CircleMenu.h" />
     <ClInclude Include="..\Classes\Color.h" />
     <ClInclude Include="..\Classes\DbConnection.h" />
     <ClInclude Include="..\Classes\Drawable.h" />
     <ClInclude Include="..\Classes\EditorLayer.h" />
+    <ClInclude Include="..\Classes\EffectsLayer.h" />
     <ClInclude Include="..\Classes\GameSavesManager.h" />
     <ClInclude Include="..\Classes\Investigator.h" />
     <ClInclude Include="..\Classes\InvestigatorMapWidget.h" />
+    <ClInclude Include="..\Classes\Localization.h" />
     <ClInclude Include="..\Classes\MessageManager.h" />
     <ClInclude Include="..\Classes\MiscUtils.h" />
     <ClInclude Include="..\Classes\GameInfo.h" />
@@ -268,24 +294,43 @@ xcopy /Y /Q "$(EngineRoot)external\websockets\prebuilt\win32\*.lib" "$(SolutionD
     <ClInclude Include="..\Classes\MainMenuScene.h" />
     <ClInclude Include="..\Classes\MapGuiLayer.h" />
     <ClInclude Include="..\Classes\MapProjector.h" />
+    <ClInclude Include="..\Classes\MultipleImageSprite.h" />
     <ClInclude Include="..\Classes\NotificationMessageLayer.h" />
     <ClInclude Include="..\Classes\NotificationMessageManager.h" />
     <ClInclude Include="..\Classes\NotificationMessageWidget.h" />
     <ClInclude Include="..\Classes\ProgressBar.h" />
+    <ClInclude Include="..\Classes\InvestigatorTapButton.h" />
     <ClInclude Include="..\Classes\Region.h" />
+    <ClInclude Include="..\Classes\RelinkDragAndDrop.h" />
+    <ClInclude Include="..\Classes\ResourceCache.h" />
     <ClInclude Include="..\Classes\SessionEndScreen.h" />
-    <ClInclude Include="..\Classes\SettingsManager.h" />
+    <ClInclude Include="..\Classes\SpinoffDragAndDrop.h" />
     <ClInclude Include="..\Classes\SplashScreenScene.h" />
+    <ClInclude Include="..\Classes\Spline.h" />
     <ClInclude Include="..\Classes\SqlDataReader.h" />
     <ClInclude Include="..\Classes\SqliteConnection.h" />
     <ClInclude Include="..\Classes\SqliteDataReader.h" />
+    <ClInclude Include="..\Classes\StripEffect.h" />
     <ClInclude Include="..\Classes\Task.h" />
     <ClInclude Include="..\Classes\TaskManager.h" />
+    <ClInclude Include="..\Classes\TaskRewardMapWidget.h" />
+    <ClInclude Include="..\Classes\ThreadUtils.h" />
     <ClInclude Include="..\Classes\Town.h" />
     <ClInclude Include="..\Classes\TownMapWidget.h" />
     <ClInclude Include="..\Classes\TransitionZoomFade.h" />
     <ClInclude Include="..\Classes\Tutorial.h" />
     <ClInclude Include="..\Classes\TutorialLayer.h" />
+    <ClInclude Include="..\Classes\TutorialManager.h" />
+    <ClInclude Include="..\Classes\ScreenBlackoutWidget.h" />
+    <ClInclude Include="..\Classes\TutorialWidgetAfterFirstCell.h" />
+    <ClInclude Include="..\Classes\TutorialWidgetInfluence.h" />
+    <ClInclude Include="..\Classes\TutorialWidgetInvestigationStarted.h" />
+    <ClInclude Include="..\Classes\TutorialWidgetInvestigatorUncatched.h" />
+    <ClInclude Include="..\Classes\TutorialWidgetSpinoff.h" />
+    <ClInclude Include="..\Classes\TutorialWidgetStartFirstTask.h" />
+    <ClInclude Include="..\Classes\TutorialWidgetFirstCell.h" />
+    <ClInclude Include="..\Classes\TutorialWidgetTextual.h" />
+    <ClInclude Include="..\Classes\TutorialWidgetWelcome.h" />
     <ClInclude Include="..\Classes\TutorialWidget.h" />
     <ClInclude Include="..\Classes\UserMessage.h" />
     <ClInclude Include="..\Classes\Vector2.h" />

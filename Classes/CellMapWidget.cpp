@@ -1,96 +1,26 @@
 #include "CellMapWidget.h"
 
 #include "World.h"
+#include "GameInfo.h"
 #include "Log.h"
+#include "RelinkDragAndDrop.h"
+#include "WorldMapLayer.h"
 
-class CellMapImage : public cocos2d::Node
-{
-public:
-	CellMapImage(Cell::State state) : _state(state)
-	{
-		init();
-		SwitchState(_state);
-	}
-
-	virtual bool init(void) override
-	{
-		_stateNormal = cocos2d::Sprite::create("cell.png");
-		_stateNormal->setPosition(0.0f, 0.0f);
-		_stateNormal->setVisible(false);
-
-		_stateArrested = cocos2d::Sprite::create("cell_arrested.png");
-		_stateArrested->setPosition(0.0f, 0.0f);
-		_stateArrested->setVisible(false);
-
-		addChild(_stateNormal, 0);
-		addChild(_stateArrested, 1);
-
-		return true;
-	}
-
-	void SwitchState(Cell::State state)
-	{
-		_state = state;
-
-		switch (_state)
-		{
-		case Cell::State::CONSTRUCTION:
-		case Cell::State::DESTRUCTION:
-		case Cell::State::AUTONOMY:
-		case Cell::State::READY:
-			_stateNormal->setVisible(true);
-			_stateArrested->setVisible(false);
-			break;
-		case Cell::State::ARRESTED:
-			_stateNormal->setVisible(false);
-			_stateArrested->setVisible(true);
-			break;
-		default:
-			Log::Instance().writeWarning("Unknown cell state");
-			break;
-		}
-	}
-
-	cocos2d::Sprite* GetCurrentStateImage(void) const
-	{
-		switch (_state)
-		{
-		case Cell::State::CONSTRUCTION:
-		case Cell::State::DESTRUCTION:
-		case Cell::State::AUTONOMY:
-		case Cell::State::READY:
-			return _stateNormal;
-			break;
-		case Cell::State::ARRESTED:
-			return _stateArrested;
-			break;
-		default:
-			Log::Instance().writeWarning("Unknown cell state");
-			return nullptr;
-			break;
-		}
-	}
-
-private:
-	cocos2d::Sprite *_stateNormal;
-	cocos2d::Sprite *_stateArrested;
-
-	Cell::State _state;
-};
-
-CellMapWidget::CellMapWidget(Cell::WeakPtr cell)
-	: _cell(cell)
-	, _hitAreaBeginX(0.0f)
-	, _hitAreaBeginY(0.0f)
-	, _hitAreaEndX(1.0f)
-	, _hitAreaEndY(1.0f)
+CellMapWidget::CellMapWidget(WorldMapLayer *worldMapLayer, MapProjector *projector, Cell::WeakPtr cell)
+	: _worldMapLayer(worldMapLayer)
+	, _projector(projector)
+	, _cell(cell)
+	, _hitArea(0.0f, 0.0f, 1.0f, 1.0f)
 	, _relinkMarkYAngle(0.0f)
 	, _projectorUid(-1)
+	, _isRelinkMode(false)
 	, _cellUid(cell.lock()->GetUid())
 	, _lastCellState(Cell::State::READY)
 	, _cellMapSprite(nullptr)
 	, _cellCommonProgressBar(nullptr)
 {
+	MessageManager::Instance().RegisterReceiver(this, "ShowBonus");
+	MessageManager::Instance().RegisterReceiver(this, "PushTaskRewardOnMap");
 	init();
 }
 
@@ -105,40 +35,39 @@ bool CellMapWidget::init(void)
 		return false;
 	}
 
-	_cellMapSprite = new CellMapImage(_cell.lock()->GetInfo().state);
+	cocos2d::EventListenerTouchAllAtOnce *touch = cocos2d::EventListenerTouchAllAtOnce::create();
+	touch->onTouchesBegan = CC_CALLBACK_2(CellMapWidget::TouchBegan, this);
+	touch->onTouchesEnded = CC_CALLBACK_2(CellMapWidget::TouchEnded, this);
+	cocos2d::Director::getInstance()->getEventDispatcher()->addEventListenerWithSceneGraphPriority(touch, this);
+
+	_cellMapSprite = MultipleImageSprite::create();
 	_cellMapSprite->setPosition(0.0f, 0.0f);
 	_cellMapSprite->setScale(1.0f);
-	_cellMapSprite->autorelease();
+	_cellMapSprite->AddImage("normal", "cell.png");
+	_cellMapSprite->AddImage("arrested", "cell_arrested.png");
+	_cellMapSprite->SetCurrentImage("normal");
 
-	_cellMapTaskProgressBar = new RoundProgressBar("cell_overlay.png", 1.0f);
+	_cellMapTaskProgressBar = RoundProgressBar::create("cell_overlay.png", 1.0f);
 	_cellMapTaskProgressBar->SetProgressImmediately(0.0f);
 	_cellMapTaskProgressBar->setPosition(0.0f, 0.0f);
 	_cellMapTaskProgressBar->setVisible(false);
 	_cellMapTaskProgressBar->ToggleReverse(true);
-	_cellMapTaskProgressBar->autorelease();
 
-	_cellCommonProgressBar = new RoundProgressBar("cell.png", 0.8f);
+	_cellCommonProgressBar = RoundProgressBar::create("cell.png", 0.8f);
 	_cellCommonProgressBar->setPosition(0.0f, 0.0f);
 	_cellCommonProgressBar->SetProgressImmediately(0.0f);
 
-	CellMapPopupButton::Settings s;
-	s.normalStateImage = "marker_crosshair.png";
-	s.pressedStateImage = "marker_crosshair_pressed.png";
-	_popupCatchInvestigator = new CellMapPopupButton(s);
+	_popupCatchInvestigator = InvestigatorTapButton::create();
 	_popupCatchInvestigator->setPosition(0.0f, 0.0f);
-	_popupCatchInvestigator->setScale(6.0f);
+	_popupCatchInvestigator->setScale(8.5f);
 
-	_relinkableMark = cocos2d::Sprite::create("relink-mark.png");
-	_relinkableMark->setPosition(0.0f, 155.0f);
-	_relinkableMark->setScale(1.0f);
-	_relinkableMark->setVisible(false);
-	
 	addChild(_cellMapSprite, DrawOrder::SPRITE);
 	addChild(_cellMapTaskProgressBar, DrawOrder::PROGRESS);
 	addChild(_cellCommonProgressBar, DrawOrder::PROGRESS);
 	addChild(_popupCatchInvestigator, DrawOrder::BUTTON);
-	addChild(_relinkableMark, DrawOrder::BUTTON);
 	scheduleUpdate();
+
+	setContentSize(_cellMapTaskProgressBar->getContentSize());
 
 	return true;
 }
@@ -152,10 +81,22 @@ void CellMapWidget::update(float dt)
 		return;
 	}
 
+	if (_popupCatchInvestigator)
+	{
+		_popupCatchInvestigator->update(dt);
+	}
+
 	Utils::GameTime currentTime = Utils::GetGameTime();
 	cell->UpdateToTime(currentTime);
 
-	_relinkableMark->setVisible(World::Instance().GetCellsNetwork().IsCellRelinkable(cell));
+	if (!_isRelinkMode && World::Instance().GetCellsNetwork().IsCellRelinkable(_cell))
+	{
+		RelinkDragAndDrop *relink = new RelinkDragAndDrop(this, _worldMapLayer, _projector, _cell);
+		relink->setPosition(0.0f, 0.0f);
+		relink->autorelease();
+		_worldMapLayer->AddEffectGameField(relink);
+		_isRelinkMode = true;
+	}
 
 	if (cell->IsState(Cell::State::CONSTRUCTION))
 	{
@@ -173,7 +114,7 @@ void CellMapWidget::update(float dt)
 	}
 	else if (cell->IsState(Cell::State::ARRESTED) && _lastCellState == Cell::State::READY)
 	{
-		_cellMapSprite->SwitchState(Cell::State::ARRESTED);
+		_cellMapSprite->SetCurrentImage("arrested");
 		_lastCellState = Cell::State::ARRESTED;
 	}
 	else if (cell->IsState(Cell::State::AUTONOMY))
@@ -184,9 +125,6 @@ void CellMapWidget::update(float dt)
 			_cellMapTaskProgressBar->SetProgressImmediately(progress * 100.0f);
 			_cellMapTaskProgressBar->setVisible(true);
 		}
-
-		_relinkMarkYAngle += 180.0f * dt;
-		_relinkableMark->setRotation3D(cocos2d::Vec3(0.0f, _relinkMarkYAngle, 0.0f));
 	}
 	else if (cell->IsState(Cell::State::DESTRUCTION))
 	{
@@ -202,6 +140,10 @@ void CellMapWidget::update(float dt)
 
 	if (cell->IsState(Cell::State::READY))
 	{
+		if (_isRelinkMode) {
+			_isRelinkMode = false;
+		}
+
 		if (cell->IsCurrentTaskExists())
 		{
 			Task::Ptr task = cell->getCurrentTask().lock();
@@ -218,31 +160,84 @@ void CellMapWidget::update(float dt)
 	}
 }
 
-void CellMapWidget::ShowInvestigatorLaunchButton(cocos2d::ccMenuCallback onCatchCallback)
+void CellMapWidget::TouchBegan(const std::vector<cocos2d::Touch *> &touches, cocos2d::Event *event)
 {
-	_popupCatchInvestigator->SetOnPressCallback(onCatchCallback);
-	_popupCatchInvestigator->Appear(10.0f);
+	Vector2 location = convertTouchToNodeSpace(touches.at(0));
+	if (_cellMapSprite->GetCurrentImage()->getBoundingBox().containsPoint(location)) {
+		CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("tap-single.wav");
+	}
 }
 
-void CellMapWidget::HideInvestigatorLaunchButton(bool hideWithWarning)
+void CellMapWidget::TouchEnded(const std::vector<cocos2d::Touch *> &touches, cocos2d::Event *event)
 {
-	_popupCatchInvestigator->Disappear(hideWithWarning);
+	Vector2 location = convertTouchToNodeSpace(touches.at(0));
+	if (_cellMapSprite->GetCurrentImage()->getBoundingBox().containsPoint(location)) {
+		/*for (TaskRewardMapWidget *reward : _taskRewardsOnMap)
+		{
+			reward->PickReward();
+		}*/
+	}
 }
 
-void CellMapWidget::SetHitArea(float beginX, float beginY, float endX, float endY)
+void CellMapWidget::AcceptMessage(const Message &message)
 {
-	_hitAreaBeginX = beginX;
-	_hitAreaEndX = endX;
-	_hitAreaBeginY = beginY;
-	_hitAreaEndY = endY;
+	if (message.is("ShowBonus") && (unsigned int)message.variables.GetInt("CELL_UID") == _cell.lock()->GetUid())
+	{
+		BonusMapWidget *bonus = new BonusMapWidget(this, _cell,
+												  Vector2(0.0f, 50.0f),
+												  GameInfo::Instance().GetTime("BONUS_LIVE_TIME"));
+		bonus->SetBonusBehavior(World::Instance().GetBonusCallback(_cell));
+		bonus->autorelease();
+		_worldMapLayer->AddEffectGameField(bonus);
+	}
+	else if (message.is("PushTaskRewardOnMap") && (unsigned int)message.variables.GetInt("CELL_UID") == _cell.lock()->GetUid())
+	{
+		Task::Info task_info = World::Instance().GetTaskManager().FindTaskById(message.variables.GetString("TASK_ID"));
+		TaskRewardMapWidget *reward = new TaskRewardMapWidget(
+			this,
+			_cell,
+			task_info,
+			message.variables.GetTime("WAIT_TIME"),
+			cocos2d::Vec2(0.0f, 185.0f),
+			2.7f);
+		reward->autorelease();
+		_worldMapLayer->AddEffectGameField(reward);
+	}
 }
 
-void CellMapWidget::GetHitArea(float &beginX, float &endX, float &beginY, float &endY) const
+void CellMapWidget::ShowInvestigatorLaunchButton(InvestigatorTapButton::Callback sucessCallback, InvestigatorTapButton::Callback failureCallback)
 {
-	beginX = _hitAreaBeginX;
-	endX = _hitAreaEndX;
-	beginY = _hitAreaBeginY;
-	endY = _hitAreaEndY;
+	float tickChange;
+	float tapChange;
+	tickChange = GameInfo::Instance().GetFloat("INVESTIGATOR_CATCH_TICK_CHANGE");
+	tapChange = GameInfo::Instance().GetFloat("INVESTIGATOR_CATCH_TAP_CHANGE");
+	
+	if (World::Instance().GetTutorialManager().IsTutorialStateAvailable("WaitForFirstInvestigator"))
+	{
+		World::Instance().GetTutorialManager().RunTutorialFunction("FirstInvestigationStarted");
+		tickChange = GameInfo::Instance().GetFloat("INVESTIGATOR_TUTORIAL_CATCH_TICK_CHANGE");
+	}
+
+	_popupCatchInvestigator->setSuccessCallback(sucessCallback);
+	_popupCatchInvestigator->setFailureCallback(failureCallback);
+	_popupCatchInvestigator->appear(10.0f);
+	_popupCatchInvestigator->initRounding(tickChange, tapChange);
+	_popupCatchInvestigator->startRounding(1.0f);
+}
+
+void CellMapWidget::HideInvestigatorLaunchButton()
+{
+	_popupCatchInvestigator->hide();
+}
+
+void CellMapWidget::SetHitArea(const cocos2d::Rect& hitArea)
+{
+	_hitArea = hitArea;
+}
+
+cocos2d::Rect CellMapWidget::GetHitArea() const
+{
+	return _hitArea;
 }
 
 void CellMapWidget::SetProjectorUid(int uid)
@@ -262,7 +257,7 @@ int CellMapWidget::GetCellUid(void) const
 
 const cocos2d::Rect& CellMapWidget::GetCellRect(void) const
 {
-	return _cellMapSprite->GetCurrentStateImage()->getTextureRect();
+	return _cellMapSprite->GetCurrentImage()->getTextureRect();
 }
 
 Cell::WeakPtr CellMapWidget::GetCell(void) const

@@ -15,6 +15,8 @@ LOCAL_MODULE_FILENAME := libcocos2dcpp
 LOCAL_SRC_FILES := hellocpp/main.cpp \
 				   	../../Classes/Application.cpp \
 				   	../../Classes/ArbitraryHull.cpp \
+				   	../../Classes/BonusMapWidget.cpp \
+				   	../../Classes/BonusOnMap.cpp \
 				   	../../Classes/Cell.cpp \
 				   	../../Classes/CellGameInterface.cpp \
 				   	../../Classes/CellInfoMenu.cpp \
@@ -23,18 +25,21 @@ LOCAL_SRC_FILES := hellocpp/main.cpp \
 				   	../../Classes/CellNetWidget.cpp \
 				   	../../Classes/CellsNetLayer.cpp \
 				   	../../Classes/CellsNetwork.cpp \
-				   	../../Classes/CellSpinoffMenu.cpp \
 				   	../../Classes/CellTasksMenu.cpp \
 				   	../../Classes/CellTaskInfoMenu.cpp \
+				   	../../Classes/CircleMenu.cpp \
 				   	../../Classes/Color.cpp \
 				   	../../Classes/Drawable.cpp \
 				   	../../Classes/EditorLayer.cpp \
+				   	../../Classes/EffectsLayer.cpp \
 				   	../../Classes/GameInfo.cpp \
 				   	../../Classes/GameSavesManager.cpp \
 				   	../../Classes/GameScene.cpp \
 				   	../../Classes/Investigator.cpp \
 				   	../../Classes/InvestigatorMapWidget.cpp \
+				   	../../Classes/InvestigatorTapButton.cpp \
 				   	../../Classes/Log.cpp \
+				   	../../Classes/Localization.cpp \
 				   	../../Classes/LuaBindings.cpp \
 				   	../../Classes/LuaInstance.cpp \
 				   	../../Classes/MainMenuScene.cpp \
@@ -42,23 +47,40 @@ LOCAL_SRC_FILES := hellocpp/main.cpp \
 				   	../../Classes/MapProjector.cpp \
 				   	../../Classes/MessageManager.cpp \
 				   	../../Classes/MiscUtils.cpp \
+				   	../../Classes/MultipleImageSprite.cpp \
 				   	../../Classes/NotificationMessageManager.cpp \
 				   	../../Classes/NotificationMessageLayer.cpp \
 				   	../../Classes/NotificationMessageWidget.cpp \
 				   	../../Classes/ProgressBar.cpp \
 				   	../../Classes/Region.cpp \
+				   	../../Classes/RelinkDragAndDrop.cpp \
+				   	../../Classes/ScreenBlackoutWidget.cpp \
 				   	../../Classes/SessionEndScreen.cpp \
+				   	../../Classes/SpinoffDragAndDrop.cpp \
 				   	../../Classes/SplashScreenScene.cpp \
+				   	../../Classes/Spline.cpp \
 				   	../../Classes/SqliteConnection.cpp \
 				   	../../Classes/SqliteDataReader.cpp \
+				   	../../Classes/StripEffect.cpp \
 				   	../../Classes/Task.cpp \
 				   	../../Classes/TaskManager.cpp \
+				   	../../Classes/TaskRewardMapWidget.cpp \
+				   	../../Classes/ThreadUtils.cpp \
 				   	../../Classes/Town.cpp \
 				   	../../Classes/TownMapWidget.cpp \
 				   	../../Classes/TransitionZoomFade.cpp \
-				   	../../Classes/Tutorial.cpp \
 				   	../../Classes/TutorialLayer.cpp \
+				   	../../Classes/TutorialManager.cpp \
 				   	../../Classes/TutorialWidget.cpp \
+				   	../../Classes/TutorialWidgetWelcome.cpp \
+				   	../../Classes/TutorialWidgetAfterFirstCell.cpp \
+				   	../../Classes/TutorialWidgetFirstCell.cpp \
+				   	../../Classes/TutorialWidgetInfluence.cpp \
+				   	../../Classes/TutorialWidgetStartFirstTask.cpp \
+				   	../../Classes/TutorialWidgetTextual.cpp \
+				   	../../Classes/TutorialWidgetSpinoff.cpp \
+				   	../../Classes/TutorialWidgetInvestigationStarted.cpp \
+				   	../../Classes/TutorialWidgetInvestigatorUncatched.cpp \
 				   	../../Classes/UserMessage.cpp \
 				   	../../Classes/Vector2.cpp \
 				   	../../Classes/World.cpp \
@@ -125,7 +147,8 @@ LOCAL_C_INCLUDES := $(LOCAL_PATH)/../../Classes \
 					$(LOCAL_PATH)/../../dependencies/luabind-0.9.1 \
 					$(LOCAL_PATH)/../../dependencies/pugixml-1.4 \
 					$(LOCAL_PATH)/../../dependencies/sqlite3-3.8.7 \
-					$(LOCAL_PATH)/../../cocos2d/extensions
+					$(LOCAL_PATH)/../../cocos2d/extensions \
+					$(LOCAL_PATH)/../../cocos2d/cocos/editor-support
 
 LOCAL_WHOLE_STATIC_LIBRARIES := cocos2dx_static
 LOCAL_WHOLE_STATIC_LIBRARIES += cocosdenshion_static
@@ -133,7 +156,7 @@ LOCAL_WHOLE_STATIC_LIBRARIES += cocosdenshion_static
 # LOCAL_WHOLE_STATIC_LIBRARIES += box2d_static
 # LOCAL_WHOLE_STATIC_LIBRARIES += cocosbuilder_static
 # LOCAL_WHOLE_STATIC_LIBRARIES += spine_static
-# LOCAL_WHOLE_STATIC_LIBRARIES += cocostudio_static
+LOCAL_WHOLE_STATIC_LIBRARIES += cocostudio_static
 # LOCAL_WHOLE_STATIC_LIBRARIES += cocos_network_static
 LOCAL_WHOLE_STATIC_LIBRARIES += cocos_extension_static
 
@@ -146,6 +169,6 @@ $(call import-module,audio/android)
 # $(call import-module,Box2D)
 # $(call import-module,editor-support/cocosbuilder)
 # $(call import-module,editor-support/spine)
-# $(call import-module,editor-support/cocostudio)
+$(call import-module,editor-support/cocostudio)
 # $(call import-module,network)
 $(call import-module,extensions)

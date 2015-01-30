@@ -1,38 +1,13 @@
 #include "CellInfoMenu.h"
 
+#include "Log.h"
+#include "Localization.h"
+
 CellInfoMenu::CellInfoMenu(Cell::WeakPtr cell, CellMenuSelector *selector)
 	: _cell(cell)
 	, _cellMenuSelector(selector)
-	, _taskProgressBar(nullptr)
 {
 	init();
-}
-
-cocos2d::Label *CreateTTFLabel(cocos2d::Node *parent,
-							   const std::string text,
-							   Vector2 position,
-							   Vector2 anchorPoint = cocos2d::Vec2(0.0f, 0.0f),
-							   cocos2d::TextHAlignment aligment = cocos2d::TextHAlignment::LEFT)
-{
-	cocos2d::Label *label = cocos2d::Label::createWithBMFont("arial-26-en-ru.fnt", text, aligment);
-	label->setAnchorPoint(anchorPoint);
-	label->setPosition(position);
-	parent->addChild(label, 1);
-	return label;
-}
-
-SquareProgressBar *CreateProgressBar(cocos2d::Node *parent,
-									 Vector2 position,
-									 Vector2 size,
-									 Color color,
-									 float progress)
-{
-	SquareProgressBar *progressBar = new SquareProgressBar(size.x, size.y, color);
-	progressBar->setPosition(position);
-	progressBar->autorelease();
-	progressBar->SetProgressPercentage(progress * 100.0f);
-	parent->addChild(progressBar, 1);
-	return progressBar;
 }
 
 bool CellInfoMenu::init(void)
@@ -50,128 +25,59 @@ bool CellInfoMenu::init(void)
 	cocos2d::Point origin = cocos2d::Director::getInstance()->getVisibleOrigin();
 	cocos2d::Point center = origin + screen / 2.0f;
 
-	cocos2d::MenuItemImage *closeButton;
-	{
-		using namespace cocos2d;
-		closeButton = MenuItemImage::create("cell-tasks-menu-close-normal.png",
-			"cell-tasks-menu-close-pressed.png", CC_CALLBACK_1(CellInfoMenu::_OnCloseCallback, this));
-	}
-
-	cocos2d::Menu *menu = cocos2d::Menu::create(closeButton, nullptr);
-	menu->setPosition(center);
-	cocos2d::Sprite *background = cocos2d::Sprite::create("cell-tasks-menu.png");
-	background->setPosition(center);
-	cocos2d::TTFConfig ttfConfig("arial.ttf", 18);
-	cocos2d::Label *labelTitle = cocos2d::Label::createWithTTF(ttfConfig, "Cell Info", cocos2d::TextHAlignment::CENTER);
-
-	float close_x = background->getContentSize().width  / 2 - closeButton->getContentSize().width  + 23.0f;
-	float close_y = background->getContentSize().height / 2 - closeButton->getContentSize().height + 17.0f;
-	closeButton->setAnchorPoint(Vector2(0.5f, 0.5f));
-	closeButton->setPosition(close_x, close_y);
-
-	float textPadding = 27.0f;
-
-	float title_x = center.x;
-	float title_y = center.y + background->getContentSize().height / 2 - 16.0f;
-	labelTitle->setPosition(title_x, title_y);
-	labelTitle->setColor(cocos2d::Color3B(255, 255, 255));
-	
-	float info_x = center.x - background->getContentSize().width  / 2.0f + textPadding;
-	float info_y = center.y + background->getContentSize().height / 2.0f - 75.0f;
-
-	_levelProgressBar = CreateProgressBar(this, Vector2(center.x - 150.0f, info_y - 2.0f),
-										  Vector2(300.0f, 30.0f), Color(0.0f, 0.5f, 0.0f, 1.0f),
-										  0.0f);
-	_labelLevelInfo = CreateTTFLabel(this, "", Vector2(center.x, info_y), Vector2(0.5f, 0.0f));
-
-	info_y -= 45.0f;
-	_labelMembersInfo = CreateTTFLabel(this, "", Vector2(info_x, info_y));
-	_labelCashInfo = CreateTTFLabel(this, "",
-									Vector2(info_x + background->getContentSize().width - textPadding * 2, info_y),
-									Vector2(1.0f, 0.0f));
-
-	info_y -= 37.0f;
-	_labelPursuedLevelInfo = CreateTTFLabel(this, "", Vector2(center.x, info_y), Vector2(0.5f, 0.0f));
-
-	info_y -= 40.0f;
-	CreateTTFLabel(this, "Morale", Vector2(info_x + 170.0f, info_y), Vector2(1.0f, 0.0f));
-	_moraleProgressBar = CreateProgressBar(this, Vector2(info_x + 180.0f, info_y + 4.0f),
-										  Vector2(200.0f, 15.0f), Color(0.0f, 0.5f, 0.0f, 1.0f),
-										  0.0f);
-	_moraleProgressBar->SetBorderColor(Color(0.5f, 0.5f, 0.5f, 1.0f));
-
-	info_y -= 30.0f;
-	CreateTTFLabel(this, "Devotion", Vector2(info_x + 170.0f, info_y), Vector2(1.0f, 0.0f));
-	_devotionProgressBar = CreateProgressBar(this, Vector2(info_x + 180.0f, info_y + 4.0f),
-										  Vector2(200.0f, 15.0f), Color(0.0f, 0.5f, 0.0f, 1.0f),
-										  0.0f);
-	_devotionProgressBar->SetBorderColor(Color(0.5f, 0.5f, 0.5f, 1.0f));
-
-	info_y -= 30.0f;
-	CreateTTFLabel(this, "Town influence", Vector2(info_x + 170.0f, info_y), Vector2(1.0f, 0.0f));
-	_townInfluenceProgressBar = CreateProgressBar(this, Vector2(info_x + 180.0f, info_y + 4.0f),
-										  Vector2(200.0f, 15.0f), Color(0.0f, 0.5f, 0.0f, 1.0f),
-										  0.0f);
-	_townInfluenceProgressBar->SetBorderColor(Color(0.5f, 0.5f, 0.5f, 1.0f));
-
-	Cell::Ptr cell = _cell.lock();
-	_cellCurrentTask = cell->getCurrentTask();
-
-	UpdateInfoBy(cell);
-	Task::Ptr currentTask = _cellCurrentTask.lock();
-	if (currentTask)
-	{
-		float w = background->getContentSize().width - 50.0f;
-		float x = center.x - background->getContentSize().width / 2.0f + 25.0f;
-		float y = center.y - background->getContentSize().height / 2.0f + 25.0f;
-		
-		Utils::GameTime time = Utils::GetGameTime();
-		float progress = currentTask->CalculateProgress(time);
-
-		_taskProgressBar = CreateProgressBar(this, Vector2(x, y), Vector2(w, 10.0f), Color(1.0f, 0.5f, 0, 1.0f), progress);
-
-		std::string strTaskLabel = cocos2d::StringUtils::format("Current task: %s", currentTask->GetInfo()->title.c_str());
-		_currentTaskLabel = cocos2d::Label::createWithTTF(ttfConfig, strTaskLabel, cocos2d::TextHAlignment::CENTER);
-		_currentTaskLabel->setPosition(center.x, y+25.0f);
-
-		addChild(_currentTaskLabel, 1);
-	}
-
 	cocos2d::ScaleTo *scale = cocos2d::ScaleTo::create(0.8f, 1.0f, 1.0f);
 	cocos2d::FadeIn *fade = cocos2d::FadeIn::create(0.5f);
 	cocos2d::EaseElasticOut *elastic_scale = cocos2d::EaseElasticOut::create(scale, 5.0f);
 
-	scheduleUpdate();
-	setScale(0.01f);
-	setOpacity(0);	
-	runAction(elastic_scale);
-	runAction(fade);
-	addChild(background, 0);
-	addChild(menu, 1);
-	addChild(labelTitle, 1);
+	_widget = dynamic_cast<cocos2d::ui::Layout *>(cocostudio::GUIReader::getInstance()->
+		widgetFromJsonFile("ui_cell_ingame/ui_cell_info.ExportJson"));
+	_widget->setAnchorPoint(cocos2d::Vec2(0.5f, 0.5f));
+	_widget->setPosition(origin + screen / 2.0f);
+	_widget->setScale(0.01f);
+	_widget->setOpacity(0);
+	_widget->runAction(cocos2d::Spawn::create(elastic_scale, fade, nullptr));
+	
+	cocos2d::ui::Widget *window = dynamic_cast<cocos2d::ui::Widget *>(_widget->getChildByName("Window"));
+
+	cocos2d::ui::Button *btnClose = dynamic_cast<cocos2d::ui::Button *>(window->getChildByName("Close"));
+	cocos2d::ui::Text *txtHeader = dynamic_cast<cocos2d::ui::Text *>(window->getChildByName("Header"));
+	_txtMembers = dynamic_cast<cocos2d::ui::TextBMFont *>(window->getChildByName("Members"));
+	_txtCach = dynamic_cast<cocos2d::ui::TextBMFont *>(window->getChildByName("Cach"));
+	_txtPursuedLevel = dynamic_cast<cocos2d::ui::TextBMFont *>(window->getChildByName("PursuedLevel"));
+	_txtMorale = dynamic_cast<cocos2d::ui::TextBMFont *>(window->getChildByName("MoraleLabel"));
+	_txtDevotion = dynamic_cast<cocos2d::ui::TextBMFont *>(window->getChildByName("DevotionLabel"));
+	_txtLevel = dynamic_cast<cocos2d::ui::TextBMFont *>(window->getChildByName("LevelProgress")->getChildByName("Level"));
+	_levelProgressBar = dynamic_cast<cocos2d::ui::LoadingBar *>(window->getChildByName("LevelProgress")->getChildByName("Progress"));
+	_moraleProgressBar = dynamic_cast<cocos2d::ui::LoadingBar *>(window->getChildByName("MoraleLevel")->getChildByName("Progress"));
+	_devotionProgressBar = dynamic_cast<cocos2d::ui::LoadingBar *>(window->getChildByName("DevotionLevel")->getChildByName("Progress"));
+	
+	if (!btnClose) {WRITE_WARN("CellInfo: Failed to get widget with name Close"); return false;}
+	if (!txtHeader) {WRITE_WARN("CellInfo: Failed to get widget with name Header"); return false;}
+	if (!_txtMembers) {WRITE_WARN("CellInfo: Failed to get widget with name Members"); return false;}
+	if (!_txtCach) {WRITE_WARN("CellInfo: Failed to get widget with name Cach"); return false;}
+	if (!_txtPursuedLevel) {WRITE_WARN("CellInfo: Failed to get widget with name PursuedLevel"); return false;}
+	if (!_txtMorale) {WRITE_WARN("CellInfo: Failed to get widget with name MoraleLabel"); return false;}
+	if (!_txtDevotion) {WRITE_WARN("CellInfo: Failed to get widget with name DevotionLabel"); return false;}
+	if (!_txtLevel) {WRITE_WARN("CellInfo: Failed to get widget with name LevelProgress:Label"); return false;}
+	if (!_levelProgressBar) {WRITE_WARN("CellInfo: Failed to get widget with name MoraleLevel:Progress"); return false;}
+	if (!_moraleProgressBar) {WRITE_WARN("CellInfo: Failed to get widget with name MoraleLevel:Progress"); return false;}
+	if (!_devotionProgressBar) {WRITE_WARN("CellInfo: Failed to get widget with name DevotionLevel:Progress"); return false;}
+
+	btnClose->addTouchEventListener(CC_CALLBACK_2(CellInfoMenu::OnCloseCallback, this));
+	txtHeader->setString(LocalizationManager::Instance().getText("CellInfoMenu_Header"));
+
+	UpdateInfoBy(_cell.lock());
+
+	addChild(_widget);
+
+	CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("appear-menu.wav");
 
 	return true;
 }
 
 void CellInfoMenu::update(float dt)
 {
-	Task::Ptr currentTask = _cellCurrentTask.lock();
-	if (currentTask)
-	{
-		Utils::GameTime time = Utils::GetGameTime();
-		float progress = currentTask->CalculateProgress(time);
-		_taskProgressBar->SetProgressPercentage(progress * 100.0f);
-	}
-	else
-	{
-		if (_taskProgressBar)
-		{
-			removeChild(_taskProgressBar, true);
-			removeChild(_currentTaskLabel, true);
-			_taskProgressBar = nullptr;
-			_currentTaskLabel = nullptr;
-		}
-	}
+	UpdateInfoBy(_cell.lock());
 }
 
 void CellInfoMenu::UpdateInfoBy(Cell::Ptr cell)
@@ -179,50 +85,51 @@ void CellInfoMenu::UpdateInfoBy(Cell::Ptr cell)
 	Cell::Info info = cell->GetInfo();
 
 	int level = World::Instance().GetLevelFromExperience(info.experience);
-	std::string strLevelInfo = cocos2d::StringUtils::format("Level %d", level);
-	_labelLevelInfo->setString(strLevelInfo);
-
 	int currentLevelExp = World::Instance().GetExperienceForLevel(level);
 	int expBetweenLevels = World::Instance().GetExperienceForLevel(level + 1) - currentLevelExp;
 	int earnedLevelExp = info.experience - currentLevelExp;
 	float levelProgress = 1.0f * earnedLevelExp / expBetweenLevels;
-	_levelProgressBar->SetProgressPercentage(levelProgress * 100.0f);
+	_levelProgressBar->setPercent(levelProgress * 100.0f);
+	_moraleProgressBar->setPercent(info.morale * 100.0f);
+	_devotionProgressBar->setPercent(info.devotion * 100.0f);
 
-	std::string strCashInfo = cocos2d::StringUtils::format("Cash: %d $", info.cash);
-	_labelCashInfo->setString(strCashInfo);
-
-	std::string strMembersInfo = cocos2d::StringUtils::format("Members: %d", info.membersCount);
-	_labelMembersInfo->setString(strMembersInfo);
+	_txtMembers->setString(cocos2d::StringUtils::format("%s %d",
+		LocalizationManager::Instance().getText("CellInfoMenu_Members").c_str(), info.membersCount));
+	_txtCach->setString(cocos2d::StringUtils::format("%s %d",
+		LocalizationManager::Instance().getText("CellInfoMenu_Cach").c_str(), info.cash));
+	_txtLevel->setString(cocos2d::StringUtils::format("%s %d",
+		LocalizationManager::Instance().getText("CellInfoMenu_Level").c_str(), level));
+	_txtMorale->setString(LocalizationManager::Instance().getText("CellInfoMenu_Morale"));
+	_txtDevotion->setString(LocalizationManager::Instance().getText("CellInfoMenu_Devotion"));
 
 	float pursuedLevel = World::Instance().GetCellPursuedLevel(cell.get());
 	if (pursuedLevel < 33.0f)
 	{
-		_labelPursuedLevelInfo->setString("Low pursued level");
+		_txtPursuedLevel->setString(LocalizationManager::Instance().getText("CellInfoMenu_PursuedLow"));
 	}
 	else if (pursuedLevel < 66.0f)
 	{
-		_labelPursuedLevelInfo->setString("Middle pursued level");
+		_txtPursuedLevel->setString(LocalizationManager::Instance().getText("CellInfoMenu_PursuedMid"));
 	}
 	else
 	{
-		_labelPursuedLevelInfo->setString("High pursued level");
+		_txtPursuedLevel->setString(LocalizationManager::Instance().getText("CellInfoMenu_PursuedHigh"));
 	}
-
-	_moraleProgressBar->SetProgressPercentage(info.morale * 100.0f);
-	_devotionProgressBar->SetProgressPercentage(info.devotion * 100.0f);
-	_townInfluenceProgressBar->SetProgressPercentage(info.townInfluence * 100.0f);
 }
 
-void CellInfoMenu::_OnCloseCallback(cocos2d::Ref *sender)
+void CellInfoMenu::OnCloseCallback(cocos2d::Ref *sender, cocos2d::ui::Widget::TouchEventType eventType)
 {
-	_CloseMenu();
+	if (eventType == cocos2d::ui::Widget::TouchEventType::ENDED) {
+		CloseMenu();
+		CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("tap-double.wav");
+	}
 }
 
-void CellInfoMenu::_CloseMenu()
+void CellInfoMenu::CloseMenu()
 {
 	cocos2d::ScaleTo *scale = cocos2d::ScaleTo::create(0.2f, 0.2f, 0.01f);
 	cocos2d::EaseElasticIn *elastic_scale = cocos2d::EaseElasticIn::create(scale, 5.0f);
-	cocos2d::CallFunc *func = cocos2d::CallFunc::create(CC_CALLBACK_0(CellMenuSelector::OnCellMenuClosed, _cellMenuSelector));
+	cocos2d::CallFunc *func = cocos2d::CallFunc::create(CC_CALLBACK_0(CellMenuSelector::OnMenuClosed, _cellMenuSelector));
 
 	runAction(cocos2d::Sequence::create(elastic_scale, func, nullptr));
 }
@@ -231,6 +138,6 @@ void CellInfoMenu::KeyReleased(cocos2d::EventKeyboard::KeyCode key, cocos2d::Eve
 {
 	if (key == cocos2d::EventKeyboard::KeyCode::KEY_ESCAPE)
 	{
-		_CloseMenu();
+		CloseMenu();
 	}
 }

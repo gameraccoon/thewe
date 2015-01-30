@@ -1,6 +1,5 @@
 #include "main.h"
 #include "Application.h"
-#include "cocos2d.h"
 
 USING_NS_CC;
 

@@ -3,6 +3,8 @@
 
 #include <string>
 #include <queue>
+#include <set>
+#include <functional>
 
 #include "Region.h"
 #include "Cell.h"
@@ -10,10 +12,12 @@
 #include "Investigator.h"
 #include "CellsNetwork.h"
 #include "TaskManager.h"
+#include "BonusOnMap.h"
 #include "NotificationMessageManager.h"
-#include "Tutorial.h"
+#include "TutorialManager.h"
 #include "LuaInstance.h"
 #include "MiscUtils.h"
+#include "ResourceCache.h"
 
 class World
 {
@@ -32,12 +36,13 @@ public:
 	TaskManager& GetTaskManager();
 	CellsNetwork& GetCellsNetwork();
 	NotificationMessageManager& GetMessageManager();
+	TutorialManager& GetTutorialManager();
 
 	/** Removes all the regions */
 	void CleanupMapContent(void);
-	void InitLuaContext();
+	void InitLuaContext(ResourceCacheQueue<std::string>::Ptr cachedScripts);
 	void StartLogic();
-
+	
 	const Regions& GetRegions() const;
 	const Towns& GetTowns() const;
 	const Investigators& GetInvestigators(void) const;
@@ -56,7 +61,9 @@ public:
 	const Region::WeakPtr GetRegionByName(const std::string &name) const;
 	const Town::WeakPtr GetTownByName(const std::string &name) const;
 
-	void Update();
+	void Update(float deltaTime);
+	Utils::GameTime GetGameTime() const;
+	void InitTime(Utils::GameTime time);
 
 	void SetPause(bool pause);
 	void SetFirstLaunch(bool newGame);
@@ -75,18 +82,12 @@ public:
 
 	LuaInstance* GetLuaInst(void) const;
 
-	void AddTutorial(Tutorial tutrorial);
-	bool IsHaveTutorial();
-	Tutorial::WeakPtr GetCurrentTutorial();
-	void RemoveCurrentTutorial();
-	std::string GetTutorialState();
-	void SetTutorialState(const std::string& state);
-	void RunTutorialFunction(const std::string& function);
-
 	// calculated parameters of cells
 	int GetExperienceForLevel(int level) const;
 	int GetLevelFromExperience(int experience) const;
 	float GetCellPursuedLevel(Cell* cell) const;
+
+	std::function<void()> GetBonusCallback(Cell::WeakPtr cell) const;
 
 private:
 	void CalcWorldCapturingState();
@@ -95,6 +96,8 @@ private:
 	CellsNetwork _cellsNetwork;
 	TaskManager _taskManager;
 	NotificationMessageManager _messageManager;
+	TutorialManager _tutorialManager;
+	BonusOnMap _bonusOnMap;
 
 	Regions _regions;
 	Towns _towns;
@@ -109,8 +112,7 @@ private:
 	bool _isGameOver;
 	float _worldCapturingState;
 
-	std::queue<Tutorial::Ptr> _tutorials;
-	std::string _tutorialState;
+	Utils::GameTime _currentTime;
 
 	unsigned int _uid;
 

@@ -7,10 +7,8 @@ local CashedTableOfLevels = {}
 function StartGame()
 	if World:isFirstLaunch() then
 		FirstLaunch()
-	elseif World:getTutorialState() ~= "TutorialsEnd" then
-		if not StartWithoutTutorial then
-			ContinueTutorial()
-		end
+	elseif World:getTutorialManager():isTutorialStateAvailable("TutorialsEnd") then
+		ContinueTutorial()
 	end
 end
 
@@ -19,6 +17,14 @@ function FirstLaunch()
 	if not StartWithoutTutorial then
 		RunTutorial_Welcome()
 	end
+end
+
+-- вызывается когда игрок подбирает бонус
+function BonusBehavior(cell)
+	local cellInfo = cell:getInfo()
+	cellInfo.cash = cellInfo.cash + math.random(1, 20) * 1000
+	cellInfo.morale = cellInfo.morale + cellInfo.morale * 0.2
+	cellInfo.experience = cellInfo.experience + cellInfo.devotion * 0.1
 end
 
 -- вычисляем уровень ячейки из опыта
@@ -70,7 +76,15 @@ function GetInvestigationChance(cell)
 		investigationChance = investigationChance * 0.3
 	end
 
+	if distanceToRoot == 0 then
+		investigationChance = 0
+	end
+
 	investigationChance = investigationChance * math.min(connectivity / 5.0, 1.0)
 
 	return investigationChance
+end
+
+function AddExperience(cellInfo, expAmount)
+	cellInfo.experience = cellInfo.experience + expAmount
 end

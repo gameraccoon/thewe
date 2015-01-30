@@ -14,22 +14,23 @@ public:
 	void UpdateInfoBy(Cell::Ptr cell);
 
 private:
-	void _OnCloseCallback(cocos2d::Ref *sender);
-	void _CloseMenu();
+	void OnCloseCallback(cocos2d::Ref *sender, cocos2d::ui::Widget::TouchEventType eventType);
+	void CloseMenu();
 	void KeyReleased(cocos2d::EventKeyboard::KeyCode key, cocos2d::Event *event);
 
 private:
-	SquareProgressBar *_taskProgressBar;
-	SquareProgressBar *_levelProgressBar;
-	SquareProgressBar *_moraleProgressBar;
-	SquareProgressBar *_devotionProgressBar;
-	SquareProgressBar *_townInfluenceProgressBar;
+	cocos2d::ui::Layout *_widget;
 
-	cocos2d::Label *_labelLevelInfo;
-	cocos2d::Label *_labelCashInfo;
-	cocos2d::Label *_labelMembersInfo;
-	cocos2d::Label *_labelPursuedLevelInfo;
-	cocos2d::Label *_currentTaskLabel;
+	cocos2d::ui::TextBMFont *_txtMembers;
+	cocos2d::ui::TextBMFont *_txtCach;
+	cocos2d::ui::TextBMFont *_txtPursuedLevel;
+	cocos2d::ui::TextBMFont *_txtMorale;
+	cocos2d::ui::TextBMFont *_txtDevotion;
+	cocos2d::ui::TextBMFont *_txtLevel;
+
+	cocos2d::ui::LoadingBar  *_levelProgressBar;
+	cocos2d::ui::LoadingBar  *_moraleProgressBar;
+	cocos2d::ui::LoadingBar  *_devotionProgressBar;
 
 	Cell::WeakPtr _cell;
 	Task::WeakPtr _cellCurrentTask;

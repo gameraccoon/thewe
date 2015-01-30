@@ -2,6 +2,7 @@
 #define TOWN_MAP_WIDGET_H
 
 #include "Town.h"
+#include "MessageManager.h"
 
 #include <cocos2d.h>
 
@@ -9,12 +10,14 @@ class TownMapWidget : public cocos2d::Node
 {
 public:
 	TownMapWidget(Town::Ptr town);
+	~TownMapWidget(void);
 
 	virtual bool init(void) override;
 
-	void SetHitArea(float beginX, float beginY, float endX, float endY);
-	void GetHitArea(float &beginX, float &beginY, float &endX, float &endY) const;
+	void SetHitArea(const cocos2d::Rect& hitArea);
+	cocos2d::Rect GetHitArea() const;
 
+	void SetTownImageVisible(bool visible);
 	void SetProjectorUid(int uid);
 	int GetProjectorUid(void) const;
 
@@ -23,13 +26,12 @@ public:
 
 private:
 	Town::Ptr _town;
+	
+	cocos2d::Sprite *_townMapSprite;
 
 	int _projectorUid;
 
-	float _hitAreaBeginX, _hitAreaEndX;
-	float _hitAreaBeginY, _hitAreaEndY;
-
-	cocos2d::Sprite *_townMapSprite;
+	cocos2d::Rect _hitArea;
 };
 
 #endif

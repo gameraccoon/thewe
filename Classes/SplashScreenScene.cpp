@@ -5,19 +5,33 @@
 
 SplashScreenScene::SplashScreenScene(void)
 	: _timeElapsed(0.0f)
-	, _timeToShow(2.0f)
+	, _timeToShow(1.5f)
+	, _isLoadingComplete(false)
 {
-	init();
 }
 
 SplashScreenScene::~SplashScreenScene(void)
 {
-	Log::Instance().writeLog("SplashScreen unloaded sucessfully");
+	WRITE_LOG("SplashScreen unloaded sucessfully");
+}
+
+SplashScreenScene* SplashScreenScene::create()
+{
+	SplashScreenScene* ret = new SplashScreenScene();
+	if (ret && ret->init())
+	{
+		ret->autorelease();
+	}
+	else
+	{
+		CC_SAFE_DELETE(ret);
+	}
+	return ret;
 }
 
 bool SplashScreenScene::init(void)
 {
-	if (!cocos2d::CCScene::init())
+	if (!cocos2d::Scene::init())
 	{
 		return false;
 	}
@@ -43,8 +57,13 @@ void SplashScreenScene::update(float delta)
 {
 	_timeElapsed += delta;
 
-	if (_timeElapsed > _timeToShow)
+	if (_isLoadingComplete && _timeElapsed > _timeToShow)
 	{
 		cocos2d::Director::getInstance()->popScene();
 	}
+}
+
+void SplashScreenScene::SetLoadingFinished()
+{
+	_isLoadingComplete = true;
 }

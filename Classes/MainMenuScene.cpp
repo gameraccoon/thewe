@@ -7,29 +7,13 @@
 #include "TransitionZoomFade.h"
 #include "CellsNetLayer.h"
 
-MainMenuScene::MainMenuScene(cocos2d::Scene* gameScene)
+MainMenuScene::MainMenuScene()
 {
-	_gameScene = gameScene;
 }
 
 MainMenuScene::~MainMenuScene(void)
 {
-	Log::Instance().writeLog("Main menu unloaded sucessfully");
-}
-
-void MainMenuScene::_AddButton(std::string imgNormal, std::string imgPressed, Vector2 position, MenuItemTag tag)
-{
-	cocos2d::MenuItem *button;
-
-	{
-		using namespace cocos2d;
-		button = cocos2d::MenuItemImage::create(imgNormal.c_str(), imgPressed.c_str(),
-			CC_CALLBACK_1(MainMenuScene::_MenuInputListener, this));
-	}
-
-	button->setPosition(position);
-	button->setTag(static_cast<int>(tag));
-	_buttons.insert(std::pair<MenuItemTag, cocos2d::MenuItem*>(tag, button));
+	WRITE_LOG("Main menu unloaded sucessfully");
 }
 
 bool MainMenuScene::init(void)
@@ -45,61 +29,53 @@ bool MainMenuScene::init(void)
 	Vector2 origin = director->getVisibleOrigin();
 	Vector2 center(origin.x + client.x / 2.0f, origin.y + client.y - 100.0f);
 
-	_AddButton("btn-menu_map-normal.png", "btn-menu_map-selected.png", center + Vector2(0.0f, -100.0f),
-			  MenuItemTag::MAP);
+	_widget = dynamic_cast<cocos2d::ui::Layout *>(cocostudio::GUIReader::getInstance()->widgetFromJsonFile("ui_main_menu/ui_main_menu.ExportJson"));
+	_widget->setAnchorPoint(cocos2d::Vec2(0.5f, 0.5f));
+	_widget->setPosition(origin + client / 2.0f);
 
-	_AddButton("btn-mail-normal.png", "btn-mail-selected.png", center + Vector2(-300.0f, -270.0f),
-			  MenuItemTag::MAILBOX);
+	cocos2d::ui::Button *btnMap = dynamic_cast<cocos2d::ui::Button *>(_widget->getChildByName("BtnMap"));
+	cocos2d::ui::Button *btnMail = dynamic_cast<cocos2d::ui::Button *>(_widget->getChildByName("BtnMail"));
+	cocos2d::ui::Button *btnChat = dynamic_cast<cocos2d::ui::Button *>(_widget->getChildByName("BtnChat"));
+	cocos2d::ui::Button *btnCommand = dynamic_cast<cocos2d::ui::Button *>(_widget->getChildByName("BtnCommand"));
+	cocos2d::ui::Button *btnSettings = dynamic_cast<cocos2d::ui::Button *>(_widget->getChildByName("BtnSettings"));
 
-	_AddButton("btn-chat-normal.png", "btn-chat-selected.png", center + Vector2(-100.0f, -270.0f),
-			  MenuItemTag::CHAT);
+	if (!btnMap) {WRITE_WARN("MainMenu: Failed to get BtnMap widget."); return false;}
+	if (!btnMail) {WRITE_WARN("MainMenu: Failed to get BtnMail widget."); return false;}
+	if (!btnChat) {WRITE_WARN("MainMenu: Failed to get BtnChat widget."); return false;}
+	if (!btnCommand) {WRITE_WARN("MainMenu: Failed to get BtnCommand widget."); return false;}
+	if (!btnSettings) {WRITE_WARN("MainMenu: Failed to get BtnSettings widget."); return false;}
 
-	_AddButton("btn-command-normal.png", "btn-command-selected.png", center + Vector2(100.0f, -270.0f),
-			  MenuItemTag::TEAM);
+	btnMap->addTouchEventListener(CC_CALLBACK_2(MainMenuScene::MenuInputListener, this));
+	btnMail->addTouchEventListener(CC_CALLBACK_2(MainMenuScene::MenuInputListener, this));
+	btnChat->addTouchEventListener(CC_CALLBACK_2(MainMenuScene::MenuInputListener, this));
+	btnCommand->addTouchEventListener(CC_CALLBACK_2(MainMenuScene::MenuInputListener, this));
+	btnSettings->addTouchEventListener(CC_CALLBACK_2(MainMenuScene::MenuInputListener, this));
 
-	_AddButton("btn-settings-normal.png", "btn-settings-selected.png", center + Vector2(300.0f, -270.0f),
-			  MenuItemTag::SETTINGS);
+	CocosDenshion::SimpleAudioEngine::getInstance()->playBackgroundMusic("bg-mainmenu.mp3", true);
 
-	// cast map to vector
-	cocos2d::Vector<cocos2d::MenuItem*> v;
-	v.reserve(_buttons.size());
-	std::for_each(_buttons.begin(),_buttons.end(),
-		[&v](const std::map<MenuItemTag, cocos2d::MenuItem*>::value_type& p)
-		{ v.pushBack(p.second); });
-
-	_mainMenu = cocos2d::Menu::createWithArray(v);
-	_mainMenu->setPosition(0.0f, 0.0f);
-
-	addChild(_mainMenu);
+	addChild(_widget);
 
 	return true;
 }
 
-void MainMenuScene::_MenuInputListener(cocos2d::Ref *sender)
+void MainMenuScene::MenuInputListener(cocos2d::Ref *sender, cocos2d::ui::Widget::TouchEventType eventType)
 {
-	cocos2d::MenuItem *item = dynamic_cast<cocos2d::MenuItem*>(sender);
-
-	MenuItemTag tag = static_cast<MenuItemTag>(item->getTag());
-
-	switch (tag)
+	if (eventType == cocos2d::ui::Widget::TouchEventType::ENDED)
 	{
-	case MainMenuScene::MenuItemTag::MAP:
-	{
-		GameScene* scene = new GameScene(this);
-		scene->autorelease();
-		scene->init();
-		cocos2d::TransitionScene* transition = TransitionZoomFade::create(1, scene);
-		cocos2d::Director::getInstance()->replaceScene(transition);
-	}
-		break;
-	case MainMenuScene::MenuItemTag::MAILBOX:
-		break;
-	case MainMenuScene::MenuItemTag::SETTINGS:
-		break;
-	case MainMenuScene::MenuItemTag::CHAT:
-		break;
-	case MainMenuScene::MenuItemTag::TEAM:
-		break;
-	default: break;
+		std::string name = dynamic_cast<cocos2d::ui::Button *>(sender)->getName();
+
+		if (name == "BtnMap") {
+			GameScene* scene = new GameScene(this);
+			scene->autorelease();
+			scene->init();
+			cocos2d::TransitionScene* transition = TransitionZoomFade::create(1, scene);
+			cocos2d::Director::getInstance()->replaceScene(transition);
+		} else if (name == "BtnMail") {
+		} else if (name == "BtnChat") {
+		} else if (name == "BtnCommand") {
+		} else if (name == "BtnSettings") {
+		} else {
+			Log::Instance().writeWarning("Main Menu input listener get unknown widget.");
+		}
 	}
 }

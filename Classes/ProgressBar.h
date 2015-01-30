@@ -8,6 +8,7 @@ class SquareProgressBar : public cocos2d::Node
 {
 public:
 	SquareProgressBar(float maxSizeX, float maxSizeY, cocos2d::Color4F color = cocos2d::Color4F(0.3f, 0.3f, 0.3f, 1.0f));
+	static SquareProgressBar* create(float maxSizeX, float maxSizeY, cocos2d::Color4F color = cocos2d::Color4F(0.3f, 0.3f, 0.3f, 1.0f));
 
 	virtual bool init(void) override;
 
@@ -37,6 +38,7 @@ class RoundProgressBar : public cocos2d::Node
 {
 public:
 	RoundProgressBar(const std::string &roundTexture, float scale, float alpha = 1.0f);
+	static RoundProgressBar* create(const std::string &roundTexture, float scale, float alpha = 1.0f);
 
 	virtual bool init(void) override;
 

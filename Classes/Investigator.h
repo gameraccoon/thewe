@@ -38,7 +38,7 @@ public:
 	static Ptr Create(Cell::WeakPtr investigationRoot);
 
 	void InitInvestigator(const Branches &branches);
-	void BeginCatchTime(float time);
+	void BeginCatchTime(void);
 	void BeginInvestigation(void);
 	void AbortInvestigation(void);
 	void StayInvestigation(bool stay);

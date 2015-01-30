@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<UIProject xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <ProjectDir>D:\Projects\TheWe\UISources\ui_main_menu</ProjectDir>
+  <Version>1.6.0.0</Version>
+  <Resources>D:\Projects\TheWe\UISources\ui_main_menu\Resources</Resources>
+  <Name>ui_main_menu</Name>
+  <JsonFileName>ui_main_menu.json</JsonFileName>
+  <JsonFolder>D:\Projects\TheWe\UISources\ui_main_menu\Json</JsonFolder>
+  <JsonList>
+    <string>ui_main_menu.json</string>
+  </JsonList>
+  <CanvasSize>
+    <Width>480</Width>
+    <Height>320</Height>
+  </CanvasSize>
+  <filePath>D:\Projects\TheWe\UISources\ui_main_menu\ui_main_menu.xml.ui</filePath>
+  <ProjectType>UIProject</ProjectType>
+  <ResRelativePath />
+  <imageFileList>
+    <string>ui_main_menu0.plist</string>
+  </imageFileList>
+  <imagePngList>
+    <string>ui_main_menu0.png</string>
+  </imagePngList>
+  <JsonSuffix>.json</JsonSuffix>
+  <CurrentUIJson>ui_main_menu.json</CurrentUIJson>
+</UIProject>

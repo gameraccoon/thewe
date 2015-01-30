@@ -1,6 +1,7 @@
 #include "NotificationMessageWidget.h"
 
 #include "Vector2.h"
+#include "Log.h"
 
 NotificationMessageWidget::NotificationMessageWidget(UserMessage::Ptr message)
 	: _message(message)
@@ -31,23 +32,25 @@ bool NotificationMessageWidget::init()
 		return false;
 	}
 
-	cocos2d::Sprite *background = cocos2d::Sprite::create("message_background.png");
-	background->setPosition(0.0f, 0.0f);
-	background->setAnchorPoint(cocos2d::Vec2(1.0f, 1.0f));
-	addChild(background);
+	cocos2d::ui::Widget *widget = cocostudio::GUIReader::getInstance()->widgetFromJsonFile("ui_hud/ui_message.ExportJson");
+	widget->setAnchorPoint(cocos2d::Vec2(1.0f, 1.0f));
+	widget->setPosition(cocos2d::Vec2(0.0f, 0.0f));
 
 	if (_message)
 	{
-		cocos2d::TTFConfig ttfConfig("arial.ttf", 18);
-		cocos2d::Label *text = cocos2d::Label::createWithTTF(ttfConfig, _message->GetText(), cocos2d::TextHAlignment::CENTER);
-		cocos2d::Rect rect = background->getBoundingBox();
-		Vector2 center = Vector2(rect.getMinX(), rect.getMinY()) / 2;
-		text->setPosition(center);
-		addChild(text);
+		cocos2d::ui::Text *text = dynamic_cast<cocos2d::ui::Text *>(widget->getChildByName("Text"));
+
+		if (!text)
+		{
+			WRITE_ERR("Failed to get element with name Text from ui_message widget.");
+			return false;
+		}
+
+		text->setString(_message->GetText());
 	}
 
-	setContentSize(background->getContentSize());
-
+	addChild(widget);
+	setContentSize(widget->getContentSize());
 	scheduleUpdate();
 
 	return true;
