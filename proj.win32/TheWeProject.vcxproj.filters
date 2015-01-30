@@ -408,6 +408,9 @@
     <ClCompile Include="..\Classes\HudWidget.cpp">
       <Filter>Classes\UI</Filter>
     </ClCompile>
+    <ClCompile Include="..\Classes\TasksMenuWidget.cpp">
+      <Filter>Classes\UI</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="main.h">
@@ -705,6 +708,9 @@
       <Filter>Classes\UI</Filter>
     </ClInclude>
     <ClInclude Include="..\Classes\HudWidget.h">
+      <Filter>Classes\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\TasksMenuWidget.h">
       <Filter>Classes\UI</Filter>
     </ClInclude>
   </ItemGroup>

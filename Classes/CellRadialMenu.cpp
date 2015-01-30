@@ -206,9 +206,12 @@ void CellRadialMenu::ButtonTouchHandler(cocos2d::Ref *sender, cocos2d::ui::Widge
 				break;
 			}
 
-			Message message(name);
-			message.variables.SetInt("UID", _cell.lock()->GetUid());
-			MessageManager::Instance().PutMessage(message);
+			if (!name.empty()) {
+				Message message(name);
+				message.variables.SetInt("UID", _cell.lock()->GetUid());
+				MessageManager::Instance().PutMessage(message);
+				Hide(true);
+			}
 		}
 		else
 		{

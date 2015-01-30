@@ -2,6 +2,7 @@
 
 #include "HudWidget.h"
 #include "CellRadialMenu.h"
+#include "TasksMenuWidget.h"
 
 GameInterface* GameInterface::create(MapProjector *projector)
 {
@@ -36,10 +37,12 @@ bool GameInterface::init(void)
 	}
 
 	_cellRadialMenu = CellRadialMenu::create(_projector);
+	_tasksMenu = TasksMenuWidget::create();
 	_hud = HudWidget::create();
 
 	addChild(_hud, (int)DrawOrder::HUD);
 	addChild(_cellRadialMenu, (int)DrawOrder::CELL_RADIAL_MENU);
+	addChild(_tasksMenu, (int)DrawOrder::CELL_INGAME_MENU);
 
 	return true;
 }

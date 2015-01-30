@@ -10,6 +10,7 @@
 #include "MapProjector.h"
 
 class HudWidget;
+class TasksMenuWidget;
 class CellRadialMenu;
 
 class GameInterface : public cocos2d::Layer, public MessageReceiver
@@ -35,6 +36,7 @@ protected:
 private:
 	MapProjector *_projector;
 	CellRadialMenu *_cellRadialMenu;
+	TasksMenuWidget *_tasksMenu;
 	HudWidget *_hud;
 };
 
