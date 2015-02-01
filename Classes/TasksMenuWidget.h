@@ -3,6 +3,7 @@
 
 #include "Cell.h"
 #include "GameInterface.h"
+#include "MemberWidget.h"
 
 class TasksMenuWidget : public cocos2d::Node, public MessageReceiver
 {
@@ -21,10 +22,15 @@ protected:
 	bool init(void) override;
 
 	void OnClosePressed(cocos2d::Ref *sender, cocos2d::ui::Widget::TouchEventType eventType);
+	void OnPageLeft(cocos2d::Ref *sender, cocos2d::ui::Widget::TouchEventType eventType);
+	void OnPageRight(cocos2d::Ref *sender, cocos2d::ui::Widget::TouchEventType eventType);
 
 private:
+	void FillMembersPage(void);
+
 	Cell::WeakPtr _cell;
 	cocos2d::ui::Widget *_widget;
+	cocos2d::ui::PageView *_membersPage;
 };
 
 #endif

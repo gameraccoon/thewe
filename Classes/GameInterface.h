@@ -21,8 +21,8 @@ public:
 	enum class DrawOrder
 	{
 		CELL_RADIAL_MENU,
-		CELL_INGAME_MENU,
-		HUD
+		HUD,
+		CELL_INGAME_MENU
 	};
 
 	void AcceptMessage(const Message &message);

@@ -20,6 +20,7 @@ private:
 	typedef std::vector<cocos2d::Sprite *> Stars;
 
 private:
+	cocos2d::Sprite *_bgRect;
 	cocos2d::Sprite *_specialIcon;
 	Stars _stars;
 };
