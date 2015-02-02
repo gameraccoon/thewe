@@ -95,15 +95,6 @@ void GameSavesManager::FirstInitSave()
 								",'location_x' REAL NOT NULL"
 								",'location_y' REAL NOT NULL"
 								",'cash' INTEGER NOT NULL DEFAULT (0)"
-								",'morale' REAL NOT NULL"
-								",'members_count' INTEGER NOT NULL"
-								",'devotion' REAL NOT NULL"
-								",'fame' REAL NOT NULL"
-								",'rats_count' INTEGER NOT NULL"
-								",'tech_units_count' INTEGER NOT NULL"
-								",'town_heart_pounding' REAL NOT NULL"
-								",'town_influence' REAL NOT NULL"
-								",'towns_welfare' REAL NOT NULL"
 								",'experience' REAL NOT NULL"
 								");");
 	}
@@ -265,32 +256,24 @@ void GameSavesManager::LoadCellsState()
 	while (cellsReader->next())
 	{
 		isFirstLaunch = false;
-		Cell::Info info;
 		int uid = cellsReader->getValueByName("uid")->asInt();
 		int parentId = cellsReader->getValueByName("parent_uid")->asInt();
-		info.cash = cellsReader->getValueByName("cash")->asInt();
-		info.devotion = cellsReader->getValueByName("devotion")->asFloat();
-		info.fame = cellsReader->getValueByName("fame")->asFloat();
-		info.experience = cellsReader->getValueByName("experience")->asInt();
-		info.location.x = cellsReader->getValueByName("location_x")->asFloat();
-		info.location.y = cellsReader->getValueByName("location_y")->asFloat();
-		info.morale = cellsReader->getValueByName("morale")->asFloat();
-		info.membersCount = cellsReader->getValueByName("members_count")->asInt();
-		info.parent = Cell::WeakPtr();
-		info.ratsCount = cellsReader->getValueByName("rats_count")->asInt();
-		info.specialization = Cell::Specialization::NORMAL;
-		info.state = CastCellStateFromString(cellsReader->getValueByName("state")->asString());
-		info.techUnitsCount = cellsReader->getValueByName("tech_units_count")->asInt();
-		info.town = World::Instance().GetTownByName(cellsReader->getValueByName("town")->asString());
-		info.townHeartPounding = cellsReader->getValueByName("town_heart_pounding")->asFloat();
-		info.townInfluence = cellsReader->getValueByName("town_influence")->asFloat();
-		info.townWelfare = cellsReader->getValueByName("towns_welfare")->asFloat();
 
-		info.stateBegin = Utils::GetGameTime();
-		info.stateDuration = 1;
-
-		Cell::Ptr cell = std::make_shared<Cell>(Cell(info, uid));
+		Cell::Ptr cell = std::make_shared<Cell>(Cell(World::Instance().GetTownByName(cellsReader->getValueByName("town")->asString())
+									  , uid));
 		cellsNetwork.AddCell(cell);
+
+		cell->SetCash(cellsReader->getValueByName("cash")->asInt());
+		cell->SetExperience(cellsReader->getValueByName("experience")->asInt());
+
+		Vector2 location;
+		location.x = cellsReader->getValueByName("location_x")->asFloat();
+		location.y = cellsReader->getValueByName("location_y")->asFloat();
+		cell->SetLocation(location);
+
+		cell->SetState(CastCellStateFromString(cellsReader->getValueByName("state")->asString()),
+					   Utils::GetGameTime(), 1);
+
 		cellsIndicesCast.insert(std::pair<int, std::pair<Cell::Ptr, int>>(uid, std::pair<Cell::Ptr, int>(cell, parentId)));
 	}
 
@@ -331,12 +314,12 @@ void GameSavesManager::LoadProcesses()
 		unsigned int cell_uid = processesReader->getValueByName("cell_uid")->asInt();
 		Cell::Ptr cell = cellsNetwork.GetCellByUid(cell_uid);
 
-		Cell::Info &info = cell->GetInfo();
-
-		if (std::to_string(info.state) == processesReader->getValueByName("type")->asString())
+		Cell::State state = CastCellStateFromString(processesReader->getValueByName("type")->asString());
+		if (cell->GetState() == state)
 		{
-			info.stateBegin = Utils::StringToTime(processesReader->getValueByName("begin_time")->asString());
-			info.stateDuration = Utils::StringToTime(processesReader->getValueByName("duration")->asString());
+			Utils::GameTime stateBegin = Utils::StringToTime(processesReader->getValueByName("begin_time")->asString());
+			Utils::GameTime stateDuration = Utils::StringToTime(processesReader->getValueByName("duration")->asString());
+			cell->SetState(state, stateBegin, stateDuration);
 		}
 		else
 		{
@@ -460,15 +443,7 @@ static std::string InitCellsAdditionStatement()
 			",town"
 			",location_x"
 			",location_y"
-			",cash, morale"
-			",members_count"
-			",devotion"
-			",fame"
-			",rats_count"
-			",tech_units_count"
-			",town_heart_pounding"
-			",town_influence"
-			",towns_welfare"
+			",cash"
 			",experience"
 			")"
 			"VALUES";
@@ -539,28 +514,17 @@ static std::string InitTutoraialStatesAdditionStatement()
 
 static void AppendCellToQuery(std::string* const query, Cell* const cell)
 {
-	const Cell::Info info = cell->GetInfo();
-
-	std::string parent_id = info.parent.expired() ? "-1" : std::to_string(info.parent.lock()->GetUid());
+	std::string parent_id = cell->GetParent().expired() ? "-1" : std::to_string(cell->GetParent().lock()->GetUid());
 
 	query->append("(")
 		.append(std::to_string(cell->GetUid())).append(",")
-		.append("'").append(std::to_string(info.state)).append("',")
+		.append("'").append(std::to_string(cell->GetState())).append("',")
 		.append(parent_id).append(",")
-		.append("'").append(info.town.lock()->GetInfo().name).append("',")
-		.append(std::to_string(info.location.x)).append(",")
-		.append(std::to_string(info.location.y)).append(",")
-		.append(std::to_string(info.cash)).append(",")
-		.append(std::to_string(info.morale)).append(",")
-		.append(std::to_string(info.membersCount)).append(",")
-		.append(std::to_string(info.devotion)).append(",")
-		.append(std::to_string(info.fame)).append(",")
-		.append(std::to_string(info.ratsCount)).append(",")
-		.append(std::to_string(info.techUnitsCount)).append(",")
-		.append(std::to_string(info.townHeartPounding)).append(",")
-		.append(std::to_string(info.townInfluence)).append(",")
-		.append(std::to_string(info.townWelfare)).append(",")
-		.append(std::to_string(info.experience))
+		.append("'").append(cell->GetTown().lock()->GetInfo().name).append("',")
+		.append(std::to_string(cell->GetLocation().x)).append(",")
+		.append(std::to_string(cell->GetLocation().y)).append(",")
+		.append(std::to_string(cell->GetCash())).append(",")
+		.append(std::to_string(cell->GetExperience()))
 		.append(")");
 }
 
@@ -578,13 +542,11 @@ static void AppendTaskToQuery(std::string* const query, Task::Ptr task, int cell
 
 static void AppendCellProcessToQuery(std::string* const query, Cell* cell)
 {
-	const Cell::Info info = cell->GetInfo();
-
 	query->append("(")
 		.append("'").append(std::to_string(cell->GetUid())).append("',")
-		.append("'").append(std::to_string(info.state)).append("',")
-		.append("'").append(Utils::TimeToString(info.stateBegin)).append("',")
-		.append("'").append(Utils::TimeToString(info.stateDuration)).append("'")
+		.append("'").append(std::to_string(cell->GetState())).append("',")
+		.append("'").append(Utils::TimeToString(cell->GetStateBegin())).append("',")
+		.append("'").append(Utils::TimeToString(cell->GetStateDuration())).append("'")
 		.append(")");
 }
 
@@ -700,8 +662,7 @@ static bool FillResourcesAdditionStatement(std::string* const resourcesSqlStatem
 	bool addResources = false;
 	for (auto& cell : cells)
 	{
-		const Cell::Info& cellInfo = cell->GetInfo();
-		for (const auto& resource : cellInfo.resources)
+		for (const auto& resource : cell->GetResources())
 		{
 			AppendSeparator(resourcesSqlStatement, addResources);
 			addResources = true;

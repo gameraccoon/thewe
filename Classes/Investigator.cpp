@@ -46,12 +46,12 @@ void Investigator::BeginInvestigation(void)
 	}
 
 	Cell::Ptr cell = _investigationRoot.lock();
-	cell->GetInfo().state = Cell::State::ARRESTED;
+	cell->SetState(Cell::State::ARRESTED);
 	_state = State::INVESTIGATION;
 
 	Investigator::Branch branchToParent;
 	branchToParent.cellFrom = cell;
-	branchToParent.cellTo = cell->GetInfo().parent;
+	branchToParent.cellTo = cell->GetParent();
 	branchToParent.timeDuration = GameInfo::Instance().GetTime("INVESTIGATION_DURATION");
 	branchToParent.timeBegin = Utils::GetGameTime();
 	_activeBranches.push_back(branchToParent);
@@ -101,10 +101,10 @@ void Investigator::UpdateToTime(Utils::GameTime time)
 				continue;
 			}
 
-			if (time >= (branch.timeBegin + branch.timeDuration) && branch.cellTo.lock()->GetInfo().state != Cell::State::ARRESTED)
+			if (time >= (branch.timeBegin + branch.timeDuration) && branch.cellTo.lock()->GetState() != Cell::State::ARRESTED)
 			{
 				if (GetCountOfCellUsageInBranches(branch.cellFrom) <= 1)
-				{					
+				{
 					Message message("DeleteCellWidget");
 					message.variables.SetInt("UID", branch.cellFrom.lock()->GetUid());
 					MessageManager::Instance().PutMessage(message);
@@ -112,7 +112,7 @@ void Investigator::UpdateToTime(Utils::GameTime time)
 					MessageManager::Instance().PutMessage(message);
 					World::Instance().GetCellsNetwork().RemoveCell(branch.cellFrom);
 				}
-					
+
 				int createdBranchesCount = CaptureCellAndReturnNewBranchesCount(branch.cellTo, branch.cellFrom);
 				if (createdBranchesCount == 0)
 				{
@@ -146,14 +146,14 @@ int Investigator::CaptureCellAndReturnNewBranchesCount(Cell::WeakPtr cellTarget,
 	int count = 0;
 
 	Cell::Ptr cellTargetPtr = cellTarget.lock();
-	cellTargetPtr->GetInfo().state = Cell::State::ARRESTED;
+	cellTargetPtr->SetState(Cell::State::ARRESTED);
 
 	// trying to add bratch to parent cell
-	if (cellTargetPtr->GetInfo().parent.lock() != cellFrom.lock())
+	if (cellTargetPtr->GetParent().lock() != cellFrom.lock())
 	{
 		Investigator::Branch childBranch;
 		childBranch.cellFrom = cellTargetPtr;
-		childBranch.cellTo = cellTargetPtr->GetInfo().parent;
+		childBranch.cellTo = cellTargetPtr->GetParent();
 		childBranch.timeDuration = GameInfo::Instance().GetTime("INVESTIGATION_DURATION");
 		childBranch.timeBegin = Utils::GetGameTime();
 

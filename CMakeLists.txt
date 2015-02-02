@@ -36,13 +36,13 @@ if(USE_CHIPMUNK)
   message("Using chipmunk ...")
   add_definitions(-DCC_ENABLE_CHIPMUNK_INTEGRATION=1)
   if(UNIX) # assuming linux
-    add_definitions(-DLINUX )
+	add_definitions(-DLINUX )
   endif()
 elseif(USE_BOX2D)
   message("Using box2d ...")
   add_definitions(-DCC_ENABLE_BOX2D_INTEGRATION=1)
   if(UNIX) # assuming linux
-    add_definitions(-DLINUX )
+	add_definitions(-DLINUX )
   endif()
 else(USE_CHIPMUNK)
   message(FATAL_ERROR "Must choose a physics library.")
@@ -90,6 +90,7 @@ set(GAME_SRC
 	Classes/MainMenuScene.cpp
 	Classes/MapGuiLayer.cpp
 	Classes/MapProjector.cpp
+	Classes/Member.cpp
 	Classes/MessageManager.cpp
 	Classes/MultipleImageSprite.cpp
 	Classes/NotificationMessageManager.cpp
@@ -372,20 +373,20 @@ target_link_libraries(${APP_NAME}
 set(APP_BIN_DIR "${CMAKE_BINARY_DIR}/bin")
 
 set_target_properties(${APP_NAME} PROPERTIES
-     RUNTIME_OUTPUT_DIRECTORY  "${APP_BIN_DIR}")
+	 RUNTIME_OUTPUT_DIRECTORY  "${APP_BIN_DIR}")
 
 if ( WIN32 )
   #also copying dlls to binary directory for the executable to run
   pre_build(${APP_NAME}
-    COMMAND ${CMAKE_COMMAND} -E remove_directory ${APP_BIN_DIR}/Resources
-    COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_CURRENT_SOURCE_DIR}/Resources ${APP_BIN_DIR}/Resources
-    COMMAND ${CMAKE_COMMAND} -E copy ${COCOS2D_ROOT}/external/win32-specific/gles/prebuilt/glew32.dll ${APP_BIN_DIR}/${CMAKE_BUILD_TYPE}
+	COMMAND ${CMAKE_COMMAND} -E remove_directory ${APP_BIN_DIR}/Resources
+	COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_CURRENT_SOURCE_DIR}/Resources ${APP_BIN_DIR}/Resources
+	COMMAND ${CMAKE_COMMAND} -E copy ${COCOS2D_ROOT}/external/win32-specific/gles/prebuilt/glew32.dll ${APP_BIN_DIR}/${CMAKE_BUILD_TYPE}
 	COMMAND ${CMAKE_COMMAND} -E copy ${COCOS2D_ROOT}/external/win32-specific/zlib/prebuilt/zlib1.dll ${APP_BIN_DIR}/${CMAKE_BUILD_TYPE}
 	)
 else()
   pre_build(${APP_NAME}
-    COMMAND ${CMAKE_COMMAND} -E remove_directory ${APP_BIN_DIR}/Resources
-    COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_CURRENT_SOURCE_DIR}/Resources ${APP_BIN_DIR}/Resources
-    )
+	COMMAND ${CMAKE_COMMAND} -E remove_directory ${APP_BIN_DIR}/Resources
+	COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_CURRENT_SOURCE_DIR}/Resources ${APP_BIN_DIR}/Resources
+	)
 
 endif()

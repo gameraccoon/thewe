@@ -148,7 +148,7 @@ void CellMapWidget::update(float dt)
 		if (cell->IsCurrentTaskExists())
 		{
 			Task::Ptr task = cell->getCurrentTask().lock();
-		
+
 			Utils::GameTime time = Utils::GetGameTime();
 			float progress = task->CalculateProgress(time);
 			_cellMapTaskProgressBar->SetProgressImmediately(100.0f - progress * 100.0f);
@@ -223,7 +223,7 @@ void CellMapWidget::AcceptMessage(const Message &message)
 		PopUpTextWithIcon::ConstructionInfo info;
 		info.icon = "";
 		info.text = cocos2d::StringUtils::format("Level %d Reached", message.variables.GetInt("levelAfter"));
-		info.position = _cell.lock()->GetInfo().location;
+		info.position = _cell.lock()->GetLocation();
 		info.overralScale = 1.0f;
 		info.iconScale = 0.3f;
 		info.font = "EuropeNormal.ttf";
@@ -240,7 +240,7 @@ void CellMapWidget::ShowInvestigatorLaunchButton(InvestigatorTapButton::Callback
 	float tapChange;
 	tickChange = GameInfo::Instance().GetFloat("INVESTIGATOR_CATCH_TICK_CHANGE");
 	tapChange = GameInfo::Instance().GetFloat("INVESTIGATOR_CATCH_TAP_CHANGE");
-	
+
 	if (World::Instance().GetTutorialManager().IsTutorialStateAvailable("WaitForFirstInvestigator"))
 	{
 		World::Instance().GetTutorialManager().RunTutorialFunction("FirstInvestigationStarted");

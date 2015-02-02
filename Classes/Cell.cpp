@@ -5,22 +5,26 @@
 #include "GameInfo.h"
 #include "MessageManager.h"
 
-Cell::Cell(const Info &info)
-	: _info(info)
+Cell::Cell(Town::WeakPtr town)
+	: town(town)
 	, _currentTask()
 	, _uid(World::Instance().GetNewUid())
+	, cash(0)
+	, location(Vector2(0.0f, 0.0f))
 {
-	info.town.lock()->SetCellPresented(true);
+	town.lock()->SetCellPresented(true);
 
 	_CheckValues();
 }
 
-Cell::Cell(const Info &info, unsigned int uid)
-	: _info(info)
+Cell::Cell(Town::WeakPtr town, unsigned int uid)
+	: town(town)
 	, _currentTask()
 	, _uid(uid)
+	, cash(0)
+	, location(Vector2(0.0f, 0.0f))
 {
-	info.town.lock()->SetCellPresented(true);
+	town.lock()->SetCellPresented(true);
 
 	_CheckValues();
 }
@@ -29,9 +33,9 @@ Cell::~Cell(void)
 {
 }
 
-Cell::Ptr Cell::Create(const Info &info)
+Cell::Ptr Cell::Create(Town::WeakPtr town)
 {
-	return std::make_shared<Cell>(info);
+	return std::make_shared<Cell>(town);
 }
 
 void Cell::AddChild(Cell::WeakPtr cell)
@@ -84,27 +88,27 @@ void Cell::RemoveAllChildren(void)
 void Cell::BeginDestruction(void)
 {
 	// ToDo: make some checks
-	_info.state = State::DESTRUCTION;
-	_info.stateBegin = Utils::GetGameTime();
-	_info.stateDuration = GameInfo::Instance().GetTime("CELL_DESTRUCTION_TIME");
+	state = State::DESTRUCTION;
+	stateBegin = Utils::GetGameTime();
+	stateDuration = GameInfo::Instance().GetTime("CELL_DESTRUCTION_TIME");
 }
 
 void Cell::BeginAutonomy(void)
 {
 	// ToDo: make some checks
-	_info.state = State::AUTONOMY;
-	_info.stateBegin = Utils::GetGameTime();
-	_info.stateDuration = GameInfo::Instance().GetTime("CELL_AUTONOMY_LIFE_TIME");
+	state = State::AUTONOMY;
+	stateBegin = Utils::GetGameTime();
+	stateDuration = GameInfo::Instance().GetTime("CELL_AUTONOMY_LIFE_TIME");
 }
 
 void Cell::ReturnToNormalState(void)
 {
-	_info.state = State::READY;
+	state = State::READY;
 }
 
 void Cell::SetParent(Cell::WeakPtr cell)
 {
-	_info.parent = cell;
+	parent = cell;
 }
 
 const std::vector<Cell::WeakPtr>& Cell::GetChildren() const
@@ -114,21 +118,16 @@ const std::vector<Cell::WeakPtr>& Cell::GetChildren() const
 
 Cell::WeakPtr Cell::GetParent() const
 {
-	return _info.parent;
-}
-
-Cell::Info& Cell::GetInfo(void)
-{
-	return _info;
+	return parent;
 }
 
 void Cell::UpdateToTime(Utils::GameTime time)
 {
-	if (_info.state == State::CONSTRUCTION && time > _info.stateBegin + _info.stateDuration)
+	if (state == State::CONSTRUCTION && time > stateBegin + stateDuration)
 	{
-		_info.state = State::READY;
+		state = State::READY;
 	}
-	else if (_info.state == State::DESTRUCTION && time > _info.stateBegin + _info.stateDuration)
+	else if (state == State::DESTRUCTION && time > stateBegin + stateDuration)
 	{
 		Cell::Ptr ptr = World::Instance().GetCellsNetwork().GetCellByUid(_uid);
 		World::Instance().GetCellsNetwork().RemoveCell(ptr);
@@ -137,7 +136,7 @@ void Cell::UpdateToTime(Utils::GameTime time)
 		message.variables.SetInt("UID", _uid);
 		MessageManager::Instance().PutMessage(message);
 	}
-	else if (_info.state == State::AUTONOMY && time > _info.stateBegin + _info.stateDuration)
+	else if (state == State::AUTONOMY && time > stateBegin + stateDuration)
 	{
 		BeginDestruction();
 	}
@@ -162,7 +161,7 @@ bool Cell::IsCurrentTaskExists(void) const
 
 bool Cell::IsState(State state) const
 {
-	return _info.state == state;
+	return state == state;
 }
 
 void Cell::AddCompletedTask(const Task::CompletedTaskInfo& completedTask)
@@ -177,33 +176,23 @@ unsigned int Cell::GetUid(void) const
 
 void Cell::_CheckValues() const
 {
-	WARN_IF(_info.cash < 0.0f, "Negative cash value");
-	WARN_IF(_info.membersCount <= 0, "Wrong members count");
-	WARN_IF(_info.techUnitsCount < 0, "Wrong techUnitsCount value");
-	WARN_IF(_info.ratsCount < 0, "Wrong ratsCount value");
-	WARN_IF(_info.experience < 0.f, "Wrong experience value");
-	WARN_IF(_info.morale < 0.0f || 1.0f < _info.morale, "Wrong morale value");
-	WARN_IF(_info.devotion < 0.0f || 1.0f < _info.devotion, "Wrong devotion value");
-	WARN_IF(_info.fame < 0.0f || 1.0f < _info.fame, "Wrong fame value");
-	WARN_IF(_info.townHeartPounding < 0.0f || 1.0f < _info.townHeartPounding, "Wrong townHeartPounding value");
-	WARN_IF(_info.townInfluence < 0.0f || 1.0f < _info.townInfluence, "Wrong townInfluence value");
-	WARN_IF(_info.townWelfare < 0.0f || 1.0f < _info.townWelfare, "Wrong townWelfare value");
-	WARN_IF(_info.town.expired(), "Dead reference to town");
-	WARN_IF(IsInTemporaryState() && _info.stateDuration <= 0, "State duration less or equals than zero");
+	WARN_IF(cash < 0.0f, "Negative cash value");
+	WARN_IF(experience < 0.f, "Wrong experience value");
+	WARN_IF(town.expired(), "Dead reference to town");
 }
 
 float Cell::GetStateProgress(Utils::GameTime time) const
 {
-	return 1.0f - ((float)((_info.stateBegin + _info.stateDuration) - time)) / ((float)_info.stateDuration);
+	return 1.0f - ((float)((stateBegin + stateDuration) - time)) / ((float)stateDuration);
 }
 
 float Cell::CalcConnectivity() const
 {
-	Cell::Ptr parent = _info.parent.lock();
+	Cell::Ptr par = parent.lock();
 
-	if (parent)
+	if (par)
 	{
-		return parent->CalcConnectivity() / 2.0f + _childCells.size() + 1.0f;
+		return par->CalcConnectivity() / 2.0f + _childCells.size() + 1.0f;
 	}
 	else
 	{
@@ -213,10 +202,10 @@ float Cell::CalcConnectivity() const
 
 int Cell::CalcDistanceToTheRootCell() const
 {
-	Cell::Ptr parent = _info.parent.lock();
-	if (parent)
+	Cell::Ptr par = parent.lock();
+	if (par)
 	{
-		return parent->CalcDistanceToTheRootCell() + 1;
+		return par->CalcDistanceToTheRootCell() + 1;
 	}
 	else
 	{
@@ -226,25 +215,24 @@ int Cell::CalcDistanceToTheRootCell() const
 
 bool Cell::IsInTemporaryState() const
 {
-	return (_info.state != State::READY && _info.state != State::ARRESTED);
+	return (state != State::READY && state != State::ARRESTED);
 }
 
 bool Cell::IsReadyToCreateSpinoff() const
 {
-	bool isMembersEnough = _info.membersCount >= GameInfo::Instance().GetInt("CELL_SPINOFF_MEMBERS_PRICE") * 2;
-	bool isCashEnough = _info.cash >= GameInfo::Instance().GetInt("CELL_SPINOFF_CASH_PRICE");
-	return isMembersEnough && isCashEnough;
+	bool isCashEnough = cash >= GameInfo::Instance().GetInt("CELL_SPINOFF_CASH_PRICE");
+	return isCashEnough;
 }
 
 void Cell::AddResource(const Resource& resource)
 {
-	if (_info.resources.find(resource.name) != _info.resources.end())
+	if (resources.find(resource.name) != resources.end())
 	{
-		_info.resources.at(resource.name).count += resource.count;
+		resources.at(resource.name).count += resource.count;
 	}
 	else
 	{
-		_info.resources.insert(std::pair<const std::string, Resource>(resource.name, resource));
+		resources.insert(std::pair<const std::string, Resource>(resource.name, resource));
 	}
 }
 
@@ -254,11 +242,7 @@ void Cell::AddReward(const Resource::Vector& reward)
 	{
 		if (resource.name == "money")
 		{
-			_info.cash += resource.count;
-		}
-		else if (resource.name == "people")
-		{
-			_info.membersCount += resource.count;
+			cash += resource.count;
 		}
 		else
 		{
@@ -267,15 +251,20 @@ void Cell::AddReward(const Resource::Vector& reward)
 	}
 }
 
-int Cell::GetExp(void) const
+const Resource::Map&Cell::GetResources() const
 {
-	return _info.experience;
+	return resources;
 }
 
-void Cell::SetExp(int newExp)
+int Cell::GetExperience(void) const
+{
+	return experience;
+}
+
+void Cell::SetExperience(int newExp)
 {
 	World &world = World::Instance();
-	int levelBefore = world.GetLevelFromExperience(_info.experience);
+	int levelBefore = world.GetLevelFromExperience(experience);
 	int levelAfter = world.GetLevelFromExperience(newExp);
 	if (levelBefore < levelAfter)
 	{
@@ -291,5 +280,57 @@ void Cell::SetExp(int newExp)
 		WRITE_WARN("Decrease cell level");
 	}
 
-	_info.experience = newExp;
+	experience = newExp;
+}
+
+Vector2 Cell::GetLocation() const
+{
+	return location;
+}
+
+void Cell::SetLocation(const Vector2& newLocation)
+{
+	location = newLocation;
+}
+
+Cell::State Cell::GetState() const
+{
+	return state;
+}
+
+Utils::GameTime Cell::GetStateBegin() const
+{
+	return stateBegin;
+}
+
+Utils::GameTime Cell::GetStateDuration() const
+{
+	return stateDuration;
+}
+
+void Cell::SetState(Cell::State newState, Utils::GameTime beginTime, Utils::GameTime duration)
+{
+	state = newState;
+	stateBegin = beginTime;
+	stateDuration = duration;
+}
+
+int Cell::GetMembersCount() const
+{
+	return (int)members.size();
+}
+
+int Cell::GetCash() const
+{
+	return cash;
+}
+
+void Cell::SetCash(int newCashValue)
+{
+	cash = newCashValue;
+}
+
+Town::WeakPtr Cell::GetTown() const
+{
+	return town;
 }

@@ -15,7 +15,7 @@ InvestigatorMapWidget::InvestigatorMapWidget(Investigator::Ptr investigator, Map
 }
 
 bool InvestigatorMapWidget::init(void)
-{	
+{
 	if (!_investigator) {
 		return false;
 	}
@@ -62,9 +62,9 @@ void InvestigatorMapWidget::update(float dt)
 			Cell::Ptr cellToPtr = branch.cellTo.lock();
 
 			if (cellFromPtr && cellToPtr)
-			{	
-				cocos2d::Vec2 from = cellFromPtr->GetInfo().location;
-				cocos2d::Vec2 goal = cellToPtr->GetInfo().location;
+			{
+				cocos2d::Vec2 from = cellFromPtr->GetLocation();
+				cocos2d::Vec2 goal = cellToPtr->GetLocation();
 
 				float dist = from.getDistance(goal) * CalcInvestigationBranchDuration(branch);
 

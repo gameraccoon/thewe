@@ -6,6 +6,7 @@
 
 #include "Log.h"
 #include "NotificationMessageManager.h"
+#include "Member.h"
 #include "Vector2.h"
 #include "Cell.h"
 #include "Task.h"
@@ -19,31 +20,12 @@ void LuaInstance::BindClass<Cell>()
 {
 	luabind::module(_luaState) [
 	luabind::class_<Cell>("Cell")
-		.def("getInfo", &Cell::GetInfo)
+		.property("getUid", &Cell::GetUid)
+		.property("experience", &Cell::GetExperience, &Cell::SetExperience)
 		.def("calcConnectivity", &Cell::CalcConnectivity)
 		.def("calcDistanceToTheRootCell", &Cell::CalcDistanceToTheRootCell)
-		.def("getExp", &Cell::GetExp)
-		.def("setExp", &Cell::SetExp)
-		.def("getUid", &Cell::GetUid)
-	];
-}
-
-template<>
-void LuaInstance::BindClass<Cell::Info>()
-{
-	luabind::module(_luaState) [
-	luabind::class_<Cell::Info>("CellInfo")
-		.def_readwrite("cash", &Cell::Info::cash)
-		.def_readwrite("membersCount", &Cell::Info::membersCount)
-		.def_readwrite("ratsCount", &Cell::Info::ratsCount)
-		.def_readwrite("techUnitsCount", &Cell::Info::techUnitsCount)
-		.def_readwrite("devotion", &Cell::Info::devotion)
-		.def_readwrite("morale", &Cell::Info::morale)
-		.def_readwrite("experience", &Cell::Info::experience)
-		.def_readwrite("fame", &Cell::Info::fame)
-		.def_readwrite("townHeartPounding", &Cell::Info::townHeartPounding)
-		.def_readwrite("townInfluence", &Cell::Info::townInfluence)
-		.def_readwrite("townWelfare", &Cell::Info::townWelfare)
+		.property("cash", &Cell::GetCash, &Cell::SetCash)
+		.def("getMembersCount", &Cell::GetMembersCount)
 	];
 }
 
@@ -67,6 +49,17 @@ void LuaInstance::BindClass<Log>()
 		.def("log", &Log::writeLog)
 		.def("warning", &Log::writeWarning)
 		.def("error", &Log::writeError)
+	];
+}
+
+template<>
+void LuaInstance::BindClass<Member>()
+{
+	luabind::module(_luaState) [
+	luabind::class_<Member>("Member")
+		.def(luabind::constructor<const std::string&, int>())
+		.def("getSpecialization", &Member::getSpecialization)
+		.property("experience", &Member::setExperience, &Member::setExperience)
 	];
 }
 
@@ -173,9 +166,9 @@ namespace lua
 	{
 		luaInstance->BindClass<Log>();
 		luaInstance->BindClass<NotificationMessageManager>();
+		luaInstance->BindClass<Member>();
 		luaInstance->BindClass<GameInfo>();
 		luaInstance->BindClass<World>();
-		luaInstance->BindClass<Cell::Info>();
 		luaInstance->BindClass<Cell>();
 		luaInstance->BindClass<const Task::Info>();
 		luaInstance->BindClass<Vector2>();

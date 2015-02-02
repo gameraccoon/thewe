@@ -10,7 +10,7 @@
 #include "Log.h"
 
 TutorialWidgetSpinoff::TutorialWidgetSpinoff(Tutorial::WeakPtr tutorial, WorldMapLayer *worldMapLayer, MapProjector *projector)
-    : TutorialWidget(tutorial)
+	: TutorialWidget(tutorial)
 	, _worldMapLayer(worldMapLayer)
 	, _projector(projector)
 	, _state(State::FOCUS_ON_CELL)
@@ -26,31 +26,31 @@ TutorialWidgetSpinoff::TutorialWidgetSpinoff(Tutorial::WeakPtr tutorial, WorldMa
 
 TutorialWidgetSpinoff* TutorialWidgetSpinoff::create(Tutorial::WeakPtr tutorial, WorldMapLayer *worldMapLayer, MapProjector *projector)
 {
-    TutorialWidgetSpinoff* ret = new TutorialWidgetSpinoff(tutorial, worldMapLayer, projector);
-    if (ret && ret->init())
-    {
-        ret->autorelease();
-    }
-    else
-    {
-        CC_SAFE_DELETE(ret);
-    }
-    return ret;
+	TutorialWidgetSpinoff* ret = new TutorialWidgetSpinoff(tutorial, worldMapLayer, projector);
+	if (ret && ret->init())
+	{
+		ret->autorelease();
+	}
+	else
+	{
+		CC_SAFE_DELETE(ret);
+	}
+	return ret;
 }
 
 bool TutorialWidgetSpinoff::init()
 {
-    if (!cocos2d::Node::init())
-    {
-        return false;
-    }
+	if (!cocos2d::Node::init())
+	{
+		return false;
+	}
 
-    Tutorial::Ptr tutorial = _tutorial.lock();
-    if (!tutorial)
-    {
-        Log::Instance().writeWarning("Tutorial was removed before use");
-        return true;
-    }
+	Tutorial::Ptr tutorial = _tutorial.lock();
+	if (!tutorial)
+	{
+		Log::Instance().writeWarning("Tutorial was removed before use");
+		return true;
+	}
 
 	_cell = World::Instance().GetCellsNetwork().GetRootCell();
 	_viewStartLocation = _projector->GetLocation();
@@ -75,7 +75,7 @@ bool TutorialWidgetSpinoff::init()
 	_arrow->setScale(0.3f);
 	_arrow->setRotation(-90.0f);
 	_arrow->setVisible(false);
-	
+
 	_hand = cocos2d::Sprite::create("tutorial_hand.png");
 	_hand->setScale(0.5f);
 	_hand->setPosition(0.0f, 0.0f);
@@ -97,7 +97,7 @@ bool TutorialWidgetSpinoff::init()
 
 	MessageManager::Instance().PutMessage(Message("DisableMapScrolling"));
 
-    return true;
+	return true;
 }
 
 void TutorialWidgetSpinoff::update(float dt)
@@ -106,16 +106,16 @@ void TutorialWidgetSpinoff::update(float dt)
 	{
 		float scale = 1.0f / 1.0f;
 		_viewFocusTime += dt * scale;
-		
+
 		float t = Math::Clamp(1.0f, 0.0f, _viewFocusTime);
-		Vector2 pos = _cell.lock()->GetInfo().location;
+		Vector2 pos = _cell.lock()->GetLocation();
 		_projector->SetLocation(Math::Lerp(_viewStartLocation, pos, t));
 		_projector->SetScale(Math::Lerp(_viewStartScale, 1.0f, t));
 		_blackout->SetBackgroundColor(cocos2d::Color4F(0.0f, 0.0f, 0.0f, Math::Lerp(0.0f, _nextAlpha, t)));
 
 		_roundSpot->setPosition(_projector->ProjectOnScreen(pos));
 		_roundSpot->setScale(_worldMapLayer->GetCellMapWidget(_cell)->getScale());
-		
+
 		if (_viewFocusTime > 1.0f)
 		{
 			_viewFocused = true;
@@ -142,9 +142,9 @@ void TutorialWidgetSpinoff::update(float dt)
 	if (_worldMapLayer->IsCellMenuSpinoffMode() && _state == State::FOCUS_ON_BUTTON)
 	{
 		_state = State::FOCUS_ON_DRAG;
-		
+
 		Vector2 view = cocos2d::Director::getInstance()->getVisibleSize();
-		Vector2 pos1 = _projector->ProjectOnScreen(_cell.lock()->GetInfo().location) + cocos2d::Vec2(0.0f, 45.0f) - view/2.0f;
+		Vector2 pos1 = _projector->ProjectOnScreen(_cell.lock()->GetLocation()) + cocos2d::Vec2(0.0f, 45.0f) - view/2.0f;
 		Vector2 pos2 = _projector->ProjectOnScreen(_spinoffTown.lock()->GetInfo().location) - view/2.0f;
 
 		_arrow->setVisible(false);
@@ -162,7 +162,7 @@ void TutorialWidgetSpinoff::update(float dt)
 		_state = State::FOCUS_ON_BUTTON;
 
 		cocos2d::Size view = cocos2d::Director::getInstance()->getVisibleSize();
-		Vector2 pos = _cell.lock()->GetInfo().location;
+		Vector2 pos = _cell.lock()->GetLocation();
 
 		_text->runAction(cocos2d::MoveTo::create(0.5f, cocos2d::Vec2(-view.width, 0.0f)));
 		_roundSpot->setPosition(_roundSpot->getPosition() + cocos2d::Vec2(0.0f, 45.0f));
@@ -183,13 +183,13 @@ void TutorialWidgetSpinoff::update(float dt)
 		_state = State::FOCUS_ON_CELL;
 
 		Vector2 view = cocos2d::Director::getInstance()->getVisibleSize();
-		Vector2 pos = _cell.lock()->GetInfo().location;
+		Vector2 pos = _cell.lock()->GetLocation();
 		_text->runAction(cocos2d::MoveTo::create(0.5f, cocos2d::Vec2(-220.0f, 0.0f)));
 		_roundSpot->setPosition(_projector->ProjectOnScreen(pos));
 		_roundSpot->setScale(_worldMapLayer->GetCellMapWidget(_cell)->getScale());
 		_arrow->stopAllActions();
 		_arrow->setPosition(_projector->ProjectOnScreen(pos) + cocos2d::Vec2(0.0f, 65.0f) - view/2.0f);
-		_arrow->runAction(TutorialWidget::Arrow(cocos2d::Vec2(0,-1), 40.0f, 0.9f)); 
+		_arrow->runAction(TutorialWidget::Arrow(cocos2d::Vec2(0,-1), 40.0f, 0.9f));
 		_arrow->setVisible(true);
 		_hand->setVisible(false);
 
@@ -218,7 +218,7 @@ Town::WeakPtr TutorialWidgetSpinoff::FindSuitableSpinoffTown(void) const
 	float min_dist = 20.0f;
 	float max_dist = 150.0f;
 
-	cocos2d::Vec2 cell_pos = _cell.lock()->GetInfo().location;
+	cocos2d::Vec2 cell_pos = _cell.lock()->GetLocation();
 
 	for (Town::Ptr town : World::Instance().GetTowns()) {
 		cocos2d::Vec2 town_p = town->GetInfo().location;
@@ -227,7 +227,7 @@ Town::WeakPtr TutorialWidgetSpinoff::FindSuitableSpinoffTown(void) const
 			return town;
 		}
 	}
-	
+
 	// TODO: Write error to log.
 
 	return Town::WeakPtr();

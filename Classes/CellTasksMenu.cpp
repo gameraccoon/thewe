@@ -34,7 +34,7 @@ bool CellTasksScreen::init(void)
 	cocos2d::EventListenerKeyboard *keyboard = cocos2d::EventListenerKeyboard::create();
 	keyboard->onKeyReleased = CC_CALLBACK_2(CellTasksScreen::KeyReleased, this);
 	cocos2d::Director::getInstance()->getEventDispatcher()->addEventListenerWithSceneGraphPriority(keyboard, this);
-	
+
 	cocos2d::Point screen = cocos2d::Director::getInstance()->getVisibleSize();
 	cocos2d::Point origin = cocos2d::Director::getInstance()->getVisibleOrigin();
 
@@ -48,13 +48,13 @@ bool CellTasksScreen::init(void)
 	_widget->setScale(0.01f);
 	_widget->setOpacity(0);
 	_widget->runAction(cocos2d::Spawn::create(elastic_scale, fade, nullptr));
-	
+
 	cocos2d::ui::Widget *window = dynamic_cast<cocos2d::ui::Widget *>(_widget->getChildByName("Window"));
 
 	cocos2d::ui::Text *txtHeader = dynamic_cast<cocos2d::ui::Text *>(window->getChildByName("Header"));
 	cocos2d::ui::Button *btnClose = dynamic_cast<cocos2d::ui::Button *>(window->getChildByName("Close"));
 	cocos2d::ui::ScrollView *scroller = dynamic_cast<cocos2d::ui::ScrollView *>(window->getChildByName("Scroller"));
-	
+
 	if (!txtHeader) {WRITE_WARN("Failed to get widget with Header name from UICellTaskSelect widget"); return false;}
 	if (!btnClose) {WRITE_WARN("Failed to get widget with Close name from UICellTaskSelect widget"); return false;}
 	if (!scroller) {WRITE_WARN("Failed to get widget with Scroller name from UICellTaskSelect widget"); return false;}
@@ -63,10 +63,10 @@ bool CellTasksScreen::init(void)
 	btnClose->addTouchEventListener(CC_CALLBACK_2(CellTasksScreen::OnCloseCallback, this));
 	scroller->setInertiaScrollEnabled(true);
 	scroller->setBounceEnabled(true);
-	
+
 	_avaliableTasks = World::Instance().GetTaskManager().GetAvailableTasks(_cell);
 	float item_h = 0.0f, total_h = 0.0f;
-	
+
 	for (std::size_t index = 0; index < _avaliableTasks.size(); ++index)
 	{
 		cocos2d::ui::Widget *item = CreateScrollerItem(_avaliableTasks[index]);
@@ -129,7 +129,7 @@ cocos2d::ui::Widget* CellTasksScreen::CreateScrollerItem(const Task::Info *info)
 	taskDuration->setString(cocos2d::StringUtils::format("%s %.1f", LocalizationManager::Instance().getText("CellTaskMenuItem_Duration").c_str(), info->duration));
 	taskChanse->setString(cocos2d::StringUtils::format("%s %.1f",
 		LocalizationManager::Instance().getText("CellTaskMenuItem_Chanse").c_str(),
-		World::Instance().GetTaskManager().CalcTaskSuccessChance(_cell.lock()->GetInfo(), info)));
+		World::Instance().GetTaskManager().CalcTaskSuccessChance(_cell.lock(), info)));
 
 	return widget;
 }
@@ -147,7 +147,7 @@ void CellTasksScreen::OnStartTaskCallback(cocos2d::Ref *sender, cocos2d::ui::Wid
 {
 	if (eventType == cocos2d::ui::Widget::TouchEventType::ENDED)
 	{
-		if (_cell.lock()->GetInfo().state == Cell::State::READY)
+		if (_cell.lock()->GetState() == Cell::State::READY)
 		{
 			if (World::Instance().GetTutorialManager().IsTutorialStateAvailable("ReadyToFinishFirstRealWork"))
 			{

@@ -76,7 +76,7 @@ bool WorldMapLayer::init(void)
 		_cellWidgets.push_back(widget);
 		addChild(widget, Z_CELL);
 	}
-	
+
 	for (const Town::Ptr town : World::Instance().GetTowns())
 	{
 		TownMapWidget *widget = CreateTownWidget(town);
@@ -94,7 +94,7 @@ bool WorldMapLayer::init(void)
 	_effectsGameField->setPosition(0.0f, 0.0f);
 	addChild(_effectsAbsolute, Z_EFFECTS_ABSOLUTE);
 	addChild(_effectsGameField, Z_EFFECTS_GAME_FIELD);
-		
+
 	// say where is screen center
 	_mapProjector->SetScreenCenter(origin + screen / 2.0f);
 	// send map sprite to the center of world
@@ -147,7 +147,7 @@ void WorldMapLayer::AcceptMessage(const Message &msg)
 			if (World::Instance().GetTutorialManager().IsTutorialStateAvailable("WaitForFirstInvestigator"))
 			{
 				dynamic_cast<GameScene*>(getParent())->MoveViewToPoint(
-					investigator->GetInvestigationRoot().lock()->GetInfo().town.lock()->GetLocation());
+					investigator->GetInvestigationRoot().lock()->GetTown().lock()->GetLocation());
 				UpdateMapElements();
 			}
 		}
@@ -204,9 +204,7 @@ void WorldMapLayer::AcceptMessage(const Message &msg)
 
 		if (relink_cell->IsState(Cell::State::AUTONOMY) && parent_cell->IsState(Cell::State::READY))
 		{
-			relink_cell->GetInfo().state = Cell::State::READY;
-			relink_cell->GetInfo().stateBegin = 0;
-			relink_cell->GetInfo().stateDuration = 0;
+			relink_cell->SetState(Cell::State::READY);
 
 			World::Instance().GetCellsNetwork().RelinkCells(parent_cell, relink_cell);
 
@@ -218,34 +216,18 @@ void WorldMapLayer::AcceptMessage(const Message &msg)
 		Town::WeakPtr town = World::Instance().GetTownByName(msg.variables.GetString("TOWN_NAME"));
 		Cell::WeakPtr parent = World::Instance().GetCellsNetwork().GetCellByUid(msg.variables.GetInt("PARENT_UID"));
 
-		if (parent.lock()->GetInfo().cash >= GameInfo::Instance().GetInt("CELL_SPINOFF_CASH_PRICE") &&
-			parent.lock()->GetInfo().membersCount >= GameInfo::Instance().GetInt("CELL_SPINOFF_MEMBERS_PRICE"))
+		if (parent.lock()->GetCash() >= GameInfo::Instance().GetInt("CELL_SPINOFF_CASH_PRICE") &&
+			parent.lock()->GetMembersCount() >= GameInfo::Instance().GetInt("CELL_SPINOFF_MEMBERS_PRICE"))
 		{
-			Cell::Info info;
+			Cell::Ptr cell = CreateCell(parent, town);
 
-			info.parent = parent;
-			info.town = town;
-			info.location = town.lock()->GetLocation();
-			info.cash = GameInfo::Instance().GetInt("CELL_STARTUP_MONEY");
-			info.morale = GameInfo::Instance().GetFloat("CELL_STARTUP_MORALE");
-			info.devotion = GameInfo::Instance().GetFloat("CELL_STARTUP_DEVOTION");
-			info.membersCount = GameInfo::Instance().GetInt("CELL_STARTUP_MEMBERS");
-			info.ratsCount = GameInfo::Instance().GetInt("CELL_STARTUP_RATS_COUNT");
-			info.techUnitsCount = GameInfo::Instance().GetInt("CELL_STARTUP_TECH_UNITS_COUNT");
-			info.experience = 0;
-			info.fame = 0.0f;
-			info.specialization = Cell::Specialization::NORMAL;
-			info.townHeartPounding = GameInfo::Instance().GetFloat("CELL_STARTUP_TOWN_HEART_POUNDING");
-			info.townInfluence = GameInfo::Instance().GetFloat("CELL_STARTUP_TOWN_INFLUENCE");
-			info.townWelfare = GameInfo::Instance().GetFloat("CELL_STARTUP_TOWN_WELFARE");
+			cell->SetLocation(town.lock()->GetLocation());
+			cell->SetCash(GameInfo::Instance().GetInt("CELL_STARTUP_MONEY"));
+			cell->SetExperience(0);
 
-			parent.lock()->GetInfo().cash -= GameInfo::Instance().GetInt("CELL_SPINOFF_CASH_PRICE");
-			parent.lock()->GetInfo().membersCount -= GameInfo::Instance().GetInt("CELL_SPINOFF_MEMBERS_PRICE");
+			parent.lock()->SetCash(parent.lock()->GetCash() - GameInfo::Instance().GetInt("CELL_SPINOFF_CASH_PRICE"));
 
-			info.stateBegin = Utils::GetGameTime();
-			info.stateDuration = GameInfo::Instance().GetTime("CELL_CONSTRUCTION_TIME");
-
-			CreateCell(info, Cell::State::CONSTRUCTION);
+			cell->SetState(Cell::State::CONSTRUCTION, Utils::GetGameTime(), GameInfo::Instance().GetTime("CELL_CONSTRUCTION_TIME"));
 
 			const std::set<std::string>& test = World::Instance().GetTutorialManager().GetTutorialStatements();
 			if (World::Instance().GetTutorialManager().IsTutorialStateAvailable("ReadyToCreateSpinoff"))
@@ -284,16 +266,13 @@ void WorldMapLayer::SetNextCellParent(Cell::WeakPtr parent)
 	_nextCellParent = parent;
 }
 
-Cell::Ptr WorldMapLayer::CreateCell(Cell::Info info, Cell::State state)
-{	
-	info.state = state;
+Cell::Ptr WorldMapLayer::CreateCell(Cell::WeakPtr parent, Town::WeakPtr town)
+{
+	Cell::Ptr cell = Cell::Create(town);
 
-	Cell::Ptr cell = Cell::Create(info);
-	
-	Cell::Ptr parent = info.parent.lock();
-	if (parent)
+	if (!parent.expired())
 	{
-		parent->AddChild(cell);
+		parent.lock()->AddChild(cell);
 	}
 
 	World::Instance().GetCellsNetwork().AddCell(cell);
@@ -462,7 +441,7 @@ void WorldMapLayer::TouchesEnded(const std::vector<cocos2d::Touch* > &touches, c
 				Cell::Ptr cell = GetCellUnderPoint(point).lock();
 				if (cell)
 				{
-					Vector2 cell_pos = cell->GetInfo().location;
+					Vector2 cell_pos = cell->GetLocation();
 					Vector2 menu_pos = _mapProjector->ProjectOnScreen(cell_pos);
 
 					_cellMenu->DisappearImmedaitely();
@@ -555,14 +534,14 @@ void WorldMapLayer::BackToMainMenuCallback(cocos2d::Ref *sender)
 CellMapWidget* WorldMapLayer::CreateCellWidget(Cell::Ptr cell)
 {
 	CellMapWidget *widget = new CellMapWidget(this, _mapProjector, cell);
-	
-	int uid = _mapProjector->AddMapPart(Drawable::CastFromCocos(widget), cell->GetInfo().location, Vector2(0.0f, 0.0f), INITIAL_CELL_SCALE, true);
+
+	int uid = _mapProjector->AddMapPart(Drawable::CastFromCocos(widget), cell->GetLocation(), Vector2(0.0f, 0.0f), INITIAL_CELL_SCALE, true);
 	_mapProjector->Update();
 
 	cocos2d::Rect tex = widget->GetCellRect();
 	float w = tex.size.width * widget->getScaleX();
 	float h = tex.size.height * widget->getScaleY();
-	
+
 	widget->SetHitArea(cocos2d::Rect(-(w / 2.0f), -(h / 2.0f), w, h));
 	widget->SetProjectorUid(uid);
 	widget->retain();
@@ -573,14 +552,14 @@ CellMapWidget* WorldMapLayer::CreateCellWidget(Cell::Ptr cell)
 TownMapWidget* WorldMapLayer::CreateTownWidget(Town::Ptr town)
 {
 	TownMapWidget *widget = new TownMapWidget(town);
-	
+
 	int uid = _mapProjector->AddMapPart(Drawable::CastFromCocos(widget), town->GetInfo().location, Vector2(0.0f, 0.0f), INITIAL_TOWN_SCALE, true);
 	_mapProjector->Update();
 
 	cocos2d::Rect tex = widget->GetTownRect();
 	float w = tex.size.width * widget->getScaleX();
 	float h = tex.size.height * widget->getScaleY();
-	
+
 	widget->SetHitArea(cocos2d::Rect(-(w / 2.0f), -(h / 2.0f), w, h));
 	widget->SetProjectorUid(uid);
 	widget->retain();
@@ -626,14 +605,14 @@ Cell::WeakPtr WorldMapLayer::GetCellUnderPoint(const Vector2& point)
 			return Cell::WeakPtr();
 		}
 
-		Vector2 projectedPoint = point - _mapProjector->ProjectOnScreen(cell->GetInfo().location);
+		Vector2 projectedPoint = point - _mapProjector->ProjectOnScreen(cell->GetLocation());
 
 		cocos2d::Rect rect = widget->GetHitArea();
 
 		if (rect.containsPoint(projectedPoint))
 		{
 			if (!cell->IsState(Cell::State::READY) && !cell->IsState(Cell::State::AUTONOMY)) {
-				return Cell::WeakPtr();	
+				return Cell::WeakPtr();
 			}
 
 			return cell;
@@ -677,25 +656,12 @@ void WorldMapLayer::OnTownSelect(Town::WeakPtr town)
 	{
 		if (World::Instance().IsFirstLaunch())
 		{
-			Cell::Info info;
-			info.parent = Cell::WeakPtr();
-			info.town = town;
-			info.location = town.lock()->GetLocation();
-			info.cash = GameInfo::Instance().GetInt("CELL_STARTUP_MONEY");
-			info.morale = GameInfo::Instance().GetFloat("CELL_STARTUP_MORALE");
-			info.devotion = GameInfo::Instance().GetFloat("CELL_STARTUP_DEVOTION");
-			info.membersCount = GameInfo::Instance().GetInt("CELL_STARTUP_MEMBERS");
-			info.ratsCount = GameInfo::Instance().GetInt("CELL_STARTUP_RATS_COUNT");
-			info.techUnitsCount = GameInfo::Instance().GetInt("CELL_STARTUP_TECH_UNITS_COUNT");
-			info.experience = 0;
-			info.fame = 0.0f;
-			info.stateBegin = 0;
-			info.stateDuration = 0;
-			info.specialization = Cell::Specialization::NORMAL;
-			info.townHeartPounding = GameInfo::Instance().GetFloat("CELL_STARTUP_TOWN_HEART_POUNDING");
-			info.townInfluence = GameInfo::Instance().GetFloat("CELL_STARTUP_TOWN_INFLUENCE");
-			info.townWelfare = GameInfo::Instance().GetFloat("CELL_STARTUP_TOWN_WELFARE");
-			Cell::Ptr cell = CreateCell(info, Cell::State::READY);
+			Cell::Ptr cell = CreateCell(Cell::WeakPtr(), town);
+
+			cell->SetLocation(town.lock()->GetLocation());
+			cell->SetCash(GameInfo::Instance().GetInt("CELL_STARTUP_MONEY"));
+			cell->SetExperience(0);
+			cell->SetState(Cell::State::READY);
 
 			World::Instance().SetFirstLaunch(false);
 			World::Instance().GetCellsNetwork().SetRootCell(cell);
@@ -835,14 +801,14 @@ void WorldMapLayer::UpdateNetwork()
 
 void WorldMapLayer::RecursiveUpdateNetworkVisualiser(cocos2d::DrawNode *visualiser, Cell::WeakPtr cell)
 {
-	Vector2 p1(_mapProjector->ProjectOnScreen(cell.lock()->GetInfo().location));
+	Vector2 p1(_mapProjector->ProjectOnScreen(cell.lock()->GetLocation()));
 
 	for (Cell::WeakPtr child : cell.lock()->GetChildren())
 	{
 		Cell::Ptr childPtr = child.lock();
 		if (childPtr)
 		{
-			Vector2 p2(_mapProjector->ProjectOnScreen(childPtr->GetInfo().location));
+			Vector2 p2(_mapProjector->ProjectOnScreen(childPtr->GetLocation()));
 			visualiser->drawSegment(p1, p2, 1.0f, Color(1.0f, 0.0f, 0.0f, 1.0f));
 
 			// recursive

@@ -85,7 +85,6 @@ void TaskManager::UpdateToTime(Utils::GameTime worldTime)
 			// if Cell wasn't removed yet
 			if (cell)
 			{
-				const Cell::Info& cellInfo = cell->GetInfo();
 				const Task::Info* taskInfo = task->GetInfo();
 
 				Task::CompletedTaskInfo info;
@@ -98,7 +97,7 @@ void TaskManager::UpdateToTime(Utils::GameTime worldTime)
 				// call lua function that calculate status of the task
 				bool isSuccess = luabind::call_function<bool>(World::Instance().GetLuaInst()->GetLuaState()
 															  , "CheckTaskStatus"
-															  , cellInfo
+															  , cell.get()
 															  , taskInfo
 															  , 0);
 
@@ -169,11 +168,11 @@ void TaskManager::FillTasks(const std::vector<Task::Info>& tasks)
 	_isTasksFilled = true;
 }
 
-float TaskManager::CalcTaskSuccessChance(const Cell::Info& cellInfo, const Task::Info* taskInfo)
+float TaskManager::CalcTaskSuccessChance(const Cell::Ptr cell, const Task::Info* taskInfo)
 {
 	return luabind::call_function<float>(World::Instance().GetLuaInst()->GetLuaState()
 												  , "CalcTaskSuccessChance"
-												  , cellInfo
+												  , cell.get()
 												  , taskInfo
 												  , 0);
 }

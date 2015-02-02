@@ -48,7 +48,7 @@ bool TutorialWidgetAfterFirstCell::init()
 
 	_firstCell = World::Instance().GetCellsNetwork().GetRootCell();
 	_startViewLocation = _projector->GetLocation();
-	_targetViewLocation = _firstCell.lock()->GetInfo().location;
+	_targetViewLocation = _firstCell.lock()->GetLocation();
 
 	cocos2d::EventListenerTouchAllAtOnce *listener = cocos2d::EventListenerTouchAllAtOnce::create();
 	listener->onTouchesBegan = CC_CALLBACK_2(TutorialWidgetAfterFirstCell::TouchesBegan, this);

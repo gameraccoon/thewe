@@ -11,7 +11,7 @@
 TutorialWidgetInvestigatorUncatched::TutorialWidgetInvestigatorUncatched(Tutorial::WeakPtr tutorial,
 																		 WorldMapLayer *worldMapLayer,
 																		 MapProjector *projector)
-    : TutorialWidget(tutorial)
+	: TutorialWidget(tutorial)
 	, _worldMapLayer(worldMapLayer)
 	, _projector(projector)
 	, _state(State::MOVE)
@@ -30,30 +30,30 @@ TutorialWidgetInvestigatorUncatched* TutorialWidgetInvestigatorUncatched::create
 																				 MapProjector *projector)
 {
 	TutorialWidgetInvestigatorUncatched* ret = new TutorialWidgetInvestigatorUncatched(tutorial, worldMapLayer, projector);
-    if (ret && ret->init())
-    {
-        ret->autorelease();
-    }
-    else
-    {
-        CC_SAFE_DELETE(ret);
-    }
-    return ret;
+	if (ret && ret->init())
+	{
+		ret->autorelease();
+	}
+	else
+	{
+		CC_SAFE_DELETE(ret);
+	}
+	return ret;
 }
 
 bool TutorialWidgetInvestigatorUncatched::init()
 {
-    if (!cocos2d::Node::init())
-    {
-        return false;
-    }
+	if (!cocos2d::Node::init())
+	{
+		return false;
+	}
 
-    Tutorial::Ptr tutorial = _tutorial.lock();
-    if (!tutorial)
-    {
-        Log::Instance().writeWarning("Tutorial was removed before use");
-        return true;
-    }
+	Tutorial::Ptr tutorial = _tutorial.lock();
+	if (!tutorial)
+	{
+		Log::Instance().writeWarning("Tutorial was removed before use");
+		return true;
+	}
 
 	_viewStartPos = _projector->GetLocation();
 	_viewStartScale = _projector->GetScale();
@@ -100,7 +100,7 @@ bool TutorialWidgetInvestigatorUncatched::init()
 
 	_blackout = ScreenBlackoutWidget::create(cocos2d::Color4F(0.0f, 0.0f, 0.0f, 0.0f));
 	_blackout->AddSpot(_spot);
-	
+
 	cocos2d::Vec2 view = cocos2d::Director::getInstance()->getVisibleSize();
 	_text = cocos2d::ui::Text::create(_tutorial.lock()->text, "EuropeNormal.ttf", 28);
 	_text->setTextVerticalAlignment(cocos2d::TextVAlignment::CENTER);
@@ -115,7 +115,7 @@ bool TutorialWidgetInvestigatorUncatched::init()
 
 	MessageManager::Instance().PutMessage(Message("DisableMapScrolling"));
 
-    return true;
+	return true;
 }
 
 void TutorialWidgetInvestigatorUncatched::update(float dt)
@@ -124,7 +124,7 @@ void TutorialWidgetInvestigatorUncatched::update(float dt)
 		float scale = 1.0f / 0.5f;
 		_time += dt * scale;
 		float t = Math::Clamp(1.0f, 0.0f, _time);
-		_projector->SetLocation(Math::Lerp(_viewStartPos, _cell.lock()->GetInfo().location, t));
+		_projector->SetLocation(Math::Lerp(_viewStartPos, _cell.lock()->GetLocation(), t));
 		_projector->SetScale(Math::Lerp(_viewStartScale, 1.2f, t));
 		_worldMapLayer->UpdateMapElements();
 		if (_time > 1.0f) {
@@ -160,7 +160,7 @@ void TutorialWidgetInvestigatorUncatched::update(float dt)
 				y += 60.0f;
 			}
 
-			cocos2d::Vec2 cell_pos = _projector->ProjectOnScreen(cell_ptr->GetInfo().location + Vector2(0.0f, 45.0f));
+			cocos2d::Vec2 cell_pos = _projector->ProjectOnScreen(cell_ptr->GetLocation() + Vector2(0.0f, 45.0f));
 			const float scale = _worldMapLayer->GetCellMapWidget(cell_ptr)->getScale();
 			sprite->setPosition(cell_pos + cocos2d::Vec2(0,y) - view*0.5f);
 			sprite->setScale(scale);
@@ -177,7 +177,7 @@ void TutorialWidgetInvestigatorUncatched::update(float dt)
 	cocos2d::Vec2 spot_pos;
 	for (auto arrow : _arrows) {
 		if (_worldMapLayer->IsCellMenuOpenedFor(arrow.first)) {
-			spot_pos = _projector->ProjectOnScreen(arrow.first.lock()->GetInfo().location);
+			spot_pos = _projector->ProjectOnScreen(arrow.first.lock()->GetLocation());
 		}
 	}
 	_spot->setPosition(spot_pos + cocos2d::Vec2(0.0f, 50.0f));

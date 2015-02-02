@@ -20,7 +20,7 @@ bool CellInfoMenu::init(void)
 	cocos2d::EventListenerKeyboard *keyboard = cocos2d::EventListenerKeyboard::create();
 	keyboard->onKeyReleased = CC_CALLBACK_2(CellInfoMenu::KeyReleased, this);
 	cocos2d::Director::getInstance()->getEventDispatcher()->addEventListenerWithSceneGraphPriority(keyboard, this);
-	
+
 	cocos2d::Point screen = cocos2d::Director::getInstance()->getVisibleSize();
 	cocos2d::Point origin = cocos2d::Director::getInstance()->getVisibleOrigin();
 	cocos2d::Point center = origin + screen / 2.0f;
@@ -36,7 +36,7 @@ bool CellInfoMenu::init(void)
 	_widget->setScale(0.01f);
 	_widget->setOpacity(0);
 	_widget->runAction(cocos2d::Spawn::create(elastic_scale, fade, nullptr));
-	
+
 	cocos2d::ui::Widget *window = dynamic_cast<cocos2d::ui::Widget *>(_widget->getChildByName("Window"));
 
 	cocos2d::ui::Button *btnClose = dynamic_cast<cocos2d::ui::Button *>(window->getChildByName("Close"));
@@ -50,7 +50,7 @@ bool CellInfoMenu::init(void)
 	_levelProgressBar = dynamic_cast<cocos2d::ui::LoadingBar *>(window->getChildByName("LevelProgress")->getChildByName("Progress"));
 	_moraleProgressBar = dynamic_cast<cocos2d::ui::LoadingBar *>(window->getChildByName("MoraleLevel")->getChildByName("Progress"));
 	_devotionProgressBar = dynamic_cast<cocos2d::ui::LoadingBar *>(window->getChildByName("DevotionLevel")->getChildByName("Progress"));
-	
+
 	if (!btnClose) {WRITE_WARN("CellInfo: Failed to get widget with name Close"); return false;}
 	if (!txtHeader) {WRITE_WARN("CellInfo: Failed to get widget with name Header"); return false;}
 	if (!_txtMembers) {WRITE_WARN("CellInfo: Failed to get widget with name Members"); return false;}
@@ -82,21 +82,19 @@ void CellInfoMenu::update(float dt)
 
 void CellInfoMenu::UpdateInfoBy(Cell::Ptr cell)
 {
-	Cell::Info info = cell->GetInfo();
-
-	int level = World::Instance().GetLevelFromExperience(info.experience);
+	int level = World::Instance().GetLevelFromExperience(cell->GetExperience());
 	int currentLevelExp = World::Instance().GetExperienceForLevel(level);
 	int expBetweenLevels = World::Instance().GetExperienceForLevel(level + 1) - currentLevelExp;
-	int earnedLevelExp = info.experience - currentLevelExp;
+	int earnedLevelExp = cell->GetExperience() - currentLevelExp;
 	float levelProgress = 1.0f * earnedLevelExp / expBetweenLevels;
 	_levelProgressBar->setPercent(levelProgress * 100.0f);
-	_moraleProgressBar->setPercent(info.morale * 100.0f);
-	_devotionProgressBar->setPercent(info.devotion * 100.0f);
+	_moraleProgressBar->setPercent(0.0f);
+	_devotionProgressBar->setPercent(0.0f);
 
 	_txtMembers->setString(cocos2d::StringUtils::format("%s %d",
-		LocalizationManager::Instance().getText("CellInfoMenu_Members").c_str(), info.membersCount));
+		LocalizationManager::Instance().getText("CellInfoMenu_Members").c_str(), cell->GetMembersCount()));
 	_txtCach->setString(cocos2d::StringUtils::format("%s %d",
-		LocalizationManager::Instance().getText("CellInfoMenu_Cach").c_str(), info.cash));
+		LocalizationManager::Instance().getText("CellInfoMenu_Cach").c_str(), cell->GetCash()));
 	_txtLevel->setString(cocos2d::StringUtils::format("%s %d",
 		LocalizationManager::Instance().getText("CellInfoMenu_Level").c_str(), level));
 	_txtMorale->setString(LocalizationManager::Instance().getText("CellInfoMenu_Morale"));

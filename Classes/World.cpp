@@ -103,7 +103,7 @@ void World::AddTown(Town::Ptr cell)
 void World::AddInvestigator(Investigator::Ptr investigator)
 {
 	_investigators.push_back(investigator);
-	
+
 	Message message("AddInvestigatorWidget");
 	message.variables.SetInt("UID", investigator->GetUid());
 	MessageManager::Instance().PutMessage(message);
@@ -304,7 +304,7 @@ bool World::IsTownAvaliableToPlaceCell(Town::WeakPtr town) const
 {
 	for (Cell::Ptr cell : _cellsNetwork.GetActiveCells())
 	{
-		if (cell->GetInfo().town.lock()->GetName() == town.lock()->GetName())
+		if (cell->GetTown().lock()->GetName() == town.lock()->GetName())
 		{
 			return false;
 		}
@@ -382,4 +382,4 @@ std::function<void()> World::GetBonusCallback(Cell::WeakPtr cell) const
 			, "BonusBehavior"
 			, cell.lock().get());
 	});
-} 
+}

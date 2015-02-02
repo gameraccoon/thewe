@@ -45,7 +45,7 @@ bool CellMenuSelector::init()
 
 	return true;
 }
-	
+
 void CellMenuSelector::AppearImmediately(Cell::WeakPtr cell, const Vector2 &position)
 {
 	InitButtons(cell.lock());
@@ -62,7 +62,7 @@ void CellMenuSelector::update(float)
 		Cell::Ptr cell = _cell.lock();
 		if (cell)
 		{
-			Vector2 initialPos = cell->GetInfo().location;
+			Vector2 initialPos = cell->GetLocation();
 			Vector2 updatedPos = _projector->ProjectOnScreen(initialPos);
 
 			_circleMenu->setPosition(updatedPos);
@@ -153,7 +153,7 @@ void CellMenuSelector::InitButtons(Cell::Ptr cell)
 		_btnSpinoff->setScale(0.85f, 0.85f);
 		_btnSpinoff->SetEnabled(cell->IsReadyToCreateSpinoff());
 		_btnSpinoff->autorelease();
-		
+
 		_circleMenu->AddNonMenuItem(_btnSpinoff);
 		_circleMenu->AddMenuItem(_btnInfo);
 		_circleMenu->AddMenuItem(_btnTasks);
@@ -191,7 +191,7 @@ bool CellMenuSelector::IsBelongToCell(Cell::WeakPtr cell) const
 
 void CellMenuSelector::CreateMenu(cocos2d::Layer* menu)
 {
-	if (_cell.lock()->GetInfo().state != Cell::State::READY)
+	if (_cell.lock()->GetState() != Cell::State::READY)
 	{
 		DisappearWithAnimation();
 		return;

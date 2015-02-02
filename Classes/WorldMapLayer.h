@@ -40,7 +40,7 @@ public:
 	void SetGuiEnabled(bool isEnabled);
 	void SetNextCellParent(Cell::WeakPtr parent);
 
-	Cell::Ptr CreateCell(Cell::Info info, Cell::State state);
+	Cell::Ptr CreateCell(Cell::WeakPtr parent, Town::WeakPtr town);
 
 	void PushSessionFailScreen(void);
 	void PushSessionWinScreen(void);
@@ -85,7 +85,7 @@ private:
 	Region::WeakPtr GetRegionUnderPoint(const Vector2& point) const;
 	Cell::WeakPtr GetCellUnderPoint(const Vector2& point);
 	Town::WeakPtr GetTownUnderPoint(const Vector2& point);
-	
+
 	CellMapWidget* CreateCellWidget(Cell::Ptr cell);
 	TownMapWidget* CreateTownWidget(Town::Ptr town);
 	InvestigatorMapWidget* CreateInvestigatorWidget(Investigator::Ptr investigator);

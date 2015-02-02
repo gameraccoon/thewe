@@ -12,7 +12,7 @@
 TutorialWidgetInvestigationStarted::TutorialWidgetInvestigationStarted(Tutorial::WeakPtr tutorial,
 																	   WorldMapLayer *worldMapLayer,
 																	   MapProjector *projector)
-    : TutorialWidget(tutorial)
+	: TutorialWidget(tutorial)
 	, _worldMapLayer(worldMapLayer)
 	, _projector(projector)
 	, _state(State::MOVE)
@@ -24,31 +24,31 @@ TutorialWidgetInvestigationStarted* TutorialWidgetInvestigationStarted::create(T
 																			   WorldMapLayer *worldMapLayer,
 																			   MapProjector *projector)
 {
-    TutorialWidgetInvestigationStarted* ret = new TutorialWidgetInvestigationStarted(tutorial, worldMapLayer, projector);
-    if (ret && ret->init())
-    {
-        ret->autorelease();
-    }
-    else
-    {
-        CC_SAFE_DELETE(ret);
-    }
-    return ret;
+	TutorialWidgetInvestigationStarted* ret = new TutorialWidgetInvestigationStarted(tutorial, worldMapLayer, projector);
+	if (ret && ret->init())
+	{
+		ret->autorelease();
+	}
+	else
+	{
+		CC_SAFE_DELETE(ret);
+	}
+	return ret;
 }
 
 bool TutorialWidgetInvestigationStarted::init()
 {
-    if (!cocos2d::Node::init())
-    {
-        return false;
-    }
+	if (!cocos2d::Node::init())
+	{
+		return false;
+	}
 
-    Tutorial::Ptr tutorial = _tutorial.lock();
-    if (!tutorial)
-    {
-        Log::Instance().writeWarning("Tutorial was removed before use");
-        return true;
-    }
+	Tutorial::Ptr tutorial = _tutorial.lock();
+	if (!tutorial)
+	{
+		Log::Instance().writeWarning("Tutorial was removed before use");
+		return true;
+	}
 
 	if (!World::Instance().GetInvestigators().empty()) {
 		Investigator::WeakPtr inves = World::Instance().GetInvestigators().at(0);
@@ -95,16 +95,16 @@ void TutorialWidgetInvestigationStarted::update(float dt)
 		float scale = 1.0f / 0.5f;
 		_time += dt * scale;
 		float t = Math::Clamp(1.0f, 0.0f, _time);
-		_projector->SetLocation(Math::Lerp(_startViewPos, _cell.lock()->GetInfo().location, t));
+		_projector->SetLocation(Math::Lerp(_startViewPos, _cell.lock()->GetLocation(), t));
 		_projector->SetScale(Math::Lerp(_startViewScale, 1.2f, t));
 		_worldMapLayer->UpdateMapElements();
-		
+
 		if (_time > 1.0f) {
 			_time = 0.0f;
 			_state = State::SHOW_FINGER;
 
 			cocos2d::Vec2 view_size = cocos2d::Director::getInstance()->getVisibleSize();
-			cocos2d::Vec2 cell_pos = _projector->ProjectOnScreen(_cell.lock()->GetInfo().location);
+			cocos2d::Vec2 cell_pos = _projector->ProjectOnScreen(_cell.lock()->GetLocation());
 			cocos2d::Vec2 p1 = Vector2(0.0f, 45.0f);
 			cocos2d::Vec2 p2 = Vector2(20.0f, 120.0f);
 			cocos2d::Vec2 dir = (p2-p1).getNormalized();

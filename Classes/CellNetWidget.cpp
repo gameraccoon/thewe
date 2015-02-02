@@ -35,7 +35,7 @@ bool CellNetWidget::init()
 	if (cell)
 	{
 		cocos2d::TTFConfig ttfConfig("arial.ttf", 18);
-		cocos2d::Label *text = cocos2d::Label::createWithTTF(ttfConfig, cell->GetInfo().town.lock()->GetInfo().name, cocos2d::TextHAlignment::CENTER);
+		cocos2d::Label *text = cocos2d::Label::createWithTTF(ttfConfig, cell->GetTown().lock()->GetInfo().name, cocos2d::TextHAlignment::CENTER);
 		Vector2 center = size / 2;
 		text->setPosition(center);
 		addChild(text);

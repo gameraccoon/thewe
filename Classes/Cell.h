@@ -7,6 +7,7 @@
 #include "Vector2.h"
 #include "Task.h"
 #include "Resources.h"
+#include "Member.h"
 
 class Cell
 {
@@ -23,47 +24,15 @@ public:
 		DESTRUCTION
 	};
 
-	enum class Specialization
-	{
-		NORMAL
-	};
-
-	struct Info
-	{
-		Cell::WeakPtr parent;
-		Town::WeakPtr town;
-		Vector2 location;
-		State state;
-
-		int cash;
-		int membersCount;
-		int ratsCount;
-		int techUnitsCount;
-		int experience;
-		Specialization specialization;
-		float morale;
-		float devotion;
-		float fame;
-		float townInfluence;
-		float townHeartPounding;
-		float townWelfare;
-
-		Resource::Map resources;
-
-		// current process (construction, destruction, autonomy)
-		Utils::GameTime stateBegin;
-		Utils::GameTime stateDuration;
-	};
-
 public:
-	Cell(const Info &info);
+	Cell(Town::WeakPtr town);
 	~Cell(void);
 
 	/**
 	 * Create Cell and return a smart ptr
 	 */
-	static Ptr Create(const Info &info);
-	
+	static Ptr Create(Town::WeakPtr town);
+
 	/**
 	 * Adds new child to the cell
 	 * This cell automatically adds as parent
@@ -85,11 +54,6 @@ public:
 	const std::vector<Cell::WeakPtr>& GetChildren() const;
 
 	WeakPtr GetParent() const;
-
-	/**
-	* Returns information about the cell
-	*/
-	Info& GetInfo(void);
 
 	void AddCurrentTask(Task::WeakPtr currentTask);
 	Task::WeakPtr getCurrentTask() const;
@@ -113,14 +77,29 @@ public:
 
 	bool IsReadyToCreateSpinoff() const;
 
-	void AddResource(const Resource& reward);
+	void AddResource(const Resource& resource);
 	void AddReward(const Resource::Vector& reward);
+	const Resource::Map& GetResources() const;
 
-	int GetExp(void) const;
-	void SetExp(int newExp);
+	int GetExperience(void) const;
+	void SetExperience(int newExp);
+
+	Vector2 GetLocation() const;
+	void SetLocation(const Vector2& newLocation);
+
+	State GetState() const;
+	Utils::GameTime GetStateBegin() const;
+	Utils::GameTime GetStateDuration() const;
+	void SetState(State newState, Utils::GameTime beginTime = 0, Utils::GameTime duration = 0);
+
+	int GetMembersCount() const;
+	int GetCash() const;
+	void SetCash(int newCashValue);
+
+	Town::WeakPtr GetTown() const;
 
 private:
-	Cell(const Info &info, unsigned int uid);
+	Cell(Town::WeakPtr town, unsigned int uid);
 	/** Set parent for the cell */
 	void SetParent(Cell::WeakPtr cell);
 
@@ -128,9 +107,6 @@ private:
 	void _CheckValues() const;
 
 private:
-	/** All usual info about the cell */
-	Info _info;
-
 	unsigned int _uid;
 
 	/** Child cells */
@@ -142,8 +118,20 @@ private:
 	/** List of recently completed task */
 	std::vector<Task::CompletedTaskInfo> _completedTasks;
 
-	/** Geographic position on the map */
-	Vector2 _worldLocation;
+	Cell::WeakPtr parent;
+	Town::WeakPtr town;
+	Vector2 location;
+
+	int cash;
+	int experience;
+
+	Resource::Map resources;
+	std::vector<Member> members;
+
+	// current state (construction, destruction, autonomy)
+	State state;
+	Utils::GameTime stateBegin;
+	Utils::GameTime stateDuration;
 
 	friend class GameSavesManager;
 };

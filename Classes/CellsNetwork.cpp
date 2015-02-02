@@ -17,15 +17,13 @@ void CellsNetwork::InitAndLink(const CellsNetwork::Cells &cells)
 void CellsNetwork::UpdateToTime(Utils::GameTime time)
 {
 	for (auto cell : _cells)
-	{	
+	{
 		if (!IsConnectedWithRoot(cell) && cell->IsState(Cell::State::READY)) {
 			cell->BeginAutonomy();
 		}
 
 		if (IsConnectedWithRoot(cell) && cell->IsState(Cell::State::AUTONOMY)) {
-			cell->GetInfo().state = Cell::State::READY;
-			cell->GetInfo().stateBegin = 0;
-			cell->GetInfo().stateDuration = 0;
+			cell->SetState(Cell::State::READY, 0, 0);
 		}
 	}
 }
@@ -33,7 +31,7 @@ void CellsNetwork::UpdateToTime(Utils::GameTime time)
 void CellsNetwork::RelinkCells(Cell::WeakPtr newParent, Cell::WeakPtr child)
 {
 	Cell::Ptr childPtr = child.lock();
-	Cell::Ptr prevParent = childPtr->GetInfo().parent.lock();
+	Cell::Ptr prevParent = childPtr->GetParent().lock();
 	if (prevParent) {
 		prevParent->RemoveChild(child);
 	}
@@ -64,9 +62,9 @@ void CellsNetwork::RemoveCell(Cell::WeakPtr cell)
 	{
 		if ((*it) == cellPtr)
 		{
-			cellPtr->GetInfo().town.lock()->SetCellPresented(false);
+			cellPtr->GetTown().lock()->SetCellPresented(false);
 
-			Cell::Ptr parent = cellPtr->GetInfo().parent.lock();
+			Cell::Ptr parent = cellPtr->GetParent().lock();
 			if (parent) {
 				parent->RemoveChild(cell);
 			}
@@ -74,7 +72,7 @@ void CellsNetwork::RemoveCell(Cell::WeakPtr cell)
 			cellPtr->RemoveAllChildren();
 
 			it = _cells.erase(it);
-			
+
 			UidMap::const_iterator uidIter;
 			uidIter = _uidMapCast.find(cellPtr->GetUid());
 			_uidMapCast.erase(uidIter);
@@ -92,7 +90,7 @@ Cell::Ptr CellsNetwork::GetCellByUid(int uid) const
 	if (iter != _uidMapCast.end()) {
 		return iter->second;
 	}
-		
+
 	return Cell::Ptr();
 }
 
@@ -126,7 +124,7 @@ bool CellsNetwork::IsCellRelinkable(Cell::WeakPtr cell) const
 			return false;
 		}
 
-		Cell::Ptr parentPtr = cellPtr->GetInfo().parent.lock();
+		Cell::Ptr parentPtr = cellPtr->GetParent().lock();
 		return parentPtr == nullptr && cellPtr != _rootCell;
 	}
 
@@ -138,7 +136,7 @@ bool CellsNetwork::IsConnectedWithRoot(Cell::WeakPtr cell) const
 	Cell::Ptr rootCell = GetRootCell().lock();
 	Cell::Ptr cellPtr = cell.lock();
 
-	Cell::Ptr parent = cellPtr->GetInfo().parent.lock();
+	Cell::Ptr parent = cellPtr->GetParent().lock();
 	if (!parent) {
 		return cellPtr == rootCell;
 	}

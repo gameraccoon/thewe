@@ -16,7 +16,7 @@ public:
 
 	/**
 	 * Run new task for the cell
-	 * 
+	 *
 	 * @param cell cell that work on this task
 	 * @param info information about task
 	 * @param startTime start time of this task
@@ -37,7 +37,7 @@ public:
 
 	void FillTasks(const std::vector<Task::Info>& tasks);
 
-	float CalcTaskSuccessChance(const Cell::Info &cellInfo, const Task::Info* taskInfo);
+	float CalcTaskSuccessChance(const Cell::Ptr cell, const Task::Info* taskInfo);
 private:
 	/** Information about runned task */
 	struct RunnedTaskInfo

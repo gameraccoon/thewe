@@ -1,14 +1,14 @@
 -- Определяем, считать задание выполненным или провеленным
-function CheckTaskStatus(cellInfo, taskInfo)
-	local successChance = CalcTaskSuccessChance(cellInfo, taskInfo)
+function CheckTaskStatus(cell, taskInfo)
+	local successChance = CalcTaskSuccessChance(cell, taskInfo)
 	return math.random(0, 1000) / 1000.0 < successChance
 end
 
 -- возвращает вероятность выполнения конкретного задания конкретной ячейкой
-function CalcTaskSuccessChance(cellInfo, taskInfo)
-	local successChance = (0.5 + cellInfo.devotion * 0.5)
+function CalcTaskSuccessChance(cell, taskInfo)
+	local successChance = 1
 
-	successChance = successChance * math.pow(1.3, LevelFromExperience(cellInfo.experience) - taskInfo.level)
+	successChance = successChance * math.pow(1.3, LevelFromExperience(cell.experience) - taskInfo.level)
 
 	if successChance > 1.0 then successChance = 1.0 end
 	if successChance < 0.0 then successChance = 0.0 end
@@ -17,8 +17,6 @@ end
 
 -- определяем будет ли показываться задание для данной ячейки
 function IsShowTaskInList(cell, taskInfo)
-	local cellInfo = cell:getInfo()
-
 	-- задачи для туториала
 	if World:getTutorialManager():isTutorialStateAvailable("StartFirstTask") then
 		if taskInfo.id == "tutorial_Recrutment" then
@@ -44,7 +42,6 @@ function IsShowTaskInList(cell, taskInfo)
 end
 
 function MissionSuccess_InvestigatorTest(cell, taskInfo)
-	local cellInfo = cell:getInfo()
 	MessageManager:sendMessage("Investigation launched")
 	World:addInvestigatorByCellUid(cell:getUid())
 end
