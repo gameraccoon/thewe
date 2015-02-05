@@ -19,9 +19,7 @@
   <imageFileList>
     <string>ui_gameplay0.plist</string>
   </imageFileList>
-  <imagePngList>
-    <string>ui_gameplay0.png</string>
-  </imagePngList>
+  <imagePngList />
   <JsonSuffix>.json</JsonSuffix>
-  <CurrentUIJson>tasks_menu.json</CurrentUIJson>
+  <CurrentUIJson />
 </UIProject>

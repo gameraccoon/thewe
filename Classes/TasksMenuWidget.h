@@ -3,7 +3,8 @@
 
 #include "Cell.h"
 #include "GameInterface.h"
-#include "MemberWidget.h"
+#include "TasksMemberWidget.h"
+#include "TasksListWidget.h"
 
 class TasksMenuWidget : public cocos2d::Node, public MessageReceiver
 {
@@ -31,6 +32,7 @@ private:
 	Cell::WeakPtr _cell;
 	cocos2d::ui::Widget *_widget;
 	cocos2d::ui::PageView *_membersPage;
+	TasksListWidget *_tasksList;
 };
 
 #endif

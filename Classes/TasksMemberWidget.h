@@ -1,18 +1,18 @@
-#ifndef HUMAN_TASK_WIDGET_H
-#define HUMAN_TASK_WIDGET_H
+#ifndef TASKS_HUMAN_TASK_WIDGET_H
+#define TASKS_HUMAN_TASK_WIDGET_H
 
 #include "GameInterface.h"
 
-class MemberWidget : public cocos2d::ui::Layout
+class TasksMemberWidget : public cocos2d::ui::Layout
 {
 public:
-	static MemberWidget* create(void);
+	static TasksMemberWidget* create(void);
 
 	void TouchListener(cocos2d::Ref *sender, cocos2d::ui::Widget::TouchEventType eventType);
 
 protected:
-	MemberWidget(void);
-	virtual ~MemberWidget(void);
+	TasksMemberWidget(void);
+	virtual ~TasksMemberWidget(void);
 
 	bool init(void) override;
 

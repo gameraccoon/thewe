@@ -1,8 +1,8 @@
-#include "MemberWidget.h"
+#include "TasksMemberWidget.h"
 
-MemberWidget* MemberWidget::create(void)
+TasksMemberWidget* TasksMemberWidget::create(void)
 {
-	MemberWidget *ret = new MemberWidget();
+	TasksMemberWidget *ret = new TasksMemberWidget();
 	if (ret && ret->init())
 	{
 		ret->autorelease();
@@ -13,15 +13,15 @@ MemberWidget* MemberWidget::create(void)
 	return nullptr;
 }
 
-MemberWidget::MemberWidget(void)
+TasksMemberWidget::TasksMemberWidget(void)
 {
 }
 
-MemberWidget::~MemberWidget(void)
+TasksMemberWidget::~TasksMemberWidget(void)
 {
 }
 
-bool MemberWidget::init(void)
+bool TasksMemberWidget::init(void)
 {
 	if (!cocos2d::ui::Layout::init()) {
 		return false;
@@ -46,14 +46,14 @@ bool MemberWidget::init(void)
 	setAnchorPoint(cocos2d::Vec2(0.0f, 0.0f));
 	setContentSize(_bgRect->getContentSize());
 	setTouchEnabled(true);
-	addTouchEventListener(CC_CALLBACK_2(MemberWidget::TouchListener, this));
+	addTouchEventListener(CC_CALLBACK_2(TasksMemberWidget::TouchListener, this));
 	addChild(_bgRect, 0);
 	addChild(_specialIcon, 2);
 
 	return true;
 }
 
-void MemberWidget::TouchListener(cocos2d::Ref *sender, cocos2d::ui::Widget::TouchEventType eventType)
+void TasksMemberWidget::TouchListener(cocos2d::Ref *sender, cocos2d::ui::Widget::TouchEventType eventType)
 {
 	if (eventType == cocos2d::ui::Widget::TouchEventType::BEGAN) {
 		for (auto star : _stars) {
