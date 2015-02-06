@@ -31,18 +31,45 @@ bool TasksListItem::init(void)
 	loadTextures("ui/tasks_menu_item_normal.png", "ui/tasks_menu_item_press.png");
 	addTouchEventListener(CC_CALLBACK_2(TasksListItem::OnPress, this));
 
+	setTitleFontName("EuropeNormal.ttf");
+	setTitleFontSize(18.0f);
+	setTitleColor(cocos2d::Color3B(0,0,0));
+	setTitleText("Test Title Text");
+
 	return true;
 }
 
 void TasksListItem::OnPress(cocos2d::Ref *sender, cocos2d::ui::Button::TouchEventType eventType)
 {
+	if (getOpacity() <= 0) {
+		return;
+	}
+
 	if (eventType == cocos2d::ui::Widget::TouchEventType::ENDED)
 	{
 		_state = !_state;
-
-		std::string texture = _state ? "ui/tasks_menu_item_normal.png" : "ui/tasks_menu_item_press.png";
-		loadTextureNormal(texture);
+		UpdateTexture();
+		Message message("TaskItemSelected");
+		message.variables.SetInt("Tag", getTag());
+		MessageManager::Instance().PutMessage(message);
 	}
+}
+
+void TasksListItem::ReleaseToggle(void)
+{
+	_state = true;
+	UpdateTexture();
+}
+
+bool TasksListItem::IsPressed(void) const
+{
+	return _state;
+}
+
+void TasksListItem::UpdateTexture(void)
+{
+	std::string texture = _state ? "ui/tasks_menu_item_normal.png" : "ui/tasks_menu_item_press.png";
+	loadTextureNormal(texture);
 }
 
 const float TasksListWidget::VISIBLE_AREA_WIDTH = 380.0f;
@@ -64,6 +91,7 @@ TasksListWidget* TasksListWidget::create(Cell::WeakPtr cell)
 TasksListWidget::TasksListWidget(Cell::WeakPtr cell)
 	: _cell(cell)
 {
+	MessageManager::Instance().RegisterReceiver(this, "TaskItemSelected");
 }
 	
 TasksListWidget::~TasksListWidget(void)
@@ -72,6 +100,27 @@ TasksListWidget::~TasksListWidget(void)
 
 void TasksListWidget::FillList(const TaskManager::Tasks &tasks)
 {
+}
+
+void TasksListWidget::AcceptMessage(const Message &message)
+{
+	if (message.is("TaskItemSelected"))
+	{
+		auto childrens = getItems();
+		for (auto child : childrens) {
+			TasksListItem *item = dynamic_cast<TasksListItem *>(child);
+			if (item && item->getTag() != message.variables.GetInt("Tag")) {
+				item->ReleaseToggle();
+			}
+		}
+
+		TasksListItem *selected = dynamic_cast<TasksListItem *>(getChildByTag(message.variables.GetInt("Tag")));
+		if (selected) {
+			return;
+		} else {
+			Log::Instance().writeWarning("Type cast failed.");
+		}
+	}
 }
 
 bool TasksListWidget::init(void)
@@ -86,21 +135,11 @@ bool TasksListWidget::init(void)
 	setContentSize(cocos2d::Size(VISIBLE_AREA_WIDTH, VISIBLE_AREA_HEIGHT));
 	scheduleUpdate();
 	
-	pushBackCustomItem(TasksListItem::create());
-	pushBackCustomItem(TasksListItem::create());
-	pushBackCustomItem(TasksListItem::create());
-	pushBackCustomItem(TasksListItem::create());
-	pushBackCustomItem(TasksListItem::create());
-	pushBackCustomItem(TasksListItem::create());
-	pushBackCustomItem(TasksListItem::create());
-	pushBackCustomItem(TasksListItem::create());
-	pushBackCustomItem(TasksListItem::create());
-	pushBackCustomItem(TasksListItem::create());
-	pushBackCustomItem(TasksListItem::create());
-	pushBackCustomItem(TasksListItem::create());
-	pushBackCustomItem(TasksListItem::create());
-	pushBackCustomItem(TasksListItem::create());
-	pushBackCustomItem(TasksListItem::create());
+	for (int k=0;k<20;k++) {
+		TasksListItem *item = TasksListItem::create();
+		item->setTag(k);
+		pushBackCustomItem(item);
+	}
 
 	return true;
 }
