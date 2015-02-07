@@ -43,6 +43,11 @@ bool TasksMenuWidget::init(void)
 	_tasksList->setPosition(cocos2d::Vec2(400.0f, 200.0f));
 	_widget->addChild(_tasksList, 1);
 
+	_startButton = TaskStartButton::create();
+	_startButton->setPosition(cocos2d::Vec2(220.0f, 270.0f));
+	_startButton->SetStartTaskCallbak([&](){StartTask();});
+	_widget->addChild(_startButton, 1);
+
 	FillMembersPage();
 
 	addChild(_widget, 0);
@@ -84,6 +89,7 @@ void TasksMenuWidget::AcceptMessage(const Message &message)
 	{
 		Show();
 		_cell = World::Instance().GetCellsNetwork().GetCellByUid(message.variables.GetInt("UID"));
+		_startButton->RenewProbability(100.0);
 	}
 	if (message.is("CloseTasksMenu"))
 	{
@@ -124,4 +130,8 @@ void TasksMenuWidget::FillMembersPage(void)
 			++page;
 		}
 	}
+}
+
+void TasksMenuWidget::StartTask(void)
+{
 }
