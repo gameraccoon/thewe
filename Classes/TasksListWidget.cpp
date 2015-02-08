@@ -135,11 +135,19 @@ bool TasksListWidget::init(void)
 	setContentSize(cocos2d::Size(VISIBLE_AREA_WIDTH, VISIBLE_AREA_HEIGHT));
 	scheduleUpdate();
 	
-	for (int k=0;k<20;k++) {
+	TasksListItem *first = TasksListItem::create();
+	first->setVisible(false);
+	pushBackCustomItem(first);
+
+	for (int k=0;k<16;k++) {
 		TasksListItem *item = TasksListItem::create();
 		item->setTag(k);
 		pushBackCustomItem(item);
 	}
+
+	TasksListItem *last = TasksListItem::create();
+	last->setVisible(false);
+	pushBackCustomItem(last);
 
 	return true;
 }
