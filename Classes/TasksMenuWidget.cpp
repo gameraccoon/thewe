@@ -48,6 +48,11 @@ bool TasksMenuWidget::init(void)
 	_startButton->SetStartTaskCallbak([&](){StartTask();});
 	_widget->addChild(_startButton, 1);
 
+	_slots = MembersSlot::create(0.666666f);
+	_slots->setPosition(cocos2d::Vec2(10.0f, 390.0f));
+	_slots->RenewSlots(5);
+	_widget->addChild(_slots, 1);
+
 	FillMembersPage();
 
 	addChild(_widget, 0);
@@ -111,9 +116,9 @@ void TasksMenuWidget::Hide(void)
 void TasksMenuWidget::FillMembersPage(void)
 {
 	// test code
-	std::vector<TasksMemberWidget *> members;
+	std::vector<MemberWidget *> members;
 	for (int i = 0; i < 11; ++i) {
-		members.push_back(TasksMemberWidget::create());
+		members.push_back(MemberWidget::createWithMember());
 	}
 
 	float width = 120.0f;
@@ -122,7 +127,7 @@ void TasksMenuWidget::FillMembersPage(void)
 	int page = 0;
 
 	for (std::size_t index = 0; index < members.size(); ++index) {
-		TasksMemberWidget *widget = members[index];
+		MemberWidget *widget = members[index];
 		int place = index % 5;
 		widget->setPosition(cocos2d::Vec2(width*place + ((place+1)*space), y));
 		_membersPage->addWidgetToPage(widget, page, true);

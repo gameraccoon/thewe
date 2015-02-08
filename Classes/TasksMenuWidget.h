@@ -3,7 +3,8 @@
 
 #include "Cell.h"
 #include "GameInterface.h"
-#include "TasksMemberWidget.h"
+#include "MemberWidget.h"
+#include "MembersSlot.h"
 #include "TasksListWidget.h"
 #include "TaskStartButton.h"
 
@@ -36,6 +37,7 @@ private:
 	cocos2d::ui::PageView *_membersPage;
 	TasksListWidget *_tasksList;
 	TaskStartButton *_startButton;
+	MembersSlot *_slots;
 };
 
 #endif
