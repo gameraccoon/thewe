@@ -420,7 +420,7 @@
     <ClCompile Include="..\Classes\MemberWidget.cpp">
       <Filter>Classes\UI</Filter>
     </ClCompile>
-    <ClCompile Include="..\Classes\MembersSlot.cpp">
+    <ClCompile Include="..\Classes\MembersPage.cpp">
       <Filter>Classes\UI</Filter>
     </ClCompile>
   </ItemGroup>
@@ -731,10 +731,10 @@
     <ClInclude Include="..\Classes\TaskStartButton.h">
       <Filter>Classes\UI</Filter>
     </ClInclude>
-    <ClInclude Include="..\Classes\MembersSlot.h">
+    <ClInclude Include="..\Classes\MemberWidget.h">
       <Filter>Classes\UI</Filter>
     </ClInclude>
-    <ClInclude Include="..\Classes\MemberWidget.h">
+    <ClInclude Include="..\Classes\MembersPage.h">
       <Filter>Classes\UI</Filter>
     </ClInclude>
   </ItemGroup>

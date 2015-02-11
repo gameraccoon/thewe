@@ -4,7 +4,7 @@
 #include "Cell.h"
 #include "GameInterface.h"
 #include "MemberWidget.h"
-#include "MembersSlot.h"
+#include "MembersPage.h"
 #include "TasksListWidget.h"
 #include "TaskStartButton.h"
 
@@ -23,21 +23,23 @@ protected:
 	~TasksMenuWidget(void);
 
 	bool init(void) override;
+	void update(float dt) override;
 
 	void OnClosePressed(cocos2d::Ref *sender, cocos2d::ui::Widget::TouchEventType eventType);
 	void OnPageLeft(cocos2d::Ref *sender, cocos2d::ui::Widget::TouchEventType eventType);
 	void OnPageRight(cocos2d::Ref *sender, cocos2d::ui::Widget::TouchEventType eventType);
 
 private:
-	void FillMembersPage(void);
 	void StartTask(void);
 
 	Cell::WeakPtr _cell;
 	cocos2d::ui::Widget *_widget;
-	cocos2d::ui::PageView *_membersPage;
+	cocos2d::ui::Button *_btnScrollLeft;
+	cocos2d::ui::Button *_btnScrollRight;
 	TasksListWidget *_tasksList;
 	TaskStartButton *_startButton;
-	MembersSlot *_slots;
+	MembersPage *_membersPage;
+	MembersPage *_membersSlot;
 };
 
 #endif

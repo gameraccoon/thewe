@@ -29,37 +29,62 @@ bool TasksMenuWidget::init(void)
 {
 	_widget = cocostudio::GUIReader::getInstance()->widgetFromJsonFile("ui_gameplay/tasks_menu.ExportJson");
 
-	cocos2d::ui::Button *btnClose = dynamic_cast<cocos2d::ui::Button *>(cocos2d::ui::Helper::seekWidgetByName(_widget, "Close"));
-	cocos2d::ui::Button *btnPageLeft = dynamic_cast<cocos2d::ui::Button *>(cocos2d::ui::Helper::seekWidgetByName(_widget, "PageLeft"));
-	cocos2d::ui::Button *btnPageRight = dynamic_cast<cocos2d::ui::Button *>(cocos2d::ui::Helper::seekWidgetByName(_widget, "PageRight"));
-	_membersPage = dynamic_cast<cocos2d::ui::PageView *>(cocos2d::ui::Helper::seekWidgetByName(_widget, "MembersPage"));
-	_membersPage->setTouchEnabled(false);
+	cocos2d::ui::Helper::seekWidgetByName(_widget, "Close")->addTouchEventListener(CC_CALLBACK_2(TasksMenuWidget::OnClosePressed, this));
 
-	btnClose->addTouchEventListener(CC_CALLBACK_2(TasksMenuWidget::OnClosePressed, this));
-	btnPageLeft->addTouchEventListener(CC_CALLBACK_2(TasksMenuWidget::OnPageLeft, this));
-	btnPageRight->addTouchEventListener(CC_CALLBACK_2(TasksMenuWidget::OnPageRight, this));
+	_membersPage = MembersPage::create();
+	_membersPage->FillInWithRealMembers(8);
+	_membersPage->setPositionX(_widget->getContentSize().width*0.5f - _membersPage->getContentSize().width*0.5f);
+	_membersPage->setPositionY(MembersPage::SPACING);
+	_widget->addChild(_membersPage, 1);
+
+	_membersSlot = MembersPage::create();
+	_membersSlot->FillInWithEmptyMembers(5);
+	_membersSlot->setPositionX(_widget->getContentSize().width*0.5f - _membersSlot->getContentSize().width*0.5f);
+	_membersSlot->setPositionY(_widget->getContentSize().height -_membersSlot->getContentSize().height - MembersPage::SPACING);
+	_widget->addChild(_membersSlot, 1);
+
+	_btnScrollLeft = cocos2d::ui::Button::create("ui/scroll_l_normal.png", "ui/scroll_l_pressed.png");
+	_btnScrollLeft->addTouchEventListener(CC_CALLBACK_2(TasksMenuWidget::OnPageLeft, this));
+	_btnScrollLeft->setVisible(false);
+	_btnScrollRight = cocos2d::ui::Button::create("ui/scroll_r_normal.png", "ui/scroll_r_pressed.png");
+	_btnScrollRight->addTouchEventListener(CC_CALLBACK_2(TasksMenuWidget::OnPageRight, this));
+	_btnScrollRight->setVisible(false);
+	_widget->addChild(_btnScrollLeft, 1);
+	_widget->addChild(_btnScrollRight, 1);
 
 	_tasksList = TasksListWidget::create(_cell);
-	_tasksList->setPosition(cocos2d::Vec2(400.0f, 200.0f));
+	_tasksList->setPosition(cocos2d::Vec2(400.0f, 130.0f));
 	_widget->addChild(_tasksList, 1);
 
 	_startButton = TaskStartButton::create();
-	_startButton->setPosition(cocos2d::Vec2(220.0f, 270.0f));
+	_startButton->setPosition(cocos2d::Vec2(220.0f, 230.0f));
 	_startButton->SetStartTaskCallbak([&](){StartTask();});
 	_widget->addChild(_startButton, 1);
 
-	_slots = MembersSlot::create(0.666666f);
-	_slots->setPosition(cocos2d::Vec2(10.0f, 390.0f));
-	_slots->RenewSlots(5);
-	_widget->addChild(_slots, 1);
-
-	FillMembersPage();
-
 	addChild(_widget, 0);
+	scheduleUpdate();
 
 	Hide();
 	
 	return true;
+}
+
+void TasksMenuWidget::update(float dt)
+{
+	if (_membersPage->getPages().size() > 1)
+	{
+		_btnScrollLeft->setVisible(true);
+		_btnScrollRight->setVisible(true);
+		_btnScrollLeft->setPositionX(_membersPage->getLeftBoundary() - _btnScrollLeft->getContentSize().width * 0.5f);
+		_btnScrollLeft->setPositionY(_membersPage->getPositionY() + _btnScrollLeft->getContentSize().height * 0.5f);
+		_btnScrollRight->setPositionX(_membersPage->getRightBoundary() + _btnScrollRight->getContentSize().width * 0.5f);
+		_btnScrollRight->setPositionY(_membersPage->getPositionY() + _btnScrollRight->getContentSize().height * 0.5f);
+	}
+	else
+	{
+		_btnScrollLeft->setVisible(false);
+		_btnScrollRight->setVisible(false);
+	}
 }
 
 void TasksMenuWidget::OnClosePressed(cocos2d::Ref *sender, cocos2d::ui::Widget::TouchEventType eventType)
@@ -113,30 +138,6 @@ void TasksMenuWidget::Hide(void)
 	setVisible(false);
 }
 
-void TasksMenuWidget::FillMembersPage(void)
-{
-	// test code
-	std::vector<MemberWidget *> members;
-	for (int i = 0; i < 11; ++i) {
-		members.push_back(MemberWidget::createWithMember());
-	}
-
-	float width = 120.0f;
-	float space = 10.0f;
-	float x=10.0f, y=15.0f;
-	int page = 0;
-
-	for (std::size_t index = 0; index < members.size(); ++index) {
-		MemberWidget *widget = members[index];
-		int place = index % 5;
-		widget->setPosition(cocos2d::Vec2(width*place + ((place+1)*space), y));
-		_membersPage->addWidgetToPage(widget, page, true);
-		if (place+1 == 5) {
-			++page;
-		}
-	}
-}
-
 void TasksMenuWidget::StartTask(void)
-{
+{ 
 }
