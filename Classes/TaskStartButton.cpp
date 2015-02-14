@@ -2,7 +2,7 @@
 
 const float TaskStartButton::TIME_SCALE = 1.0f/10.0f;
 const cocos2d::Vec3 TaskStartButton::COLOR1 = cocos2d::Vec3(1.0f, 0.0f, 0.0f);
-const cocos2d::Vec3 TaskStartButton::COLOR2 = cocos2d::Vec3(1.0f, 0.5f, 0.0f);
+const cocos2d::Vec3 TaskStartButton::COLOR2 = cocos2d::Vec3(1.0f, 1.0f, 0.0f);
 const cocos2d::Vec3 TaskStartButton::COLOR3 = cocos2d::Vec3(0.0f, 1.0f, 0.0f);
 
 TaskStartButton* TaskStartButton::create(void)
