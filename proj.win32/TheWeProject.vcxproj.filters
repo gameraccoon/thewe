@@ -423,6 +423,9 @@
     <ClCompile Include="..\Classes\MembersPage.cpp">
       <Filter>Classes\UI</Filter>
     </ClCompile>
+    <ClCompile Include="..\Classes\MemberMover.cpp">
+      <Filter>Classes\UI</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="main.h">
@@ -735,6 +738,9 @@
       <Filter>Classes\UI</Filter>
     </ClInclude>
     <ClInclude Include="..\Classes\MembersPage.h">
+      <Filter>Classes\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\MemberMover.h">
       <Filter>Classes\UI</Filter>
     </ClInclude>
   </ItemGroup>

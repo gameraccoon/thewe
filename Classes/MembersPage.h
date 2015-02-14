@@ -13,18 +13,34 @@ public:
 	static const float SLOT_SIZE;
 	static const float SLOT_SCALE;
 
-	void FillInWithRealMembers(int number);
-	void FillInWithEmptyMembers(int number);
+	virtual void Fill(int number);
 
 	virtual void handleMoveLogic(cocos2d::Touch *touch) override;
 
 protected:
 	MembersPage(void);
-	~MembersPage(void);
+	virtual ~MembersPage(void);
 
 	bool init(void) override;
+};
 
-private:
+class MembersSlot : public MembersPage
+{
+public:
+	static MembersSlot* create(void);
+
+	cocos2d::Vec2 GetFreeSlotPos(void);
+	void AddMember(MemberWidget *memberWidget);
+	void SwapMember(MemberWidget *memberWidget, int spawnIndex);
+	void RemoveMember(MemberWidget *memberWidget);
+	void Fill(int number) override;
+	bool HaveFreeSlots(void);
+
+protected:
+	MembersSlot(void);
+	virtual ~MembersSlot(void);
+
+	bool init(void) override;
 };
 
 #endif

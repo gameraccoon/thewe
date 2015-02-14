@@ -26,12 +26,14 @@ MembersPage::~MembersPage(void)
 {
 }
 
-void MembersPage::FillInWithRealMembers(int number)
+void MembersPage::Fill(int number)
 {
 	// test code
 	std::vector<MemberWidget *> members;
 	for (int k=0;k<number;++k) {
-		members.push_back(MemberWidget::createWithMember());
+		MemberWidget *widget = MemberWidget::createWithMember();
+		widget->setTag(k);
+		members.push_back(widget);
 	}
 
 	if (members.size() <= PAGE_SIZE) {
@@ -59,9 +61,95 @@ void MembersPage::FillInWithRealMembers(int number)
 	}
 }
 
-void MembersPage::FillInWithEmptyMembers(int number)
+void MembersPage::handleMoveLogic(cocos2d::Touch *touch)
 {
-		// test code
+}
+
+bool MembersPage::init(void)
+{
+	if (!cocos2d::ui::PageView::init()) {
+		return false;
+	}
+
+	setBackGroundImage("ui/members_page.png");
+	setBackGroundImageOpacity(200);
+	setBackGroundImageScale9Enabled(true);
+	setBackGroundImageCapInsets(cocos2d::Rect(5,5,648,139));
+
+	return true;
+}
+
+// MembersSlot implementation
+
+MembersSlot* MembersSlot::create(void)
+{
+	MembersSlot *ret = new MembersSlot();
+	if (ret && ret->init())
+	{
+		ret->autorelease();
+		return ret;
+	}
+
+	delete ret;
+	return nullptr;
+}
+
+MembersSlot::MembersSlot(void)
+{
+}
+
+MembersSlot::~MembersSlot(void)
+{
+}
+
+bool MembersSlot::init(void)
+{
+	if (!MembersPage::init()) {
+		return false;
+	}
+
+	return true;
+}
+
+cocos2d::Vec2 MembersSlot::GetFreeSlotPos(void)
+{
+	cocos2d::ui::Layout *page = getPages().at(0);
+	for (cocos2d::Node *child : page->getChildren()) {
+		MemberWidget *widget = dynamic_cast<MemberWidget *>(child);
+		if (widget && widget->IsEmptyMemberWidget()) {
+			return widget->getWorldPosition();
+		}
+	}
+	return cocos2d::Vec2::ZERO;
+}
+
+void MembersSlot::AddMember(MemberWidget *memberWidget)
+{
+	cocos2d::ui::Layout *page = getPages().at(0);
+	for (cocos2d::Node *child : page->getChildren()) {
+		MemberWidget *widget = dynamic_cast<MemberWidget *>(child);
+		if (widget && widget->IsEmptyMemberWidget()) {
+			MemberWidget *newWidget = MemberWidget::createWithMember();
+			newWidget->setPosition(child->getPosition());
+			newWidget->setScale(SLOT_SCALE);
+			page->removeChild(child);
+			addWidgetToPage(newWidget, 0, true);
+			break;
+		}
+	}
+}
+
+void MembersSlot::SwapMember(MemberWidget *memberWidget, int spawnIndex)
+{
+}
+
+void MembersSlot::RemoveMember(MemberWidget *memberWidget)
+{
+}
+
+void MembersSlot::Fill(int number)
+{
+	// test code
 	std::vector<MemberWidget *> members;
 	for (int k=0;k<number;++k) {
 		members.push_back(MemberWidget::createEmpty(true));
@@ -81,20 +169,15 @@ void MembersPage::FillInWithEmptyMembers(int number)
 	}
 }
 
-void MembersPage::handleMoveLogic(cocos2d::Touch *touch)
+bool MembersSlot::HaveFreeSlots(void)
 {
-}
+	int emptySlotsNumber = 0;
 
-bool MembersPage::init(void)
-{
-	if (!cocos2d::ui::PageView::init()) {
-		return false;
+	for (auto widget : getPages().at(0)->getChildren()) {
+		MemberWidget *member = dynamic_cast<MemberWidget *>(widget);
+		if (member && member->IsEmptyMemberWidget()) {
+			++emptySlotsNumber;
+		}
 	}
-
-	setBackGroundImage("ui/members_page.png");
-	setBackGroundImageOpacity(200);
-	setBackGroundImageScale9Enabled(true);
-	setBackGroundImageCapInsets(cocos2d::Rect(5,5,648,139));
-
-	return true;
+	return emptySlotsNumber > 0;
 }

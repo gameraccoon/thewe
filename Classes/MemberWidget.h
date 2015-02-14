@@ -9,6 +9,8 @@ public:
 	static MemberWidget* createWithMember(void);
 	static MemberWidget* createEmpty(bool drawSpecial);
 
+	bool IsEmptyMemberWidget(void) const;
+
 	void TouchListener(cocos2d::Ref *sender, cocos2d::ui::Widget::TouchEventType eventType);
 
 protected:
@@ -26,6 +28,7 @@ private:
 	cocos2d::Sprite *_special;
 	cocos2d::Sprite *_face;
 	Stars _stars;
+	bool _isEmptyMemberWidget;
 };
 
 #endif

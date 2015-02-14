@@ -39,6 +39,8 @@ bool MemberWidget::initWithMember(void)
 	if (!cocos2d::ui::Layout::init()) {
 		return false;
 	}
+
+	_isEmptyMemberWidget = false;
 	
 	_special = cocos2d::Sprite::create("ui/icon_spec_inform.png");
 	_special->setPosition(80.0f, 95.0f);
@@ -77,6 +79,8 @@ bool MemberWidget::initEmpty(bool drawSpecial)
 		return false;
 	}
 
+	_isEmptyMemberWidget = true;
+
 	_background = cocos2d::Sprite::create("ui/human_slot.png");
 	_background->setPosition((cocos2d::Vec2)_background->getContentSize() * 0.5f);
 
@@ -101,9 +105,17 @@ bool MemberWidget::initEmpty(bool drawSpecial)
 	return true;
 }
 
+bool MemberWidget::IsEmptyMemberWidget(void) const
+{
+	return _isEmptyMemberWidget;
+}
+
 void MemberWidget::TouchListener(cocos2d::Ref *sender, cocos2d::ui::Widget::TouchEventType eventType)
 {
 	if (eventType == cocos2d::ui::Widget::TouchEventType::BEGAN) {
+		Message message("BeginMemberMove");
+		message.variables.SetInt("Index", getTag());
+		MessageManager::Instance().PutMessage(message);
 		for (auto star : _stars) {
 			cocos2d::Vec2 location = convertToNodeSpace(getTouchBeganPosition());
 			if (star->getBoundingBox().containsPoint(location)) {

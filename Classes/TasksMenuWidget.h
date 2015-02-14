@@ -4,6 +4,7 @@
 #include "Cell.h"
 #include "GameInterface.h"
 #include "MemberWidget.h"
+#include "MemberMover.h"
 #include "MembersPage.h"
 #include "TasksListWidget.h"
 #include "TaskStartButton.h"
@@ -39,7 +40,8 @@ private:
 	TasksListWidget *_tasksList;
 	TaskStartButton *_startButton;
 	MembersPage *_membersPage;
-	MembersPage *_membersSlot;
+	MembersSlot *_membersSlot;
+	MemberMover *_mover;
 };
 
 #endif

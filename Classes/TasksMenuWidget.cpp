@@ -23,6 +23,8 @@ TasksMenuWidget::TasksMenuWidget(void)
 
 TasksMenuWidget::~TasksMenuWidget(void)
 {
+	MessageManager::Instance().UnregisterReceiver(this, "OpenTasksMenu");
+	MessageManager::Instance().UnregisterReceiver(this, "CloseTasksMenu");
 }
 
 bool TasksMenuWidget::init(void)
@@ -32,13 +34,13 @@ bool TasksMenuWidget::init(void)
 	cocos2d::ui::Helper::seekWidgetByName(_widget, "Close")->addTouchEventListener(CC_CALLBACK_2(TasksMenuWidget::OnClosePressed, this));
 
 	_membersPage = MembersPage::create();
-	_membersPage->FillInWithRealMembers(8);
+	_membersPage->Fill(8);
 	_membersPage->setPositionX(_widget->getContentSize().width*0.5f - _membersPage->getContentSize().width*0.5f);
 	_membersPage->setPositionY(MembersPage::SPACING);
 	_widget->addChild(_membersPage, 1);
 
-	_membersSlot = MembersPage::create();
-	_membersSlot->FillInWithEmptyMembers(5);
+	_membersSlot = MembersSlot::create();
+	_membersSlot->Fill(5);
 	_membersSlot->setPositionX(_widget->getContentSize().width*0.5f - _membersSlot->getContentSize().width*0.5f);
 	_membersSlot->setPositionY(_widget->getContentSize().height -_membersSlot->getContentSize().height - MembersPage::SPACING);
 	_widget->addChild(_membersSlot, 1);
@@ -51,6 +53,9 @@ bool TasksMenuWidget::init(void)
 	_btnScrollRight->setVisible(false);
 	_widget->addChild(_btnScrollLeft, 1);
 	_widget->addChild(_btnScrollRight, 1);
+
+	_mover = MemberMover::create(_widget->getContentSize(), _membersPage, _membersSlot);
+	_widget->addChild(_mover, 2);
 
 	_tasksList = TasksListWidget::create(_cell);
 	_tasksList->setPosition(cocos2d::Vec2(400.0f, 130.0f));
