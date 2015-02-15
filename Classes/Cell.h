@@ -129,7 +129,7 @@ private:
 	std::vector<Member> members;
 
 	// current state (construction, destruction, autonomy)
-	State state;
+	State _state;
 	Utils::GameTime stateBegin;
 	Utils::GameTime stateDuration;
 

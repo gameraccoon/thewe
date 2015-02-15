@@ -13,6 +13,7 @@ public:
 
 	bool init(void) override;
 	void setOpacity(GLubyte opacity) override;
+	const cocos2d::Size& getContentSize(void) const override;
 
 	void AddImage(const std::string &id, const std::string &filename);
 	void SetCurrentImage(const std::string &id);

@@ -68,7 +68,7 @@ bool CellMapWidget::init(void)
 	addChild(_popupCatchInvestigator, DrawOrder::BUTTON);
 	scheduleUpdate();
 
-	setContentSize(_cellMapTaskProgressBar->getContentSize());
+	setContentSize(_cellMapSprite->getContentSize());
 
 	return true;
 }

@@ -121,9 +121,7 @@ void WorldMapLayer::update(float dt)
 		}
 	}
 
-	if (World::Instance().IsFirstLaunch()) {
-		SetTownsVisibility(true);
-	}
+	SetTownsVisibility(World::Instance().IsFirstLaunch());
 }
 
 void WorldMapLayer::AcceptMessage(const Message &msg)
@@ -488,7 +486,8 @@ CellMapWidget* WorldMapLayer::CreateCellWidget(Cell::Ptr cell)
 {
 	CellMapWidget *widget = new CellMapWidget(this, _mapProjector, cell);
 
-	int uid = _mapProjector->AddMapPart(Drawable::CastFromCocos(widget), cell->GetLocation(), Vector2(0.0f, 0.0f), INITIAL_CELL_SCALE, true);
+	int uid = _mapProjector->AddMapPart(Drawable::CastFromCocos(widget), cell->GetTown().lock()->GetLocation(),
+		Vector2(0.0f, 0.0f), INITIAL_CELL_SCALE, true);
 	_mapProjector->Update();
 
 	cocos2d::Rect tex = widget->GetCellRect();

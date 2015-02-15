@@ -9,6 +9,7 @@ Cell::Cell(Town::WeakPtr town)
 	: town(town)
 	, _currentTask()
 	, _uid(World::Instance().GetNewUid())
+	, experience(0)
 	, cash(0)
 	, location(Vector2(0.0f, 0.0f))
 {
@@ -21,6 +22,7 @@ Cell::Cell(Town::WeakPtr town, unsigned int uid)
 	: town(town)
 	, _currentTask()
 	, _uid(uid)
+	, experience(0)
 	, cash(0)
 	, location(Vector2(0.0f, 0.0f))
 {
@@ -88,7 +90,7 @@ void Cell::RemoveAllChildren(void)
 void Cell::BeginDestruction(void)
 {
 	// ToDo: make some checks
-	state = State::DESTRUCTION;
+	_state = State::DESTRUCTION;
 	stateBegin = Utils::GetGameTime();
 	stateDuration = GameInfo::Instance().GetTime("CELL_DESTRUCTION_TIME");
 }
@@ -96,14 +98,14 @@ void Cell::BeginDestruction(void)
 void Cell::BeginAutonomy(void)
 {
 	// ToDo: make some checks
-	state = State::AUTONOMY;
+	_state = State::AUTONOMY;
 	stateBegin = Utils::GetGameTime();
 	stateDuration = GameInfo::Instance().GetTime("CELL_AUTONOMY_LIFE_TIME");
 }
 
 void Cell::ReturnToNormalState(void)
 {
-	state = State::READY;
+	_state = State::READY;
 }
 
 void Cell::SetParent(Cell::WeakPtr cell)
@@ -123,11 +125,11 @@ Cell::WeakPtr Cell::GetParent() const
 
 void Cell::UpdateToTime(Utils::GameTime time)
 {
-	if (state == State::CONSTRUCTION && time > stateBegin + stateDuration)
+	if (_state == State::CONSTRUCTION && time > stateBegin + stateDuration)
 	{
-		state = State::READY;
+		_state = State::READY;
 	}
-	else if (state == State::DESTRUCTION && time > stateBegin + stateDuration)
+	else if (_state == State::DESTRUCTION && time > stateBegin + stateDuration)
 	{
 		Cell::Ptr ptr = World::Instance().GetCellsNetwork().GetCellByUid(_uid);
 		World::Instance().GetCellsNetwork().RemoveCell(ptr);
@@ -136,7 +138,7 @@ void Cell::UpdateToTime(Utils::GameTime time)
 		message.variables.SetInt("UID", _uid);
 		MessageManager::Instance().PutMessage(message);
 	}
-	else if (state == State::AUTONOMY && time > stateBegin + stateDuration)
+	else if (_state == State::AUTONOMY && time > stateBegin + stateDuration)
 	{
 		BeginDestruction();
 	}
@@ -161,7 +163,7 @@ bool Cell::IsCurrentTaskExists(void) const
 
 bool Cell::IsState(State state) const
 {
-	return state == state;
+	return _state == state;
 }
 
 void Cell::AddCompletedTask(const Task::CompletedTaskInfo& completedTask)
@@ -215,7 +217,7 @@ int Cell::CalcDistanceToTheRootCell() const
 
 bool Cell::IsInTemporaryState() const
 {
-	return (state != State::READY && state != State::ARRESTED);
+	return (_state != State::READY && _state != State::ARRESTED);
 }
 
 bool Cell::IsReadyToCreateSpinoff() const
@@ -295,7 +297,7 @@ void Cell::SetLocation(const Vector2& newLocation)
 
 Cell::State Cell::GetState() const
 {
-	return state;
+	return _state;
 }
 
 Utils::GameTime Cell::GetStateBegin() const
@@ -310,7 +312,7 @@ Utils::GameTime Cell::GetStateDuration() const
 
 void Cell::SetState(Cell::State newState, Utils::GameTime beginTime, Utils::GameTime duration)
 {
-	state = newState;
+	_state = newState;
 	stateBegin = beginTime;
 	stateDuration = duration;
 }

@@ -34,6 +34,11 @@ void MultipleImageSprite::setOpacity(GLubyte opacity)
 	cocos2d::Node::setOpacity(opacity);
 }
 
+const cocos2d::Size& MultipleImageSprite::getContentSize(void) const
+{
+	return GetImageByIndex(_curImageId)->getContentSize();
+}
+
 void MultipleImageSprite::AddImage(const std::string &id, const std::string &filename)
 {
 	cocos2d::Sprite *s = cocos2d::Sprite::create(filename);
