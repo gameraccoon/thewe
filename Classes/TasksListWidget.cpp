@@ -163,7 +163,7 @@ void TasksListWidget::update(float dt)
 		cocos2d::ui::Widget *item = (*it);
 		cocos2d::Vec2 P = cocos2d::Vec2(0.0f, item->getParent()->getPosition().y + item->getPosition().y);
 		float D = C.getDistance(P);
-		float T = abs(1.0f - Math::Clamp(1.0f, 0.0f, D / height_half));
+		float T = fabs(1.0f - Math::Clamp(1.0f, 0.0f, D / height_half));
 		float alpha = T;
 		alpha -= 1.0f;
 		alpha = alpha*alpha*alpha + 1.0f;
@@ -171,6 +171,6 @@ void TasksListWidget::update(float dt)
 		scale -= 1.0f;
 		scale = scale*scale*scale*scale*scale + 1.0f;
 		item->setOpacity(255*alpha);
-		item->setScale(Math::Lerp(1.0f, 0.6f, abs(1.0f - scale)));
+		item->setScale(Math::Lerp(1.0f, 0.6f, fabs(1.0f - scale)));
 	}
 }
