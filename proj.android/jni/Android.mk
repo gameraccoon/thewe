@@ -38,6 +38,7 @@ LOCAL_SRC_FILES := hellocpp/main.cpp \
 				   	../../Classes/LuaInstance.cpp \
 				   	../../Classes/MainMenuScene.cpp \
 				   	../../Classes/MapProjector.cpp \
+				   	../../Classes/Member.cpp \
 				   	../../Classes/MemberMover.cpp \
 				   	../../Classes/MemberWidget.cpp \
 				   	../../Classes/MembersPage.cpp \
