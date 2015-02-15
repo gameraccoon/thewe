@@ -2,6 +2,7 @@
 
 #include "CellMapWidget.h"
 #include "WorldMapLayer.h"
+#include "World.h"
 
 InvestigatorMapWidget::InvestigatorMapWidget(Investigator::Ptr investigator, MapProjector *proj, WorldMapLayer *worldMapLayer)
 	: _investigator(investigator)

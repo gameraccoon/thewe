@@ -5,7 +5,6 @@
 #include "Log.h"
 #include "GameScene.h"
 #include "TransitionZoomFade.h"
-#include "CellsNetLayer.h"
 
 MainMenuScene::MainMenuScene()
 {

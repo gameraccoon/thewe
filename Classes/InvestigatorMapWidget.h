@@ -1,9 +1,12 @@
 #ifndef INVESTIGATOR_MAP_WIDGET_H
 #define INVESTIGATOR_MAP_WIDGET_H
 
-#include "CellGameInterface.h"
-#include "Investigator.h"
+#include <cocos2d.h>
 
+#include "Investigator.h"
+#include "MapProjector.h"
+
+class WorldMapLayer;
 class CellMapWidget;
 
 class InvestigatorMapWidget : public cocos2d::Node

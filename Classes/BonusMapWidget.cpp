@@ -26,7 +26,7 @@ bool BonusMapWidget::init(void)
 	listener->onTouchesEnded = CC_CALLBACK_2(BonusMapWidget::TouchEnded, this);
 	cocos2d::Director::getInstance()->getEventDispatcher()->addEventListenerWithSceneGraphPriority(listener, this);
 
-	_texture = cocos2d::Sprite::create("bonus_icon.png");
+	_texture = cocos2d::Sprite::create("effects/bonus_icon.png");
 	_texture->setPosition(0.0f, 0.0f);
 	_texture->setScale(0.01f);
 	_texture->setOpacity(0);

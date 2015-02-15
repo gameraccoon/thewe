@@ -61,7 +61,7 @@ protected:
 			}
 		}
 
-		_bgRect = cocos2d::extension::Scale9Sprite::create("popup-bg.png");
+		_bgRect = cocos2d::extension::Scale9Sprite::create("ui/popup-bg.png");
 		_bgRect->setCapInsets(cocos2d::Rect(5.0f, 5.0f, 54.0f, 10.0f));
 		_bgRect->setContentSize(cocos2d::Size(bg_w, bg_h));
 

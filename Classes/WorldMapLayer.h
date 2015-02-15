@@ -9,7 +9,6 @@
 #include "MessageManager.h"
 #include "Region.h"
 #include "Cell.h"
-#include "CellGameInterface.h"
 #include "CellMapWidget.h"
 #include "TownMapWidget.h"
 #include "InvestigatorMapWidget.h"
@@ -36,8 +35,6 @@ public:
 	void HideCellGameInterface(void);
 	void UpdateMapElements();
 
-	void SetMapInputEnabled(bool isEnabled);
-	void SetGuiEnabled(bool isEnabled);
 	void SetNextCellParent(Cell::WeakPtr parent);
 
 	Cell::Ptr CreateCell(Cell::WeakPtr parent, Town::WeakPtr town);
@@ -107,18 +104,13 @@ private:
 	EffectsLayer *_effectsAbsolute;
 	EffectsLayer *_effectsGameField;
 
-	CellMenuSelector *_cellMenu;
-	cocos2d::Layer *_cellGameInterface;
-
 	Vector2 _touchLastPoint;
 	Vector2 _touchFirstPos;
 
 	MapProjector *_mapProjector;
 
-	cocos2d::Layer *_mapGui;
 	cocos2d::DrawNode *_networkVisualiser;
 
-	bool _isInputEnabled;
 	bool _isSessionScreenShowed;
 
 	Vector2 _touchesCenter;

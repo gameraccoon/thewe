@@ -1,12 +1,11 @@
 #ifndef CELL_MAP_WIDGET_H
 #define CELL_MAP_WIDGET_H
 
-#include "CellGameInterface.h"
-#include "InvestigatorTapButton.h"
 #include "MessageManager.h"
+#include "MultipleImageSprite.h"
+#include "InvestigatorTapButton.h"
 #include "InvestigatorMapWidget.h"
 #include "TaskRewardMapWidget.h"
-#include "MultipleImageSprite.h"
 #include "BonusMapWidget.h"
 #include "PopUpTextWithIcon.h"
 

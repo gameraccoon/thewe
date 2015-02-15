@@ -62,13 +62,13 @@ bool TutorialWidgetAfterFirstCell::init()
 	_tutorialText->setTextHorizontalAlignment(cocos2d::TextHAlignment::CENTER);
 	_tutorialText->setPosition(cocos2d::Vec2(-view.width, 0.0f));
 
-	_arrow = cocos2d::Sprite::create("tutorial_arrow.png");
+	_arrow = cocos2d::Sprite::create("tutorial/tutorial_arrow.png");
 	_arrow->setScale(0.35f);
 	_arrow->setRotation(-90.0f);
 	_arrow->setVisible(false);
 	_arrow->runAction(TutorialWidget::Arrow(cocos2d::Vec2(0,-1), 40.0f, 0.9f));
 
-	_spot = cocos2d::Sprite::create("cell_tutorial.png");
+	_spot = cocos2d::Sprite::create("tutorial/cell_tutorial.png");
 	_spot->setPosition(0.0f, 0.0f);
 	_spot->retain();
 

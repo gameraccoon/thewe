@@ -7,6 +7,7 @@
 
 #include "MapProjector.h"
 #include "WorldMapLayer.h"
+#include "GameInterface.h"
 #include "MainMenuScene.h"
 #include "GameInfo.h"
 #include "Cell.h"
@@ -24,7 +25,6 @@ public:
 	void ShowMap();
 	void GoToMainMenu(void);
 	void ToggleEditor();
-	void SetInputEnabled(bool enabled);
 
 	void MoveViewToPoint(const Vector2& worldPoint);
 
@@ -33,6 +33,7 @@ private:
 
 	WorldMapLayer *_worldMap;
 	MainMenuScene *_mainMenuScene;
+	GameInterface *_gameInterface;
 	cocos2d::Layer *_RegionEditor;
 	cocos2d::Layer *_cellScreen;
 };

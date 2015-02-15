@@ -74,7 +74,7 @@ bool TutorialWidgetInvestigationStarted::init()
 	_text->setPosition(cocos2d::Vec2(view.width, 0.0f));
 	_text->runAction(cocos2d::MoveTo::create(0.5f, cocos2d::Vec2(220.0f, 0.0f)));
 
-	_finger = cocos2d::Sprite::create("tutorial_hand.png");
+	_finger = cocos2d::Sprite::create("tutorial/tutorial_hand.png");
 	_finger->setScale(0.5f);
 	_finger->setPosition(0.0f, 0.0f);
 	_finger->setAnchorPoint(cocos2d::Vec2(0.25f, 1.0f));

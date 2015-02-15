@@ -51,14 +51,14 @@ bool TutorialWidgetStartFirstTask::init()
 	cocos2d::Size view = cocos2d::Director::getInstance()->getVisibleSize();
 
 	_spotStartPos = view / 2.0f;
-	_spot = cocos2d::Sprite::create("tutorial_menu.png");
+	_spot = cocos2d::Sprite::create("tutorial/tutorial_menu.png");
 	_spot->setPosition(_spotStartPos);
 	_spot->retain();
 
 	_blackout = ScreenBlackoutWidget::create(cocos2d::Color4F(0.0f, 0.0f, 0.0f, 0.0f));
 	_blackout->AddSpot(_spot);
 
-	_arrow = cocos2d::Sprite::create("tutorial_arrow.png");
+	_arrow = cocos2d::Sprite::create("tutorial/tutorial_arrow.png");
 	_arrow->setRotation(-90.0f);
 	_arrow->setPosition((view/2.0f + cocos2d::Size(-160.0f, 130.0f)) - view/2.0f);
 	_arrow->setScale(0.3f);

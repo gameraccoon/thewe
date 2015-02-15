@@ -1,8 +1,9 @@
 #ifndef BONUS_MAP_WIDGET_H
 #define BONUS_MAP_WIDGET_H
 
-#include "CellGameInterface.h"
 #include "EffectsLayer.h"
+#include "Cell.h"
+#include "MiscUtils.h"
 
 class BonusMapWidget : public Effect
 {

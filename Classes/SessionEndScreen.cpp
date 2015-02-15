@@ -16,7 +16,7 @@ bool CustomSessionEndScreen::init(void)
 	cocos2d::Vec2 origin = cocos2d::Director::getInstance()->getVisibleOrigin();
 	cocos2d::Vec2 size = cocos2d::Director::getInstance()->getVisibleSize();
 
-	cocos2d::Sprite *background = cocos2d::Sprite::create("custom-white-menu.png");
+	cocos2d::Sprite *background = cocos2d::Sprite::create("ui/custom-white-menu.png");
 	background->setPositionX(origin.x + size.x / 2.0f);
 	background->setPositionY(origin.y + size.y / 2.0f);
 	background->setColor(_info.backgrndColor);

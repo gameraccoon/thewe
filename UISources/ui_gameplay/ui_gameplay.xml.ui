@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<UIProject xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <ProjectDir>D:\Projects\TheWe\UISources\ui_gameplay</ProjectDir>
+  <Version>1.6.0.0</Version>
+  <Resources>D:\Projects\TheWe\UISources\ui_gameplay\Resources</Resources>
+  <Name>ui_gameplay</Name>
+  <JsonFileName>ui_gameplay.json</JsonFileName>
+  <JsonFolder>D:\Projects\TheWe\UISources\ui_gameplay\Json</JsonFolder>
+  <JsonList>
+    <string>tasks_menu.json</string>
+  </JsonList>
+  <CanvasSize>
+    <Width>800</Width>
+    <Height>480</Height>
+  </CanvasSize>
+  <filePath>D:\Projects\TheWe\UISources\ui_gameplay\ui_gameplay.xml.ui</filePath>
+  <ProjectType>UIProject</ProjectType>
+  <ResRelativePath />
+  <imageFileList>
+    <string>ui_gameplay0.plist</string>
+  </imageFileList>
+  <imagePngList>
+    <string>ui_gameplay0.png</string>
+  </imagePngList>
+  <JsonSuffix>.json</JsonSuffix>
+  <CurrentUIJson>tasks_menu.json</CurrentUIJson>
+</UIProject>

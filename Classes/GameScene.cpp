@@ -25,21 +25,21 @@ GameScene::~GameScene(void)
 
 bool GameScene::init(void)
 {
-	if (!cocos2d::Scene::init())
-	{
+	if (!cocos2d::Scene::init()) {
 		return false;
 	}
 
 	_worldMap = new WorldMapLayer(this, &_mapProjector);
-	addChild(_worldMap);
 	_worldMap->autorelease();
+	_gameInterface = GameInterface::create(&_mapProjector);
 
 	CocosDenshion::SimpleAudioEngine::getInstance()->playBackgroundMusic("bg-gameplay.mp3", true);
 
+	addChild(_worldMap, 0);
+	addChild(NotificationMessageLayer::create(), 1);
+	addChild(_gameInterface, 2);
+	addChild(TutorialLayer::create(_worldMap, &_mapProjector), 3);
 	scheduleUpdate();
-
-	addChild(TutorialLayer::create(_worldMap, &_mapProjector));
-	addChild(NotificationMessageLayer::create());
 
 	return true;
 }
@@ -62,9 +62,6 @@ void GameScene::ShowMap()
 		removeChild(_cellScreen);
 		_cellScreen = nullptr;
 	}
-
-	_worldMap->SetMapInputEnabled(true);
-	_worldMap->SetGuiEnabled(true);
 }
 
 void GameScene::GoToMainMenu(void)
@@ -85,19 +82,12 @@ void GameScene::ToggleEditor()
 		_RegionEditor = new EditorLayer(&_mapProjector);
 		addChild(_RegionEditor);
 		_RegionEditor->autorelease();
-		_worldMap->SetMapInputEnabled(false);
 	}
 	else
 	{
 		ShowMap();
 	}
 }
-
-void GameScene::SetInputEnabled(bool enabled)
-{
-	_worldMap->SetMapInputEnabled(enabled);
-}
-
 
 void GameScene::MoveViewToPoint(const Vector2& worldPoint)
 {

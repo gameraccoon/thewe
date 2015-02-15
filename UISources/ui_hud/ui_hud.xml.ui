@@ -8,11 +8,10 @@
   <JsonFolder>D:\Projects\TheWe\UISources\ui_hud\Json</JsonFolder>
   <JsonList>
     <string>ui_hud.json</string>
-    <string>ui_message.json</string>
   </JsonList>
   <CanvasSize>
-    <Width>170</Width>
-    <Height>89</Height>
+    <Width>0</Width>
+    <Height>0</Height>
   </CanvasSize>
   <filePath>D:\Projects\TheWe\UISources\ui_hud\ui_hud.xml.ui</filePath>
   <ProjectType>UIProject</ProjectType>
@@ -20,7 +19,9 @@
   <imageFileList>
     <string>ui_hud0.plist</string>
   </imageFileList>
-  <imagePngList />
+  <imagePngList>
+    <string>ui_hud0.png</string>
+  </imagePngList>
   <JsonSuffix>.json</JsonSuffix>
-  <CurrentUIJson>ui_message.json</CurrentUIJson>
+  <CurrentUIJson>ui_hud.json</CurrentUIJson>
 </UIProject>

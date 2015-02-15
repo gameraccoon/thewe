@@ -71,19 +71,19 @@ bool TutorialWidgetSpinoff::init()
 	_text->setPosition(cocos2d::Vec2(-view.width, 0.0f));
 	_text->runAction(cocos2d::MoveTo::create(0.5f, cocos2d::Vec2(-220.0f, 0.0f)));
 
-	_arrow = cocos2d::Sprite::create("tutorial_arrow.png");
+	_arrow = cocos2d::Sprite::create("tutorial/tutorial_arrow.png");
 	_arrow->setScale(0.3f);
 	_arrow->setRotation(-90.0f);
 	_arrow->setVisible(false);
 
-	_hand = cocos2d::Sprite::create("tutorial_hand.png");
+	_hand = cocos2d::Sprite::create("tutorial/tutorial_hand.png");
 	_hand->setScale(0.5f);
 	_hand->setPosition(0.0f, 0.0f);
 	_hand->setAnchorPoint(cocos2d::Vec2(0.25f, 1.0f));
 	_hand->setOpacity(0);
 	_hand->setVisible(false);
 
-	_roundSpot = cocos2d::Sprite::create("cell_tutorial.png");
+	_roundSpot = cocos2d::Sprite::create("tutorial/cell_tutorial.png");
 	_roundSpot->retain();
 
 	_blackout = ScreenBlackoutWidget::create(cocos2d::Color4F(0.0f, 0.0f, 0.0f, 0.0f));

@@ -43,14 +43,14 @@ bool InvestigatorTapButton::init(void)
 	}
 
 	// adding the common background sprite for this class-widget
-	_backgroundSprite = cocos2d::Sprite::create("marker_crosshair.png");
+	_backgroundSprite = cocos2d::Sprite::create("effects/marker_crosshair.png");
 	_backgroundSprite->setAnchorPoint(cocos2d::Vec2(0.5f, 0.0f));
 	_backgroundSprite->setScale(_initialScale);
 	_backgroundSprite->setVisible(false);
 	addChild(_backgroundSprite, 0);
 
 	// adding the round progress bar for this class-widget
-	_roundProgressBar = RoundProgressBar::create("marker_crosshair_progress.png", 1.0f, 0.5f);
+	_roundProgressBar = RoundProgressBar::create("effects/marker_crosshair_progress.png", 1.0f, 0.5f);
 	_roundProgressBar->setPosition((cocos2d::Vec2)_backgroundSprite->getContentSize() / 2.0f);
 	_backgroundSprite->addChild(_roundProgressBar);
 

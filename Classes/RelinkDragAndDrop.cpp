@@ -33,14 +33,14 @@ bool RelinkDragAndDrop::init(void)
 	_sprite = MultipleImageSprite::create();
 	_sprite->setPosition(0.0f, 0.0f);
 	_sprite->setScale(1.0f);
-	_sprite->AddImage("Drag", "relink-drag.png");
+	_sprite->AddImage("Drag", "effects/relink-drag.png");
 	_sprite->SetCurrentImage("Drag");
 	_sprite->setOpacity(0);
 
-	_strip = StripEffect::create("spinoff_drag_strip.png");
+	_strip = StripEffect::create("effects/spinoff_drag_strip.png");
 	_strip->setPosition(0.0f, 0.0f);
 
-	_mark = cocos2d::Sprite::create("relink-mark.png");
+	_mark = cocos2d::Sprite::create("effects/relink-mark.png");
 	_mark->setPosition(MARK_POSITION);
 	_mark->setScale(1.0f);
 	_sprite->addChild(_mark);
