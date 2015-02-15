@@ -18,20 +18,14 @@ LOCAL_SRC_FILES := hellocpp/main.cpp \
 				   	../../Classes/BonusMapWidget.cpp \
 				   	../../Classes/BonusOnMap.cpp \
 				   	../../Classes/Cell.cpp \
-				   	../../Classes/CellGameInterface.cpp \
-				   	../../Classes/CellInfoMenu.cpp \
-				   	../../Classes/CellMapPopupButton.cpp \
 				   	../../Classes/CellMapWidget.cpp \
-				   	../../Classes/CellNetWidget.cpp \
-				   	../../Classes/CellsNetLayer.cpp \
 				   	../../Classes/CellsNetwork.cpp \
-				   	../../Classes/CellTasksMenu.cpp \
-				   	../../Classes/CellTaskInfoMenu.cpp \
-				   	../../Classes/CircleMenu.cpp \
+				   	../../Classes/CellRadialMenu.cpp \
 				   	../../Classes/Color.cpp \
 				   	../../Classes/Drawable.cpp \
 				   	../../Classes/EditorLayer.cpp \
 				   	../../Classes/EffectsLayer.cpp \
+				   	../../Classes/GameInterface.cpp \
 				   	../../Classes/GameInfo.cpp \
 				   	../../Classes/GameSavesManager.cpp \
 				   	../../Classes/GameScene.cpp \
@@ -43,8 +37,10 @@ LOCAL_SRC_FILES := hellocpp/main.cpp \
 				   	../../Classes/LuaBindings.cpp \
 				   	../../Classes/LuaInstance.cpp \
 				   	../../Classes/MainMenuScene.cpp \
-				   	../../Classes/MapGuiLayer.cpp \
 				   	../../Classes/MapProjector.cpp \
+				   	../../Classes/MemberMover.cpp \
+				   	../../Classes/MemberWidget.cpp \
+				   	../../Classes/MembersPage.cpp \
 				   	../../Classes/MessageManager.cpp \
 				   	../../Classes/MiscUtils.cpp \
 				   	../../Classes/MultipleImageSprite.cpp \
@@ -66,6 +62,9 @@ LOCAL_SRC_FILES := hellocpp/main.cpp \
 				   	../../Classes/Task.cpp \
 				   	../../Classes/TaskManager.cpp \
 				   	../../Classes/TaskRewardMapWidget.cpp \
+				   	../../Classes/TasksListWidget.cpp \
+				   	../../Classes/TasksMenuWidget.cpp \
+				   	../../Classes/TaskStartButton.cpp \
 				   	../../Classes/ThreadUtils.cpp \
 				   	../../Classes/Town.cpp \
 				   	../../Classes/TownMapWidget.cpp \
@@ -82,6 +81,7 @@ LOCAL_SRC_FILES := hellocpp/main.cpp \
 				   	../../Classes/TutorialWidgetSpinoff.cpp \
 				   	../../Classes/TutorialWidgetInvestigationStarted.cpp \
 				   	../../Classes/TutorialWidgetInvestigatorUncatched.cpp \
+				   	../../Classes/HudWidget.cpp \
 				   	../../Classes/UserMessage.cpp \
 				   	../../Classes/Vector2.cpp \
 				   	../../Classes/World.cpp \

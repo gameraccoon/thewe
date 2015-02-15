@@ -8,7 +8,7 @@ class MembersPage : public cocos2d::ui::PageView
 {
 public:
 	static MembersPage* create(void);
-	static const int PAGE_SIZE;
+	static const int MEMBERS_PAGE_SIZE;
 	static const float SPACING;
 	static const float SLOT_SIZE;
 	static const float SLOT_SCALE;

@@ -1,6 +1,6 @@
 #include "MembersPage.h"
 
-const int MembersPage::PAGE_SIZE = 7;
+const int MembersPage::MEMBERS_PAGE_SIZE = 7;
 const float MembersPage::SPACING = 5.0f;
 const float MembersPage::SLOT_SIZE = 95.0f;
 const float MembersPage::SLOT_SCALE = MembersPage::SLOT_SIZE / 120.0f;
@@ -36,7 +36,7 @@ void MembersPage::Fill(int number)
 		members.push_back(widget);
 	}
 
-	if (members.size() <= PAGE_SIZE) {
+	if (members.size() <= MEMBERS_PAGE_SIZE) {
 		setContentSize(cocos2d::Size(SLOT_SIZE*number + SPACING*(number+1), SLOT_SIZE + SPACING*2.0f));
 		cocos2d::Vec2 pos = cocos2d::Vec2(SPACING, SPACING);
 		for (auto member : members) {
