@@ -18,7 +18,7 @@ class GameInterface : public cocos2d::Layer, public MessageReceiver
 public:
 	static GameInterface* create(MapProjector *projector);
 
-	enum class DrawOrder
+	enum DrawOrder
 	{
 		CELL_RADIAL_MENU,
 		HUD,

@@ -9,12 +9,10 @@
 #include "TasksListWidget.h"
 #include "TaskStartButton.h"
 
-class TasksMenuWidget : public cocos2d::Node, public MessageReceiver
+class TasksMenuWidget : public cocos2d::Node
 {
 public:
-	static TasksMenuWidget* create(void);
-
-	void AcceptMessage(const Message &message);
+	static TasksMenuWidget* create(Cell::WeakPtr cell);
 
 	void Show(void);
 	void Hide(void);
@@ -23,7 +21,7 @@ protected:
 	TasksMenuWidget(void);
 	~TasksMenuWidget(void);
 
-	bool init(void) override;
+	bool init(Cell::WeakPtr cell);
 	void update(float dt) override;
 
 	void OnClosePressed(cocos2d::Ref *sender, cocos2d::ui::Widget::TouchEventType eventType);

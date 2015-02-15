@@ -2,10 +2,10 @@
 
 #include "World.h"
 
-TasksMenuWidget* TasksMenuWidget::create(void)
+TasksMenuWidget* TasksMenuWidget::create(Cell::WeakPtr cell)
 {
 	TasksMenuWidget *ret = new TasksMenuWidget();
-	if (ret && ret->init())
+	if (ret && ret->init(cell))
 	{
 		ret->autorelease();
 		return ret;
@@ -17,18 +17,20 @@ TasksMenuWidget* TasksMenuWidget::create(void)
 
 TasksMenuWidget::TasksMenuWidget(void)
 {
-	MessageManager::Instance().RegisterReceiver(this, "OpenTasksMenu");
-	MessageManager::Instance().RegisterReceiver(this, "CloseTasksMenu");
 }
 
 TasksMenuWidget::~TasksMenuWidget(void)
 {
-	MessageManager::Instance().UnregisterReceiver(this, "OpenTasksMenu");
-	MessageManager::Instance().UnregisterReceiver(this, "CloseTasksMenu");
 }
 
-bool TasksMenuWidget::init(void)
+bool TasksMenuWidget::init(Cell::WeakPtr cell)
 {
+	if (!cocos2d::Node::init()) {
+		return false;
+	}
+
+	_cell = cell;
+
 	_widget = cocostudio::GUIReader::getInstance()->widgetFromJsonFile("ui_gameplay/tasks_menu.ExportJson");
 
 	cocos2d::ui::Helper::seekWidgetByName(_widget, "Close")->addTouchEventListener(CC_CALLBACK_2(TasksMenuWidget::OnClosePressed, this));
@@ -96,7 +98,7 @@ void TasksMenuWidget::OnClosePressed(cocos2d::Ref *sender, cocos2d::ui::Widget::
 {
 	if (eventType == cocos2d::ui::Widget::TouchEventType::ENDED)
 	{
-		Hide();
+		MessageManager::Instance().PutMessage(Message("CloseTasksMenu"));
 	}
 }
 
@@ -118,29 +120,13 @@ void TasksMenuWidget::OnPageRight(cocos2d::Ref *sender, cocos2d::ui::Widget::Tou
 	}
 }
 
-void TasksMenuWidget::AcceptMessage(const Message &message)
-{
-	if (message.is("OpenTasksMenu"))
-	{
-		Show();
-		_cell = World::Instance().GetCellsNetwork().GetCellByUid(message.variables.GetInt("UID"));
-		_startButton->RenewProbability(100.0);
-	}
-	if (message.is("CloseTasksMenu"))
-	{
-		Hide();
-		_cell = Cell::Ptr();
-	}
-}
-
 void TasksMenuWidget::Show(void)
 {
-	setVisible(true);
+	_startButton->RenewProbability(100.0);
 }
 
 void TasksMenuWidget::Hide(void)
 {
-	setVisible(false);
 }
 
 void TasksMenuWidget::StartTask(void)
