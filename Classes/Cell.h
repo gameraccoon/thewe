@@ -79,6 +79,9 @@ public:
 
 	void AddResource(const Resource& resource);
 	void AddReward(const Resource::Vector& reward);
+	void AddMember(Member::Ptr member);
+	void RemoveMember(Member::Ptr member);
+	const Member::Vector& GetAllMembers(void) const;
 	const Resource::Map& GetResources() const;
 
 	int GetExperience(void) const;
@@ -117,6 +120,9 @@ private:
 
 	/** List of recently completed task */
 	std::vector<Task::CompletedTaskInfo> _completedTasks;
+
+	/** List of cell human members */
+	Member::Vector _members;
 
 	Cell::WeakPtr parent;
 	Town::WeakPtr town;

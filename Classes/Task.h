@@ -7,6 +7,7 @@
 
 #include "MiscUtils.h"
 #include "Resources.h"
+#include "Member.h"
 
 class Task
 {
@@ -22,6 +23,13 @@ public:
 		, Failed
 	};
 
+	struct Executant
+	{
+		std::string special;
+		int count;
+		int exp;
+	};
+
 	/** Static information about the task */
 	struct Info
 	{
@@ -32,6 +40,7 @@ public:
 		int level;
 
 		Resource::Vector reward;
+		std::vector<Executant> members;
 
 		/** The name of the Lua-function, that will be run on successful end of the task */
 		std::string successFn;
@@ -65,11 +74,16 @@ public:
 	Utils::GameTime GetEndTime() const;
 	float CalculateProgress(Utils::GameTime worldTime) const;
 
+	void AddExecutant(Member::Ptr executant);
+	void SwapExecutant(Member::Ptr executant, Member::Ptr replaced);
+	void ReleaseExecutant(void);
+
 private:
 	/** Start time of the task */
 	Utils::GameTime _startTime;
 	/** Time when task will be completed */
 	Utils::GameTime _endTime;
+	Member::Vector _executants;
 
 	const Task::Info* _info;
 };

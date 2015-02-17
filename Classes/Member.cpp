@@ -5,6 +5,7 @@
 Member::Member(const std::string& specialization, int exp)
 	: specialization(specialization)
 	, experience(exp)
+	, _state(State::NORMAL)
 {
 }
 
@@ -35,3 +36,19 @@ std::string Member::getSpecialization() const
 {
 	return specialization;
 }
+
+void Member::SetState(Member::State state)
+{
+	_state = state;
+}
+
+bool Member::IsState(Member::State state) const
+{
+	return _state == state;
+}
+
+bool Member::IsSpecial(const std::string special) const
+{
+	return specialization == special;
+}
+

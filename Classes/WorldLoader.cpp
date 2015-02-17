@@ -70,6 +70,13 @@ namespace WorldLoader
 					info.reward.push_back(Resource(task_property_node.attribute("id").as_string(),
 													task_property_node.attribute("count").as_int()));
 				}
+				else if (nodeName == "Member") {
+					Task::Executant executant;
+					executant.special = task_property_node.attribute("id").as_string();
+					executant.count = task_property_node.attribute("count").as_int();
+					executant.exp = task_property_node.attribute("exp").as_int();
+					info.members.push_back(executant);
+				}
 				else {
 					WRITE_WARN("Unknown task property type: " + nodeName);
 				}

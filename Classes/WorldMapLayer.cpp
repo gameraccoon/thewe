@@ -220,6 +220,12 @@ void WorldMapLayer::AcceptMessage(const Message &msg)
 			cell->SetCash(GameInfo::Instance().GetInt("CELL_STARTUP_MONEY"));
 			cell->SetExperience(0);
 
+			// test code
+			for (int m=0;m<3;m++) {
+				cell->AddMember(Member::create("thug", 3));
+				cell->AddMember(Member::create("geek", 3));
+			}
+
 			parent.lock()->SetCash(parent.lock()->GetCash() - GameInfo::Instance().GetInt("CELL_SPINOFF_CASH_PRICE"));
 
 			cell->SetState(Cell::State::CONSTRUCTION, Utils::GetGameTime(), GameInfo::Instance().GetTime("CELL_CONSTRUCTION_TIME"));
@@ -614,6 +620,12 @@ void WorldMapLayer::OnTownSelect(Town::WeakPtr town)
 			cell->SetCash(GameInfo::Instance().GetInt("CELL_STARTUP_MONEY"));
 			cell->SetExperience(0);
 			cell->SetState(Cell::State::READY);
+
+			// test code
+			for (int m=0;m<3;m++) {
+				cell->AddMember(Member::create("thug", 3));
+				cell->AddMember(Member::create("geek", 3));
+			}
 
 			World::Instance().SetFirstLaunch(false);
 			World::Instance().GetCellsNetwork().SetRootCell(cell);

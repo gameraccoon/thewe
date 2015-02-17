@@ -3,11 +3,19 @@
 
 #include <string>
 #include <memory>
+#include <vector>
 
 class Member
 {
 public:
 	typedef std::shared_ptr<Member> Ptr;
+	typedef std::vector<Member::Ptr> Vector;
+
+	enum class State
+	{
+		NORMAL,
+		MISSION
+	};
 
 public:
 	Member(const std::string& specialization, int exp);
@@ -17,12 +25,16 @@ public:
 	int getExperience() const;
 	void setExperience(int exp);
 	int addExperience(int exp);
-
+	void SetState(Member::State state);
 	std::string getSpecialization() const;
+
+	bool IsState(Member::State state) const;
+	bool IsSpecial(const std::string special) const;
 
 private:
 	const std::string specialization;
 	int experience;
+	State _state;
 };
 
 #endif // MEMBER_H

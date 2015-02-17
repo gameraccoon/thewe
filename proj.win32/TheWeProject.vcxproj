@@ -280,6 +280,7 @@ xcopy /Y /Q "$(EngineRoot)external\websockets\prebuilt\win32\*.lib" "$(SolutionD
     <ClInclude Include="..\Classes\Member.h" />
     <ClInclude Include="..\Classes\MemberMover.h" />
     <ClInclude Include="..\Classes\MembersPage.h" />
+    <ClInclude Include="..\Classes\Resources.h" />
     <ClInclude Include="..\Classes\TasksListWidget.h" />
     <ClInclude Include="..\Classes\MemberWidget.h" />
     <ClInclude Include="..\Classes\HudWidget.h" />

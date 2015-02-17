@@ -749,6 +749,9 @@
     <ClInclude Include="..\Classes\Member.h">
       <Filter>Classes\Models</Filter>
     </ClInclude>
+    <ClInclude Include="..\Classes\Resources.h">
+      <Filter>Classes\Models</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="game.rc">

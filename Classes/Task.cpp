@@ -46,3 +46,44 @@ float Task::CalculateProgress(Utils::GameTime worldTime) const
 	}
 }
 
+void Task::AddExecutant(Member::Ptr executant)
+{
+	int count_requred = 0;
+	int count_present = 0;
+
+	for (const Task::Executant &e : _info->members) {
+		if (executant->IsSpecial(e.special)) {
+			count_requred = e.count;
+		}
+	}
+
+	if (count_requred > 0) {
+		for (Member::Ptr m : _executants) {
+			if (executant->IsSpecial(m->getSpecialization())) {
+				++count_present;
+			}
+		}
+
+		if (count_present < count_requred) {
+			executant->SetState(Member::State::MISSION);
+			_executants.push_back(executant);
+		}
+	}
+}
+
+void Task::SwapExecutant(Member::Ptr executant, Member::Ptr replaced)
+{
+	for (std::size_t i=0;i<_executants.size();++i) {
+		if (replaced == _executants[i]) {
+			_executants[i] = executant;
+		}
+	}
+}
+
+void Task::ReleaseExecutant(void)
+{
+	for (Member::Ptr m : _executants) {
+		m->SetState(Member::State::NORMAL);
+	}
+	_executants.clear();
+}

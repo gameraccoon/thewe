@@ -253,6 +253,31 @@ void Cell::AddReward(const Resource::Vector& reward)
 	}
 }
 
+void Cell::AddMember(Member::Ptr member)
+{
+	for (Member::Ptr m : _members) {
+		if (m == member) {
+			return;
+		}
+	}
+	_members.push_back(member);
+}
+
+void Cell::RemoveMember(Member::Ptr member)
+{
+	for (Member::Vector::iterator it = _members.begin(); it != _members.end(); ++it) {
+		if ((*it) == member) {
+			it = _members.erase(it);
+			break;
+		}
+	}
+}
+
+const Member::Vector& Cell::GetAllMembers(void) const
+{
+	return _members;
+}
+
 const Resource::Map&Cell::GetResources() const
 {
 	return resources;
