@@ -9,7 +9,7 @@
 class TaskManager
 {
 public:
-	typedef std::vector<const Task::Info*> Tasks;
+	typedef std::vector<Task::Ptr> Tasks;
 
 public:
 	TaskManager();
@@ -21,11 +21,11 @@ public:
 	 * @param info information about task
 	 * @param startTime start time of this task
 	 */
-	void RunTask(Cell::WeakPtr cell, const Task::Info* info, Utils::GameTime startTime);
+	void RunTask(Cell::WeakPtr cell, Task::Ptr task, Utils::GameTime startTime);
 	void RunTask(Cell::WeakPtr cell, const std::string& info, Utils::GameTime startTime);
 
 	void CallSuccessfulCompletition(Cell::WeakPtr cell, const Task::Info *info);
-	Task::Info FindTaskById(const std::string &id) const;
+	Task::Ptr FindTaskById(const std::string &id) const;
 
 	/**
 	 * Returns tasks that available for current cell for now
@@ -50,7 +50,7 @@ private:
 
 private:
 	/** Information about all tasks available in the game (updates only once) */
-	std::map<const std::string, const Task::Info> _allTasks;
+	std::map<const std::string, Task::Ptr> _allTasks;
 	/** Flag that shows is tasks already filled */
 	bool _isTasksFilled;
 
@@ -59,9 +59,9 @@ private:
 
 private:
 	/** Check all values and write all warnings in the log */
-	void _CheckTask(const Task::Info& taskInfo) const;
+	void _CheckTaskInfo(const Task::Info& taskInfo) const;
 
-	const Task::Info* GetTaskInfoById(const std::string& id);
+	Task::Ptr GetTaskById(const std::string& id);
 };
 
 #endif // TASK_MANAGER_H

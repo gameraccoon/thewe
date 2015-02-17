@@ -1,15 +1,15 @@
 #include "Task.h"
 
-Task::Task(const Task::Info* info, Utils::GameTime startTime)
+Task::Task(const Task::Info &info)
 	: _info(info)
-	, _startTime(startTime)
-	, _endTime(startTime + info->duration)
+	, _startTime(0)
+	, _endTime(0)
 {
 }
 
-Task::Ptr Task::Create(const Task::Info* info, Utils::GameTime startTime)
+Task::Ptr Task::Create(const Task::Info &info)
 {
-	return std::make_shared<Task>(info, startTime);
+	return std::make_shared<Task>(info);
 }
 
 bool Task::CheckCompleteness(Utils::GameTime worldTime)
@@ -17,7 +17,13 @@ bool Task::CheckCompleteness(Utils::GameTime worldTime)
 	return worldTime >= _endTime;
 }
 
-const Task::Info* Task::GetInfo() const
+void Task::Start(Utils::GameTime startTime)
+{
+	_startTime = startTime;
+	_endTime = startTime + _info.duration;
+}
+
+const Task::Info& Task::GetInfo() const
 {
 	return _info;
 }
@@ -51,7 +57,7 @@ void Task::AddExecutant(Member::Ptr executant)
 	int count_requred = 0;
 	int count_present = 0;
 
-	for (const Task::Executant &e : _info->members) {
+	for (const Task::Executant &e : _info.members) {
 		if (executant->IsSpecial(e.special)) {
 			count_requred = e.count;
 		}

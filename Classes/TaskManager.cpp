@@ -13,11 +13,12 @@ TaskManager::TaskManager()
 {
 }
 
-void TaskManager::RunTask(Cell::WeakPtr cell, const Task::Info* info, Utils::GameTime startTime)
+void TaskManager::RunTask(Cell::WeakPtr cell, Task::Ptr task, Utils::GameTime startTime)
 {
 	RunnedTaskInfo runnedTaskInfo;
 	runnedTaskInfo.cell = cell;
-	runnedTaskInfo.task = Task::Create(info, startTime);
+	runnedTaskInfo.task = task;
+	task->Start(startTime);
 	cell.lock()->AddCurrentTask(runnedTaskInfo.task);
 
 	_runnedTasks.push_back(runnedTaskInfo);
@@ -27,7 +28,7 @@ void TaskManager::RunTask(Cell::WeakPtr cell, const Task::Info* info, Utils::Gam
 
 void TaskManager::RunTask(Cell::WeakPtr cell, const std::string& id, Utils::GameTime startTime)
 {
-	const Task::Info* taskInfo = GetTaskInfoById(id);
+	Task::Ptr taskInfo = GetTaskById(id);
 	if (taskInfo)
 	{
 		RunTask(cell, taskInfo, startTime);
@@ -60,11 +61,11 @@ void TaskManager::CallSuccessfulCompletition(Cell::WeakPtr cell, const Task::Inf
 	}
 }
 
-Task::Info TaskManager::FindTaskById(const std::string &id) const
+Task::Ptr TaskManager::FindTaskById(const std::string &id) const
 {
-	Task::Info def;
+	Task::Ptr def;
 
-	std::map<const std::string, const Task::Info>::const_iterator it;
+	std::map<const std::string, Task::Ptr>::const_iterator it;
 	it = _allTasks.find(id);
 	return it != _allTasks.end() ? (*it).second : def;
 }
@@ -85,10 +86,10 @@ void TaskManager::UpdateToTime(Utils::GameTime worldTime)
 			// if Cell wasn't removed yet
 			if (cell)
 			{
-				const Task::Info* taskInfo = task->GetInfo();
+				const Task::Info &taskInfo = task->GetInfo();
 
 				Task::CompletedTaskInfo info;
-				info.taskInfo = task->GetInfo();
+				info.taskInfo = &task->GetInfo();
 				info.startTime = task->GetStartTime();
 				info.endTime = task->GetEndTime();
 
@@ -113,13 +114,13 @@ void TaskManager::UpdateToTime(Utils::GameTime worldTime)
 
 					Message message("PushTaskRewardOnMap");
 					message.variables.SetInt("CELL_UID", cell->GetUid());
-					message.variables.SetString("TASK_ID", taskInfo->id);
+					message.variables.SetString("TASK_ID", taskInfo.id);
 					message.variables.SetTime("WAIT_TIME", waitTime);
 					MessageManager::Instance().PutMessage(message);
 				}
 				else
 				{
-					funcName = taskInfo->failFn;
+					funcName = taskInfo.failFn;
 					info.status = Task::Status::Failed;
 
 					World::Instance().AddInvestigatorByCell(cell);
@@ -161,8 +162,8 @@ void TaskManager::FillTasks(const std::vector<Task::Info>& tasks)
 
 	for (const Task::Info& info : tasks)
 	{
-		_CheckTask(info);
-		_allTasks.insert(std::pair<const std::string, const Task::Info>(info.id, info));
+		_CheckTaskInfo(info);
+		_allTasks.insert(std::pair<const std::string, Task::Ptr>(info.id, Task::Create(info)));
 	}
 
 	_isTasksFilled = true;
@@ -184,37 +185,37 @@ TaskManager::Tasks TaskManager::GetAvailableTasks(Cell::WeakPtr cell) const
 		WRITE_ERR("Trying to acces to not initialized TaskManager");
 	}
 
-	std::vector<const Task::Info*> availableTasks;
+	std::vector<Task::Ptr> availableTasks;
 
 	for (const auto& pair : _allTasks)
 	{
 		bool add = luabind::call_function<bool>(World::Instance().GetLuaInst()->GetLuaState()
 													  , "IsShowTaskInList"
 													  , cell.lock().get()
-													  , pair.second
+													  , pair.second->GetInfo()
 													  , 0);
 		if (add)
 		{
-			availableTasks.push_back(&pair.second);
+			availableTasks.push_back(pair.second);
 		}
 	}
 
 	return availableTasks;
 }
 
-void TaskManager::_CheckTask(const Task::Info& taskInfo) const
+void TaskManager::_CheckTaskInfo(const Task::Info& taskInfo) const
 {
 	WARN_IF(taskInfo.id.empty(), "Empty task id");
 	WARN_IF(taskInfo.duration < 0.0f, "Negative task duration");
 	WARN_IF(taskInfo.level < 0.0f, "Negative task level");
 }
 
-const Task::Info* TaskManager::GetTaskInfoById(const std::string& id)
+Task::Ptr TaskManager::GetTaskById(const std::string& id)
 {
 	auto taskInfoIterator = _allTasks.find(id);
 	if (taskInfoIterator != _allTasks.end())
 	{
-		return &(taskInfoIterator->second);
+		return taskInfoIterator->second;
 	}
 	else
 	{

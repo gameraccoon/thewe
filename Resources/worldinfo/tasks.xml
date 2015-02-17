@@ -6,6 +6,8 @@
 		<Reward id="people" count="100"/>
 		<Member id="geek" count="1" exp="1"/>
 		<Member id="thug" count="1" exp="1"/>
+		<LuaCallbackSuccess name=""/>
+		<LuaCallbackFailed name=""/>
 	</Task>
 
 	<Task id="debug_investigatorTask" duration="5" level="1" successFn="MissionSuccess_InvestigatorTest" />

@@ -57,9 +57,9 @@ public:
 	};
 
 public:
-	Task(const Task::Info* info, Utils::GameTime startTime);
+	Task(const Task::Info &info);
 
-	static Ptr Create(const Info* info, Utils::GameTime startTime);
+	static Ptr Create(const Info &info);
 
 	/**
 	 * Check task completeness
@@ -68,7 +68,9 @@ public:
 	 */
 	bool CheckCompleteness(Utils::GameTime worldTime);
 
-	const Info* GetInfo() const;
+	void Start(Utils::GameTime startTime);
+
+	const Info& GetInfo() const;
 
 	Utils::GameTime GetStartTime() const;
 	Utils::GameTime GetEndTime() const;
@@ -85,7 +87,7 @@ private:
 	Utils::GameTime _endTime;
 	Member::Vector _executants;
 
-	const Task::Info* _info;
+	const Task::Info _info;
 };
 
 #endif // TASK_H

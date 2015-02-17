@@ -530,7 +530,7 @@ static void AppendCellToQuery(std::string* const query, Cell* const cell)
 
 static void AppendTaskToQuery(std::string* const query, Task::Ptr task, int cellIndex)
 {
-	std::string currentTaskId = task->GetInfo()->id;
+	std::string currentTaskId = task->GetInfo().id;
 	std::string taskStartTime = Utils::TimeToString(task->GetStartTime());
 
 	query->append("(")

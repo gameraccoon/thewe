@@ -77,6 +77,10 @@ namespace WorldLoader
 					executant.exp = task_property_node.attribute("exp").as_int();
 					info.members.push_back(executant);
 				}
+				else if (nodeName == "LuaCallbackSuccess") {
+				}
+				else if (nodeName == "LuaCallbackFailed") {
+				}
 				else {
 					WRITE_WARN("Unknown task property type: " + nodeName);
 				}

@@ -211,7 +211,8 @@ void CellMapWidget::AcceptMessage(const Message &message)
 	}
 	else if (message.is("PushTaskRewardOnMap") && (unsigned int)message.variables.GetInt("CELL_UID") == _cell.lock()->GetUid())
 	{
-		Task::Info task_info = World::Instance().GetTaskManager().FindTaskById(message.variables.GetString("TASK_ID"));
+		Task::Ptr task = World::Instance().GetTaskManager().FindTaskById(message.variables.GetString("TASK_ID"));
+		const Task::Info task_info = task->GetInfo();
 		TaskRewardMapWidget *reward = new TaskRewardMapWidget(
 			this,
 			_cell,
