@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 2.6)
+cmake_minimum_required(VERSION 2.8)
 
 set(APP_NAME TheWe)
 project (${APP_NAME})
@@ -56,144 +56,35 @@ else()
 endif()
 
 if( UNIX ) #assume linux
+
+aux_source_directory(./Classes CLASSES_SRC)
+aux_source_directory(./dependencies/luabind-0.9.1/src LUABIND_SRC)
+aux_source_directory(./dependencies/lua-5.1.5 LUA_SRC)
+set(PUGI_SRC dependencies/pugixml-1.4/pugixml.cpp)
+set(SQLITE_SRC dependencies/pugixml-1.4/pugixml.cpp)
+
 set(GAME_SRC
 	proj.linux/main.cpp
-	Classes/Application.cpp
-	Classes/ArbitraryHull.cpp
-	Classes/BonusMapWidget.cpp
-	Classes/BonusOnMap.cpp
-	Classes/Cell.cpp
-	Classes/CellGameInterface.cpp
-	Classes/CellInfoMenu.cpp
-	Classes/CellMapPopupButton.cpp
-	Classes/CellMapWidget.cpp
-	Classes/CellNetWidget.cpp
-	Classes/CellsNetwork.cpp
-	Classes/CellTasksMenu.cpp
-	Classes/CellTaskInfoMenu.cpp
-	Classes/CellsNetLayer.cpp
-	Classes/CircleMenu.cpp
-	Classes/Color.cpp
-	Classes/Drawable.cpp
-	Classes/EditorLayer.cpp
-	Classes/EffectsLayer.cpp
-	Classes/GameInfo.cpp
-	Classes/GameSavesManager.cpp
-	Classes/GameScene.cpp
-	Classes/Investigator.cpp
-	Classes/InvestigatorMapWidget.cpp
-	Classes/InvestigatorTapButton.cpp
-	Classes/Log.cpp
-	Classes/LuaBindings.cpp
-	Classes/LuaInstance.cpp
-	Classes/Localization.cpp
-	Classes/MainMenuScene.cpp
-	Classes/MapGuiLayer.cpp
-	Classes/MapProjector.cpp
-	Classes/Member.cpp
-	Classes/MessageManager.cpp
-	Classes/MultipleImageSprite.cpp
-	Classes/NotificationMessageManager.cpp
-	Classes/NotificationMessageLayer.cpp
-	Classes/NotificationMessageWidget.cpp
-	Classes/MiscUtils.cpp
-	Classes/PopUpTextWithIcon.cpp
-	Classes/ProgressBar.cpp
-	Classes/RelinkDragAndDrop.cpp
-	Classes/Region.cpp
-	Classes/ScreenBlackoutWidget.cpp
-	Classes/SessionEndScreen.cpp
-	Classes/SpinoffDragAndDrop.cpp
-	Classes/SplashScreenScene.cpp
-	Classes/SqliteConnection.cpp
-	Classes/SqliteDataReader.cpp
-	Classes/StripEffect.cpp
-	Classes/Task.cpp
-	Classes/TaskManager.cpp
-	Classes/TaskRewardMapWidget.cpp
-	Classes/ThreadUtils.cpp
-	Classes/Town.cpp
-	Classes/TownMapWidget.cpp
-	Classes/TransitionZoomFade.cpp
-	Classes/TutorialLayer.cpp
-	Classes/TutorialManager.cpp
-	Classes/TutorialWidget.cpp
-	Classes/TutorialWidgetAfterFirstCell.cpp
-	Classes/TutorialWidgetFirstCell.cpp
-	Classes/TutorialWidgetInfluence.cpp
-	Classes/TutorialWidgetInvestigationStarted.cpp
-	Classes/TutorialWidgetInvestigatorUncatched.cpp
-	Classes/TutorialWidgetSpinoff.cpp
-	Classes/TutorialWidgetStartFirstTask.cpp
-	Classes/TutorialWidgetTextual.cpp
-	Classes/TutorialWidgetWelcome.cpp
-	Classes/UserMessage.cpp
-	Classes/Vector2.cpp
-	Classes/World.cpp
-	Classes/WorldLoader.cpp
-	Classes/WorldMapLayer.cpp
 
-	dependencies/pugixml-1.4/pugixml.cpp
+	${CLASSES_SRC}
 
-	dependencies/luabind-0.9.1/src/class.cpp
-	dependencies/luabind-0.9.1/src/class_info.cpp
-	dependencies/luabind-0.9.1/src/class_registry.cpp
-	dependencies/luabind-0.9.1/src/class_rep.cpp
-	dependencies/luabind-0.9.1/src/create_class.cpp
-	dependencies/luabind-0.9.1/src/error.cpp
-	dependencies/luabind-0.9.1/src/exception_handler.cpp
-	dependencies/luabind-0.9.1/src/function.cpp
-	dependencies/luabind-0.9.1/src/inheritance.cpp
-	dependencies/luabind-0.9.1/src/link_compatibility.cpp
-	dependencies/luabind-0.9.1/src/object_rep.cpp
-	dependencies/luabind-0.9.1/src/open.cpp
-	dependencies/luabind-0.9.1/src/pcall.cpp
-	dependencies/luabind-0.9.1/src/scope.cpp
-	dependencies/luabind-0.9.1/src/stack_content_by_name.cpp
-	dependencies/luabind-0.9.1/src/weak_ref.cpp
-	dependencies/luabind-0.9.1/src/wrapper_base.cpp
-
-	dependencies/lua-5.1.5/lapi.c
-	dependencies/lua-5.1.5/lauxlib.c
-	dependencies/lua-5.1.5/lbaselib.c
-	dependencies/lua-5.1.5/lcode.c
-	dependencies/lua-5.1.5/ldblib.c
-	dependencies/lua-5.1.5/ldebug.c
-	dependencies/lua-5.1.5/ldo.c
-	dependencies/lua-5.1.5/ldump.c
-	dependencies/lua-5.1.5/lfunc.c
-	dependencies/lua-5.1.5/lgc.c
-	dependencies/lua-5.1.5/linit.c
-	dependencies/lua-5.1.5/liolib.c
-	dependencies/lua-5.1.5/llex.c
-	dependencies/lua-5.1.5/lmathlib.c
-	dependencies/lua-5.1.5/lmem.c
-	dependencies/lua-5.1.5/loadlib.c
-	dependencies/lua-5.1.5/lobject.c
-	dependencies/lua-5.1.5/lopcodes.c
-	dependencies/lua-5.1.5/loslib.c
-	dependencies/lua-5.1.5/lparser.c
-	dependencies/lua-5.1.5/lstate.c
-	dependencies/lua-5.1.5/lstring.c
-	dependencies/lua-5.1.5/lstrlib.c
-	dependencies/lua-5.1.5/ltable.c
-	dependencies/lua-5.1.5/ltablib.c
-	dependencies/lua-5.1.5/ltm.c
-	dependencies/lua-5.1.5/lundump.c
-	dependencies/lua-5.1.5/lvm.c
-	dependencies/lua-5.1.5/lzio.c
-	dependencies/lua-5.1.5/print.c
-
-	dependencies/sqlite3-3.8.7/sqlite3.c
-
+	${LUABIND_SRC}
+	${LUA_SRC}
+	${PUGI_SRC}
+	${SQLITE_SRC}
 )
 elseif ( WIN32 )
 set(GAME_SRC
 	proj.win32/main.cpp
 	proj.win32/main.h
 	proj.win32/resource.h
-	Classes/AppDelegate.cpp
-	Classes/HelloWorldScene.cpp
+
+	${CLASSES_SRC}
+
+	${LUABIND_SRC}
+	${LUA_SRC}
+	${PUGI_SRC}
+	${SQLITE_SRC}
 )
 endif()
 
