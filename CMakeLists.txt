@@ -59,7 +59,7 @@ aux_source_directory(./Classes CLASSES_SRC)
 aux_source_directory(./dependencies/luabind-0.9.1/src LUABIND_SRC)
 aux_source_directory(./dependencies/lua-5.1.5 LUA_SRC)
 set(PUGI_SRC dependencies/pugixml-1.4/pugixml.cpp)
-set(SQLITE_SRC dependencies/pugixml-1.4/pugixml.cpp)
+set(SQLITE_SRC dependencies/sqlite3-3.8.7/sqlite3.c)
 
 if( UNIX ) #assume linux
 set(GAME_SRC

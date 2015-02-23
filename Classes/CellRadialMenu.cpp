@@ -152,7 +152,7 @@ bool CellRadialMenu::init(void)
 	_buttons[ButtonsType::OPEN_TASK_MENU]->setTag((int)ButtonsType::OPEN_TASK_MENU);
 	_buttons[ButtonsType::OPEN_RECRUTMENT_MENU]->setTag((int)ButtonsType::OPEN_RECRUTMENT_MENU);
 	_buttons[ButtonsType::OPEN_SPINOFF_TEAM_MENU]->setTag((int)ButtonsType::OPEN_SPINOFF_TEAM_MENU);
-	
+
 	dynamic_cast<cocos2d::ui::Button *>(_buttons[ButtonsType::OPEN_TASK_MENU])->addTouchEventListener(CC_CALLBACK_2(CellRadialMenu::ButtonTouchHandler, this));
 	dynamic_cast<cocos2d::ui::Button *>(_buttons[ButtonsType::OPEN_RECRUTMENT_MENU])->addTouchEventListener(CC_CALLBACK_2(CellRadialMenu::ButtonTouchHandler, this));
 	dynamic_cast<cocos2d::ui::Button *>(_buttons[ButtonsType::OPEN_SPINOFF_TEAM_MENU])->addTouchEventListener(CC_CALLBACK_2(CellRadialMenu::ButtonTouchHandler, this));
@@ -162,7 +162,7 @@ bool CellRadialMenu::init(void)
 	for (auto node : _buttons) {
 		addChild(node);
 	}
-	
+
 	scheduleUpdate();
 	setVisible(false);
 	setScale(1.0f);
@@ -193,9 +193,9 @@ void CellRadialMenu::ButtonTouchHandler(cocos2d::Ref *sender, cocos2d::ui::Widge
 		{
 			std::string name;
 			ButtonsType type = (ButtonsType)node->getTag();
-			
+
 			switch (type) {
-			case ButtonsType::OPEN_TASK_MENU: 
+			case ButtonsType::OPEN_TASK_MENU:
 				name = "OpenTasksMenu";
 				break;
 			case ButtonsType::OPEN_RECRUTMENT_MENU:
@@ -204,6 +204,8 @@ void CellRadialMenu::ButtonTouchHandler(cocos2d::Ref *sender, cocos2d::ui::Widge
 			case ButtonsType::OPEN_SPINOFF_TEAM_MENU:
 				name = "OpenSpinoffMenu";
 				break;
+			default:
+				WRITE_ERR("Unknown ButtonsType");
 			}
 
 			if (!name.empty()) {
