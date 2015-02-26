@@ -9,13 +9,15 @@
 #include "TasksListWidget.h"
 #include "TaskStartButton.h"
 
-class TasksMenuWidget : public cocos2d::Node
+class TasksMenuWidget : public cocos2d::Node, public MessageReceiver
 {
 public:
 	static TasksMenuWidget* create(Cell::WeakPtr cell);
 
 	void Show(void);
 	void Hide(void);
+
+	void AcceptMessage(const Message &message) override;
 
 protected:
 	TasksMenuWidget(void);
@@ -35,11 +37,11 @@ private:
 	cocos2d::ui::Widget *_widget;
 	cocos2d::ui::Button *_btnScrollLeft;
 	cocos2d::ui::Button *_btnScrollRight;
+	std::vector<MemberMover *> _movers;
 	TasksListWidget *_tasksList;
 	TaskStartButton *_startButton;
 	MembersPage *_membersPage;
 	MembersSlot *_membersSlot;
-	MemberMover *_mover;
 };
 
 #endif

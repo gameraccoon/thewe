@@ -27,20 +27,31 @@ protected:
 class MembersSlot : public MembersPage
 {
 public:
+	struct SlotInfo {
+		int index;
+		int page;
+		cocos2d::Vec2 worldPos;
+		Member::Ptr member;
+	};
+
+public:
 	static MembersSlot* create(void);
 
-	cocos2d::Vec2 GetFreeSlotPos(void);
-	void AddMember(MemberWidget *memberWidget);
-	void SwapMember(MemberWidget *memberWidget, int spawnIndex);
-	void RemoveMember(MemberWidget *memberWidget);
+	SlotInfo FindPlace(Member::Ptr member);
+
+	void AddMember(const MembersSlot::SlotInfo &info);
 	void Fill(int number) override;
 	bool HaveFreeSlots(void);
+	bool IsAbleToAddMember(Member::Ptr member);
 
 protected:
 	MembersSlot(void);
 	virtual ~MembersSlot(void);
 
 	bool init(void) override;
+
+private:
+	std::vector<SlotInfo> _slotsUnderConstruction;
 };
 
 #endif

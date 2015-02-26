@@ -2,23 +2,29 @@
 #define MEMBER_WIDGET_H
 
 #include "GameInterface.h"
+#include "Member.h"
 
 class MemberWidget : public cocos2d::ui::Layout
 {
 public:
-	static MemberWidget* createWithMember(void);
-	static MemberWidget* createEmpty(bool drawSpecial);
+	static MemberWidget* createWithMember(Member::Ptr member, bool withRemoveButton = false);
+	static MemberWidget* createEmpty(const std::string &specialType);
+
+	Member::Ptr GetMemberPtr(void) const;
 
 	bool IsEmptyMemberWidget(void) const;
-
-	void TouchListener(cocos2d::Ref *sender, cocos2d::ui::Widget::TouchEventType eventType);
 
 protected:
 	MemberWidget(void);
 	virtual ~MemberWidget(void);
 
-	bool initWithMember(void);
-	bool initEmpty(bool drawSpecial);
+	bool initWithMember(Member::Ptr member, bool withRemoveButton);
+	bool initEmpty(const std::string &specialType);
+	
+	void TouchListener(cocos2d::Ref *sender, cocos2d::ui::Widget::TouchEventType eventType);
+	void OnRemovePressed(cocos2d::Ref *sender, cocos2d::ui::Widget::TouchEventType eventType);
+
+	static std::string GetIconForSpecial(const std::string &special);
 
 private:
 	typedef std::vector<cocos2d::Sprite *> Stars;
@@ -27,6 +33,8 @@ private:
 	cocos2d::Sprite *_background;
 	cocos2d::Sprite *_special;
 	cocos2d::Sprite *_face;
+	cocos2d::ui::Button *_removeButton;
+	Member::Ptr _member;
 	Stars _stars;
 	bool _isEmptyMemberWidget;
 };

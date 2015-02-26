@@ -31,7 +31,7 @@ void MembersPage::Fill(int number)
 	// test code
 	std::vector<MemberWidget *> members;
 	for (int k=0;k<number;++k) {
-		MemberWidget *widget = MemberWidget::createWithMember();
+		MemberWidget *widget = MemberWidget::createWithMember(Member::create("geek", 3));
 		widget->setTag(k);
 		members.push_back(widget);
 	}
@@ -111,40 +111,68 @@ bool MembersSlot::init(void)
 	return true;
 }
 
-cocos2d::Vec2 MembersSlot::GetFreeSlotPos(void)
+bool MembersSlot::IsAbleToAddMember(Member::Ptr member)
 {
-	cocos2d::ui::Layout *page = getPages().at(0);
-	for (cocos2d::Node *child : page->getChildren()) {
-		MemberWidget *widget = dynamic_cast<MemberWidget *>(child);
-		if (widget && widget->IsEmptyMemberWidget()) {
-			return widget->getWorldPosition();
-		}
+	if (!HaveFreeSlots()) {
+		return false;
 	}
-	return cocos2d::Vec2::ZERO;
+
+	return true;
 }
 
-void MembersSlot::AddMember(MemberWidget *memberWidget)
+MembersSlot::SlotInfo MembersSlot::FindPlace(Member::Ptr member)
 {
-	cocos2d::ui::Layout *page = getPages().at(0);
-	for (cocos2d::Node *child : page->getChildren()) {
-		MemberWidget *widget = dynamic_cast<MemberWidget *>(child);
-		if (widget && widget->IsEmptyMemberWidget()) {
-			MemberWidget *newWidget = MemberWidget::createWithMember();
-			newWidget->setPosition(child->getPosition());
-			newWidget->setScale(SLOT_SCALE);
-			page->removeChild(child);
-			addWidgetToPage(newWidget, 0, true);
+	SlotInfo info;
+
+	for (auto page : getPages()) {
+		for (auto item : page->getChildren()) {
+			MemberWidget *widget;
+			widget = dynamic_cast<MemberWidget *>(item);
+			if (widget && widget->IsEmptyMemberWidget()) {
+				bool alreadyCreated = false;
+				for (SlotInfo s : _slotsUnderConstruction) {
+					if (s.index == widget->getTag()) {
+						alreadyCreated = true;
+						break;
+					}
+				}
+				if (!alreadyCreated) {
+					info.page = 0;
+					info.index = widget->getTag();
+					info.member = member;
+					info.worldPos = widget->getWorldPosition();
+					_slotsUnderConstruction.push_back(info);
+					return info;
+				}
+			}
+		}
+	}
+
+	return info;
+}
+
+void MembersSlot::AddMember(const MembersSlot::SlotInfo &info)
+{
+	cocos2d::Node *page = getPage(info.page);
+	if (!page) {Log::Instance().writeError("Failed to get page"); return;}
+	cocos2d::Node *item = page->getChildByTag(info.index);
+	if (!item) {Log::Instance().writeError("Faield to get item"); return;}
+
+	MemberWidget *widget;
+	widget = MemberWidget::createWithMember(info.member, true);
+	widget->setPosition(item->getPosition());
+	widget->setScale(MembersSlot::SLOT_SCALE);
+	widget->setTag(item->getTag());
+
+	page->removeChild(item);
+	addWidgetToPage(widget, 0, true);
+
+	for (std::vector<SlotInfo>::iterator it = _slotsUnderConstruction.begin(); it != _slotsUnderConstruction.end();) {
+		if ((*it).member == info.member) {
+			it = _slotsUnderConstruction.erase(it);
 			break;
-		}
+		} else ++it;
 	}
-}
-
-void MembersSlot::SwapMember(MemberWidget *memberWidget, int spawnIndex)
-{
-}
-
-void MembersSlot::RemoveMember(MemberWidget *memberWidget)
-{
 }
 
 void MembersSlot::Fill(int number)
@@ -152,7 +180,10 @@ void MembersSlot::Fill(int number)
 	// test code
 	std::vector<MemberWidget *> members;
 	for (int k=0;k<number;++k) {
-		members.push_back(MemberWidget::createEmpty(true));
+		MemberWidget *widget = MemberWidget::createEmpty("geek");
+		widget->setTag(k);
+		members.push_back(widget);
+
 	}
 
 	if (members.size() <= MEMBERS_PAGE_SIZE) {
@@ -175,7 +206,16 @@ bool MembersSlot::HaveFreeSlots(void)
 
 	for (auto widget : getPages().at(0)->getChildren()) {
 		MemberWidget *member = dynamic_cast<MemberWidget *>(widget);
-		if (member && member->IsEmptyMemberWidget()) {
+				
+		bool deffered = false;
+		for (SlotInfo s : _slotsUnderConstruction) {
+			if (s.index == widget->getTag()) {
+				deffered = true;
+				break;
+			}
+		}
+
+		if (!deffered && member && member->IsEmptyMemberWidget()) {
 			++emptySlotsNumber;
 		}
 	}

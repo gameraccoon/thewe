@@ -17,10 +17,12 @@ TasksMenuWidget* TasksMenuWidget::create(Cell::WeakPtr cell)
 
 TasksMenuWidget::TasksMenuWidget(void)
 {
+	MessageManager::Instance().RegisterReceiver(this, "BeginMemberMove");
 }
 
 TasksMenuWidget::~TasksMenuWidget(void)
 {
+	MessageManager::Instance().UnregisterReceiver(this, "BeginMemberMove");
 }
 
 bool TasksMenuWidget::init(Cell::WeakPtr cell)
@@ -56,9 +58,6 @@ bool TasksMenuWidget::init(Cell::WeakPtr cell)
 	_widget->addChild(_btnScrollLeft, 1);
 	_widget->addChild(_btnScrollRight, 1);
 
-	_mover = MemberMover::create(_widget->getContentSize(), _membersPage, _membersSlot);
-	_widget->addChild(_mover, 2);
-
 	_tasksList = TasksListWidget::create(_cell);
 	_tasksList->setPosition(cocos2d::Vec2(400.0f, 130.0f));
 	_widget->addChild(_tasksList, 1);
@@ -78,6 +77,15 @@ bool TasksMenuWidget::init(Cell::WeakPtr cell)
 
 void TasksMenuWidget::update(float dt)
 {
+	for (std::vector<MemberMover*>::iterator it = _movers.begin(); it != _movers.end();) {
+		MemberMover *mover = (*it);
+		if (mover->IsState(MemberMover::State::FINISH)) {
+			removeChild(mover);
+			it = _movers.erase(it);
+		} else 
+			++it;
+	}
+
 	if (_membersPage->getPages().size() > 1)
 	{
 		_btnScrollLeft->setVisible(true);
@@ -127,6 +135,35 @@ void TasksMenuWidget::Show(void)
 
 void TasksMenuWidget::Hide(void)
 {
+}
+
+void TasksMenuWidget::AcceptMessage(const Message &message)
+{
+	if (message.is("BeginMemberMove"))
+	{
+		MemberWidget *widget = nullptr;
+		for (auto page : _membersPage->getPages()) {
+			for (auto item : page->getChildren()) {
+				if (item->getTag() == message.variables.GetInt("Index"))
+				{
+					widget = dynamic_cast<MemberWidget *>(item);
+					break;
+				}
+			}
+		}
+
+		if (widget && _membersSlot->IsAbleToAddMember(widget->GetMemberPtr()))
+		{
+			MemberMover *mover = MemberMover::create(getContentSize(),
+				widget->getScale(),
+				widget->getWorldPosition(),
+				_membersSlot,
+				_membersSlot->FindPlace(widget->GetMemberPtr()));
+
+			addChild(mover, 2);
+			_movers.push_back(mover);
+		}
+	}
 }
 
 void TasksMenuWidget::StartTask(void)
