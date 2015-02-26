@@ -11,6 +11,8 @@ public:
 	static TasksListItem* createWithTask(Task::Ptr task);
 	static TasksListItem* createEmpty(void);
 
+	Task::WeakPtr GetTask(void) const;
+
 	void ReleaseToggle(void);
 	bool IsPressed(void) const;
 
@@ -38,6 +40,9 @@ public:
 	void FillList(const TaskManager::Tasks &tasks);
 	void AcceptMessage(const Message &message) override;
 
+	bool IsTaskSelected(void) const;
+	Task::WeakPtr GetSelectedTask(void) const;
+
 protected:
 	TasksListWidget(Cell::WeakPtr cell);
 	virtual ~TasksListWidget(void);
@@ -47,6 +52,7 @@ protected:
 
 private:
 	Cell::WeakPtr _cell;
+	Task::WeakPtr _selectedTask;
 };
 
 #endif

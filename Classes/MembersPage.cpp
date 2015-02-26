@@ -26,20 +26,25 @@ MembersPage::~MembersPage(void)
 {
 }
 
-void MembersPage::Fill(int number)
+void MembersPage::FillWithMembers(const Member::Vector &members)
 {
-	// test code
-	std::vector<MemberWidget *> members;
-	for (int k=0;k<number;++k) {
-		MemberWidget *widget = MemberWidget::createWithMember(Member::create("geek", 3));
-		widget->setTag(k);
-		members.push_back(widget);
+	removeAllPages();
+
+	std::vector<MemberWidget *> membersWidgets;
+	std::size_t amount = members.size();
+	for (std::size_t k = 0; k < amount; ++k) {
+		Member::Ptr member = members[k];
+		if (member->IsState(Member::State::NORMAL)) {
+			MemberWidget *widget = MemberWidget::createWithMember(member);
+			widget->setTag(k);
+			membersWidgets.push_back(widget);
+		}
 	}
 
-	if (members.size() <= MEMBERS_PAGE_SIZE) {
-		setContentSize(cocos2d::Size(SLOT_SIZE*number + SPACING*(number+1), SLOT_SIZE + SPACING*2.0f));
+	if (membersWidgets.size() <= MEMBERS_PAGE_SIZE) {
+		setContentSize(cocos2d::Size(SLOT_SIZE*amount + SPACING*(amount+1), SLOT_SIZE + SPACING*2.0f));
 		cocos2d::Vec2 pos = cocos2d::Vec2(SPACING, SPACING);
-		for (auto member : members) {
+		for (auto member : membersWidgets) {
 			member->setPosition(pos);
 			member->setScale(SLOT_SCALE);
 			addWidgetToPage(member, 0, true);
@@ -48,8 +53,8 @@ void MembersPage::Fill(int number)
 	} else {
 		setContentSize(cocos2d::Size(SLOT_SIZE*MEMBERS_PAGE_SIZE + SPACING*(MEMBERS_PAGE_SIZE+1), SLOT_SIZE + SPACING*2.0f));
 		int page=0;
-		for (std::size_t index = 0; index < members.size(); ++index) {
-			MemberWidget *widget = members[index];
+		for (std::size_t index = 0; index < membersWidgets.size(); ++index) {
+			MemberWidget *widget = membersWidgets[index];
 			int place = index % MEMBERS_PAGE_SIZE;
 			widget->setPosition(cocos2d::Vec2(SLOT_SIZE*place + ((place+1)*SPACING), SPACING));
 			widget->setScale(SLOT_SCALE);
@@ -175,19 +180,27 @@ void MembersSlot::AddMember(const MembersSlot::SlotInfo &info)
 	}
 }
 
-void MembersSlot::Fill(int number)
+void MembersSlot::FillByTaskRequire(Task::Ptr task)
 {
-	// test code
-	std::vector<MemberWidget *> members;
-	for (int k=0;k<number;++k) {
-		MemberWidget *widget = MemberWidget::createEmpty("geek");
-		widget->setTag(k);
-		members.push_back(widget);
+	removeAllPages();
+	_slotsUnderConstruction.clear();
 
+	Task::Info taskInfo = task->GetInfo();
+	std::vector<MemberWidget *> members;
+	
+	int k = 0;
+	for (auto executants : taskInfo.members) {
+		for (int i = 0; i < executants.count; i++) {
+			MemberWidget *widget = MemberWidget::createEmpty(executants.special);
+			widget->setTag(k);
+			members.push_back(widget);
+			++k;
+		}
 	}
 
 	if (members.size() <= MEMBERS_PAGE_SIZE) {
-		setContentSize(cocos2d::Size(SLOT_SIZE*number + SPACING*(number+1), SLOT_SIZE + SPACING*2.0f));
+		std::size_t amount = members.size();
+		setContentSize(cocos2d::Size(SLOT_SIZE*amount + SPACING*(amount+1), SLOT_SIZE + SPACING*2.0f));
 		cocos2d::Vec2 pos = cocos2d::Vec2(SPACING, SPACING);
 		for (auto member : members) {
 			member->setPosition(pos);

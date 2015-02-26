@@ -18,11 +18,13 @@ TasksMenuWidget* TasksMenuWidget::create(Cell::WeakPtr cell)
 TasksMenuWidget::TasksMenuWidget(void)
 {
 	MessageManager::Instance().RegisterReceiver(this, "BeginMemberMove");
+	MessageManager::Instance().RegisterReceiver(this, "RefreshTaskSlots");
 }
 
 TasksMenuWidget::~TasksMenuWidget(void)
 {
 	MessageManager::Instance().UnregisterReceiver(this, "BeginMemberMove");
+	MessageManager::Instance().UnregisterReceiver(this, "RefreshTaskSlots");
 }
 
 bool TasksMenuWidget::init(Cell::WeakPtr cell)
@@ -38,15 +40,13 @@ bool TasksMenuWidget::init(Cell::WeakPtr cell)
 	cocos2d::ui::Helper::seekWidgetByName(_widget, "Close")->addTouchEventListener(CC_CALLBACK_2(TasksMenuWidget::OnClosePressed, this));
 
 	_membersPage = MembersPage::create();
-	_membersPage->Fill(8);
+	_membersPage->FillWithMembers(_cell.lock()->GetAllMembers());
 	_membersPage->setPositionX(_widget->getContentSize().width*0.5f - _membersPage->getContentSize().width*0.5f);
 	_membersPage->setPositionY(MembersPage::SPACING);
 	_widget->addChild(_membersPage, 1);
 
 	_membersSlot = MembersSlot::create();
-	_membersSlot->Fill(5);
-	_membersSlot->setPositionX(_widget->getContentSize().width*0.5f - _membersSlot->getContentSize().width*0.5f);
-	_membersSlot->setPositionY(_widget->getContentSize().height -_membersSlot->getContentSize().height - MembersPage::SPACING);
+	_membersSlot->setVisible(false);
 	_widget->addChild(_membersSlot, 1);
 
 	_btnScrollLeft = cocos2d::ui::Button::create("ui/scroll_l_normal.png", "ui/scroll_l_pressed.png");
@@ -139,7 +139,7 @@ void TasksMenuWidget::Hide(void)
 
 void TasksMenuWidget::AcceptMessage(const Message &message)
 {
-	if (message.is("BeginMemberMove"))
+	if (message.is("BeginMemberMove") && _tasksList->IsTaskSelected())
 	{
 		MemberWidget *widget = nullptr;
 		for (auto page : _membersPage->getPages()) {
@@ -162,6 +162,18 @@ void TasksMenuWidget::AcceptMessage(const Message &message)
 
 			addChild(mover, 2);
 			_movers.push_back(mover);
+		}
+	}
+	if (message.is("RefreshTaskSlots"))
+	{
+		if (_tasksList->IsTaskSelected()) {
+			Task::Ptr taskPtr = _tasksList->GetSelectedTask().lock();
+			_membersSlot->setVisible(true);
+			_membersSlot->FillByTaskRequire(taskPtr);
+			_membersSlot->setPositionX(_widget->getContentSize().width*0.5f - _membersSlot->getContentSize().width*0.5f);
+			_membersSlot->setPositionY(_widget->getContentSize().height -_membersSlot->getContentSize().height - MembersPage::SPACING);
+		} else {
+			_membersSlot->setVisible(false);
 		}
 	}
 }

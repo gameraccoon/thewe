@@ -29,7 +29,7 @@ TasksListItem* TasksListItem::createEmpty(void)
 }
 
 TasksListItem::TasksListItem(void)
-	: _state(true)
+	: _state(false)
 {
 }
 
@@ -80,9 +80,14 @@ void TasksListItem::OnPress(cocos2d::Ref *sender, cocos2d::ui::Button::TouchEven
 	}
 }
 
+Task::WeakPtr TasksListItem::GetTask(void) const
+{
+	return _task;
+}
+
 void TasksListItem::ReleaseToggle(void)
 {
-	_state = true;
+	_state = false;
 	UpdateTexture();
 }
 
@@ -93,7 +98,7 @@ bool TasksListItem::IsPressed(void) const
 
 void TasksListItem::UpdateTexture(void)
 {
-	std::string texture = _state ? "ui/tasks_menu_item_normal.png" : "ui/tasks_menu_item_press.png";
+	std::string texture = _state ? "ui/tasks_menu_item_press.png" : "ui/tasks_menu_item_normal.png";
 	loadTextureNormal(texture);
 }
 
@@ -133,7 +138,8 @@ void TasksListWidget::AcceptMessage(const Message &message)
 	{
 		auto childrens = getItems();
 		for (auto child : childrens) {
-			TasksListItem *item = dynamic_cast<TasksListItem *>(child);
+			TasksListItem *item;
+			item = dynamic_cast<TasksListItem *>(child);
 			if (item && item->getTag() != message.variables.GetInt("Tag")) {
 				item->ReleaseToggle();
 			}
@@ -141,11 +147,26 @@ void TasksListWidget::AcceptMessage(const Message &message)
 
 		TasksListItem *selected = dynamic_cast<TasksListItem *>(getChildByTag(message.variables.GetInt("Tag")));
 		if (selected) {
-			return;
+			if (selected->IsPressed()) {
+				_selectedTask = selected->GetTask();
+			} else {
+				_selectedTask = Task::Ptr();
+			}
+			MessageManager::Instance().PutMessage(Message("RefreshTaskSlots"));
 		} else {
 			Log::Instance().writeWarning("Type cast failed.");
 		}
 	}
+}
+
+bool TasksListWidget::IsTaskSelected(void) const
+{
+	return !_selectedTask.expired();
+}
+
+Task::WeakPtr TasksListWidget::GetSelectedTask(void) const
+{
+	return _selectedTask;
 }
 
 bool TasksListWidget::init(void)
