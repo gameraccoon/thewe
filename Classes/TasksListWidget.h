@@ -8,20 +8,23 @@
 class TasksListItem : public cocos2d::ui::Button
 {
 public:
-	static TasksListItem* create(void);
-	
+	static TasksListItem* createWithTask(Task::Ptr task);
+	static TasksListItem* createEmpty(void);
+
 	void ReleaseToggle(void);
 	bool IsPressed(void) const;
 
 protected:
-	TasksListItem(void);
+	TasksListItem();
 	~TasksListItem(void);
 
-	bool init(void) override;
+	bool initWithTask(Task::Ptr task);
+	bool initEmpty(void);
 	void OnPress(cocos2d::Ref *sender, cocos2d::ui::Button::TouchEventType eventType);
 
 private:
 	void UpdateTexture(void);
+	Task::Ptr _task;
 	bool _state;
 };
 

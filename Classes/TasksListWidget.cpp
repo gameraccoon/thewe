@@ -1,9 +1,24 @@
 #include "TasksListWidget.h"
 
-TasksListItem* TasksListItem::create(void)
+#include "World.h"
+
+TasksListItem* TasksListItem::createWithTask(Task::Ptr task)
 {
 	TasksListItem *ret = new TasksListItem();
-	if (ret && ret->init())
+	if (ret && ret->initWithTask(task))
+	{
+		ret->autorelease();
+		return ret;
+	}
+
+	delete ret;
+	return nullptr;
+}
+
+TasksListItem* TasksListItem::createEmpty(void)
+{
+	TasksListItem *ret = new TasksListItem();
+	if (ret && ret->initEmpty())
 	{
 		ret->autorelease();
 		return ret;
@@ -22,20 +37,30 @@ TasksListItem::~TasksListItem(void)
 {
 }
 
-bool TasksListItem::init(void)
+bool TasksListItem::initWithTask(Task::Ptr task)
 {
 	if (!cocos2d::ui::Button::init()) {
 		return false;
 	}
-	
+
+	_task = task;
+
 	loadTextures("ui/tasks_menu_item_normal.png", "ui/tasks_menu_item_press.png");
 	addTouchEventListener(CC_CALLBACK_2(TasksListItem::OnPress, this));
 
 	setTitleFontName("EuropeNormal.ttf");
 	setTitleFontSize(18.0f);
 	setTitleColor(cocos2d::Color3B(0,0,0));
-	setTitleText("Test Title Text");
+	setTitleText(_task->GetInfo().id);
 
+	return true;
+}
+
+bool TasksListItem::initEmpty(void)
+{
+	if (!cocos2d::ui::Button::init()) {
+		return false;
+	}
 	return true;
 }
 
@@ -135,17 +160,21 @@ bool TasksListWidget::init(void)
 	setContentSize(cocos2d::Size(VISIBLE_AREA_WIDTH, VISIBLE_AREA_HEIGHT));
 	scheduleUpdate();
 	
-	TasksListItem *first = TasksListItem::create();
+	TasksListItem *first = TasksListItem::createEmpty();
 	first->setVisible(false);
 	pushBackCustomItem(first);
 
-	for (int k=0;k<16;k++) {
-		TasksListItem *item = TasksListItem::create();
-		item->setTag(k);
+	TaskManager::Tasks tasks = World::Instance().GetTaskManager().GetAvailableTasks(_cell);
+
+	int index = 0;
+	for (Task::Ptr task : tasks) {
+		TasksListItem *item = TasksListItem::createWithTask(task);
+		item->setTag(index);
 		pushBackCustomItem(item);
+		++index;
 	}
 
-	TasksListItem *last = TasksListItem::create();
+	TasksListItem *last = TasksListItem::createEmpty();
 	last->setVisible(false);
 	pushBackCustomItem(last);
 
