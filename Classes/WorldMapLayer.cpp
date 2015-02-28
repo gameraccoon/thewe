@@ -8,6 +8,8 @@
 #include "Log.h"
 #include <luabind/luabind.hpp>
 
+#include <LevelUpEffect.h>
+
 static const float MAX_MAP_SCALE = 1.5f;
 static const float INITIAL_TOWN_SCALE = 0.17f;
 static const float INITIAL_CELL_SCALE = 0.2f;
@@ -101,6 +103,16 @@ bool WorldMapLayer::init(void)
 	scheduleUpdate();
 
 	UpdateMapElements();
+
+	cocos2d::Sprite * sp = cocos2d::Sprite::create("effects/cell_shining.png");
+	addChild(sp, 10);
+	sp->setPosition(this->getContentSize().width / 4, this->getContentSize().height / 2);
+
+	VisualEffects::DefaultLevelUpEffect * lu = VisualEffects::DefaultLevelUpEffect::create
+		("effects/cell_shining.png", "effects/cell_yellow_rays.png", "effects/bonus_icon.png", "arial.ttf", 10, 10, this);
+	addChild(lu);
+	lu->setPosition(this->getContentSize().width / 2, this->getContentSize().height / 2);
+	lu->init();
 
 	return true;
 }
