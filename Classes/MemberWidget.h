@@ -7,18 +7,19 @@
 class MemberWidget : public cocos2d::ui::Layout
 {
 public:
-	static MemberWidget* createWithMember(Member::Ptr member, bool withRemoveButton = false);
+	static MemberWidget* createWithMember(Member::Ptr member, bool withRemoveButton = false, bool moveable = true);
 	static MemberWidget* createEmpty(const std::string &specialType);
 
 	Member::Ptr GetMemberPtr(void) const;
 
-	bool IsEmptyMemberWidget(void) const;
+	bool IsEmpty(void) const;
+	bool IsMoveable(void) const;
 
 protected:
 	MemberWidget(void);
 	virtual ~MemberWidget(void);
 
-	bool initWithMember(Member::Ptr member, bool withRemoveButton);
+	bool initWithMember(Member::Ptr member, bool withRemoveButton, bool moveable);
 	bool initEmpty(const std::string &specialType);
 	
 	void TouchListener(cocos2d::Ref *sender, cocos2d::ui::Widget::TouchEventType eventType);
@@ -36,7 +37,8 @@ private:
 	cocos2d::ui::Button *_removeButton;
 	Member::Ptr _member;
 	Stars _stars;
-	bool _isEmptyMemberWidget;
+	bool _isEmpty;
+	bool _isMoveable;
 };
 
 #endif

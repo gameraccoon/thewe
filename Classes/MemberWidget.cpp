@@ -1,9 +1,9 @@
 #include "MemberWidget.h"
 
-MemberWidget* MemberWidget::createWithMember(Member::Ptr member, bool withRemoveButton)
+MemberWidget* MemberWidget::createWithMember(Member::Ptr member, bool withRemoveButton, bool moveable)
 {
 	MemberWidget *ret = new MemberWidget();
-	if (ret && ret->initWithMember(member, withRemoveButton))
+	if (ret && ret->initWithMember(member, withRemoveButton, moveable))
 	{
 		ret->autorelease();
 		return ret;
@@ -35,14 +35,15 @@ MemberWidget::~MemberWidget(void)
 {
 }
 
-bool MemberWidget::initWithMember(Member::Ptr member, bool withRemoveButton)
+bool MemberWidget::initWithMember(Member::Ptr member, bool withRemoveButton, bool moveable)
 {
 	if (!cocos2d::ui::Layout::init()) {
 		return false;
 	}
 
 	_member = member;
-	_isEmptyMemberWidget = false;
+	_isMoveable = moveable;
+	_isEmpty = false;
 	
 	std::string icon = GetIconForSpecial(_member->getSpecialization());
 	_special = cocos2d::Sprite::create(icon);
@@ -89,7 +90,8 @@ bool MemberWidget::initEmpty(const std::string &specialType)
 		return false;
 	}
 
-	_isEmptyMemberWidget = true;
+	_isEmpty = true;
+	_isMoveable = false;
 
 	_background = cocos2d::Sprite::create("ui/human_slot.png");
 	_background->setPosition((cocos2d::Vec2)_background->getContentSize() * 0.5f);
@@ -121,9 +123,14 @@ Member::Ptr MemberWidget::GetMemberPtr(void) const
 	return _member;
 }
 
-bool MemberWidget::IsEmptyMemberWidget(void) const
+bool MemberWidget::IsEmpty(void) const
 {
-	return _isEmptyMemberWidget;
+	return _isEmpty;
+}
+
+bool MemberWidget::IsMoveable(void) const
+{
+	return _isMoveable;
 }
 
 void MemberWidget::OnRemovePressed(cocos2d::Ref *sender, cocos2d::ui::Widget::TouchEventType eventType)
@@ -147,13 +154,15 @@ void MemberWidget::OnRemovePressed(cocos2d::Ref *sender, cocos2d::ui::Widget::To
 void MemberWidget::TouchListener(cocos2d::Ref *sender, cocos2d::ui::Widget::TouchEventType eventType)
 {
 	if (eventType == cocos2d::ui::Widget::TouchEventType::BEGAN) {
-		Message message("BeginMemberMove");
-		message.variables.SetInt("Index", getTag());
-		MessageManager::Instance().PutMessage(message);
-		for (auto star : _stars) {
-			cocos2d::Vec2 location = convertToNodeSpace(getTouchBeganPosition());
-			if (star->getBoundingBox().containsPoint(location)) {
-				star->setScale(0.9f);
+		if (_isMoveable) {
+			Message message("BeginMemberMove");
+			message.variables.SetInt("Index", getTag());
+			MessageManager::Instance().PutMessage(message);
+			for (auto star : _stars) {
+				cocos2d::Vec2 location = convertToNodeSpace(getTouchBeganPosition());
+				if (star->getBoundingBox().containsPoint(location)) {
+					star->setScale(0.9f);
+				}
 			}
 		}
 	} else {

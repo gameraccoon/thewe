@@ -142,7 +142,7 @@ void MembersSlot::AddMember(Member::Ptr member)
 	for (SlotInfo &slot : _slots) {
 		if (slot.member.lock() == member && !slot.free) {
 			MemberWidget *widget;
-			widget = MemberWidget::createWithMember(member, true);
+			widget = MemberWidget::createWithMember(member, true, false);
 			widget->setPosition(slot.widget->getPosition());
 			widget->setScale(MembersSlot::SLOT_SCALE);
 			widget->setTag(slot.widget->getTag());
