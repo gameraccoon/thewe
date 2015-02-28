@@ -130,6 +130,17 @@ void MemberWidget::OnRemovePressed(cocos2d::Ref *sender, cocos2d::ui::Widget::To
 {
 	if (eventType == cocos2d::ui::Widget::TouchEventType::ENDED)
 	{
+		std::function<void()> func = [&]()
+		{
+			Message message("RemoveMemberFromSlot");
+			message.variables.SetInt("Tag", getTag());
+			MessageManager::Instance().PutMessage(message);
+		};
+
+		cocos2d::FadeOut *fade = cocos2d::FadeOut::create(0.5f);
+		cocos2d::CallFunc *call = cocos2d::CallFunc::create(func);
+		cocos2d::Sequence *effect = cocos2d::Sequence::create(fade, call, nullptr);
+		runAction(effect);
 	}
 }
 

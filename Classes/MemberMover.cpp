@@ -1,10 +1,10 @@
 #include "MemberMover.h"
 
-MemberMover* MemberMover::create(const cocos2d::Size &size, float scale, cocos2d::Vec2 start,
-								 MembersSlot *slot, MembersSlot::SlotInfo slotInfo)
+MemberMover* MemberMover::create(const cocos2d::Size &size, float scale, cocos2d::Vec2 v0,
+								 cocos2d::Vec2 v1, MembersSlot *slot, Member::WeakPtr member)
 {
 	MemberMover *ret = new MemberMover();
-	if (ret && ret->init(size, scale, start, slot, slotInfo))
+	if (ret && ret->init(size, scale, v0, v1, slot, member))
 	{
 		ret->autorelease();
 		return ret;
@@ -25,20 +25,17 @@ MemberMover::~MemberMover(void)
 {
 }
 
-bool MemberMover::init(const cocos2d::Size &size, float scale, cocos2d::Vec2 start,
-		MembersSlot *slot, MembersSlot::SlotInfo slotInfo)
+bool MemberMover::init(const cocos2d::Size &size, float scale, cocos2d::Vec2 v0,
+		cocos2d::Vec2 v1, MembersSlot *slot, Member::WeakPtr member)
 {
-	if (!cocos2d::ui::Widget::init()) {
+	if (!cocos2d::ui::Widget::init() || member.expired()) {
 		return false;
 	}
 
 	_scale = scale;
 	_slot = slot;
-	_slotInfo = slotInfo;
+	_member = member;
 	
-	cocos2d::Vec2 v0 = start;
-	cocos2d::Vec2 v1 = _slotInfo.worldPos;
-
 	cocos2d::Vec2 d0 = (v1-v0).rotateByAngle(cocos2d::Vec2::ZERO, Math::PI*0.5f);
 	_path.Clear();
 	_path.AddKey(v0);
@@ -46,7 +43,7 @@ bool MemberMover::init(const cocos2d::Size &size, float scale, cocos2d::Vec2 sta
 	_path.AddKey(v1);
 	_path.CalculateGradient();
 	_state = State::FLY;
-	_flyingItem = MemberWidget::createWithMember(_slotInfo.member);
+	_flyingItem = MemberWidget::createWithMember(_member.lock());
 	_flyingItem->setPosition(v0);
 	_flyingItem->setScale(scale);
 	
@@ -73,7 +70,9 @@ void MemberMover::update(float dt)
 		if (_time > 1.0f) {
 			_time = 0.0f;
 			_state = State::FINISH;
-			_slot->AddMember(_slotInfo);
+			if (!_member.expired()) {
+				_slot->AddMember(_member.lock());
+			}
 		}
 	}
 }

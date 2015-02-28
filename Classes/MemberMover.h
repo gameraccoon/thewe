@@ -10,7 +10,7 @@ class MemberMover : public cocos2d::ui::Widget
 {
 public:
 	static MemberMover* create(const cocos2d::Size &size, float scale,
-		cocos2d::Vec2 start, MembersSlot *slot, MembersSlot::SlotInfo slotInfo);
+		cocos2d::Vec2 v0, cocos2d::Vec2 v1, MembersSlot *slot, Member::WeakPtr member);
 	
 	enum class State {NONE, FLY, FINISH};
 
@@ -22,14 +22,14 @@ protected:
 	MemberMover(void);
 	~MemberMover(void);
 
-	bool init(const cocos2d::Size &size, float scale, cocos2d::Vec2 start,
-		MembersSlot *slot, MembersSlot::SlotInfo slotInfo);
+	bool init(const cocos2d::Size &size, float scale, cocos2d::Vec2 v0,
+		cocos2d::Vec2 v1, MembersSlot *slot, Member::WeakPtr member);
 	void update(float dt) override;
 
 private:
 	MemberWidget *_flyingItem;
+	Member::WeakPtr _member;
 	MembersSlot *_slot;
-	MembersSlot::SlotInfo _slotInfo;
 	Utils::Spline<cocos2d::Vec2> _path;
 	State _state;
 	float _scale;

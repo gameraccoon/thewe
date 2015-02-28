@@ -125,87 +125,105 @@ bool MembersSlot::IsAbleToAddMember(Member::Ptr member)
 	return true;
 }
 
-MembersSlot::SlotInfo MembersSlot::FindPlace(Member::Ptr member)
+cocos2d::Vec2 MembersSlot::FindPlace(Member::Ptr member)
 {
-	SlotInfo info;
+	for (SlotInfo &slot : _slots) {
+		if (slot.widget && slot.free && slot.empty) {
+			slot.free = false;
+			slot.member = member;
+			return slot.widget->getWorldPosition();
+		}
+	}
+	return cocos2d::Vec2::ZERO;
+}
 
-	for (auto page : getPages()) {
-		for (auto item : page->getChildren()) {
+void MembersSlot::AddMember(Member::Ptr member)
+{
+	for (SlotInfo &slot : _slots) {
+		if (slot.member.lock() == member && !slot.free) {
 			MemberWidget *widget;
-			widget = dynamic_cast<MemberWidget *>(item);
-			if (widget && widget->IsEmptyMemberWidget()) {
-				bool alreadyCreated = false;
-				for (SlotInfo s : _slotsUnderConstruction) {
-					if (s.index == widget->getTag()) {
-						alreadyCreated = true;
-						break;
-					}
-				}
-				if (!alreadyCreated) {
-					info.page = 0;
-					info.index = widget->getTag();
-					info.member = member;
-					info.worldPos = widget->getWorldPosition();
-					_slotsUnderConstruction.push_back(info);
-					return info;
-				}
+			widget = MemberWidget::createWithMember(member, true);
+			widget->setPosition(slot.widget->getPosition());
+			widget->setScale(MembersSlot::SLOT_SCALE);
+			widget->setTag(slot.widget->getTag());
+
+			cocos2d::ui::Layout *page = getPage(0);
+			if (page) {
+				page->removeChild(slot.widget);
+				slot.widget = nullptr;
 			}
+
+			addWidgetToPage(widget, 0, true);
+
+			slot.widget = widget;
+			slot.worldPos = widget->getWorldPosition();
+			slot.free = true;
+			slot.empty = false;
+
+			break;
+		}
+	}
+}
+
+void MembersSlot::RemoveMember(int tag)
+{
+	cocos2d::Node *page = getPage(0);
+	if (!page) {Log::Instance().writeError("Failed to get page."); return;}
+	cocos2d::Node *item = page->getChildByTag(tag);
+	if (!item) {Log::Instance().writeError("Failed to get item."); return;}
+
+	MemberWidget *widget = dynamic_cast<MemberWidget *>(item);
+	MemberWidget *empty = MemberWidget::createEmpty("geek");
+
+	for (SlotInfo &slot : _slots) {
+		if (slot.widget == widget) {
+			slot.widget = empty;
+			slot.member = Member::Ptr();
+			slot.empty = true;
+			slot.free = true;
+			break;
 		}
 	}
 
-	return info;
-}
+	empty->setPosition(widget->getPosition());
+	empty->setScale(MembersSlot::SLOT_SCALE);
+	empty->setTag(widget->getTag());
 
-void MembersSlot::AddMember(const MembersSlot::SlotInfo &info)
-{
-	cocos2d::Node *page = getPage(info.page);
-	if (!page) {Log::Instance().writeError("Failed to get page"); return;}
-	cocos2d::Node *item = page->getChildByTag(info.index);
-	if (!item) {Log::Instance().writeError("Faield to get item"); return;}
-
-	MemberWidget *widget;
-	widget = MemberWidget::createWithMember(info.member, true);
-	widget->setPosition(item->getPosition());
-	widget->setScale(MembersSlot::SLOT_SCALE);
-	widget->setTag(item->getTag());
-
-	page->removeChild(item);
-	addWidgetToPage(widget, 0, true);
-
-	for (std::vector<SlotInfo>::iterator it = _slotsUnderConstruction.begin(); it != _slotsUnderConstruction.end();) {
-		if ((*it).member == info.member) {
-			it = _slotsUnderConstruction.erase(it);
-			break;
-		} else ++it;
-	}
+	getPage(0)->removeChild(widget);
+	addWidgetToPage(empty, 0, true);
 }
 
 void MembersSlot::FillByTaskRequire(Task::Ptr task)
 {
 	removeAllPages();
-	_slotsUnderConstruction.clear();
+	_slots.clear();
 
 	Task::Info taskInfo = task->GetInfo();
-	std::vector<MemberWidget *> members;
 	
 	int k = 0;
 	for (auto executants : taskInfo.members) {
 		for (int i = 0; i < executants.count; i++) {
 			MemberWidget *widget = MemberWidget::createEmpty(executants.special);
 			widget->setTag(k);
-			members.push_back(widget);
 			++k;
+			MembersSlot::SlotInfo slot;
+			slot.free = true;
+			slot.empty = true;
+			slot.member = Member::Ptr();
+			slot.widget = widget;
+			_slots.push_back(slot);
 		}
 	}
 
-	if (members.size() <= MEMBERS_PAGE_SIZE) {
-		std::size_t amount = members.size();
+	if (_slots.size() <= MEMBERS_PAGE_SIZE) {
+		std::size_t amount = _slots.size();
 		setContentSize(cocos2d::Size(SLOT_SIZE*amount + SPACING*(amount+1), SLOT_SIZE + SPACING*2.0f));
 		cocos2d::Vec2 pos = cocos2d::Vec2(SPACING, SPACING);
-		for (auto member : members) {
-			member->setPosition(pos);
-			member->setScale(SLOT_SCALE);
-			addWidgetToPage(member, 0, true);
+		for (auto &slot : _slots) {
+			slot.widget->setPosition(pos);
+			slot.widget->setScale(SLOT_SCALE);
+			slot.worldPos = slot.widget->getWorldPosition();
+			addWidgetToPage(slot.widget, 0, true);
 			pos.x += SLOT_SIZE+SPACING;
 		}
 	} else {
@@ -213,24 +231,12 @@ void MembersSlot::FillByTaskRequire(Task::Ptr task)
 	}
 }
 
-bool MembersSlot::HaveFreeSlots(void)
+bool MembersSlot::HaveFreeSlots(void) const
 {
-	int emptySlotsNumber = 0;
-
-	for (auto widget : getPages().at(0)->getChildren()) {
-		MemberWidget *member = dynamic_cast<MemberWidget *>(widget);
-				
-		bool deffered = false;
-		for (SlotInfo s : _slotsUnderConstruction) {
-			if (s.index == widget->getTag()) {
-				deffered = true;
-				break;
-			}
-		}
-
-		if (!deffered && member && member->IsEmptyMemberWidget()) {
-			++emptySlotsNumber;
+	for (SlotInfo slot : _slots) {
+		if (slot.empty && slot.free) {
+			return true;
 		}
 	}
-	return emptySlotsNumber > 0;
+	return false;
 }

@@ -19,12 +19,14 @@ TasksMenuWidget::TasksMenuWidget(void)
 {
 	MessageManager::Instance().RegisterReceiver(this, "BeginMemberMove");
 	MessageManager::Instance().RegisterReceiver(this, "RefreshTaskSlots");
+	MessageManager::Instance().RegisterReceiver(this, "RemoveMemberFromSlot");
 }
 
 TasksMenuWidget::~TasksMenuWidget(void)
 {
 	MessageManager::Instance().UnregisterReceiver(this, "BeginMemberMove");
 	MessageManager::Instance().UnregisterReceiver(this, "RefreshTaskSlots");
+	MessageManager::Instance().UnregisterReceiver(this, "RemoveMemberFromSlot");
 }
 
 bool TasksMenuWidget::init(Cell::WeakPtr cell)
@@ -157,8 +159,9 @@ void TasksMenuWidget::AcceptMessage(const Message &message)
 			MemberMover *mover = MemberMover::create(getContentSize(),
 				widget->getScale(),
 				widget->getWorldPosition(),
+				_membersSlot->FindPlace(widget->GetMemberPtr()),
 				_membersSlot,
-				_membersSlot->FindPlace(widget->GetMemberPtr()));
+				widget->GetMemberPtr());
 
 			addChild(mover, 2);
 			_movers.push_back(mover);
@@ -175,6 +178,10 @@ void TasksMenuWidget::AcceptMessage(const Message &message)
 		} else {
 			_membersSlot->setVisible(false);
 		}
+	}
+	if (message.is("RemoveMemberFromSlot"))
+	{
+		_membersSlot->RemoveMember(message.variables.GetInt("Tag"));
 	}
 }
 

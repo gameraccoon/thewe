@@ -28,22 +28,14 @@ protected:
 class MembersSlot : public MembersPage
 {
 public:
-	struct SlotInfo {
-		int index;
-		int page;
-		cocos2d::Vec2 worldPos;
-		Member::Ptr member;
-	};
-
-public:
 	static MembersSlot* create(void);
 
-	SlotInfo FindPlace(Member::Ptr member);
-
-	void AddMember(const MembersSlot::SlotInfo &info);
+	cocos2d::Vec2 FindPlace(Member::Ptr member);
+	void AddMember(Member::Ptr membe);
+	void RemoveMember(int tag);
 	void FillByTaskRequire(Task::Ptr task);
-	bool HaveFreeSlots(void);
 	bool IsAbleToAddMember(Member::Ptr member);
+	bool HaveFreeSlots(void) const;
 
 protected:
 	MembersSlot(void);
@@ -52,7 +44,16 @@ protected:
 	bool init(void) override;
 
 private:
-	std::vector<SlotInfo> _slotsUnderConstruction;
+	struct SlotInfo {
+		cocos2d::Vec2 worldPos;
+		MemberWidget *widget;
+		Member::WeakPtr member;
+		bool free;
+		bool empty;
+	};
+
+private:
+	std::vector<SlotInfo> _slots;
 };
 
 #endif
