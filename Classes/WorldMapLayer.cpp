@@ -104,15 +104,27 @@ bool WorldMapLayer::init(void)
 
 	UpdateMapElements();
 
+	/**
+	Testing part - start
+	*/
+
+	// Если так создать иерархичесое отображение, то всё в порядке. Отобразится главный нод и его дочерний элемент
 	cocos2d::Sprite * sp = cocos2d::Sprite::create("effects/cell_shining.png");
+	cocos2d::Sprite * sp1 = cocos2d::Sprite::create("gamefield/cell.png");
+	sp->addChild(sp1);
 	addChild(sp, 10);
 	sp->setPosition(this->getContentSize().width / 4, this->getContentSize().height / 2);
 
+	// Если главный нод - DefaultLevelUpEffect, то ни он ни его дочерние элементы не будут отображаться.
 	VisualEffects::DefaultLevelUpEffect * lu = VisualEffects::DefaultLevelUpEffect::create
 		("effects/cell_shining.png", "effects/cell_yellow_rays.png", "effects/bonus_icon.png", "arial.ttf", 10, 10, this);
 	addChild(lu);
 	lu->setPosition(this->getContentSize().width / 2, this->getContentSize().height / 2);
 	lu->init();
+
+	/**
+	Testing part - end
+	*/
 
 	return true;
 }

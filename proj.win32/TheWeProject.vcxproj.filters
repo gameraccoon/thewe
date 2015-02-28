@@ -429,6 +429,12 @@
     <ClCompile Include="..\Classes\Member.cpp">
       <Filter>Classes\Models</Filter>
     </ClCompile>
+    <ClCompile Include="..\Classes\LevelUpEffect.cpp">
+      <Filter>Classes\Effects</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\VisualEffect.cpp">
+      <Filter>Classes\Effects</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="main.h">
@@ -751,6 +757,12 @@
     </ClInclude>
     <ClInclude Include="..\Classes\Resources.h">
       <Filter>Classes\Models</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\LevelUpEffect.h">
+      <Filter>Classes\Effects</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\VisualEffect.h">
+      <Filter>Classes\Effects</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

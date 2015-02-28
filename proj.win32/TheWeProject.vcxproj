@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project DefaultTargets="Build" ToolsVersion="12.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|Win32">
       <Configuration>Debug</Configuration>
@@ -23,6 +23,7 @@
     <PlatformToolset Condition="'$(VisualStudioVersion)' == '10.0'">v100</PlatformToolset>
     <PlatformToolset Condition="'$(VisualStudioVersion)' == '11.0'">v110</PlatformToolset>
     <PlatformToolset Condition="'$(VisualStudioVersion)' == '11.0' and exists('$(MSBuildProgramFiles32)\Microsoft SDKs\Windows\v7.1A')">v110_xp</PlatformToolset>
+    <PlatformToolset>v120</PlatformToolset>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
@@ -30,6 +31,7 @@
     <PlatformToolset Condition="'$(VisualStudioVersion)' == '10.0'">v100</PlatformToolset>
     <PlatformToolset Condition="'$(VisualStudioVersion)' == '11.0'">v110</PlatformToolset>
     <PlatformToolset Condition="'$(VisualStudioVersion)' == '11.0' and exists('$(MSBuildProgramFiles32)\Microsoft SDKs\Windows\v7.1A')">v110_xp</PlatformToolset>
+    <PlatformToolset>v120</PlatformToolset>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
   <ImportGroup Label="ExtensionSettings">
@@ -150,6 +152,7 @@ xcopy /Y /Q "$(EngineRoot)external\websockets\prebuilt\win32\*.lib" "$(SolutionD
     <ClCompile Include="..\Classes\GameInterface.cpp" />
     <ClCompile Include="..\Classes\GameSavesManager.cpp" />
     <ClCompile Include="..\Classes\HudWidget.cpp" />
+    <ClCompile Include="..\Classes\LevelUpEffect.cpp" />
     <ClCompile Include="..\Classes\Member.cpp" />
     <ClCompile Include="..\Classes\MemberMover.cpp" />
     <ClCompile Include="..\Classes\MembersPage.cpp" />
@@ -207,6 +210,7 @@ xcopy /Y /Q "$(EngineRoot)external\websockets\prebuilt\win32\*.lib" "$(SolutionD
     <ClCompile Include="..\Classes\TutorialWidgetWelcome.cpp" />
     <ClCompile Include="..\Classes\UserMessage.cpp" />
     <ClCompile Include="..\Classes\Vector2.cpp" />
+    <ClCompile Include="..\Classes\VisualEffect.cpp" />
     <ClCompile Include="..\Classes\World.cpp" />
     <ClCompile Include="..\Classes\WorldLoader.cpp" />
     <ClCompile Include="..\Classes\WorldMapLayer.cpp" />
@@ -277,6 +281,7 @@ xcopy /Y /Q "$(EngineRoot)external\websockets\prebuilt\win32\*.lib" "$(SolutionD
     <ClInclude Include="..\Classes\EffectsLayer.h" />
     <ClInclude Include="..\Classes\GameInterface.h" />
     <ClInclude Include="..\Classes\GameSavesManager.h" />
+    <ClInclude Include="..\Classes\LevelUpEffect.h" />
     <ClInclude Include="..\Classes\Member.h" />
     <ClInclude Include="..\Classes\MemberMover.h" />
     <ClInclude Include="..\Classes\MembersPage.h" />
@@ -339,6 +344,7 @@ xcopy /Y /Q "$(EngineRoot)external\websockets\prebuilt\win32\*.lib" "$(SolutionD
     <ClInclude Include="..\Classes\TutorialWidget.h" />
     <ClInclude Include="..\Classes\UserMessage.h" />
     <ClInclude Include="..\Classes\Vector2.h" />
+    <ClInclude Include="..\Classes\VisualEffect.h" />
     <ClInclude Include="..\Classes\World.h" />
     <ClInclude Include="..\Classes\WorldLoader.h" />
     <ClInclude Include="..\Classes\WorldMapLayer.h" />
