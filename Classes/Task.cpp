@@ -77,16 +77,19 @@ void Task::AddExecutant(Member::Ptr executant)
 	}
 }
 
-void Task::SwapExecutant(Member::Ptr executant, Member::Ptr replaced)
+void Task::RemoveExecutant(Member::Ptr executant)
 {
-	for (std::size_t i=0;i<_executants.size();++i) {
-		if (replaced == _executants[i]) {
-			_executants[i] = executant;
-		}
+	for (auto iter = _executants.begin(); iter != _executants.end();)
+	{
+		if ((*iter) == executant) {
+			(*iter)->SetState(Member::State::NORMAL);
+			iter = _executants.erase(iter);
+		}  else
+			++iter;
 	}
 }
 
-void Task::ReleaseExecutant(void)
+void Task::ReleaseExecutants(void)
 {
 	for (Member::Ptr m : _executants) {
 		m->SetState(Member::State::NORMAL);

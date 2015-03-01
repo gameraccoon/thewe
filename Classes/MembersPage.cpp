@@ -105,6 +105,9 @@ MembersSlot::MembersSlot(void)
 
 MembersSlot::~MembersSlot(void)
 {
+	if (!_task.expired()) {
+		_task.lock()->ReleaseExecutants();
+	}
 }
 
 bool MembersSlot::init(void)
@@ -122,13 +125,19 @@ bool MembersSlot::IsAbleToAddMember(Member::Ptr member)
 		return false;
 	}
 
-	return true;
+	for (const SlotInfo &slot : _slots) {
+		if (slot.free && slot.empty && member->IsSpecial(slot.sepcial)) {
+			return true;
+		}
+	}
+
+	return false;
 }
 
 cocos2d::Vec2 MembersSlot::FindPlace(Member::Ptr member)
 {
 	for (SlotInfo &slot : _slots) {
-		if (slot.widget && slot.free && slot.empty) {
+		if (slot.widget && slot.free && slot.empty && member->IsSpecial(slot.sepcial)) {
 			slot.free = false;
 			slot.member = member;
 			return slot.widget->getWorldPosition();
@@ -160,6 +169,11 @@ void MembersSlot::AddMember(Member::Ptr member)
 			slot.free = true;
 			slot.empty = false;
 
+			_task.lock()->AddExecutant(member);
+
+			MessageManager::Instance().PutMessage(Message("RefreshMembersPage"));
+			MessageManager::Instance().PutMessage(Message("RecalcTaskProbability"));
+
 			break;
 		}
 	}
@@ -171,34 +185,58 @@ void MembersSlot::RemoveMember(int tag)
 	if (!page) {Log::Instance().writeError("Failed to get page."); return;}
 	cocos2d::Node *item = page->getChildByTag(tag);
 	if (!item) {Log::Instance().writeError("Failed to get item."); return;}
-
+	
 	MemberWidget *widget = dynamic_cast<MemberWidget *>(item);
-	MemberWidget *empty = MemberWidget::createEmpty("geek");
 
-	for (SlotInfo &slot : _slots) {
-		if (slot.widget == widget) {
-			slot.widget = empty;
-			slot.member = Member::Ptr();
-			slot.empty = true;
-			slot.free = true;
+	if (!widget) {Log::Instance().writeWarning("Failed to get propriate widget."); return;}
+
+	if (!_task.expired()) {
+		_task.lock()->RemoveExecutant(widget->GetMemberPtr());
+	}
+
+	SlotInfo *slot = nullptr;
+	for (SlotInfo &s : _slots) {
+		if (s.widget == widget) {
+			slot = &s;
 			break;
 		}
 	}
 
+	if (!slot) {Log::Instance().writeWarning("Failed to get propriate slot."); return;}
+
+	MemberWidget *empty = MemberWidget::createEmpty(slot->sepcial);
 	empty->setPosition(widget->getPosition());
 	empty->setScale(MembersSlot::SLOT_SCALE);
 	empty->setTag(widget->getTag());
+	
+	slot->widget = empty;
+	slot->member = Member::Ptr();
+	slot->empty = true;
+	slot->free = true;
 
 	getPage(0)->removeChild(widget);
 	addWidgetToPage(empty, 0, true);
+
+	MessageManager::Instance().PutMessage(Message("RefreshMembersPage"));
+	MessageManager::Instance().PutMessage(Message("RecalcTaskProbability"));
 }
 
-void MembersSlot::FillByTaskRequire(Task::Ptr task)
+void MembersSlot::FillByTaskRequire(Task::WeakPtr task)
 {
+	if (task.expired()) {
+		Log::Instance().writeWarning("Faied to fill task slot by empty task.");
+		return;
+	}
+
+	if (!_task.expired()) {
+		_task.lock()->ReleaseExecutants();
+	}
+
+	_task = task;
 	removeAllPages();
 	_slots.clear();
 
-	Task::Info taskInfo = task->GetInfo();
+	Task::Info taskInfo = task.lock()->GetInfo();
 	
 	int k = 0;
 	for (auto executants : taskInfo.members) {
@@ -210,6 +248,7 @@ void MembersSlot::FillByTaskRequire(Task::Ptr task)
 			slot.free = true;
 			slot.empty = true;
 			slot.member = Member::Ptr();
+			slot.sepcial = executants.special;
 			slot.widget = widget;
 			_slots.push_back(slot);
 		}
@@ -229,6 +268,9 @@ void MembersSlot::FillByTaskRequire(Task::Ptr task)
 	} else {
 		Log::Instance().writeWarning("Empty slots can not scroll");
 	}
+
+	MessageManager::Instance().PutMessage(Message("RefreshMembersPage"));
+	MessageManager::Instance().PutMessage(Message("RecalcTaskProbability"));
 }
 
 bool MembersSlot::HaveFreeSlots(void) const

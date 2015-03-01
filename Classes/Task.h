@@ -77,8 +77,8 @@ public:
 	float CalculateProgress(Utils::GameTime worldTime) const;
 
 	void AddExecutant(Member::Ptr executant);
-	void SwapExecutant(Member::Ptr executant, Member::Ptr replaced);
-	void ReleaseExecutant(void);
+	void RemoveExecutant(Member::Ptr executant);
+	void ReleaseExecutants(void);
 
 private:
 	/** Start time of the task */

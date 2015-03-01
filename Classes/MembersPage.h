@@ -33,7 +33,7 @@ public:
 	cocos2d::Vec2 FindPlace(Member::Ptr member);
 	void AddMember(Member::Ptr membe);
 	void RemoveMember(int tag);
-	void FillByTaskRequire(Task::Ptr task);
+	void FillByTaskRequire(Task::WeakPtr task);
 	bool IsAbleToAddMember(Member::Ptr member);
 	bool HaveFreeSlots(void) const;
 
@@ -48,12 +48,14 @@ private:
 		cocos2d::Vec2 worldPos;
 		MemberWidget *widget;
 		Member::WeakPtr member;
+		std::string sepcial;
 		bool free;
 		bool empty;
 	};
 
 private:
 	std::vector<SlotInfo> _slots;
+	Task::WeakPtr _task;
 };
 
 #endif

@@ -19,14 +19,18 @@ TasksMenuWidget::TasksMenuWidget(void)
 {
 	MessageManager::Instance().RegisterReceiver(this, "BeginMemberMove");
 	MessageManager::Instance().RegisterReceiver(this, "RefreshTaskSlots");
+	MessageManager::Instance().RegisterReceiver(this, "RefreshMembersPage");
 	MessageManager::Instance().RegisterReceiver(this, "RemoveMemberFromSlot");
+	MessageManager::Instance().RegisterReceiver(this, "RecalcTaskProbability");
 }
 
 TasksMenuWidget::~TasksMenuWidget(void)
 {
 	MessageManager::Instance().UnregisterReceiver(this, "BeginMemberMove");
 	MessageManager::Instance().UnregisterReceiver(this, "RefreshTaskSlots");
+	MessageManager::Instance().UnregisterReceiver(this, "RefreshMembersPage");
 	MessageManager::Instance().UnregisterReceiver(this, "RemoveMemberFromSlot");
+	MessageManager::Instance().UnregisterReceiver(this, "RecalcTaskProbability");
 }
 
 bool TasksMenuWidget::init(Cell::WeakPtr cell)
@@ -165,14 +169,21 @@ void TasksMenuWidget::AcceptMessage(const Message &message)
 
 			addChild(mover, 2);
 			_movers.push_back(mover);
+
+			widget->setVisible(false);
 		}
+	}
+	if (message.is("RefreshMembersPage"))
+	{
+		_membersPage->FillWithMembers(_cell.lock()->GetAllMembers());
+		_membersPage->setPositionX(_widget->getContentSize().width*0.5f - _membersPage->getContentSize().width*0.5f);
+		_membersPage->setPositionY(MembersPage::SPACING);
 	}
 	if (message.is("RefreshTaskSlots"))
 	{
 		if (_tasksList->IsTaskSelected()) {
-			Task::Ptr taskPtr = _tasksList->GetSelectedTask().lock();
 			_membersSlot->setVisible(true);
-			_membersSlot->FillByTaskRequire(taskPtr);
+			_membersSlot->FillByTaskRequire(_tasksList->GetSelectedTask());
 			_membersSlot->setPositionX(_widget->getContentSize().width*0.5f - _membersSlot->getContentSize().width*0.5f);
 			_membersSlot->setPositionY(_widget->getContentSize().height -_membersSlot->getContentSize().height - MembersPage::SPACING);
 		} else {
@@ -182,6 +193,9 @@ void TasksMenuWidget::AcceptMessage(const Message &message)
 	if (message.is("RemoveMemberFromSlot"))
 	{
 		_membersSlot->RemoveMember(message.variables.GetInt("Tag"));
+	}
+	if (message.is("RecalcTaskProbability"))
+	{
 	}
 }
 
