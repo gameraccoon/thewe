@@ -1,9 +1,24 @@
 #include "TasksListWidget.h"
 
-TasksListItem* TasksListItem::create(void)
+#include "World.h"
+
+TasksListItem* TasksListItem::createWithTask(Task::Ptr task)
 {
 	TasksListItem *ret = new TasksListItem();
-	if (ret && ret->init())
+	if (ret && ret->initWithTask(task))
+	{
+		ret->autorelease();
+		return ret;
+	}
+
+	delete ret;
+	return nullptr;
+}
+
+TasksListItem* TasksListItem::createEmpty(void)
+{
+	TasksListItem *ret = new TasksListItem();
+	if (ret && ret->initEmpty())
 	{
 		ret->autorelease();
 		return ret;
@@ -14,7 +29,7 @@ TasksListItem* TasksListItem::create(void)
 }
 
 TasksListItem::TasksListItem(void)
-	: _state(true)
+	: _state(false)
 {
 }
 
@@ -22,20 +37,30 @@ TasksListItem::~TasksListItem(void)
 {
 }
 
-bool TasksListItem::init(void)
+bool TasksListItem::initWithTask(Task::Ptr task)
 {
 	if (!cocos2d::ui::Button::init()) {
 		return false;
 	}
-	
+
+	_task = task;
+
 	loadTextures("ui/tasks_menu_item_normal.png", "ui/tasks_menu_item_press.png");
 	addTouchEventListener(CC_CALLBACK_2(TasksListItem::OnPress, this));
 
 	setTitleFontName("EuropeNormal.ttf");
 	setTitleFontSize(18.0f);
 	setTitleColor(cocos2d::Color3B(0,0,0));
-	setTitleText("Test Title Text");
+	setTitleText(_task->GetInfo().id);
 
+	return true;
+}
+
+bool TasksListItem::initEmpty(void)
+{
+	if (!cocos2d::ui::Button::init()) {
+		return false;
+	}
 	return true;
 }
 
@@ -55,9 +80,14 @@ void TasksListItem::OnPress(cocos2d::Ref *sender, cocos2d::ui::Button::TouchEven
 	}
 }
 
+Task::WeakPtr TasksListItem::GetTask(void) const
+{
+	return _task;
+}
+
 void TasksListItem::ReleaseToggle(void)
 {
-	_state = true;
+	_state = false;
 	UpdateTexture();
 }
 
@@ -68,7 +98,7 @@ bool TasksListItem::IsPressed(void) const
 
 void TasksListItem::UpdateTexture(void)
 {
-	std::string texture = _state ? "ui/tasks_menu_item_normal.png" : "ui/tasks_menu_item_press.png";
+	std::string texture = _state ? "ui/tasks_menu_item_press.png" : "ui/tasks_menu_item_normal.png";
 	loadTextureNormal(texture);
 }
 
@@ -108,7 +138,8 @@ void TasksListWidget::AcceptMessage(const Message &message)
 	{
 		auto childrens = getItems();
 		for (auto child : childrens) {
-			TasksListItem *item = dynamic_cast<TasksListItem *>(child);
+			TasksListItem *item;
+			item = dynamic_cast<TasksListItem *>(child);
 			if (item && item->getTag() != message.variables.GetInt("Tag")) {
 				item->ReleaseToggle();
 			}
@@ -116,11 +147,26 @@ void TasksListWidget::AcceptMessage(const Message &message)
 
 		TasksListItem *selected = dynamic_cast<TasksListItem *>(getChildByTag(message.variables.GetInt("Tag")));
 		if (selected) {
-			return;
+			if (selected->IsPressed()) {
+				_selectedTask = selected->GetTask();
+			} else {
+				_selectedTask = Task::Ptr();
+			}
+			MessageManager::Instance().PutMessage(Message("RefreshTaskSlots"));
 		} else {
 			Log::Instance().writeWarning("Type cast failed.");
 		}
 	}
+}
+
+bool TasksListWidget::IsTaskSelected(void) const
+{
+	return !_selectedTask.expired();
+}
+
+Task::WeakPtr TasksListWidget::GetSelectedTask(void) const
+{
+	return _selectedTask;
 }
 
 bool TasksListWidget::init(void)
@@ -135,17 +181,21 @@ bool TasksListWidget::init(void)
 	setContentSize(cocos2d::Size(VISIBLE_AREA_WIDTH, VISIBLE_AREA_HEIGHT));
 	scheduleUpdate();
 	
-	TasksListItem *first = TasksListItem::create();
+	TasksListItem *first = TasksListItem::createEmpty();
 	first->setVisible(false);
 	pushBackCustomItem(first);
 
-	for (int k=0;k<16;k++) {
-		TasksListItem *item = TasksListItem::create();
-		item->setTag(k);
+	TaskManager::Tasks tasks = World::Instance().GetTaskManager().GetAvailableTasks(_cell);
+
+	int index = 0;
+	for (Task::Ptr task : tasks) {
+		TasksListItem *item = TasksListItem::createWithTask(task);
+		item->setTag(index);
 		pushBackCustomItem(item);
+		++index;
 	}
 
-	TasksListItem *last = TasksListItem::create();
+	TasksListItem *last = TasksListItem::createEmpty();
 	last->setVisible(false);
 	pushBackCustomItem(last);
 

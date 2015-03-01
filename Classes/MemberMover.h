@@ -4,44 +4,36 @@
 #include "GameInterface.h"
 #include "MemberWidget.h"
 #include "MembersPage.h"
+#include "MiscUtils.h"
 
-class MemberMover : public cocos2d::ui::Widget, public MessageReceiver
+class MemberMover : public cocos2d::ui::Widget
 {
 public:
-	static MemberMover* create(const cocos2d::Size &size, MembersPage *transmitter, MembersSlot *receiver);
+	static MemberMover* create(const cocos2d::Size &size, float scale,
+		cocos2d::Vec2 v0, cocos2d::Vec2 v1, MembersSlot *slot, Member::WeakPtr member);
 	
-	virtual void AcceptMessage(const Message &message) override;
-	virtual void setTouchEnabled(bool enabled) override;
+	enum class State {NONE, FLY, FINISH};
+
+	virtual void setTouchEnabled(bool enable) override;
+
+	bool IsState(MemberMover::State state) const;
 
 protected:
 	MemberMover(void);
 	~MemberMover(void);
 
-	bool initWithSize(const cocos2d::Size &size, MembersPage *transmitter, MembersSlot *receiver);
+	bool init(const cocos2d::Size &size, float scale, cocos2d::Vec2 v0,
+		cocos2d::Vec2 v1, MembersSlot *slot, Member::WeakPtr member);
 	void update(float dt) override;
 
-	void OnTouch(cocos2d::Ref *sender, cocos2d::ui::Widget::TouchEventType eventType);
-
 private:
-	enum class State
-	{
-		NONE,
-		ADJUST_FINGER,
-		MOVE,
-		ADJUST_SLOT
-	};
-
-	MemberWidget *_moveable;
-	MembersPage *_pageTransmitter;
-	MembersSlot *_pageReceiver;
+	MemberWidget *_flyingItem;
+	Member::WeakPtr _member;
+	MembersSlot *_slot;
+	Utils::Spline<cocos2d::Vec2> _path;
 	State _state;
-	bool _release;
+	float _scale;
 	float _time;
-	float _dragBeginScale;
-	cocos2d::Vec2 _dragBeginPos;
-	cocos2d::ui::Widget *_dragedPageItem;
-
-	static const cocos2d::Vec2 OFFSET_FROM_FINGER;
 };
 
 #endif

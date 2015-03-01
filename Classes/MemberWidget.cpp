@@ -1,9 +1,9 @@
 #include "MemberWidget.h"
 
-MemberWidget* MemberWidget::createWithMember(void)
+MemberWidget* MemberWidget::createWithMember(Member::Ptr member, bool withRemoveButton, bool moveable)
 {
 	MemberWidget *ret = new MemberWidget();
-	if (ret && ret->initWithMember())
+	if (ret && ret->initWithMember(member, withRemoveButton, moveable))
 	{
 		ret->autorelease();
 		return ret;
@@ -13,10 +13,10 @@ MemberWidget* MemberWidget::createWithMember(void)
 	return nullptr;
 }
 
-MemberWidget* MemberWidget::createEmpty(bool drawSpecial)
+MemberWidget* MemberWidget::createEmpty(const std::string &specialType)
 {
 	MemberWidget *ret = new MemberWidget();
-	if (ret && ret->initEmpty(drawSpecial))
+	if (ret && ret->initEmpty(specialType))
 	{
 		ret->autorelease();
 		return ret;
@@ -27,6 +27,7 @@ MemberWidget* MemberWidget::createEmpty(bool drawSpecial)
 }
 
 MemberWidget::MemberWidget(void)
+	: _removeButton(nullptr)
 {
 }
 
@@ -34,15 +35,18 @@ MemberWidget::~MemberWidget(void)
 {
 }
 
-bool MemberWidget::initWithMember(void)
+bool MemberWidget::initWithMember(Member::Ptr member, bool withRemoveButton, bool moveable)
 {
 	if (!cocos2d::ui::Layout::init()) {
 		return false;
 	}
 
-	_isEmptyMemberWidget = false;
+	_member = member;
+	_isMoveable = moveable;
+	_isEmpty = false;
 	
-	_special = cocos2d::Sprite::create("ui/icon_spec_inform.png");
+	std::string icon = GetIconForSpecial(_member->getSpecialization());
+	_special = cocos2d::Sprite::create(icon);
 	_special->setPosition(80.0f, 95.0f);
 
 	_face = cocos2d::Sprite::create("ui/human_face.png");
@@ -61,6 +65,13 @@ bool MemberWidget::initWithMember(void)
 		star_x += 24.0f;
 	}
 
+	if (withRemoveButton) {
+		_removeButton = cocos2d::ui::Button::create("ui/member_remove_normal.png", "ui/member_remove_pressed.png");
+		_removeButton->addTouchEventListener(CC_CALLBACK_2(MemberWidget::OnRemovePressed, this));
+		_removeButton->setPosition(cocos2d::Vec2(19.0f, 100.0f));
+		addChild(_removeButton, 3);
+	}
+
 	addChild(_background, 0);
 	addChild(_face, 1);
 	addChild(_special, 2);
@@ -73,13 +84,14 @@ bool MemberWidget::initWithMember(void)
 	return true;
 }
 
-bool MemberWidget::initEmpty(bool drawSpecial)
+bool MemberWidget::initEmpty(const std::string &specialType)
 {
 	if (!cocos2d::ui::Layout::init()) {
 		return false;
 	}
 
-	_isEmptyMemberWidget = true;
+	_isEmpty = true;
+	_isMoveable = false;
 
 	_background = cocos2d::Sprite::create("ui/human_slot.png");
 	_background->setPosition((cocos2d::Vec2)_background->getContentSize() * 0.5f);
@@ -88,8 +100,9 @@ bool MemberWidget::initEmpty(bool drawSpecial)
 	_face->setPosition((cocos2d::Vec2)_face->getContentSize()*0.5f);
 	_face->setOpacity(128);
 
-	if (drawSpecial) {
-		_special = cocos2d::Sprite::create("ui/icon_spec_inform.png");
+	if (!specialType.empty()) {
+		std::string icon = GetIconForSpecial(specialType);
+		_special = cocos2d::Sprite::create(icon);
 		_special->setPosition(80.0f, 95.0f);
 		addChild(_special, 2);
 	}
@@ -105,21 +118,51 @@ bool MemberWidget::initEmpty(bool drawSpecial)
 	return true;
 }
 
-bool MemberWidget::IsEmptyMemberWidget(void) const
+Member::Ptr MemberWidget::GetMemberPtr(void) const
 {
-	return _isEmptyMemberWidget;
+	return _member;
+}
+
+bool MemberWidget::IsEmpty(void) const
+{
+	return _isEmpty;
+}
+
+bool MemberWidget::IsMoveable(void) const
+{
+	return _isMoveable;
+}
+
+void MemberWidget::OnRemovePressed(cocos2d::Ref *sender, cocos2d::ui::Widget::TouchEventType eventType)
+{
+	if (eventType == cocos2d::ui::Widget::TouchEventType::ENDED)
+	{
+		std::function<void()> func = [&]()
+		{
+			Message message("RemoveMemberFromSlot");
+			message.variables.SetInt("Tag", getTag());
+			MessageManager::Instance().PutMessage(message);
+		};
+
+		cocos2d::FadeOut *fade = cocos2d::FadeOut::create(0.5f);
+		cocos2d::CallFunc *call = cocos2d::CallFunc::create(func);
+		cocos2d::Sequence *effect = cocos2d::Sequence::create(fade, call, nullptr);
+		runAction(effect);
+	}
 }
 
 void MemberWidget::TouchListener(cocos2d::Ref *sender, cocos2d::ui::Widget::TouchEventType eventType)
 {
 	if (eventType == cocos2d::ui::Widget::TouchEventType::BEGAN) {
-		Message message("BeginMemberMove");
-		message.variables.SetInt("Index", getTag());
-		MessageManager::Instance().PutMessage(message);
-		for (auto star : _stars) {
-			cocos2d::Vec2 location = convertToNodeSpace(getTouchBeganPosition());
-			if (star->getBoundingBox().containsPoint(location)) {
-				star->setScale(0.9f);
+		if (_isMoveable) {
+			Message message("BeginMemberMove");
+			message.variables.SetInt("Index", getTag());
+			MessageManager::Instance().PutMessage(message);
+			for (auto star : _stars) {
+				cocos2d::Vec2 location = convertToNodeSpace(getTouchBeganPosition());
+				if (star->getBoundingBox().containsPoint(location)) {
+					star->setScale(0.9f);
+				}
 			}
 		}
 	} else {
@@ -127,4 +170,17 @@ void MemberWidget::TouchListener(cocos2d::Ref *sender, cocos2d::ui::Widget::Touc
 			star->setScale(1.0f);
 		}
 	}
+}
+
+std::string MemberWidget::GetIconForSpecial(const std::string &special)
+{
+	std::string filename;
+	if (special == "thug") {
+		filename = "ui/icon_spec_thug.png";
+	} else if (special == "geek") {
+		filename = "ui/icon_spec_geek.png";
+	} else {
+		Log::Instance().writeError("Unknown member special.");
+	}
+	return filename;
 }

@@ -9,6 +9,7 @@ class Member
 {
 public:
 	typedef std::shared_ptr<Member> Ptr;
+	typedef std::weak_ptr<Member> WeakPtr;
 	typedef std::vector<Member::Ptr> Vector;
 
 	enum class State

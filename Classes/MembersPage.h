@@ -3,6 +3,7 @@
 
 #include "GameInterface.h"
 #include "MemberWidget.h"
+#include "Task.h"
 
 class MembersPage : public cocos2d::ui::PageView
 {
@@ -13,7 +14,7 @@ public:
 	static const float SLOT_SIZE;
 	static const float SLOT_SCALE;
 
-	virtual void Fill(int number);
+	virtual void FillWithMembers(const Member::Vector &members);
 
 	virtual void handleMoveLogic(cocos2d::Touch *touch) override;
 
@@ -29,18 +30,30 @@ class MembersSlot : public MembersPage
 public:
 	static MembersSlot* create(void);
 
-	cocos2d::Vec2 GetFreeSlotPos(void);
-	void AddMember(MemberWidget *memberWidget);
-	void SwapMember(MemberWidget *memberWidget, int spawnIndex);
-	void RemoveMember(MemberWidget *memberWidget);
-	void Fill(int number) override;
-	bool HaveFreeSlots(void);
+	cocos2d::Vec2 FindPlace(Member::Ptr member);
+	void AddMember(Member::Ptr membe);
+	void RemoveMember(int tag);
+	void FillByTaskRequire(Task::Ptr task);
+	bool IsAbleToAddMember(Member::Ptr member);
+	bool HaveFreeSlots(void) const;
 
 protected:
 	MembersSlot(void);
 	virtual ~MembersSlot(void);
 
 	bool init(void) override;
+
+private:
+	struct SlotInfo {
+		cocos2d::Vec2 worldPos;
+		MemberWidget *widget;
+		Member::WeakPtr member;
+		bool free;
+		bool empty;
+	};
+
+private:
+	std::vector<SlotInfo> _slots;
 };
 
 #endif
