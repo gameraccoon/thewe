@@ -13,12 +13,14 @@ namespace VisualEffects
 	*/
 	bool BaseEffectComposition::init(void)
 	{
-		for (auto it : this->getChildren())
-		if (dynamic_cast<BaseEffectComposition*>(it))
-			dynamic_cast<BaseEffectComposition*>(it)->init();
+		for (auto it : this->getChildren()) {
+			auto ef = dynamic_cast<BaseEffectComposition*>(it);
+			if (ef) ef->init();
+		}	
 
-		_EffectProducer->beginEffect();
-		this->scheduleUpdate();
+		if (_effectProducer) 
+			_effectProducer->BeginEffect();			
+		
 		return Effect::init();
 	}
 
@@ -27,221 +29,206 @@ namespace VisualEffects
 	*/
 	void BaseEffectComposition::update(float dt)
 	{
-		if (IsFinished()) return;
-
 		Effect::update(dt);
+
+		if (IsFinished()) return;
+		
 		for (auto it : this->getChildren())
 			it->update(dt);
 
-		_EffectProducer->update(dt);
+		if (_effectProducer) _effectProducer->Update(dt);		
 	}
 
 	/**
-	If all chuldrens effect compositions are finished
+	If all childrens effect compositions are finished
 	and -> this <- too - return true
 	*/
 	bool BaseEffectComposition::IsFinished(void) const
 	{
 		for (auto it : this->getChildren())
 		{
-			auto _effect = dynamic_cast<BaseEffectComposition*>(it);
-			if (_effect && !_effect->IsFinished())
+			auto effect = dynamic_cast<BaseEffectComposition*>(it);
+			if (effect && !effect->IsFinished())
 				return false;
 		}
-		if (_EffectProducer->isFinished())
+		if (_effectProducer && _effectProducer->IsFinished())
 			return true;
-		else 
+		else
 			return false;
 	}
-
 
 	// BASE_EFFECT_PRODUCER ///////////////////////////////////////////////////
 
 	void BaseEffectProducer::checkFinish(void)
 	{
-		_CurrentState
-			= (_CurrentTimer >= _Continuance ? finished : _CurrentState);		
+		_curState = (_curTimer >= _continuance ? finished : _curState);
 	}
 
 	// BASE EFFECT CONDUCTOR //////////////////////////////////////////////////
 
-	void BaseEffectConductor::update(float dt)
+	bool BaseEffectConductor::PushQueue(BaseEffectProducer * effectPerformer,
+		float continuance)
 	{
-		if (_CurrentState == working) 
-		{
-			for (auto _ef : _BckgrndEffects) 
-				_ef->update(dt);
+		if (!effectPerformer) return false;
+		effectPerformer->SetContinuance(continuance);
+		_effectsQueue.push_back(effectPerformer);
+		return true;
+	}
+	bool BaseEffectConductor::PushBckgrnd(BaseEffectProducer * effectPerformer,
+		float continuance)
+	{
+		if (!effectPerformer) return false;
+		effectPerformer->SetContinuance(continuance);
+		_bgEffects.push_back(effectPerformer);
+		return true;
+	}
 
-			if (!_currentEffect) 
-			{
-				if (_tempQueue.size()) {
-					_currentEffect = _tempQueue.front();
-					_currentEffect->beginEffect();
+	void BaseEffectConductor::Update(float dt)
+	{
+		if (_curState == working)
+		{
+			for (auto ef : _bgEffects)
+			if (ef->IsFinished()) ef->BeginEffect();
+			else ef->Update(dt);
+
+			if (!_curEffect) {
+
+				if (_workingQueue.size()) {
+					_curEffect = _workingQueue.front();
+					_curEffect->BeginEffect();
 				}
-				else _CurrentTimer += dt;
+				else _curTimer += dt;
 			}
-			else 
+			else
 			{
-				if (!_currentEffect->isFinished()) 
-					_currentEffect->update(dt);
+				if (!_curEffect->IsFinished())
+					_curEffect->Update(dt);
 				else {
-					_tempQueue.pop_front();
-					_currentEffect = nullptr;
+					_workingQueue.pop_front();
+					_curEffect = nullptr;
 				}
-			}			
+			}
 			checkFinish();
 		}
 
-		if (isFinished())
-		{
-			_CurrentTimer = 0.0F;
-			stopEffect();
-			if (_infiniteRepeat) beginEffect();
+		if (IsFinished()) {
+			if (_infiniteRepeat){
+				StopEffect();
+				BeginEffect();
+			}
 		}
 	}
 
-	bool BaseEffectConductor::isFreezed(void) const
+	bool BaseEffectConductor::IsFreezed(void) const
 	{
-		if (!_currentEffect ||
-			(_currentEffect && _currentEffect->isFreezed()))
+		if (!_curEffect ||
+			(_curEffect && _curEffect->IsFreezed()))
 		{
-			for (auto _ef : _BckgrndEffects)
-			if (!_ef->isFreezed()) return false;
+			for (auto ef : _bgEffects)
+			if (!ef->IsFreezed()) return false;
 		}
 
 		return true;
 	}
 
-	void BaseEffectConductor::beginEffect(void)
+	void BaseEffectConductor::BeginEffect(void)
 	{
-		EffectsQueue::iterator begin = _EffectsQueue.begin();
-		EffectsQueue::iterator end = _EffectsQueue.end();
-		
+		auto begin = _effectsQueue.begin();
+		auto end = _effectsQueue.end();
+
 		while (begin != end) {
-			_tempQueue.push_back(*begin);
+			_workingQueue.push_back(*begin);
 			begin++;
 		}
 
-		BaseEffectProducer::beginEffect();
-		for (auto _ef : _BckgrndEffects) 
-			_ef->beginEffect();
+		BaseEffectProducer::BeginEffect();
+		for (auto ef : _bgEffects)
+			ef->BeginEffect();
 	}
 
-	void BaseEffectConductor::stopEffect(void)
+	void BaseEffectConductor::StopEffect(void)
 	{
-		BaseEffectProducer::stopEffect();
-		for (auto _ef : _BckgrndEffects) _ef->stopEffect();
-		if (_currentEffect) 
-			_currentEffect->stopEffect();
+		BaseEffectProducer::StopEffect();
+		for (auto _ef : _bgEffects) _ef->StopEffect();
+		if (_curEffect)
+			_curEffect->StopEffect();
 	}
 
-	void BaseEffectConductor::pauseEffect(void)
+	void BaseEffectConductor::PauseEffect(void)
 	{
-		BaseEffectProducer::pauseEffect();
-		for (auto _ef : _BckgrndEffects) _ef->pauseEffect();
-			_currentEffect->pauseEffect();
+		BaseEffectProducer::PauseEffect();
+		for (auto ef : _bgEffects) ef->PauseEffect();
+		if (_curEffect)
+			_curEffect->PauseEffect();
 	}
 
-	bool BaseEffectConductor::pushQueue(BaseEffectPerformer * _effectPerformer, float continuance)
+	// BASE EFFECT PERFORMER //////////////////////////////////////////////////
+
+	void BaseEffectPerformer::Update(float dt)
 	{
-		if (!_effectPerformer) return false;
-		_effectPerformer->setContinuance(continuance);
-		_EffectsQueue.push_back(_effectPerformer);
-		return true;
-	}
-	bool BaseEffectConductor::pushBckgrnd(BaseEffectPerformer * _effectPerformer)
-	{
-		if (!_effectPerformer) return false;
-		_BckgrndEffects.push_back(_effectPerformer);
-		return true;
-	}
+		if (_curState == working) {
 
-	// end ////////////////////////////////////////////////////////////////////
+			DoEffect(dt);
+			_curTimer += dt;
 
-	// BASE EFFECT PERFORMER  - begin /////////////////////////////////////////
-
-	void BaseEffectPerformer::update(float dt)
-	{
-		if (_CurrentState == working)
-		{
-			doEffect(dt);
-			_CurrentTimer += dt;
-
-			switch (_CurrentFinishType)
-			{
+			switch (_curFinishType) {
 			case overtime:
-				if (_CurrentTimer >= _Continuance)
-					_CurrentState = finished;
+				if (_curTimer >= _continuance)_curState = finished;
 				break;
 			case endChanges:
-				if (isFreezed())
-					_CurrentState = finished;
+				if (IsFreezed()) _curState = finished;
 				break;
 			}
 		}
 	}
 
-	void BaseEffectPerformer::doEffect(float dt, cocos2d::Node * node)
+	void BaseEffectPerformer::DoEffect(float dt, cocos2d::Node * node)
 	{
-		if (!node) node = _EffectComposition;
+		if (!node) node = _effectComposition;
 
 		auto children = node->getChildren();
-		for (cocos2d::Node* child_node : children) doEffect(dt, child_node);
+		for (cocos2d::Node* child_node : children) DoEffect(dt, child_node);
 
 		ChangeValue(dt, node);
 	}
 
 
-	bool BaseEffectPerformer::isFreezed(void) const
+	bool BaseEffectPerformer::IsFreezed(void) const
 	{
 		return _curValue == _preValue;
 	}
 
-	// end ////////////////////////////////////////////////////////////////////
-
-	// EFFECT SCALER  - begin /////////////////////////////////////////////////
-
 	void EffectScaler::ChangeValue(double dt, cocos2d::Node * node)
 	{
-		float deltaVaue = dt * _targetValue / _Continuance;
+		float deltaVaue = dt * _targetValue / _continuance;
 		_curValue = node->getScale() + deltaVaue;
-		node->setScale(_curValue);		
+		node->setScale(_curValue);
 	}
-
-	// end ////////////////////////////////////////////////////////////////////
-
-	// EFFECT ROUNDER  - begin ////////////////////////////////////////////////
 
 	void EffectRounder::ChangeValue(double dt, cocos2d::Node * node)
 	{
-		float deltaValue = dt * _targetValue / _Continuance;
+		float deltaValue = dt * _targetValue / _continuance;
 		_curValue = node->getRotation() + deltaValue;
 		node->setRotation(_curValue);
 	}
 
-	// end ////////////////////////////////////////////////////////////////////
-
-	// EFFECT FADER  - begin ////////////////////////////////////////////////
-
 	void EffectFader::ChangeValue(double dt, cocos2d::Node * node)
 	{
-		float deltaValue = dt * _targetValue / _Continuance;
+		float deltaValue = dt * _targetValue / _continuance;
 		_curValue = node->getOpacity() + deltaValue;
+		if (_curValue < 0) _curValue = 0;
+		if (_curValue > 255) _curValue = 255;
 		node->setOpacity((unsigned char)_curValue);
 	}
 
-	// end ////////////////////////////////////////////////////////////////////
-
-	// EFFECT MOVER  - begin ////////////////////////////////////////////////
-
 	void EffectMover::ChangeValue(double dt, cocos2d::Node * node)
 	{
-		float deltaValueX = dt * _targetValue / _Continuance;
-		float deltaValueY = dt * _targetValue1 / _Continuance;
+		float deltaValueX = dt * _targetValue / _continuance;
+		float deltaValueY = dt * _targetValue1 / _continuance;
 		_curValue = node->getPosition().x + deltaValueX;
 		_curValue1 = node->getPosition().y + deltaValueY;
 		node->setPosition(_curValue, _curValue1);
 	}
 
-	// end ////////////////////////////////////////////////////////////////////
+
 }

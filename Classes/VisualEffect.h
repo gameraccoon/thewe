@@ -20,14 +20,15 @@ namespace VisualEffects
 		friend class BaseEffectProducer;
 
 	protected:
-		BaseEffectProducer * _EffectProducer;
+		BaseEffectConductor * _effectProducer;
 
-	public:	
-		BaseEffectComposition (
-			const std::string &name, 
+	public:
+		BaseEffectComposition(
+			const std::string &name,
 			int zOrder,
 			cocos2d::Node *relation = nullptr)
 			: Effect(name, zOrder, relation)
+			, _effectProducer(nullptr)
 		{
 		}
 
@@ -40,166 +41,202 @@ namespace VisualEffects
 	class BaseEffectProducer
 	{
 	public:
-		virtual void update(float dt) = 0;
-		virtual bool isFreezed(void) const = 0;
 
-		inline bool isFinished(void) const
-		{
-			return _CurrentState == finished;
+		typedef std::list<BaseEffectProducer*> EffectsQueue;
+		typedef std::vector<BaseEffectProducer*> BckgrndEffects;
+
+		enum FinishCheckingType {	
+			overtime, endChanges
+		} 
+		_curFinishType;
+
+		enum EffectStates {
+			ready, working, paused, finished
+		} 
+		_curState;
+
+		bool _infiniteRepeat;
+		bool _isNeverending;
+
+	public:
+		virtual void Update(float dt) = 0;
+
+		virtual bool IsFreezed(void) const = 0;
+
+		inline bool IsFinished(void) const {
+			return _curState == finished;
+		}
+
+		inline bool SetParent(BaseEffectProducer *composite) {
+			if (composite->IsComposite()) _parent = composite;
+		}
+
+		virtual bool IsComposite(void) const {
+			return false;
+		}	
+
+	public:
+		BaseEffectProducer(cocos2d::Node *effectComposition, float continuance)
+			: _continuance(continuance)
+			, _effectComposition(effectComposition)
+			, _curFinishType(overtime)
+			, _curState(ready)
+			, _curTimer(0.0f)
+			, _infiniteRepeat(false)
+			, _isNeverending(false)
+		{}
+
+		BaseEffectProducer(cocos2d::Node *effectComposition)
+			: _continuance(0.0f)
+			, _effectComposition(effectComposition)
+			, _curFinishType(overtime)
+			, _curState(ready)
+			, _curTimer(0.0f)
+			, _infiniteRepeat(false)
+			, _isNeverending(false)
+		{}
+
+		BaseEffectProducer(const BaseEffectProducer & otherCompositor)
+			: _continuance(otherCompositor._continuance)
+			, _effectComposition(otherCompositor._effectComposition)
+			, _curFinishType(otherCompositor._curFinishType)
+			, _curState(ready)
+			, _curTimer(0.0f)
+			, _infiniteRepeat(otherCompositor._infiniteRepeat)
+		{}
+
+		float GetContinuance() const { 
+			return _continuance; }
+
+		void SetContinuance(float continuance) { 
+			_continuance = continuance; }
+
+		inline cocos2d::Node * GetComposition(void) const {
+			return _effectComposition;
+		}
+
+		inline virtual void BeginEffect(void) {
+			if (IsFinished()) _curTimer = 0.0f;
+			_curState = working;
+		}
+		inline virtual void StopEffect(void) {
+			_curState = ready;
+			_curTimer = 0.0;
+		}
+		inline virtual void PauseEffect(void) {
+			_curState = paused;
+		}
+
+		virtual bool PushQueue(BaseEffectProducer * effect, 
+			float continuance) {
+			return false;
+		}
+		virtual bool PushBckgrnd(BaseEffectProducer * effect, 
+			float continuance) {
+			return false;
 		}
 
 	protected:
-
-		enum FinishCheckingType { // cheking type of a effect's finish		
-			overtime, endChanges
-		} _CurrentFinishType;
-
-		enum EffectStates { // work progresses states
-			ready, working, paused, finished
-		} _CurrentState;
-
 		// a object influenced by -> this <- effect
-		cocos2d::Node * _EffectComposition; 
+		cocos2d::Node * _effectComposition;
 
-		float _Continuance; // duration of -> this <- effect
-		float _CurrentTimer; // current duration of working state
+		BaseEffectProducer *_parent;
+
+		float _continuance; // duration of -> this <- effect
+		float _curTimer; // actual duration of working state
 
 		virtual void checkFinish(void);
-
-	public:
-		BaseEffectProducer(cocos2d::Node * _effectComposition, float _continuance)
-			: _Continuance(_continuance),
-			_EffectComposition(_effectComposition),
-			_CurrentFinishType(overtime),
-			_CurrentState(ready),
-			_CurrentTimer(0.0)
-		{
-		}
-
-		BaseEffectProducer(BaseEffectComposition * _effectComposition, float _continuance)
-			: _Continuance(_continuance),
-			_EffectComposition(_effectComposition),
-			_CurrentFinishType(overtime),
-			_CurrentState(ready),
-			_CurrentTimer(0.0)
-		{
-			_effectComposition->_EffectProducer = this;
-		}
-
-
-		BaseEffectProducer(const BaseEffectProducer & _otherCompositor)
-		{
-			_CurrentFinishType = _otherCompositor._CurrentFinishType;
-			_CurrentState = _otherCompositor._CurrentState;
-			_Continuance = _otherCompositor._Continuance;
-			_CurrentTimer = 0.0;
-			_EffectComposition = _otherCompositor._EffectComposition;
-		}
-
-		inline float getContinuance() { return _Continuance; }
-		void setContinuance(float continuance) { _Continuance = continuance; }
-
-		inline const cocos2d::Node * getComposition() const 
-		{ return _EffectComposition; }
-
-		inline virtual void beginEffect(void) {
-			_CurrentState = working;
-		}
-		inline virtual void stopEffect(void) {
-			_CurrentState = ready;
-			_CurrentTimer = 0.0;
-		}
-		inline virtual void pauseEffect(void) {
-			_CurrentState = paused;
-		}
 	};
 
 	// дирижер всея эффектов //////////////////////////////////////////////////
 	// Что умеет этот парень?
 	// 1. Хранит указатели на все эффекты (фоновые и очередные)
-	// 2. Реализует обновление всех эффектов в своей пожчинении
+	// 2. Реализует обновление всех эффектов в своей поlчинении
 	// 3. Определяет во времени момент заедания или окончания пластинки
 	class BaseEffectConductor : public BaseEffectProducer
-	{		
+	{
 	private:
-		typedef std::list<BaseEffectPerformer*> EffectsQueue;
-		typedef std::vector<BaseEffectPerformer*> BckgrndEffects;
+		EffectsQueue _effectsQueue, _workingQueue;
+		BckgrndEffects _bgEffects;
 
-		bool _infiniteRepeat = true;
-		
-		EffectsQueue _EffectsQueue, _tempQueue;
-		BckgrndEffects _BckgrndEffects;
+		BaseEffectProducer * _curEffect;
 
-		BaseEffectPerformer * _currentEffect;		
-		
 	public:
-		BaseEffectConductor (
-			BaseEffectComposition * _effectComposition, 
-			float _continuance = 1.0F)
-			: BaseEffectProducer(_effectComposition, _continuance), 
-			_currentEffect(nullptr)
-		{
+		BaseEffectConductor (cocos2d::Node *_effectComposition,
+			float continuance = 1.0f)
+			: BaseEffectProducer(_effectComposition, continuance)
+			, _curEffect(nullptr)
+		{}
+
+		void Update(float dt) override;
+		bool IsFreezed(void) const override;
+
+		bool IsComposite(void) const override {
+			return true;
 		}
 
-		void update(float dt) override;
-		bool isFreezed(void) const override;
+		void BeginEffect(void) override;
+		void StopEffect(void) override;
+		void PauseEffect(void) override;
 
-		void beginEffect(void) override;
-		void stopEffect(void) override;
-		void pauseEffect(void) override;
-
-		bool pushQueue(BaseEffectPerformer * _effectPerformer, float continuance = 0.0);
-		bool pushBckgrnd(BaseEffectPerformer * _effectPerformer);
+		bool PushQueue(BaseEffectProducer * _effectPerformer, 
+			float continuance) override;
+		bool PushBckgrnd(BaseEffectProducer * _effectPerformer,
+			float continuance) override;
 	};
 
 	// Single effect-perfomer
 	class BaseEffectPerformer : public BaseEffectProducer
 	{
-	protected:		
-		double _targetValue;
-		double _curValue;
-		double _preValue;
-		virtual void doEffect(float dt, cocos2d::Node * node = nullptr);
 	public:
-		virtual void update(float dt);
-		virtual bool isFreezed(void) const;
+		void Update(float dt) override;
+		bool IsFreezed(void) const override;
+
 		virtual void ChangeValue(double dt, cocos2d::Node * node) = 0;
 
 	public:
-		BaseEffectPerformer(cocos2d::Node * _effectComposition, float _continuance, double targetValue)
-			:	BaseEffectProducer(_effectComposition, _continuance),
+		BaseEffectPerformer(cocos2d::Node * effectComposition, double targetValue)
+			: BaseEffectProducer(effectComposition),
 			_targetValue(targetValue)
-		{
-		}
+		{}
 
+	protected:
+		double _targetValue;
+		double _curValue;
+		double _preValue;
+		virtual void DoEffect(float dt, cocos2d::Node * node = nullptr);
 
+	private:
+		BaseEffectProducer* _parent;
 	};
 
+	class EffectNothing : public BaseEffectPerformer
+	{
+	public:
+		EffectNothing(cocos2d::Node * effectComposition)
+			: BaseEffectPerformer(effectComposition, 0.0f)
+		{}
+
+		void ChangeValue(double dt, cocos2d::Node * node) override
+		{}
+	};
 
 	class EffectScaler : public BaseEffectPerformer
 	{
 	public:
-		EffectScaler(
-			cocos2d::Node * _effectComposition,
-			double _continuance, double _changeValue)
-			: BaseEffectPerformer(_effectComposition, _continuance, _changeValue)
-		{
-		}
-
+		EffectScaler (cocos2d::Node * effectComposition, double changeValue)
+			: BaseEffectPerformer(effectComposition, changeValue)
+		{}
 
 		void ChangeValue(double dt, cocos2d::Node * node) override;
-		
 	};
 
 	class EffectRounder : public BaseEffectPerformer
 	{
 	public:
-		EffectRounder(
-			cocos2d::Node * _effectComposition,
-			double _continuance, double _changeValue)
-			: BaseEffectPerformer(_effectComposition, _continuance, _changeValue)
-		{
-		}
+		EffectRounder (cocos2d::Node * effectComposition, double changeValue)
+			: BaseEffectPerformer(effectComposition, changeValue)
+		{}
 
 		void ChangeValue(double dt, cocos2d::Node * node) override;
 	};
@@ -207,26 +244,20 @@ namespace VisualEffects
 	class EffectFader : public BaseEffectPerformer
 	{
 	public:
-		EffectFader(
-			cocos2d::Node * _effectComposition,
-			double _continuance, double _changeValue)
-			: BaseEffectPerformer(_effectComposition, _continuance, _changeValue)
-		{
-		}
+		EffectFader(cocos2d::Node * effectComposition, double changeValue)
+			: BaseEffectPerformer(effectComposition, changeValue)
+		{}
 
 		void ChangeValue(double dt, cocos2d::Node * node) override;
 	};
 
-
 	class EffectMover : public BaseEffectPerformer
 	{
 	public:
-		EffectMover(
-			cocos2d::Node * _effectComposition,
-			double _continuance, double x, double y)
-			: BaseEffectPerformer(_effectComposition, _continuance, x)
-		{
-		}
+		EffectMover (cocos2d::Node * effectComposition, double x, double y)
+			: BaseEffectPerformer(effectComposition, x)
+			, _targetValue1(y)
+		{}
 
 		void ChangeValue(double dt, cocos2d::Node * node) override;
 
