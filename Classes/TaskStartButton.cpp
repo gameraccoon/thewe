@@ -1,6 +1,6 @@
 #include "TaskStartButton.h"
 
-const float TaskStartButton::TIME_SCALE = 1.0f/10.0f;
+const float TaskStartButton::TIME_SCALE = 1.0f/1.0f;
 const cocos2d::Vec3 TaskStartButton::COLOR1 = cocos2d::Vec3(1.0f, 0.0f, 0.0f);
 const cocos2d::Vec3 TaskStartButton::COLOR2 = cocos2d::Vec3(1.0f, 1.0f, 0.0f);
 const cocos2d::Vec3 TaskStartButton::COLOR3 = cocos2d::Vec3(0.0f, 1.0f, 0.0f);
@@ -40,6 +40,12 @@ void TaskStartButton::RenewProbability(float prob, bool animated)
 		_next = prob;
 		_time = 0.0f;
 		_change = true;
+
+		cocos2d::ProgressFromTo *effect;
+		effect = cocos2d::ProgressFromTo::create(1.0f,_clip->getPercentage(), _next);
+		_clip->stopAllActions();
+		_clip->runAction(effect);
+
 	} else {
 		_current = prob;
 		_next = prob;
@@ -76,16 +82,10 @@ bool TaskStartButton::init(void)
 
 void TaskStartButton::update(float dt)
 {
-	if (_change) {
-		_time += dt * TIME_SCALE;
-		float time = Math::Clamp(1.0f, 0.0f, _time);
-		float clip = Math::Lerp(_current, _next, time);
-		_clip->setPercentage(clip);
-		_texture->setColor(CalculateColor(time));
-		if (_time >= 1.0f) {
-			_time = 0.0f;
-			_change = false;
-		}
+	if (_clip->getNumberOfRunningActions() > 0) {
+		float coeff = _clip->getPercentage() / 100.0f;
+		cocos2d::Color3B color = CalculateColor(coeff);
+		_texture->setColor(color);
 	}
 }
 
