@@ -171,6 +171,7 @@ void TasksMenuWidget::AcceptMessage(const Message &message)
 			_movers.push_back(mover);
 
 			widget->setVisible(false);
+			widget->GetMemberPtr()->SetState(Member::State::MISSION);
 		}
 	}
 	if (message.is("RefreshMembersPage"))
